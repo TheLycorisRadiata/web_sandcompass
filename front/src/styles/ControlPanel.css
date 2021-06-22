@@ -1,0 +1,17 @@
+main
+{
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+}
+
+main input
+{
+	max-width: 300px;
+}
+
+#field_login_username, #field_login_password
+{
+	margin-bottom: 10px;
+}
+

@@ -12,10 +12,13 @@ function App()
 	return (
 		<Router>
 			<header>
-				<div id="banner">
-					<Link to="/home/"><img src={Banner} alt="Banner Gareus temple in Uruk city" /></Link>
-					<p>Sand Compass</p>
-				</div>
+				<Link to="/home/">
+					<div id="banner">
+						<img src={Banner} alt="Banner Gareus temple in Uruk city" />
+						<p>Sand Compass</p>
+					</div>
+				</Link>
+
 				<nav>
 					<ul>
 						<Link to="/home/"><li>Home</li></Link>

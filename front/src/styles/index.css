@@ -38,6 +38,7 @@ ul
 
 h1
 {
+	margin-bottom: 20px;
 	font-size: 2.5rem;
 }
 
@@ -68,13 +69,17 @@ a:hover
 	color: #FFCF33;
 }
 
-header img, header ul li, main
+header img, header ul li, main, input
 {
 	border-radius: 10px;
+}
+
+header img, header ul li, main
+{
 	box-shadow: 3px 3px 5px #FFF, -3px -3px 5px #FFF;
 }
 
-header ul li
+header ul li, input[type="button"]
 {
 	border-radius: 42px;
 }
@@ -120,6 +125,11 @@ main
 	margin: 20px 0px;
 	padding: 15px;
 	background-color: rgba(234, 122, 123, 0.7);
+}
+
+input
+{
+	padding: 10px;
 }
 
 footer ul

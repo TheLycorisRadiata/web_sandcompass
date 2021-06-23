@@ -1,0 +1,56 @@
+#book_info_main, #book_info_date
+{
+	margin-bottom: 20px;
+}
+
+#book_info_summary_title, #book_catch_phrase
+{
+	margin-bottom: 10px;
+}
+
+#book_catch_phrase
+{
+	text-align: center;
+}
+
+.book_summary_paragraph
+{
+	margin-top: 10px;
+}
+
+#book_cover
+{
+	margin-right: 20px;
+	padding: 10px;
+	max-width: 350px;
+	max-height: 500px;
+	box-shadow: 4px 4px 8px inset rgba(242, 223, 234, 0.8), -4px -4px 8px inset rgba(242, 223, 234, 0.8);
+	border-radius: 10px;
+}
+
+#works_book_presentation
+{
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+#ebook_formats
+{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+}
+
+#ebook_formats li
+{
+	padding: 20px;
+	background-color: #9198E5;
+	border-radius: 5px;
+	box-shadow: 2px 2px 4px inset #FFF, -2px -2px 4px inset #141426;
+}
+
+#works aside ol
+{
+	margin: 20px;
+}
+

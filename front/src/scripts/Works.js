@@ -1,9 +1,120 @@
+import {useState} from 'react';
+import '../styles/Works.css';
+import Book_Cover from '../images/cosmic_dust_cover_eng.png';
+
 const Works = () => 
 {
+	const [question, set_question] = useState('Do you have an e-reader?');
+	const [options, set_options] = useState('Yes.\nNo.\nWhat is it?');
+
 	return (
-		<main>
+		<main id="works">
 			<h1>Works</h1>
-			<p>THIS IS THE WORKS PAGE</p>
+			<article>
+				<h2>Cosmic Dust</h2>
+
+				<div id="works_book_presentation">
+					<img src={Book_Cover} alt="Book cover Cosmic Dust" id="book_cover" />
+
+					<div>
+						<p id="book_info_main"><strong>Title:</strong> Cosmic Dust<br />
+						<strong>Author:</strong> Lycoris Radiata<br />
+						<strong>Type:</strong> Standalone novel<br />
+						<strong>Genre:</strong> Science fiction</p>
+
+						<p id="book_info_date"><strong>Release date:</strong> Work In Progress</p>
+
+						<p id="book_info_summary_title"><strong>Summary:</strong></p>
+						<p id="book_catch_phrase"><em>Is Zekharia's urge to create the proof of his sickness, or is he one of the few who function properly?</em></p>
+						<p className="book_summary_paragraph">Zekharia Bettelheim is an unpretentious citizen of the Society of Arks, a spaceship on a quest for a new planet. 
+						Suffering, he tries to find an explanation to his affliction and is helped for this by the character he created. His imaginary friend helps with putting 
+						his thoughts in order, but he knows that someday he will need to call on a real person.</p>
+						<p className="book_summary_paragraph">A chain of circumstances leads him to contact a former classmate who, contrary to Zekharia, seems to blossom in 
+						their little world and have everything going for him. This man can become the friend he needs, but first his being trustworthy has yet to be confirmed.</p>
+						<p className="book_summary_paragraph">There is a real difference between a creation we know about and a human being, who always keeps their share of 
+						mystery and is therefore able of betrayal. In a world elevating the useful in dogma, it is difficult to admit to anyone that art makes us going through 
+						the day, even more so to a person who could as well be the Society personified. But is it this crazy to say that art is not only useful, but also 
+						essential?</p>
+						<p className="book_summary_paragraph">Is Zekharia's urge to create the proof of his sickness, or is he one of the few who function properly? No matter the 
+						answer, two roads lie before him: twisting himself to fit in or finding the way to change mentalities.</p>
+					</div>
+				</div>
+
+				<h3>Reviews</h3>
+				<p>The Booknode and Goodreads pages for <em>Cosmic Dust</em> will open when the novel is available.</p>
+			</article>
+
+			<aside>
+				<h3>The different formats</h3>
+
+				{/* 
+					AZW (Kindle)
+					ePub (All e-readers but Kindle)
+					PDF (Computers, smartphones and tablets)
+					Do precise that if the wrong version is bought, the customer won't be refunded. For the same price, one format or the whole pack can be bought.
+				*/}
+
+				<ul id="ebook_formats">
+					<a href="../files/cosmic_dust/test.azw3" download="Test AZW"><li>AZW</li></a>
+   					<a href="../files/cosmic_dust/test.epub" download="Test ePub"><li>ePub</li></a>
+   					<a href="../files/cosmic_dust/test.pdf" download="Test PDF"><li>PDF</li></a>
+   					<a href="../files/cosmic_dust/test.zip" download="Test All"><li>All</li></a>
+	   			</ul>
+
+				<h3>The how-to of picking a format</h3>
+
+				<p><strong>{question}</strong></p>
+				
+				
+
+				<ol>
+					<li>
+						<p><strong>Do you have an e-reader?</strong></p>
+						<p>
+							<em>Yes.</em> &rarr; Go to question 2.<br />
+							<em>No.</em> &rarr; Go to question 3.<br />
+							<em>What is it?</em> &rarr; Go to question 3.
+						</p>
+					</li>
+					<li>
+						<p><strong>Kindle or other?</strong></p>
+						<p>
+							<em>Kindle.</em> &rarr; Download the AZW file, plug in the e-reader, and slide the file in there. You can now read anytime!<br />
+							<em>Other.</em> &rarr; Download the ePub file, plug in the e-reader, and slide the file in there. You can now read anytime!
+						</p>
+					</li>
+					<li>
+						<p><strong>Do you have a computer of yours?</strong></p>
+						<p>
+							<em>Yes.</em> &rarr; Go to question 4.<br />
+							<em>No, and I am on a computer that doesn't belong to me.</em> &rarr; Come back with your smartphone or tablet, install Adobe Acrobat, download 
+							the PDF file, and open it. You can now read anytime!<br />
+							<em>No, but I am on my smartphone or my tablet.</em> &rarr; Install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!
+						</p>
+					</li>
+					<li>
+						<p><strong>Do you prefer to read on it or on a smartphone/tablet?</strong></p>
+						<p>
+							<em>Computer.</em> &rarr; Go to question 5.<br />
+							<em>Smartphone or tablet.</em> &rarr; Go to question 6.
+						</p>
+					</li>
+					<li>
+						<p><strong>Are you currently on your computer?</strong></p>
+						<p>
+							<em>Yes.</em> &rarr; Download the ePub file, and open it. You can now read anytime!<br />
+							<em>No.</em> &rarr; Come back with your computer, download the ePub file, and open it. You can now read anytime!
+						</p>
+					</li>
+					<li>
+						<p><strong>Are you on your smartphone or tablet ?</strong></p>
+						<p>
+							<em>Yes.</em> &rarr; Install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!<br />
+							<em>No.</em> &rarr; Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!
+						</p>
+					</li>
+				</ol>
+			</aside>
 		</main>
 	);
 };

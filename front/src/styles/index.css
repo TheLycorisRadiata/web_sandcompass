@@ -24,7 +24,7 @@ ul
 	list-style-type: none;
 }
 
-#banner p, h1, h2
+#banner p, h1, h2, h3
 {
 	color: #9198E5;
 	text-align: center;
@@ -40,7 +40,7 @@ ul
 	font-size: 4rem;
 }
 
-h1, h2
+h1, h2, h3
 {
 	margin-bottom: 20px;
 }
@@ -50,8 +50,9 @@ h1
 	font-size: 2.5rem;
 }
 
-h2
+h2, h3
 {
+	margin-top: 20px;
 	font-size: 2rem;
 }
 
@@ -60,14 +61,19 @@ header ul li
 	font-size: 1.5rem;
 }
 
-#banner p, h1, h2, a, footer
+#banner p, h1, h2, a, footer, h3
 {
 	text-shadow: 2px 2px 4px #000;
 }
 
-#banner p, h1, h2, a
+#banner p, h1, h2, h3, a, strong
 {
 	font-weight: bold;
+}
+
+em
+{
+	font-style: italic;
 }
 
 a

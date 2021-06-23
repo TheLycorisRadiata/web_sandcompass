@@ -24,10 +24,14 @@ ul
 	list-style-type: none;
 }
 
-#banner p, h1
+#banner p, h1, h2
 {
 	color: #9198E5;
 	text-align: center;
+}
+
+#banner p, h1
+{
 	text-transform: uppercase;
 }
 
@@ -36,10 +40,19 @@ ul
 	font-size: 4rem;
 }
 
-h1
+h1, h2
 {
 	margin-bottom: 20px;
+}
+
+h1
+{
 	font-size: 2.5rem;
+}
+
+h2
+{
+	font-size: 2rem;
 }
 
 header ul li
@@ -47,12 +60,12 @@ header ul li
 	font-size: 1.5rem;
 }
 
-#banner p, h1, a, footer
+#banner p, h1, h2, a, footer
 {
 	text-shadow: 2px 2px 4px #000;
 }
 
-#banner p, h1, a
+#banner p, h1, h2, a
 {
 	font-weight: bold;
 }
@@ -61,6 +74,10 @@ a
 {
 	color: #E6B000;
 	text-decoration: none;
+}
+
+a, input[type="button"], select, input[type="submit"], input[type="reset"]
+{
 	cursor: pointer;
 }
 
@@ -69,7 +86,14 @@ a:hover
 	color: #FFCF33;
 }
 
-header img, header ul li, main, input
+.logo img
+{
+	margin: 10px;
+	max-width: 130px;
+	max-height: 130px;
+}
+
+header img, header ul li, main, input, textarea, select
 {
 	border-radius: 10px;
 }
@@ -79,9 +103,14 @@ header img, header ul li, main
 	box-shadow: 3px 3px 5px #FFF, -3px -3px 5px #FFF;
 }
 
-header ul li, input[type="button"]
+header ul li, input[type="button"], input[type="submit"], input[type="reset"]
 {
 	border-radius: 42px;
+}
+
+input, select, textarea
+{
+	border: 3px solid #9198E5;
 }
 
 header img
@@ -127,7 +156,7 @@ main
 	background-color: rgba(234, 122, 123, 0.7);
 }
 
-input
+input, textarea, select
 {
 	padding: 10px;
 }

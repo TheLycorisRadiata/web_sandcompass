@@ -2,11 +2,172 @@ import {useState} from 'react';
 import '../styles/Works.css';
 import Book_Cover from '../images/cosmic_dust_cover_eng.png';
 
+const EbookFormatPicker = () =>
+{
+	const questions = 
+	[
+		'Do you have an e-reader?', 
+		'Kindle or other?', 
+		'Do you have a computer of yours?', 
+		'Do you prefer to read on it or on a smartphone/tablet?', 
+		'Are you currently on your computer?', 
+		'Are you on your smartphone or tablet?'
+	];
+	const options = 
+	[
+		'Yes.', 
+		'No.', 
+		'What is it?', 
+		'Kindle.', 
+		'Other.', 
+		'No, and I am on a computer that doesn\'t belong to me.', 
+		'No, but I am on my smartphone or my tablet.', 
+		'Computer.', 
+		'Smartphone or tablet.'
+	];
+	const answers = 
+	[
+		'Download the AZW file, plug in the e-reader, and slide the file in there. You can now read anytime!', 
+		'Download the ePub file, plug in the e-reader, and slide the file in there. You can now read anytime!', 
+		'Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!', 
+		'Install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!', 
+		'Download the ePub file, and open it. You can now read anytime!', 
+		'Come back with your computer, download the ePub file, and open it. You can now read anytime!', 
+		'Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!'
+	];
+
+	const [question, set_question] = useState(questions[0]);
+	const [option1, set_option1] = useState(options[0]);
+	const [option2, set_option2] = useState(options[1]);
+	const [option3, set_option3] = useState(options[2]);
+	const [user_choice, set_user_choice] = useState('');
+	const [is_questionnaire_finished, set_is_questionnaire_finished] = useState(false);
+	const [answer, set_answer] = useState('');
+
+	const handle_click_redo = () => 
+	{
+		set_question(questions[0]);
+		set_option1(options[0]);
+		set_option2(options[1]);
+		set_option3(options[2]);
+		set_answer('');
+		set_is_questionnaire_finished(false);
+	};
+
+	const handle_click_next = () => 
+	{
+		if (user_choice !== '')
+		{
+			switch (question)
+			{
+				case questions[0]:
+					if (user_choice === option1)
+					{
+						set_question(questions[1]);
+						set_option1(options[3]);
+						set_option2(options[4]);
+						set_option3('');
+					}
+					else
+					{
+						set_question(questions[2]);
+						set_option1(options[0]);
+						set_option2(options[5]);
+						set_option3(options[6]);
+					}
+					set_user_choice('');
+					break;
+				case questions[1]:
+					set_is_questionnaire_finished(true);
+					user_choice === option1 ? set_answer(answers[0]) : set_answer(answers[1]);
+					set_user_choice('');
+					break;
+				case questions[2]:
+					if (user_choice === option1)
+					{
+						set_question(questions[3]);
+						set_option1(options[7]);
+						set_option2(options[8]);
+						set_option3('');
+					}
+					else
+					{
+						set_is_questionnaire_finished(true);
+						user_choice === option2 ? set_answer(answers[2]) : set_answer(answers[3]);
+					}
+					set_user_choice('');
+					break;
+				case questions[3]:
+					if (user_choice === option1)
+					{
+						set_question(questions[4]);
+						set_option1(options[0]);
+						set_option2(options[1]);
+						set_option3('');
+					}
+					else
+					{
+						set_question(questions[5]);
+						set_option1(options[0]);
+						set_option2(options[1]);
+						set_option3('');
+					}
+					set_user_choice('');
+					break;
+				case questions[4]:
+					set_is_questionnaire_finished(true);
+					user_choice === option1 ? set_answer(answers[4]) : set_answer(answers[5]);
+					set_user_choice('');
+					break;
+				case questions[5]:
+					set_is_questionnaire_finished(true);
+					user_choice === option1 ? set_answer(answers[3]) : set_answer(answers[6]);
+					set_user_choice('');
+					break;
+				default:
+					alert('An error occurred with the questionnaire.\nRestarting at question 1...');
+					set_question(questions[0]);
+					set_option1(options[0]);
+					set_option2(options[1]);
+					set_option3(options[2]);
+					set_user_choice('');
+			}
+		}
+	};
+
+	return (
+		<>
+			<h3>The how-to of picking a format</h3>
+
+			{!is_questionnaire_finished && 
+			<>
+				<p><strong>{question}</strong></p>
+				<p>
+					<input type="radio" name="option" id="option_1" value="option_1" onClick={() => set_user_choice(option1)} />
+					<label htmlFor="option_1">{option1}</label><br />
+
+					<input type="radio" name="option" id="option_2" value="option_2" onClick={() => set_user_choice(option2)} />
+					<label htmlFor="option_2">{option2}</label><br />
+
+					{option3 !== '' && 
+					<>
+						<input type="radio" name="option" id="option_3" value="option_3" onClick={() => set_user_choice(option3)} />
+						<label htmlFor="option_3">{option3}</label>
+					</>}
+				</p>
+				<input type="button" name="btn_next_ebook_format" id="btn_next_ebook_format" value="Next question" onClick={handle_click_next} />
+			</>}
+			{is_questionnaire_finished && 
+			<>
+				<p>{answer}</p>
+				<input type="button" name="btn_redo_ebook_format" id="btn_redo_ebook_format" value="Redo" onClick={handle_click_redo} />
+			</>}
+		</>
+	);
+}
+
 const Works = () => 
 {
-	const [question, set_question] = useState('Do you have an e-reader?');
-	const [options, set_options] = useState('Yes.\nNo.\nWhat is it?');
-
 	return (
 		<main id="works">
 			<h1>Works</h1>
@@ -51,7 +212,6 @@ const Works = () =>
 					AZW (Kindle)
 					ePub (All e-readers but Kindle)
 					PDF (Computers, smartphones and tablets)
-					Do precise that if the wrong version is bought, the customer won't be refunded. For the same price, one format or the whole pack can be bought.
 				*/}
 
 				<ul id="ebook_formats">
@@ -61,59 +221,7 @@ const Works = () =>
    					<a href="../files/cosmic_dust/test.zip" download="Test All"><li>All</li></a>
 	   			</ul>
 
-				<h3>The how-to of picking a format</h3>
-
-				<p><strong>{question}</strong></p>
-				
-				
-
-				<ol>
-					<li>
-						<p><strong>Do you have an e-reader?</strong></p>
-						<p>
-							<em>Yes.</em> &rarr; Go to question 2.<br />
-							<em>No.</em> &rarr; Go to question 3.<br />
-							<em>What is it?</em> &rarr; Go to question 3.
-						</p>
-					</li>
-					<li>
-						<p><strong>Kindle or other?</strong></p>
-						<p>
-							<em>Kindle.</em> &rarr; Download the AZW file, plug in the e-reader, and slide the file in there. You can now read anytime!<br />
-							<em>Other.</em> &rarr; Download the ePub file, plug in the e-reader, and slide the file in there. You can now read anytime!
-						</p>
-					</li>
-					<li>
-						<p><strong>Do you have a computer of yours?</strong></p>
-						<p>
-							<em>Yes.</em> &rarr; Go to question 4.<br />
-							<em>No, and I am on a computer that doesn't belong to me.</em> &rarr; Come back with your smartphone or tablet, install Adobe Acrobat, download 
-							the PDF file, and open it. You can now read anytime!<br />
-							<em>No, but I am on my smartphone or my tablet.</em> &rarr; Install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!
-						</p>
-					</li>
-					<li>
-						<p><strong>Do you prefer to read on it or on a smartphone/tablet?</strong></p>
-						<p>
-							<em>Computer.</em> &rarr; Go to question 5.<br />
-							<em>Smartphone or tablet.</em> &rarr; Go to question 6.
-						</p>
-					</li>
-					<li>
-						<p><strong>Are you currently on your computer?</strong></p>
-						<p>
-							<em>Yes.</em> &rarr; Download the ePub file, and open it. You can now read anytime!<br />
-							<em>No.</em> &rarr; Come back with your computer, download the ePub file, and open it. You can now read anytime!
-						</p>
-					</li>
-					<li>
-						<p><strong>Are you on your smartphone or tablet ?</strong></p>
-						<p>
-							<em>Yes.</em> &rarr; Install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!<br />
-							<em>No.</em> &rarr; Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!
-						</p>
-					</li>
-				</ol>
+				<EbookFormatPicker />
 			</aside>
 		</main>
 	);

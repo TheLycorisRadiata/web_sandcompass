@@ -9,7 +9,7 @@ const Blog = () =>
 
 			<section className="blog_section">
 				<h2>All articles by page</h2>
-				<p className="page_numbers"><Link to="/blog/page1.html">1</Link> <Link to="/blog/page2.html">2</Link></p>
+				<div className="page_numbers"><Link to="/blog/page1.html">1</Link> <Link to="/blog/page2.html">2</Link></div>
 			</section>
 
 			<section className="blog_section">

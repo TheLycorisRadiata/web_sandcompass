@@ -5,7 +5,7 @@ const BlogPage1 = () =>
 	return (
 		<main>
 			<h1>Blog</h1>
-			<div className="page_numbers"><p>Pages: 1 . <Link to="/blog/page2.html">2</Link></p></div>
+			<div className="page_numbers"><Link to="/blog/page1.html">1</Link> <Link to="/blog/page2.html">2</Link></div>
 
 			<article>
 				<h2><Link to="/blog/article1.html">[01/16/2017] How to make a lovable character and what heroes are made of</Link></h2>
@@ -50,7 +50,7 @@ const BlogPage1 = () =>
 				experiences in virtual reality to be qualified as film. <Link to="/blog/article3.html">[More]</Link></p>
                         </article>
 
-			<div className="page_numbers"><p>Pages: 1 . <Link to="/blog/page2.html">2</Link></p></div>
+			<div className="page_numbers"><Link to="/blog/page1.html">1</Link> <Link to="/blog/page2.html">2</Link></div>
 		</main>
 
 

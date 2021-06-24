@@ -46,10 +46,11 @@ const Home = () =>
 			<SocialMedia />
 
 			<section id="last_article">
-				<h2><a href="#">Last article</a></h2>
+				<h2><Link to="/blog/article1.html">Last article</Link></h2>
 				<p>It's my first article, congrats me! I've been thinking of a few topics since the creation of the website but I was never in the right mood to write. I've just 
 				seen on YouTube the video of K.M. Weiland entitled <a href="https://www.youtube.com/watch?v=1tmuv2qjlU4" rel="nofollow noreferrer" target="_blank">"I Hate Your Protagonist! 
-				Want to Know Why?"</a> and a comment striked me. So I decided to answer it and this article is a version a little bit more polished. <a href="#">[More]</a></p>
+				Want to Know Why?"</a> and a comment striked me. So I decided to answer it and this article is a version a little bit more polished. 
+				<Link to="/blog/article1.html">[More]</Link></p>
 			</section>
 		</main>
 	);

@@ -1,11 +1,11 @@
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
-import Banner from './images/banner.jpg';
 import Home from './scripts/Home.js';
 import Works from './scripts/Works.js';
 import Blog from './scripts/Blog.js';
 import Contact from './scripts/Contact.js';
 import Licenses from './scripts/Licenses.js';
 import ControlPanel from './scripts/ControlPanel.js';
+import Banner from './images/banner.jpg';
 
 function App()
 {

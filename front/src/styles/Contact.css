@@ -1,15 +1,3 @@
-#contact_socials
-{
-	margin-bottom: 15px;
-}
-
-#contact_socials ul
-{
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: center;
-}
-
 #contact_form label
 {
 	margin-right: 15px;

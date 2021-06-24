@@ -3,35 +3,9 @@
 	margin-bottom: 20px;
 }
 
-#book_info_summary_title, #book_catch_phrase
+#book_info_summary_title
 {
-	margin-bottom: 10px;
-}
-
-#book_catch_phrase
-{
-	text-align: center;
-}
-
-.book_summary_paragraph
-{
-	margin-top: 10px;
-}
-
-#book_cover
-{
-	margin-right: 20px;
-	padding: 10px;
-	max-width: 350px;
-	max-height: 500px;
-	box-shadow: 4px 4px 8px inset rgba(242, 223, 234, 0.8), -4px -4px 8px inset rgba(242, 223, 234, 0.8);
-	border-radius: 10px;
-}
-
-#works_book_presentation
-{
-	display: flex;
-	flex-flow: row nowrap;
+	margin-bottom: 20px;
 }
 
 #ebook_formats

@@ -1,0 +1,12 @@
+.blog_section
+{
+	display: flex;
+	flex-flow: column wrap;
+	align-items: center;
+
+	margin: 15px 0px;
+	padding: 0px 15px 25px;
+	box-shadow: inset 2px 2px 4px #4D1617, inset -2px -2px 4px #4D1617;
+	border-radius: 5px;
+}
+

@@ -239,3 +239,17 @@ footer ul
 	border-radius: 10px;
 }
 
+.page_numbers a
+{
+	margin: 10px;
+	padding: 15px;
+	background-color: #9198E5;
+	box-shadow: inset 2px 2px 4px #FFF, inset -2px -2px 4px #141426;
+	border-radius: 50%;
+}
+
+.page_numbers
+{
+	margin: 10px 0px;
+}
+

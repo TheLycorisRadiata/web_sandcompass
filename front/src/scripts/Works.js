@@ -137,12 +137,10 @@ const EbookFormatPicker = () =>
 
 	return (
 		<>
-			<h3>The how-to of picking a format</h3>
-
 			{!is_questionnaire_finished && 
 			<>
 				<p><strong>{question}</strong></p>
-				<p>
+				<p id="ebook_format_options">
 					<input type="radio" name="option" id="option_1" value="option_1" onClick={() => set_user_choice(option1)} />
 					<label htmlFor="option_1">{option1}</label><br />
 
@@ -221,7 +219,10 @@ const Works = () =>
    					<a href="../files/cosmic_dust/test.zip" download="Test All"><li>All</li></a>
 	   			</ul>
 
-				<EbookFormatPicker />
+				<h3>The how-to of picking a format</h3>
+				<div>
+					<EbookFormatPicker />
+				</div>
 			</aside>
 		</main>
 	);

@@ -49,8 +49,20 @@
 	box-shadow: 2px 2px 4px inset #FFF, -2px -2px 4px inset #141426;
 }
 
-#works aside ol
+#works aside div
 {
-	margin: 20px;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+}
+
+#ebook_format_options
+{
+	margin: 15px 0px;
+}
+
+#ebook_format_options input[type="radio"]
+{
+	margin-right: 8px;
 }
 

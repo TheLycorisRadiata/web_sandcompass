@@ -5,7 +5,7 @@ const BlogPage1 = () =>
 	return (
 		<main>
 			<h1>Blog</h1>
-			<div className="page_numbers"><Link to="/blog/page1.html">1</Link> <Link to="/blog/page2.html">2</Link></div>
+			<div className="page_numbers page_numbers_top"><Link to="/blog/page1.html">1</Link> <Link to="/blog/page2.html">2</Link></div>
 
 			<article>
 				<h2><Link to="/blog/article1.html">[01/16/2017] How to make a lovable character and what heroes are made of</Link></h2>
@@ -18,8 +18,8 @@ const BlogPage1 = () =>
 				it interesting to make a real "person" and not an always perfect kind of saint. She said also that a character deceives us when we learn to know them and they change all 
 				of a sudden, making us realize that everything we believed about them only was an illusion, or rather a lie on behalf of the author. The comment I answered to therefore 
 				asked to K.M., worried: "What if my protagonist's goal is to find out who he is? He will transform, but I warned everyone ^^' He starts out as nice guy, then he becomes a 
-				jerk, and does something very good to the world at the end. I read a few stories like this and I loved them, but I really wonder of your opinion." 
-				<Link to="/blog/article1.html">[More]</Link></p>
+				jerk, and does something very good to the world at the end. I read a few stories like this and I loved them, but I really wonder of your 
+				opinion." <Link to="/blog/article1.html">[More]</Link></p>
 			</article>
 
 			<article>
@@ -50,7 +50,7 @@ const BlogPage1 = () =>
 				experiences in virtual reality to be qualified as film. <Link to="/blog/article3.html">[More]</Link></p>
                         </article>
 
-			<div className="page_numbers"><Link to="/blog/page1.html">1</Link> <Link to="/blog/page2.html">2</Link></div>
+			<div className="page_numbers page_numbers_bottom"><Link to="/blog/page1.html">1</Link> <Link to="/blog/page2.html">2</Link></div>
 		</main>
 
 

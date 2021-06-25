@@ -5,9 +5,9 @@ const BlogArticle4 = () =>
 	return (
 		<main>
 			<h1>Blog</h1>
-			<div className="page_numbers"><Link to="/blog/page2.html">Other articles</Link></div>
+			<div className="page_numbers page_numbers_top"><Link to="/blog/page2.html">Other articles</Link></div>
 
-			<article>
+			<article id="blog_article">
 				<h2>[02/15/2018] Interactive movie and a rhythm issue</h2>
 				<p>(See the previous article <Link to="/blog/article3.html">"The VR film"</Link> for the remark on interaction = video game)</p>
 
@@ -26,7 +26,7 @@ const BlogArticle4 = () =>
 				Dawn</em> game did it sometimes and it fixes the issue.</p>
 			</article>
 
-			<div className="page_numbers"><Link to="/blog/page2.html">Other articles</Link></div>
+			<div className="page_numbers page_numbers_bottom"><Link to="/blog/page2.html">Other articles</Link></div>
 		</main>
 	);
 };

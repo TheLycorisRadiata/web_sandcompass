@@ -5,9 +5,9 @@ const BlogArticle2 = () =>
 	return (
 		<main>
 			<h1>Blog</h1>
-			<div className="page_numbers"><Link to="/blog/page1.html">Other articles</Link></div>
+			<div className="page_numbers page_numbers_top"><Link to="/blog/page1.html">Other articles</Link></div>
 
-			<article>
+			<article id="blog_article">
 				<h2>[02/11/2018] The character and the player</h2>
 				<p>In my video game project, there are several ethnicities. If some have the same face, others distinguish themselves by their physique. I thought that would be a problem for 
 				players, but I then remember of my own experience. In World of Warcraft, we chose a race depending on their physique, at the risk of missing out on an interesting lore. This 
@@ -32,7 +32,7 @@ const BlogArticle2 = () =>
 				refusing to take lives for pleasure, at least I can enjoy this entertainment without harming anyone. Video games have certainly saved more lives than you think.</p>
 			</article>
 
-			<div className="page_numbers"><Link to="/blog/page1.html">Other articles</Link></div>
+			<div className="page_numbers page_numbers_bottom"><Link to="/blog/page1.html">Other articles</Link></div>
 		</main>
 	);
 };

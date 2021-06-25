@@ -224,7 +224,7 @@ footer ul
 	text-align: center;
 }
 
-#book_summary p, #presentation_website p:last-child
+#book_summary p, #presentation_website p:last-child, #blog_article p
 {
 	margin-top: 20px;
 }
@@ -251,5 +251,12 @@ footer ul
 .page_numbers
 {
 	margin: 10px 0px;
+}
+
+.page_numbers_top, .page_numbers_bottom
+{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
 }
 

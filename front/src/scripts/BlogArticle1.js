@@ -5,9 +5,9 @@ const BlogArticle1 = () =>
 	return (
 		<main>
 			<h1>Blog</h1>
-			<div className="page_numbers"><Link to="/blog/page1.html">Other articles</Link></div>
+			<div className="page_numbers page_numbers_top"><Link to="/blog/page1.html">Other articles</Link></div>
 
-			<article>
+			<article id="blog_article">
 				<h2>[01/16/2017] How to make a lovable character and what heroes are made of</h2>
 				<p>It's my first article, congrats me! I've been thinking of a few topics since the creation of the website but I was never in the right mood to write. I've just seen on 
 				YouTube the video of K.M. Weiland entitled <a href="https://www.youtube.com/watch?v=1tmuv2qjlU4" rel="nofollow noreferrer" target="_blank">"I Hate Your Protagonist! Want to 
@@ -56,7 +56,7 @@ const BlogArticle1 = () =>
 				This way, if the story goes on, the character is at this time on the verge of becoming the person they really are: this hero.</p>
 			</article>
 
-			<div className="page_numbers"><Link to="/blog/page1.html">Other articles</Link></div>
+			<div className="page_numbers page_numbers_bottom"><Link to="/blog/page1.html">Other articles</Link></div>
 		</main>
 	);
 };

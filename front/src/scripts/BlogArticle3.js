@@ -5,9 +5,9 @@ const BlogArticle3 = () =>
 	return (
 		<main>
 			<h1>Blog</h1>
-			<div className="page_numbers"><Link to="/blog/page1.html">Other articles</Link></div>
+			<div className="page_numbers page_numbers_top"><Link to="/blog/page1.html">Other articles</Link></div>
 
-			<article>
+			<article id="blog_article">
 				<h2>[02/15/2018] The VR film</h2>
 				<p>If we use virtual reality (VR) for something else than video game, we might as well do our best to revolutionize the film. This was my thinking as I watched 
 				the <a href="https://www.youtube.com/watch?v=D2-JvarJiqI" rel="nofollow noreferrer" target="_blank">video</a> of the Fossoyeur last March (no eng subtitles yet). The 
@@ -52,7 +52,7 @@ const BlogArticle3 = () =>
 				behind a screen. To me a film is that, just observing.</p>
 			</article>
 
-			<div className="page_numbers"><Link to="/blog/page1.html">Other articles</Link></div>
+			<div className="page_numbers page_numbers_bottom"><Link to="/blog/page1.html">Other articles</Link></div>
 		</main>
 	);
 };

@@ -15,3 +15,22 @@ main input
 	margin-bottom: 10px;
 }
 
+#back_talks
+{
+	margin-top: 40px;
+
+	display: flex;
+	flex-flow: column wrap;
+	align-items: center;
+}
+
+#back_error
+{
+	color: #960018;
+}
+
+#back_ok
+{
+	color: #00693E;
+}
+

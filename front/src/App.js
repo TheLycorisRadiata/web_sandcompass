@@ -11,6 +11,7 @@ import BlogArticle4 from './scripts/BlogArticle4.js';
 import Contact from './scripts/Contact.js';
 import Licenses from './scripts/Licenses.js';
 import ControlPanel from './scripts/ControlPanel.js';
+import PageNotFound from './scripts/PageNotFound.js';
 import Banner from './images/banner.jpg';
 
 function App()
@@ -49,6 +50,7 @@ function App()
 				<Route exact path="/contact"><Contact /></Route>
 				<Route exact path="/licenses"><Licenses /></Route>
 				<Route exact path="/controlpanel"><ControlPanel /></Route>
+				<Route path="/"><PageNotFound /></Route>
 			</Switch>
 
 			<footer>

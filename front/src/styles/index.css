@@ -53,6 +53,10 @@ ul
 #banner p, h1, h2, h3
 {
 	color: #9198E5;
+}
+
+#banner p, h1, h2, h3, #error_message
+{
 	text-align: center;
 }
 

@@ -5,6 +5,7 @@ import {faHeart} from '@fortawesome/free-solid-svg-icons';
 import {faHeartBroken} from '@fortawesome/free-solid-svg-icons';
 import {faThumbsUp} from '@fortawesome/free-regular-svg-icons';
 import {faThumbsDown} from '@fortawesome/free-regular-svg-icons';
+import {DateInLetters, Time} from './Time.js';
 
 const icon_heart = <FontAwesomeIcon icon={faHeart} />
 const icon_heart_broken = <FontAwesomeIcon icon={faHeartBroken} />
@@ -28,10 +29,10 @@ const BlogArticle = (props) =>
 					<h2>{props.article.title}</h2>
 					<p id="article_info">
 						Category: {props.article.category}.<br />
-						Created: {props.article.date}.
+						Created: On the <DateInLetters raw_time={props.article.time} /> at <Time raw_time={props.article.time} /> (UTC+2).
 					</p>
 
-					<div>{props.article.content}</div>
+					<div dangerouslySetInnerHTML={{__html: props.article.content}} />
 				</article>
 
 				<div className="page_numbers page_numbers_bottom"><span className="a">Other articles</span></div>
@@ -52,10 +53,10 @@ const BlogArticle = (props) =>
 					<h2>{props.article.title}</h2>
 					<p id="article_info">
 						Category: {props.article.category}.<br />
-						Created: {props.article.date}.
+						Created: On the <DateInLetters raw_time={props.article.time} /> at <Time raw_time={props.article.time} /> (UTC+2).
 					</p>
 
-					<div>{props.article.content}</div>
+					<div dangerouslySetInnerHTML={{__html: props.article.content}} />
 				</article>
 
 				<div className="page_numbers page_numbers_bottom"><Link to={`/blog/page${props.article.page_number}.html`}>Other articles</Link></div>

@@ -25,8 +25,13 @@ const BlogArticle = (props) =>
 				<div className="page_numbers page_numbers_top"><span className="a">Other articles</span></div>
 
 				<article id="blog_article">
-					<h2>[{props.article.date}] {props.article.title}</h2>
-					{props.article.content}
+					<h2>{props.article.title}</h2>
+					<p id="article_info">
+						Category: {props.article.category}.<br />
+						Created: {props.article.date}.
+					</p>
+
+					<div>{props.article.content}</div>
 				</article>
 
 				<div className="page_numbers page_numbers_bottom"><span className="a">Other articles</span></div>
@@ -44,8 +49,13 @@ const BlogArticle = (props) =>
 				<div className="page_numbers page_numbers_top"><Link to={`/blog/page${props.article.page_number}.html`}>Other articles</Link></div>
 
 				<article id="blog_article">
-					<h2>[{props.article.date}] {props.article.title}</h2>
-					{props.article.content}
+					<h2>{props.article.title}</h2>
+					<p id="article_info">
+						Category: {props.article.category}.<br />
+						Created: {props.article.date}.
+					</p>
+
+					<div>{props.article.content}</div>
 				</article>
 
 				<div className="page_numbers page_numbers_bottom"><Link to={`/blog/page${props.article.page_number}.html`}>Other articles</Link></div>

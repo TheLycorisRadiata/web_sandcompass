@@ -49,7 +49,7 @@ router.post('/login/admin', (req, res) =>
 			.catch((err) => res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account is unable to log in.' }))
 			.then(() => 
 			{
-				console.log('> Admin logged in.'.blue);
+				console.log('> Admin logged in'.blue);
 				res.status(200).json({ status: 200, title: 'Access Granted', message: 'Welcome home... You.' });
 			});
 		}
@@ -77,12 +77,14 @@ router.get('/logout/admin', (req, res) =>
 		})
 		.then(() => 
 		{
-			console.log('> Admin logged out.'.blue);
+			console.log('> Admin logged out'.blue);
 			res.status(200).json({ status: 200, title: 'Access Closed', message: 'See you later.' });
 		});
 	});
 
 	/*
+		NOTE: At the moment, the server doesn't restart automatically after a crash. I tried "Forever", and it's too deprecated, won't even run.
+
 		I restarted the server because of a suspicion of hacking.
 		It's not normal that the admin could log in, and now can't log out or the account can't even be found.
 		It may be a mere technical issue, or it may be because a third party did something.

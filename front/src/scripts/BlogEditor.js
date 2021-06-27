@@ -16,7 +16,7 @@ const BlogEditor = (props) =>
 {
 	const [nbr_articles, set_nbr_articles] = useState(0);
 	const [nbr_categories, set_nbr_categories] = useState(0);
-	const [article, set_article] = useState({ likes: 0, page_number: 0, date: 'MM/DD/YY', title: 'No title', content: 'No content.'});
+	const [article, set_article] = useState({ likes: 0, page_number: 0, date: 'MM/DD/YY', category: 'No category', title: 'No title', content: 'No content.'});
 	const [is_preview_shown, set_is_preview_shown] = useState(false);
 
 	const [likes, set_likes] = useState(0);

@@ -1,7 +1,8 @@
 import {useState} from 'react';
+import {Link} from 'react-router-dom'
 import '../styles/ControlPanel.css';
 
-const ControlPanel = () => 
+const ControlPanel = (props) => 
 {
 	const [username, set_username] = useState('');
 	const [password, set_password] = useState('');
@@ -10,15 +11,15 @@ const ControlPanel = () =>
 	const [back_status_code, set_back_status_code] = useState('');
 
 	const handle_click = () => 
-	{ 
-		fetch('http://localhost:3001/',
+	{
+		fetch('http://localhost:3001/connection/login/admin',
 		{       
 			method: 'post',
 			headers:
-			{       
+			{
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
-			},      
+			},
 			body: JSON.stringify(
 			{
 				field_login_username: username,
@@ -30,8 +31,21 @@ const ControlPanel = () =>
 		{
 			set_back_title(json.title);
 			set_back_message(json.message);
-			set_back_status_code(json.status >= 400 ? 'back_error' : 'back_ok');
+
+			if (json.status >= 400)
+			{
+				set_back_status_code('back_error');
+				props.grant_access(false);
+			}
+			else
+			{
+				set_back_status_code('back_ok');
+				props.grant_access(true);
+			}
 		});
+
+		set_username('');
+		set_password('');
 	};
 
 	const handle_key_press = (e) => 
@@ -53,10 +67,16 @@ const ControlPanel = () =>
 			</form>
 
 			{back_title !== '' && back_message !== '' && 
-			<p id="back_talks">
-				<strong id={back_status_code}>{back_title}</strong><br />
-				{back_message}
-			</p>}
+			<>
+				<p id="back_talks">
+					<strong id={back_status_code}>{back_title}</strong><br />
+					{back_message}
+
+					{back_status_code === 'back_ok' && 
+					<p id="go_to_blogeditor" className="page_numbers"><Link to="/controlpanel/blogeditor">Blog Editor</Link></p>}
+				</p>
+
+			</>}
 		</main>
 	);
 };

@@ -1,21 +1,44 @@
+import {useState, useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import Home from './scripts/Home.js';
 import Works from './scripts/Works.js';
+import Contact from './scripts/Contact.js';
+import Licenses from './scripts/Licenses.js';
+import ControlPanel from './scripts/ControlPanel.js';
 import Blog from './scripts/Blog.js';
 import BlogPage1 from './scripts/BlogPage1.js';
 import BlogPage2 from './scripts/BlogPage2.js';
+import BlogArticle from './scripts/BlogArticle.js';
 import BlogArticle1 from './scripts/BlogArticle1.js';
 import BlogArticle2 from './scripts/BlogArticle2.js';
 import BlogArticle3 from './scripts/BlogArticle3.js';
 import BlogArticle4 from './scripts/BlogArticle4.js';
-import Contact from './scripts/Contact.js';
-import Licenses from './scripts/Licenses.js';
-import ControlPanel from './scripts/ControlPanel.js';
+import BlogEditor from './scripts/BlogEditor.js';
+import ForbiddenPage from './scripts/ForbiddenPage.js';
 import PageNotFound from './scripts/PageNotFound.js';
 import Banner from './images/banner.jpg';
 
 function App()
 {
+	const [is_admin_logged_in, set_is_admin_logged_in] = useState(false);
+
+	const set_access = (is_access_granted) => set_is_admin_logged_in(is_access_granted);
+
+	useEffect(() => 
+	{
+		fetch('http://localhost:3001/connection/connected/admin',
+		{       
+			method: 'get',
+			headers:
+			{
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(res => res.json())
+		.then(json => set_is_admin_logged_in(json));
+	}, []);
+
 	return (
 		<Router>
 			<header>
@@ -49,7 +72,9 @@ function App()
 					<Route exact path="/blog/article4.html"><BlogArticle4 /></Route>
 				<Route exact path="/contact"><Contact /></Route>
 				<Route exact path="/licenses"><Licenses /></Route>
-				<Route exact path="/controlpanel"><ControlPanel /></Route>
+				<Route exact path="/controlpanel"><ControlPanel grant_access={set_access} /></Route>
+				{!is_admin_logged_in && <Route exact path="/controlpanel/blogeditor"><ForbiddenPage /></Route>}
+				{is_admin_logged_in && <Route exact path="/controlpanel/blogeditor"><BlogEditor close_access={set_access} /></Route>}
 				<Route path="/"><PageNotFound /></Route>
 			</Switch>
 
@@ -57,7 +82,7 @@ function App()
 				<ul>
 					<Link to="/licenses/"><li>Licenses</li></Link>
 					<Link to="/controlpanel/"><li>Control Panel</li></Link>
-					<li>Lycoris Radiata &copy; 2021 All Rights Reserved</li>
+					<li id="copyright">Lycoris Radiata &copy; 2021 All Rights Reserved</li>
 				</ul>
 			</footer>
 		</Router>

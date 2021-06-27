@@ -91,12 +91,12 @@ header ul li
 	font-size: 1.5rem;
 }
 
-#banner p, h1, h2, a, footer, h3
+#banner p, h1, h2, a, span[class="a"], footer, h3
 {
 	text-shadow: 2px 2px 4px #000;
 }
 
-#banner p, h1, h2, h3, a, strong
+#banner p, h1, h2, h3, a, span[class="a"], strong, #txt_likes
 {
 	font-weight: bold;
 }
@@ -106,18 +106,28 @@ em
 	font-style: italic;
 }
 
-a
+a, span[class="a"]
 {
 	color: #E6B000;
 	text-decoration: none;
 }
 
-a, input[type="button"], select, input[type="submit"], input[type="reset"]
+a, button, input[type="button"], select, input[type="submit"], input[type="reset"]
 {
 	cursor: pointer;
 }
 
-a:hover
+span[class="a"]
+{
+	cursor: not-allowed;
+}
+
+#copyright, #txt_likes
+{
+	cursor: default;
+}
+
+a:hover, span[class="a"]:hover
 {
 	color: #FFCF33;
 }
@@ -129,22 +139,22 @@ a:hover
 	max-height: 130px;
 }
 
-header img, header ul li, main, input, textarea, select
+header img, header ul li, main, div#main, input, textarea, select
 {
 	border-radius: 10px;
 }
 
-header img, header ul li, main
+header img, header ul li, main, div#main
 {
 	box-shadow: 3px 3px 5px #FFF, -3px -3px 5px #FFF;
 }
 
-header ul li, input[type="button"], input[type="submit"], input[type="reset"]
+header ul li, button, input[type="button"], input[type="submit"], input[type="reset"]
 {
 	border-radius: 42px;
 }
 
-input, select, textarea
+button, input, select, textarea
 {
 	border: 3px solid #9198E5;
 }
@@ -185,14 +195,14 @@ header ul li
 	background-color: rgba(234, 122, 123, 0.7);
 }
 
-main
+main, div#main
 {
 	margin: 20px 0px;
 	padding: 15px;
 	background-color: rgba(234, 122, 123, 0.7);
 }
 
-input, textarea, select
+button, input, textarea, select
 {
 	padding: 10px;
 }
@@ -243,7 +253,7 @@ footer ul
 	border-radius: 10px;
 }
 
-.page_numbers a
+.page_numbers a, .page_numbers span[class="a"]
 {
 	margin: 10px;
 	padding: 15px;
@@ -262,5 +272,39 @@ footer ul
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
+}
+
+#likes_dislikes:before, #likes_dislikes:after
+{
+	display: block;
+	content: '';
+	background-color: #FFF;
+	height: 2px;
+	width: 100%;
+}
+
+#likes_dislikes:before
+{
+	margin-bottom: 10px;
+	box-shadow: 2px 2px 5px #1F0505;
+}
+
+#likes_dislikes:after
+{
+	margin-top: 10px;
+	box-shadow: -2px -2px 5px #1F0505;
+}
+
+#likes_dislikes
+{
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+#txt_likes, #btn_like
+{
+	margin-right: 5px;
 }
 

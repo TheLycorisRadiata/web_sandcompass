@@ -14,7 +14,6 @@ import BlogArticle2 from './scripts/BlogArticle2.js';
 import BlogArticle3 from './scripts/BlogArticle3.js';
 import BlogArticle4 from './scripts/BlogArticle4.js';
 import BlogEditor from './scripts/BlogEditor.js';
-import ForbiddenPage from './scripts/ForbiddenPage.js';
 import PageNotFound from './scripts/PageNotFound.js';
 import Banner from './images/banner.jpg';
 
@@ -36,7 +35,7 @@ function App()
 			}
 		})
 		.then(res => res.json())
-		.then(json => set_is_admin_logged_in(json));
+		.then(json => set_is_admin_logged_in(json.message));
 	}, []);
 
 	return (
@@ -72,9 +71,8 @@ function App()
 					<Route exact path="/blog/article4.html"><BlogArticle4 /></Route>
 				<Route exact path="/contact"><Contact /></Route>
 				<Route exact path="/licenses"><Licenses /></Route>
-				<Route exact path="/controlpanel"><ControlPanel grant_access={set_access} /></Route>
-				{!is_admin_logged_in && <Route exact path="/controlpanel/blogeditor"><ForbiddenPage /></Route>}
-				{is_admin_logged_in && <Route exact path="/controlpanel/blogeditor"><BlogEditor close_access={set_access} /></Route>}
+				<Route exact path="/controlpanel"><ControlPanel is_access_granted={is_admin_logged_in} grant_access={set_access} close_access={set_access} /></Route>
+				<Route exact path="/controlpanel/blogeditor"><BlogEditor is_access_granted={is_admin_logged_in} close_access={set_access} /></Route>
 				<Route path="/"><PageNotFound /></Route>
 			</Switch>
 

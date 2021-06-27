@@ -36,8 +36,8 @@ main input
 
 #go_to_blogeditor
 {
-	margin-top: 40px;
-	margin-bottom: 20px;
+	display: flex;
+	justify-content: space-around;
 }
 
 #btn_logout_admin

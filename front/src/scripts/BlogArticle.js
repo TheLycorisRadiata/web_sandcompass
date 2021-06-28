@@ -53,7 +53,7 @@ const BlogArticle = (props) =>
 					<h2>{props.article.title}</h2>
 					<p id="article_info">
 						Category: {props.article.category}.<br />
-						Created: On the <DateInLetters raw_time={props.article.time} /> at <Time raw_time={props.article.time} /> (UTC+2).
+						Created: On the <DateInLetters raw_time={new Date(props.article.time)} /> at <Time raw_time={new Date(props.article.time)} /> (UTC+2).
 					</p>
 
 					<div dangerouslySetInnerHTML={{__html: props.article.content}} />

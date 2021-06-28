@@ -19,12 +19,16 @@ const BlogEditor = (props) =>
 	const [new_category, set_new_category] = useState('');
 	const [is_preview_shown, set_is_preview_shown] = useState(false);
 
+	const default_category = 'No category';
+	const default_title = 'No title';
+	const default_content = 'No content.';
+
 	const [likes, set_likes] = useState(0);
 	const [page_number, set_page_number] = useState(0);
 	const [time, set_time] = useState(new Date());
-	const [category, set_category] = useState('No category');
-	const [title, set_title] = useState('No title');
-	const [content, set_content] = useState('No content.');
+	const [category, set_category] = useState(default_category);
+	const [title, set_title] = useState(default_title);
+	const [content, set_content] = useState(default_content);
 
 	const [article, set_article] = useState({ likes: likes, page_number: page_number, time: time, category: category, title: title, content: content });
 
@@ -33,14 +37,6 @@ const BlogEditor = (props) =>
 
 	const handle_create_category = e => 
 	{
-		/* The back will check whether this new category doesn't already exist, 
-		it will force everything to lowercase and force the first letter to uppercase,
-		it adds the new category to the categories collection in the database, 
-		and then, no matter what, it sends back the categories collection to the front.
-		It's important because, although I'm alone right now, when there'll be different users we need to be updated with THEIR new content. */
-
-		/* Don't forget the two other fetches below, they have been edited as well. Edit the back in consequence. */
-
 		if (new_category !== '')
 		{
 			fetch('http://localhost:3001/blog/categories',
@@ -54,7 +50,31 @@ const BlogEditor = (props) =>
 				body: JSON.stringify({ new_category: new_category })
 			})
 			.then(res => res.json())
-			.then(json => set_all_categories(json.message));
+			.then(json => json.status >= 400 ? console.warn('Error: The category can\'t be created.') : set_all_categories(json.message));
+		}
+	};
+
+	const handle_create_article = () => 
+	{
+		if (article.category !== default_category && article.title !== default_title && article.content !== default_content 
+			&& article.category !== '' && article.title !== '' && article.content !== '')
+		{
+			fetch('http://localhost:3001/blog/articles',
+			{
+				method: 'post',
+				headers:
+				{
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ new_article: article })
+			})
+			.then(res => res.json())
+			.then(json => json.status >= 400 ? console.warn('Error: The article can\'t be posted.') : set_all_articles(json.message));
+
+			set_category(default_category);
+			set_title(default_title);
+			set_content(default_content);
 		}
 	};
 
@@ -93,7 +113,7 @@ const BlogEditor = (props) =>
 			}
 		})
 		.then(res => res.json())
-		.then(json => set_all_articles(json.message));
+		.then(json => json.status >= 400 ? console.warn('Error: The article can\'t be posted.') : set_all_articles(json.message));
 
 		fetch('http://localhost:3001/blog/categories',
 		{
@@ -105,14 +125,15 @@ const BlogEditor = (props) =>
 			}
 		})
 		.then(res => res.json())
-		.then(json => set_all_categories(json.message));
+		.then(json => json.status >= 400 ? console.warn('Error: The category can\'t be created.') : set_all_categories(json.message));
 	}, []);
 
 	useEffect(() => 
 	{
 		set_time(new Date());
 		set_article({ likes: likes, page_number: page_number, time: time, category: category, title: title, content: content });
-	}, [likes, page_number, time, category, title, content]);
+	}, [all_articles, all_categories, category, title, content]);
+	/* Don't add "time" here, it will cause an endless amount of errors, and we really don't need to check for its change, nor do we need to for "likes" and "page_number". */
 
 	return (
 		<main>
@@ -128,19 +149,21 @@ const BlogEditor = (props) =>
 				<h1>Blog Editor</h1>
 
 				<div id="control_panel_blog_buttons">
-					<input type="button" name="btn_post_article" id="btn_post_article" value="Post a new article" />
+					<input type="button" name="btn_post_article" id="btn_post_article" value="Post a new article" onClick={handle_create_article} />
 					{all_articles.length !== 0 && 
 					<div id="control_panel_extended_buttons">
 						<select name="select_article" id="select_article" autoComplete="off" onChange={handle_select_title}>
 							<option disabled selected>Select an article</option>
-							<optgroup label="Category 1">
-								<option value="category_1_article_1">Title article 1</option>
-								<option value="category_1_article_3">Title article 3</option>
-							</optgroup>
-							<optgroup label="Category 2">
-								<option value="category_2_article_2">Titre article 2</option>
-								<option value="category_2_article_4">Titre article 4</option>
-							</optgroup>
+								{all_categories.map(category => 
+										<optgroup label={category.name}>
+											{all_articles.filter(article => article.category === category.name)
+											.length === 0 ? <option disabled>No article</option> : 
+
+											all_articles.filter(article => article.category === category.name)
+											.map(article => <option>{article.title}</option>)}
+										</optgroup>
+									)
+								}
 						</select>
 
 						<div className="buttons">
@@ -157,12 +180,8 @@ const BlogEditor = (props) =>
 					<label htmlFor="select_category">Category:</label><br />
 					<div id="div_category">
 						<select name="select_category" id="select_category" autoComplete="off" onChange={handle_select_category}>
-							{all_categories.length === 0 && <option disabled selected value="category_none">No category</option>}
-							{all_categories.length > 0 && 
-							<>
-								<option value="category_1">Category 1</option>
-								<option value="category_2">Category 2</option>
-							</>}
+							{all_categories.length === 0 && <option disabled selected>No category</option>}
+							{all_categories.length > 0 && all_categories.map(category => <option>{category.name}</option>)}
 						</select>
 						<input type="text" name="field_article_new_category" id="field_article_new_category" placeholder="New category" 
 							onChange={e => set_new_category(e.target.value)} />

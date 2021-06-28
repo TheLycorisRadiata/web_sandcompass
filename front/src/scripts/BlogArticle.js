@@ -22,11 +22,11 @@ const BlogArticle = (props) =>
 		<>
 			{props.is_preview && 
 			<div id="main">
-				<h1>Blog</h1>
+				<h2 id="h1">Blog</h2>
 				<div className="page_numbers page_numbers_top"><span className="a">Other articles</span></div>
 
 				<article id="blog_article">
-					<h2>{props.article.title}</h2>
+					<h3>{props.article.title}</h3>
 					<p id="article_info">
 						Category: {props.article.category}.<br />
 						Created: On the <DateInLetters raw_time={props.article.time} /> at <Time raw_time={props.article.time} /> (UTC+2).

@@ -51,17 +51,17 @@ ul
 	list-style-type: none;
 }
 
-#banner p, h1, h2, h3
+#banner p, h1, h2[id="h1"], h2, h3
 {
 	color: #9198E5;
 }
 
-#banner p, h1, h2, h3, #error_message
+#banner p, h1, h2[id="h1"], h2, h3, #error_message
 {
 	text-align: center;
 }
 
-#banner p, h1
+#banner p, h1, h2[id="h1"]
 {
 	text-transform: uppercase;
 }
@@ -71,12 +71,12 @@ ul
 	font-size: 4rem;
 }
 
-h1, h2, h3
+h1, h2[id="h1"], h2, h3
 {
 	margin-bottom: 20px;
 }
 
-h1
+h1, h2[id="h1"]
 {
 	font-size: 2.5rem;
 }
@@ -92,12 +92,12 @@ header ul li
 	font-size: 1.5rem;
 }
 
-#banner p, h1, h2, a, span[class="a"], footer, h3
+#banner p, h1, h2[id="h1"], h2, a, span[class="a"], footer, h3
 {
 	text-shadow: 2px 2px 4px #000;
 }
 
-#banner p, h1, h2, h3, a, span[class="a"], strong, #txt_likes
+#banner p, h1, h2[id="h1"], h2, h3, a, span[class="a"], strong, #txt_likes
 {
 	font-weight: bold;
 }

@@ -43,6 +43,43 @@ router.post('/articles', (req, res) =>
 	});
 });
 
+router.put('/articles', (req, res) => 
+{
+	Article.updateOne({ _id: req.body.id },
+	{
+		category: req.body.article.category,
+		title: req.body.article.title,
+		content: req.body.article.content
+	})
+	.catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be modified.' }))
+	.then(() => 
+	{
+		Article.find()
+		.catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be modified.' }))
+		.then(articles => 
+		{
+			console.log(`> Article of ID "${req.body.id}" modified`);
+			res.status(200).json({ status: 200, title: 'Article modified', message: articles });
+		});
+	});
+});
+
+router.delete('/articles', (req, res) => 
+{
+	Article.deleteOne({ _id: req.body.id })
+	.catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be deleted.' }))
+	.then(() => 
+	{
+		Article.find()
+		.catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be deleted.' }))
+		.then(articles => 
+		{
+			console.log(`> Article of ID "${req.body.id}" deleted`);
+			res.status(200).json({ status: 200, title: 'Article deleted', message: articles });
+		});
+	});
+});
+
 router.get('/categories', (req, res) => 
 {
 	Category.find()
@@ -74,6 +111,32 @@ router.post('/categories', (req, res) =>
 		Category.find()
 		.catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be created.' }))
 		.then(categories => res.status(201).json({ status: 201, title: 'Success', message: categories }));
+	});
+});
+
+router.delete('/categories', (req, res) => 
+{
+	Article.findOne({ category: req.body.category})
+	.catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be deleted.' }))
+	.then(article => 
+	{
+		if (article != null)
+			res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be deleted.' });
+		else
+		{
+			Category.deleteOne({ name: req.body.category })
+			.catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be deleted.' }))
+			.then(() => 
+			{
+				Category.find()
+				.catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be deleted.' }))
+				.then(categories => 
+				{
+					console.log(`> Category "${req.body.category}" deleted`);
+					res.status(200).json({ status: 200, title: 'Category deleted', message: categories });
+				});
+			});
+		}	
 	});
 });
 

@@ -1,3 +1,5 @@
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faDownload} from '@fortawesome/free-solid-svg-icons';
 import EbookFormatPicker from './EbookFormatPicker.js';
 import Book_Cover from '../images/cosmic_dust_cover_eng.png';
 import File_AZW from '../files/cosmic_dust/test.azw3';
@@ -5,6 +7,8 @@ import File_ePub from '../files/cosmic_dust/test.epub';
 import File_PDF from '../files/cosmic_dust/test.pdf';
 import File_Zip from '../files/cosmic_dust/test.zip';
 import '../styles/Works.css';
+
+const icon_download = <FontAwesomeIcon icon={faDownload} />
 
 const Works = () => 
 {
@@ -56,10 +60,10 @@ const Works = () =>
 				*/}
 
 				<ul id="ebook_formats">
-					<a href={File_AZW} download="Test AZW"><li>AZW</li></a>
-   					<a href={File_ePub} download="Test ePub"><li>ePub</li></a>
-   					<a href={File_PDF} download="Test PDF"><li>PDF</li></a>
-   					<a href={File_Zip} download="Test All"><li>All</li></a>
+					<a href={File_AZW} download="Test AZW"><li>{icon_download} AZW</li></a>
+   					<a href={File_ePub} download="Test ePub"><li>{icon_download} ePub</li></a>
+   					<a href={File_PDF} download="Test PDF"><li>{icon_download} PDF</li></a>
+   					<a href={File_Zip} download="Test All"><li>{icon_download} All</li></a>
 	   			</ul>
 
 				<h3>The how-to of picking a format</h3>

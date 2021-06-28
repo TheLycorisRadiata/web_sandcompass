@@ -106,7 +106,7 @@ main input
 	margin-bottom: 10px;
 }
 
-#div_category
+.div_category
 {
 	display: flex;
 	flex-flow: row wrap;
@@ -116,6 +116,10 @@ main input
 #field_article_new_category, #btn_add_category
 {
 	margin-top: 10px;
+}
+
+#btn_delete_category, #field_article_new_category, #btn_add_category
+{
 	margin-left: 10px;
 }
 

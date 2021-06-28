@@ -12,7 +12,7 @@ const BlogPage = (props) =>
 				<article key={article._id}>
 					<h2><Link to={'/blog/article' + article._id + '.html'}>{article.title}</Link></h2>
 					<p>Category: {article.category}.<br />
-					Created: On the <DateInLetters raw_time={new Date(article.time)} /> at <Time raw_time={new Date(article.time)} /> (UTC+2).</p>
+					Created: On the <DateInLetters raw_time={new Date(article.time)} /> at <Time raw_time={new Date(article.time)} />.</p>
 					<p>Content of first paragraph or up to nth character... <Link to={'/blog/article' + article._id + '.html'}>[More]</Link></p>
 				</article>
 			)}

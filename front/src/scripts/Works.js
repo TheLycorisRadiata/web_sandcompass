@@ -47,7 +47,7 @@ const Works = () =>
 				</div>
 
 				<h3>Reviews</h3>
-				<p>The Booknode and Goodreads pages for <em>Cosmic Dust</em> will open when the novel is available.</p>
+				<p>The Booknode and Goodreads pages for <em>Cosmic Dust</em> will be available at publication.</p>
 			</article>
 
 			<aside>

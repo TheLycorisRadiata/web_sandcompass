@@ -12,7 +12,13 @@ const BlogPage = (props) =>
 				<article key={article._id}>
 					<h2><Link to={'/blog/article' + article._id + '.html'}>{article.title}</Link></h2>
 					<p>Category: {article.category}.<br />
-					Created: On the <DateInLetters raw_time={new Date(article.time)} /> at <Time raw_time={new Date(article.time)} />.</p>
+					Created: On the <DateInLetters raw_time={new Date(article.time_creation)} /> at <Time raw_time={new Date(article.time_creation)} />.
+					{article.is_modified && 
+					<>
+						<br />
+						<span>Modified: On the <DateInLetters raw_time={new Date(article.time_modification)} /> at <Time raw_time={new Date(article.time_modification)} />.</span>
+					</>}
+					</p>
 					<p>Content of first paragraph or up to nth character... <Link to={'/blog/article' + article._id + '.html'}>[More]</Link></p>
 				</article>
 			)}

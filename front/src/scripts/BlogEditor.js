@@ -21,6 +21,7 @@ const BlogEditor = (props) =>
 	const [id_selected_article, set_id_selected_article] = useState('');
 	const [new_category, set_new_category] = useState('');
 	const [is_preview_shown, set_is_preview_shown] = useState(false);
+	const [current_time, set_current_time] = useState(new Date());
 
 	const default_category = 'No category';
 	const default_title = 'No title';
@@ -28,18 +29,25 @@ const BlogEditor = (props) =>
 
 	const [likes, set_likes] = useState(0);
 	const [page_number, set_page_number] = useState(0);
-	const [time, set_time] = useState(new Date());
+	const [time_creation, set_time_creation] = useState(new Date());
+	const [time_modification, set_time_modification] = useState(new Date());
+	const [is_modified, set_is_modified] = useState(false);
 	const [category, set_category] = useState(default_category);
 	const [title, set_title] = useState(default_title);
 	const [content, set_content] = useState(default_content);
 
-	const [article, set_article] = useState({ likes: likes, page_number: page_number, time: time, category: category, title: title, content: content });
+	const [article, set_article] = useState({
+		likes: likes, page_number: page_number, time_creation: time_creation, time_modification: time_modification, is_modified: is_modified, category: category, title: title, content: content
+	});
 
 	const handle_select_title = e => 
 	{
 		const article = all_articles.find(article => article.title === e.target.value);
 
 		set_id_selected_article(article._id);
+		set_time_creation(article.time_creation);
+		set_time_modification(article.time_modification);
+		set_is_modified(article.is_modified === undefined || false ? false : true);
 		set_title(article.title);
 		set_category(article.category);
 		set_content(article.content);
@@ -110,6 +118,9 @@ const BlogEditor = (props) =>
 		if (article.category !== default_category && article.title !== default_title && article.content !== default_content 
 			&& article.category !== '' && article.title !== '' && article.content !== '')
 		{
+			set_time_creation(new Date());
+			set_time_modification(new Date());
+
 			fetch('http://localhost:3001/blog/articles',
 			{
 				method: 'post',
@@ -132,6 +143,7 @@ const BlogEditor = (props) =>
 				}
 			});
 
+			set_is_modified(false);
 			set_category(default_category);
 			set_title(default_title);
 			set_content(default_content);
@@ -142,6 +154,8 @@ const BlogEditor = (props) =>
 	{
 		if (id_selected_article !== '')
 		{
+			set_time_modification(new Date());
+
 			fetch('http://localhost:3001/blog/articles',
 			{
 				method: 'put',
@@ -165,6 +179,7 @@ const BlogEditor = (props) =>
 			});
 
 			set_id_selected_article('');
+			set_is_modified(false);
 			set_category(default_category);
 			set_title(default_title);
 			set_content(default_content);
@@ -198,6 +213,7 @@ const BlogEditor = (props) =>
 			});
 
 			set_id_selected_article('');
+			set_is_modified(false);
 			set_category(default_category);
 			set_title(default_title);
 			set_content(default_content);
@@ -256,9 +272,10 @@ const BlogEditor = (props) =>
 
 	useEffect(() => 
 	{
-		set_time(new Date());
-		set_article({ likes: likes, page_number: page_number, time: time, category: category, title: title, content: content });
-	}, [all_articles, all_categories, category, title, content]);
+		set_current_time(new Date());
+		set_article({ likes: likes, page_number: page_number, time_creation: time_creation, time_modification: time_modification, is_modified: is_modified, 
+			category: category, title: title, content: content });
+	}, [all_articles, all_categories, time_creation, time_modification, category, title, content]);
 	/* Don't add "time" here, it will cause an endless amount of errors, and we really don't need to check for its change, nor do we need to for "likes" and "page_number". */
 
 	return (
@@ -278,15 +295,15 @@ const BlogEditor = (props) =>
 					<input type="button" name="btn_post_article" id="btn_post_article" value="Post a new article" onClick={handle_create_article} />
 					{all_articles.length !== 0 && 
 					<div id="control_panel_extended_buttons">
-						<select name="select_article" id="select_article" autoComplete="off" onChange={handle_select_title}>
-							<option disabled selected>Select an article</option>
+						<select name="select_article" id="select_article" defaultValue="default" autoComplete="off" onChange={handle_select_title}>
+							<option disabled value="default">Select an article</option>
 								{all_categories.map(category => 
-										<optgroup label={category.name}>
+										<optgroup label={category.name} key={category._id}>
 											{all_articles.filter(article => article.category === category.name)
 											.length === 0 ? <option disabled>No article</option> : 
 
 											all_articles.filter(article => article.category === category.name)
-											.map(article => <option>{article.title}</option>)}
+											.map(article => <option key={article._id}>{article.title}</option>)}
 										</optgroup>
 									)
 								}
@@ -305,12 +322,12 @@ const BlogEditor = (props) =>
 
 					<label htmlFor="select_category">Category:</label><br />
 					<div className="div_category">
-						<select name="select_category" id="select_category" autoComplete="off" onChange={handle_select_category}>
-							{all_categories.length === 0 && <option disabled selected>No category</option>}
+						<select name="select_category" id="select_category" defaultValue="default" autoComplete="off" onChange={handle_select_category}>
+							{all_categories.length === 0 && <option disabled value="default">No category</option>}
 							{all_categories.length > 0 && 
 							<>
-								<option disabled selected>Select a category</option>
-								{all_categories.map(category => <option>{category.name}</option>)}
+								<option disabled value="default">Select a category</option>
+								{all_categories.map(category => <option key={category._id}>{category.name}</option>)}
 							</>}
 						</select>
 						<button name="btn_delete_category" id="btn_delete_category" onClick={handle_delete_category}>{icon_folder_minus}</button>
@@ -329,7 +346,7 @@ const BlogEditor = (props) =>
 					</div>
 
 					{is_preview_shown && 
-						<BlogArticle is_preview={true} article={article} />
+						<BlogArticle is_preview={true} id_selected_article={id_selected_article} current_time={current_time} article={article} />
 					}
 				</div>
 			</>}

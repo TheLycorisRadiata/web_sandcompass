@@ -4,7 +4,9 @@ const model_article = new mongoose.Schema(
 {
 	likes: Number,
 	page_number: Number,
-	time: Date,
+	time_creation: Date,
+	time_modification: Date,
+	is_modified: Boolean,
 	category: String,
 	title: String,
 	content: String

@@ -22,8 +22,8 @@ const Contact = () =>
 					</p>
 					<p>
 						<label htmlFor="message_subject">Subject:</label>
-						<select name="message_subject" id="message_subject" autoComplete="off" required>
-							<option disabled selected>Select a subject</option>
+						<select name="message_subject" id="message_subject" defaultValue="default" autoComplete="off" required>
+							<option disabled value="default">Select a subject</option>
 							<optgroup label="Projects">
 								<option value="subject_work_cosmic_dust">Book: Cosmic Dust</option>
 								<option value="subject_work_persistence">Game: Persistence</option>

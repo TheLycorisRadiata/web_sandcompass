@@ -47,6 +47,8 @@ router.put('/articles', (req, res) =>
 {
 	Article.updateOne({ _id: req.body.id },
 	{
+		time_modification: req.body.article.time_modification,
+		is_modified: true,
 		category: req.body.article.category,
 		title: req.body.article.title,
 		content: req.body.article.content
@@ -138,11 +140,6 @@ router.delete('/categories', (req, res) =>
 			});
 		}	
 	});
-});
-
-router.get('/*', (req, res) => 
-{
-	res.status(404).json({ status: 404, title: 'Page Not Found', message: 'I\'m sorry, this page doesn\'t exist.' });
 });
 
 module.exports = router;

@@ -45,7 +45,7 @@ exports.modify_article = (req, res) =>
 {
 	Article.updateOne({ _id: req.body.id },
 	{
-		time_modification: req.body.article.time_modification,
+		time_modification: new Date(), // the date is updated again here because doing it on the front doesn't work for some reason
 		is_modified: true,
 		category: req.body.article.category,
 		title: req.body.article.title,

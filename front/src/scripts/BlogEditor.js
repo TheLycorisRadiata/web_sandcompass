@@ -21,39 +21,56 @@ const BlogEditor = (props) =>
 	const [id_selected_article, set_id_selected_article] = useState('');
 	const [new_category, set_new_category] = useState('');
 	const [is_preview_shown, set_is_preview_shown] = useState(false);
-	const [current_time, set_current_time] = useState(new Date());
 
 	const default_category = 'No category';
 	const default_title = 'No title';
 	const default_content = '<p>No content.</p>';
 
-	const [likes, set_likes] = useState(0);
-	const [page_number, set_page_number] = useState(0);
-	const [time_creation, set_time_creation] = useState(new Date());
-	const [time_modification, set_time_modification] = useState(new Date());
-	const [is_modified, set_is_modified] = useState(false);
-	const [category, set_category] = useState(default_category);
-	const [title, set_title] = useState(default_title);
-	const [content, set_content] = useState(default_content);
+	const default_article = 
+	{
+		likes: 0,
+		page_number: 0,
+		time_creation: new Date(),
+		time_modification: new Date(),
+		is_modified: false,
+		category: default_category,
+		title: default_title,
+		content: default_content
+	};
 
-	const [article, set_article] = useState({
-		likes: likes, page_number: page_number, time_creation: time_creation, time_modification: time_modification, is_modified: is_modified, category: category, title: title, content: content
-	});
+	const [article, set_article] = useState(default_article);
 
 	const handle_select_title = e => 
 	{
 		const selected_article = all_articles.find(existing_article => existing_article.title === e.target.value);
 
 		set_id_selected_article(selected_article._id);
-		set_time_creation(selected_article.time_creation);
-		set_time_modification(selected_article.time_modification);
-		set_is_modified(selected_article.is_modified === undefined || false ? false : true);
-		set_title(selected_article.title);
-		set_category(selected_article.category);
-		set_content(selected_article.content);
-	}
 
-	const handle_select_category = e => set_category(e.target.value);
+		set_article({
+			likes: 0,
+			page_number: 0,
+			time_creation: selected_article.time_creation,
+			time_modification: selected_article.time_modification,
+			is_modified: selected_article.is_modified === undefined || selected_article.is_modified === false ? false : true,
+			category: selected_article.category,
+			title: selected_article.title,
+			content: selected_article.content
+		});
+	};
+
+	const handle_select_category = e => 
+	{
+		set_article({
+			likes: article.likes,
+			page_number: article.page_number,
+			time_creation: article.time_creation,
+			time_modification: article.time_modification,
+			is_modified: article.is_modified,
+			category: e.target.value,
+			title: article.title,
+			content: article.content
+		});
+	};
 
 	const handle_create_category = () => 
 	{
@@ -85,7 +102,7 @@ const BlogEditor = (props) =>
 
 	const handle_delete_category = () => 
 	{
-		if (category !== default_category)
+		if (article.category !== default_category)
 		{
 			fetch('http://localhost:3001/blog/categories',
 			{
@@ -95,7 +112,7 @@ const BlogEditor = (props) =>
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ category: category })
+				body: JSON.stringify({ category: article.category })
 			})
 			.then(res => res.json())
 			.then(json => 
@@ -109,7 +126,16 @@ const BlogEditor = (props) =>
 				}
 			});
 
-			set_category(default_category);
+			set_article({
+				likes: article.likes,
+				page_number: article.page_number,
+				time_creation: article.time_creation,
+				time_modification: article.time_modification,
+				is_modified: article.is_modified,
+				category: default_category,
+				title: article.title,
+				content: article.content
+			});
 		}
 	};
 
@@ -118,8 +144,16 @@ const BlogEditor = (props) =>
 		if (article.category !== default_category && article.title !== default_title && article.content !== default_content 
 			&& article.category !== '' && article.title !== '' && article.content !== '')
 		{
-			set_time_creation(new Date());
-			set_time_modification(new Date());
+			set_article({
+				likes: 0,
+				page_number: 0,
+				time_creation: new Date(),
+				time_modification: new Date(),
+				is_modified: false,
+				category: article.category,
+				title: article.title,
+				content: article.content
+			});
 
 			fetch('http://localhost:3001/blog/articles',
 			{
@@ -143,10 +177,7 @@ const BlogEditor = (props) =>
 				}
 			});
 
-			set_is_modified(false);
-			set_category(default_category);
-			set_title(default_title);
-			set_content(default_content);
+			set_article(default_article);
 		}
 	};
 
@@ -154,7 +185,16 @@ const BlogEditor = (props) =>
 	{
 		if (id_selected_article !== '')
 		{
-			set_time_modification(new Date());
+			set_article({
+				likes: article.likes,
+				page_number: article.page_number,
+				time_creation: article.time_creation,
+				time_modification: new Date(),
+				is_modified: true,
+				category: article.category,
+				title: article.title,
+				content: article.content
+			});
 
 			fetch('http://localhost:3001/blog/articles',
 			{
@@ -179,10 +219,7 @@ const BlogEditor = (props) =>
 			});
 
 			set_id_selected_article('');
-			set_is_modified(false);
-			set_category(default_category);
-			set_title(default_title);
-			set_content(default_content);
+			set_article(default_article);
 		}
 	};
 
@@ -213,11 +250,36 @@ const BlogEditor = (props) =>
 			});
 
 			set_id_selected_article('');
-			set_is_modified(false);
-			set_category(default_category);
-			set_title(default_title);
-			set_content(default_content);
+			set_article(default_article);
 		}
+	};
+
+	const update_title = e => 
+	{
+		set_article({
+			likes: article.likes,
+			page_number: article.page_number,
+			time_creation: article.time_creation,
+			time_modification: article.time_modification,
+			is_modified: article.is_modified,
+			category: article.category,
+			title: e.target.value,
+			content: article.content
+		});
+	};
+
+	const update_content = e => 
+	{
+		set_article({
+			likes: article.likes,
+			page_number: article.page_number,
+			time_creation: article.time_creation,
+			time_modification: article.time_modification,
+			is_modified: article.is_modified,
+			category: article.category,
+			title: article.title,
+			content: e.target.value
+		});
 	};
 
 	const handle_logout = () => 
@@ -270,14 +332,6 @@ const BlogEditor = (props) =>
 		.then(json => json.status >= 400 ? console.warn('Error: The category can\'t be created.') : set_all_categories(json.message));
 	}, []);
 
-	useEffect(() => 
-	{
-		set_current_time(new Date());
-		set_article({ likes: likes, page_number: page_number, time_creation: time_creation, time_modification: time_modification, is_modified: is_modified, 
-			category: category, title: title, content: content });
-	}, [all_articles, all_categories, time_creation, time_modification, category, title, content]);
-	/* Don't add "time" here, it will cause an endless amount of errors, and we really don't need to check for its change, nor do we need to for "likes" and "page_number". */
-
 	return (
 		<main>
 			{!props.is_access_granted && 
@@ -318,7 +372,7 @@ const BlogEditor = (props) =>
 
 				<div id="control_panel_blog_fields">
 					<label htmlFor="field_article_title">Title:</label><br />
-					<input type="text" name="field_article_title" id="field_article_title" value={title} onChange={e => set_title(e.target.value)} /><br />
+					<input type="text" name="field_article_title" id="field_article_title" value={article.title} onChange={update_title} /><br />
 
 					<label htmlFor="select_category">Category:</label><br />
 					<div className="div_category">
@@ -340,13 +394,13 @@ const BlogEditor = (props) =>
 					</div>
 
 					<label htmlFor="field_article_content">Content:</label><br />
-					<textarea name="field_article_content" id="field_article_content" rows="10" value={content} onChange={e => set_content(e.target.value)}></textarea><br />
+					<textarea name="field_article_content" id="field_article_content" rows="10" value={article.content} onChange={update_content}></textarea><br />
 					<div id="div_btn_preview_article">
 						<button name="btn_preview_article" id="btn_preview_article" onClick={handle_preview}>{is_preview_shown ? icon_eye_slash : icon_eye} Preview</button>
 					</div>
 
 					{is_preview_shown && 
-						<BlogArticle is_preview={true} id_selected_article={id_selected_article} current_time={current_time} article={article} />
+						<BlogArticle is_preview={true} id_selected_article={id_selected_article} article={article} />
 					}
 				</div>
 			</>}

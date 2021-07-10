@@ -15,6 +15,7 @@ const icon_thumbs_down = <FontAwesomeIcon icon={faThumbsDown} />
 const BlogArticle = (props) => 
 {
 	const [likes, set_likes] = useState(props.article.likes);
+	const current_time = new Date();
 	const increment_likes = () => set_likes(likes + 1);
 	const decrement_likes = () => set_likes(likes - 1);
 
@@ -29,11 +30,13 @@ const BlogArticle = (props) =>
 					<h3>{props.article.title}</h3>
 					<p id="article_info">
 						Category: {props.article.category}.<br />
-						Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? new Date(props.article.time_creation) : props.current_time} /> at <Time raw_time={props.id_selected_article !== '' ? new Date(props.article.time_creation) : props.current_time} />.
+						Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? new Date(props.article.time_creation) : current_time} /> at <Time 
+						raw_time={props.id_selected_article !== '' ? new Date(props.article.time_creation) : current_time} />.
 						{props.article.is_modified && 
 						<>
 							<br />
-							<span>Modified: On the <DateInLetters raw_time={props.id_selected_article !== '' ? new Date(props.article.time_modification) : props.current_time} /> at <Time raw_time={props.id_selected_article !== '' ? new Date(props.article.time_modification) : props.current_time} />.</span>
+							<span>Modified: On the <DateInLetters raw_time={props.id_selected_article !== '' ? new Date(props.article.time_modification) : current_time} /> at <Time 
+							raw_time={props.id_selected_article !== '' ? new Date(props.article.time_modification) : current_time} />.</span>
 						</>}
 					</p>
 
@@ -62,7 +65,8 @@ const BlogArticle = (props) =>
 						{props.article.is_modified && 
 						<>
 							<br />
-							<span>Modified: On the <DateInLetters raw_time={new Date(props.article.time_modification)} /> at <Time raw_time={new Date(props.article.time_modification)} />.</span>
+							<span>Modified: On the <DateInLetters raw_time={new Date(props.article.time_modification)} /> at 
+							<Time raw_time={new Date(props.article.time_modification)} />.</span>
 						</>}
 					</p>
 

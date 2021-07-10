@@ -1,6 +1,7 @@
 const express = require('express');
-const router_connection = require('./routes/connection.route.js');
-const router_blog = require('./routes/blog.route.js');
+const router_connection = require('./routes/connection.route');
+const router_blog = require('./routes/blog.route');
+const controller_general = require('./controllers/general.controller');
 
 const app = express();
 
@@ -23,10 +24,7 @@ app.get('/', (req, res) =>
 app.use('/connection', router_connection);
 app.use('/blog', router_blog);
 
-app.get('/*', (req, res) => 
-{
-	res.status(404).json({ status: 404, title: 'Page Not Found', message: 'I\'m sorry, this page doesn\'t exist.' });
-});
+app.get('/*', controller_general.page_not_found);
 
 module.exports = app;
 

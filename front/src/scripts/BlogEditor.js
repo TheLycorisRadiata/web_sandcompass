@@ -42,15 +42,15 @@ const BlogEditor = (props) =>
 
 	const handle_select_title = e => 
 	{
-		const article = all_articles.find(article => article.title === e.target.value);
+		const selected_article = all_articles.find(existing_article => existing_article.title === e.target.value);
 
-		set_id_selected_article(article._id);
-		set_time_creation(article.time_creation);
-		set_time_modification(article.time_modification);
-		set_is_modified(article.is_modified === undefined || false ? false : true);
-		set_title(article.title);
-		set_category(article.category);
-		set_content(article.content);
+		set_id_selected_article(selected_article._id);
+		set_time_creation(selected_article.time_creation);
+		set_time_modification(selected_article.time_modification);
+		set_is_modified(selected_article.is_modified === undefined || false ? false : true);
+		set_title(selected_article.title);
+		set_category(selected_article.category);
+		set_content(selected_article.content);
 	}
 
 	const handle_select_category = e => set_category(e.target.value);

@@ -29,11 +29,11 @@ const BlogArticle = (props) =>
 					<h3>{props.article.title}</h3>
 					<p id="article_info">
 						Category: {props.article.category}.<br />
-						Created: On the <DateInLetters raw_time={props.id_selected_article != '' ? new Date(props.article.time_creation) : props.current_time} /> at <Time raw_time={props.id_selected_article != '' ? new Date(props.article.time_creation) : props.current_time} />.
+						Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? new Date(props.article.time_creation) : props.current_time} /> at <Time raw_time={props.id_selected_article !== '' ? new Date(props.article.time_creation) : props.current_time} />.
 						{props.article.is_modified && 
 						<>
 							<br />
-							<span>Modified: On the <DateInLetters raw_time={props.id_selected_article != '' ? new Date(props.article.time_modification) : props.current_time} /> at <Time raw_time={props.id_selected_article != '' ? new Date(props.article.time_modification) : props.current_time} />.</span>
+							<span>Modified: On the <DateInLetters raw_time={props.id_selected_article !== '' ? new Date(props.article.time_modification) : props.current_time} /> at <Time raw_time={props.id_selected_article !== '' ? new Date(props.article.time_modification) : props.current_time} />.</span>
 						</>}
 					</p>
 

@@ -80,10 +80,10 @@ function App()
 			</header>
 
 			<Switch>
-				<Route exact path="/"><Home /></Route>
-				<Route exact path="/home"><Home /></Route>
+				<Route exact path="/"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
+				<Route exact path="/home"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
 				<Route exact path="/works"><Works /></Route>
-				<Route exact path="/blog"><Blog /></Route>
+				<Route exact path="/blog"><Blog categories={all_categories} articles={all_articles} /></Route>
 
 					<Route exact path="/blog/page.html"><BlogPage all_articles={all_articles} /></Route>
 

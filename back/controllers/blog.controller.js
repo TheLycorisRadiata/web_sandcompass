@@ -105,7 +105,7 @@ exports.create_new_category = (req, res) =>
 			})
 			.save()
 			.catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The new category can\'t be created.' }))
-			.then(category => console.log(`> "${category.name}" category created`));
+			.then(category => console.log(`> Category "${category.name}" created`));
 		}
 
 		Category.find()

@@ -55,7 +55,7 @@ const BlogArticle = (props) =>
 			{!props.is_preview && 
 			<main>
 				<h1>Blog</h1>
-				<div className="page_numbers page_numbers_top"><Link to={`/blog/page${props.article.page_number}.html`}>Other articles</Link></div>
+				<div className="page_numbers page_numbers_top"><Link to="/blog/page.html">Other articles</Link></div>
 
 				<article id="blog_article">
 					<h2>{props.article.title}</h2>
@@ -73,7 +73,7 @@ const BlogArticle = (props) =>
 					<div dangerouslySetInnerHTML={{__html: props.article.content}} />
 				</article>
 
-				<div className="page_numbers page_numbers_bottom"><Link to={`/blog/page${props.article.page_number}.html`}>Other articles</Link></div>
+				<div className="page_numbers page_numbers_bottom"><Link to="/blog/page.html">Other articles</Link></div>
 
 				<div id="likes_dislikes">
 					<span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>

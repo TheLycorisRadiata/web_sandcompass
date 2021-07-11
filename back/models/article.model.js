@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const model_article = new mongoose.Schema(
 {
 	likes: Number,
-	page_number: Number,
 	time_creation: Date,
 	time_modification: Date,
 	is_modified: Boolean,

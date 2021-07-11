@@ -29,7 +29,6 @@ const BlogEditor = (props) =>
 	const default_article = 
 	{
 		likes: 0,
-		page_number: 0,
 		time_creation: new Date(),
 		time_modification: new Date(),
 		is_modified: false,
@@ -48,7 +47,6 @@ const BlogEditor = (props) =>
 
 		set_article({
 			likes: 0,
-			page_number: 0,
 			time_creation: selected_article.time_creation,
 			time_modification: selected_article.time_modification,
 			is_modified: selected_article.is_modified === undefined || selected_article.is_modified === false ? false : true,
@@ -62,7 +60,6 @@ const BlogEditor = (props) =>
 	{
 		set_article({
 			likes: article.likes,
-			page_number: article.page_number,
 			time_creation: article.time_creation,
 			time_modification: article.time_modification,
 			is_modified: article.is_modified,
@@ -128,7 +125,6 @@ const BlogEditor = (props) =>
 
 			set_article({
 				likes: article.likes,
-				page_number: article.page_number,
 				time_creation: article.time_creation,
 				time_modification: article.time_modification,
 				is_modified: article.is_modified,
@@ -146,7 +142,6 @@ const BlogEditor = (props) =>
 		{
 			set_article({
 				likes: 0,
-				page_number: 0,
 				time_creation: new Date(),
 				time_modification: new Date(),
 				is_modified: false,
@@ -187,7 +182,6 @@ const BlogEditor = (props) =>
 		{
 			set_article({
 				likes: article.likes,
-				page_number: article.page_number,
 				time_creation: article.time_creation,
 				time_modification: new Date(),
 				is_modified: true,
@@ -258,7 +252,6 @@ const BlogEditor = (props) =>
 	{
 		set_article({
 			likes: article.likes,
-			page_number: article.page_number,
 			time_creation: article.time_creation,
 			time_modification: article.time_modification,
 			is_modified: article.is_modified,
@@ -272,7 +265,6 @@ const BlogEditor = (props) =>
 	{
 		set_article({
 			likes: article.likes,
-			page_number: article.page_number,
 			time_creation: article.time_creation,
 			time_modification: article.time_modification,
 			is_modified: article.is_modified,

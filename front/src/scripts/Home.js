@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import SocialMedia from './SocialMedia.js';
 import Book_Cover from '../images/cosmic_dust_cover_eng.png';
 
-const Home = () => 
+const Home = (props) => 
 {
 	return (
 		<main>
@@ -45,13 +45,19 @@ const Home = () =>
 
 			<SocialMedia />
 
+			{props.last_article !== undefined &&
 			<section id="last_article">
-				<h2><Link to="/blog/article1.html">Last article</Link></h2>
-				<p>It's my first article, congrats me! I've been thinking of a few topics since the creation of the website but I was never in the right mood to write. I've just 
-				seen on YouTube the video of K.M. Weiland entitled <a href="https://www.youtube.com/watch?v=1tmuv2qjlU4" rel="nofollow noreferrer" target="_blank">"I Hate Your Protagonist! 
-				Want to Know Why?"</a> and a comment striked me. So I decided to answer it and this article is a version a little bit more polished. <Link to="/blog/article1.html">
-				[More]</Link></p>
-			</section>
+				<div>
+					<h2><Link to={'/blog/article' + props.last_article._id + '.html'}>Last article</Link></h2>
+					<p id="last_article_title">{props.last_article.title}</p>
+				</div>
+
+				<div dangerouslySetInnerHTML={{__html: props.last_article.content.substring(0, 400) + " [...]"}} />
+
+				<div className="read_more">
+					<Link to={'/blog/article' + props.last_article._id + '.html'}>[Read more]</Link>
+				</div>
+			</section>}
 		</main>
 	);
 };

@@ -12,7 +12,7 @@ import BlogEditor from './scripts/BlogEditor.js';
 import PageNotFound from './scripts/PageNotFound.js';
 import Banner from './images/banner.jpg';
 
-function App()
+const App = () => 
 {
     const [is_admin_logged_in, set_is_admin_logged_in] = useState(false);
     const [all_categories, set_all_categories] = useState([]);
@@ -109,7 +109,7 @@ function App()
             </footer>
         </Router>
     );
-}
+};
 
 export default App;
 

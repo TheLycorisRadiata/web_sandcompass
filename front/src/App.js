@@ -1,15 +1,15 @@
 import {useState, useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
-import Home from './scripts/Home.js';
-import Works from './scripts/Works.js';
-import Contact from './scripts/Contact.js';
-import Licenses from './scripts/Licenses.js';
-import ControlPanel from './scripts/ControlPanel.js';
-import Blog from './scripts/Blog.js';
-import BlogPage from './scripts/BlogPage.js';
-import BlogArticle from './scripts/BlogArticle.js';
-import BlogEditor from './scripts/BlogEditor.js';
-import PageNotFound from './scripts/PageNotFound.js';
+import Home from './scripts/Home';
+import Works from './scripts/Works';
+import Contact from './scripts/Contact';
+import Licenses from './scripts/Licenses';
+import ControlPanel from './scripts/ControlPanel';
+import Blog from './scripts/Blog';
+import BlogPage from './scripts/BlogPage';
+import BlogArticle from './scripts/BlogArticle';
+import BlogEditor from './scripts/BlogEditor';
+import PageNotFound from './scripts/PageNotFound';
 import Banner from './images/banner.jpg';
 
 const App = () => 

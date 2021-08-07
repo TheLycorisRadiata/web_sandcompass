@@ -5,7 +5,7 @@ import {faFolderMinus} from '@fortawesome/free-solid-svg-icons';
 import {faFolderPlus} from '@fortawesome/free-solid-svg-icons';
 import {faEye} from '@fortawesome/free-solid-svg-icons';
 import {faEyeSlash} from '@fortawesome/free-solid-svg-icons';
-import BlogArticle from './BlogArticle.js';
+import BlogArticle from './BlogArticle';
 import '../styles/ControlPanel.css';
 
 const icon_window_close = <FontAwesomeIcon icon={faWindowClose} />

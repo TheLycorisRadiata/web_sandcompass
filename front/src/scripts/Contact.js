@@ -1,4 +1,4 @@
-import SocialMedia from './SocialMedia.js';
+import SocialMedia from './SocialMedia';
 import '../styles/Contact.css';
 
 const Contact = () => 

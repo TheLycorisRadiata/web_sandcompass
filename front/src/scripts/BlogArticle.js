@@ -5,7 +5,7 @@ import {faHeart} from '@fortawesome/free-solid-svg-icons';
 import {faHeartBroken} from '@fortawesome/free-solid-svg-icons';
 import {faThumbsUp} from '@fortawesome/free-regular-svg-icons';
 import {faThumbsDown} from '@fortawesome/free-regular-svg-icons';
-import {DateInLetters, Time} from './Time.js';
+import {DateInLetters, Time} from './Time';
 
 const icon_heart = <FontAwesomeIcon icon={faHeart} />
 const icon_heart_broken = <FontAwesomeIcon icon={faHeartBroken} />

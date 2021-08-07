@@ -1,11 +1,11 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faDownload} from '@fortawesome/free-solid-svg-icons';
-import EbookFormatPicker from './EbookFormatPicker.js';
 import Book_Cover from '../images/cosmic_dust_cover_eng.png';
 import File_AZW from '../files/cosmic_dust/test.azw3';
 import File_ePub from '../files/cosmic_dust/test.epub';
 import File_PDF from '../files/cosmic_dust/test.pdf';
 import File_Zip from '../files/cosmic_dust/test.zip';
+import EbookFormatPicker from './EbookFormatPicker';
 import '../styles/Works.css';
 
 const icon_download = <FontAwesomeIcon icon={faDownload} />

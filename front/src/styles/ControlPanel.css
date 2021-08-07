@@ -1,144 +1,144 @@
 main form
 {
-	display: flex;
-	flex-flow: column nowrap;
-	align-items: center;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
 }
 
 main input
 {
-	max-width: 300px;
+    max-width: 300px;
 }
 
 #field_login_username, #field_login_password
 {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 #back_talks
 {
-	margin-top: 40px;
+    margin-top: 40px;
 
-	display: flex;
-	flex-flow: column wrap;
-	align-items: center;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
 }
 
 #back_error
 {
-	color: #960018;
+    color: #960018;
 }
 
 #back_ok
 {
-	color: #00693E;
+    color: #00693E;
 }
 
 #go_to_blogeditor
 {
-	display: flex;
-	justify-content: space-around;
+    display: flex;
+    justify-content: space-around;
 }
 
 #btn_logout_admin
 {
-	display: flex;
-	justify-content: flex-end;
-	color: #E6B000;
+    display: flex;
+    justify-content: flex-end;
+    color: #E6B000;
 }
 
 #btn_logout_admin svg
 {
-	height: 2rem;
-	width: 2rem;
-	filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
-	cursor: pointer;
+    height: 2rem;
+    width: 2rem;
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+    cursor: pointer;
 }
 
 #control_panel_blog_buttons
 {
-	margin-bottom: 20px;
-	display: flex;
-	flex-flow: row wrap;
-	align-items: center;
-	justify-content: space-around;
+    margin-bottom: 20px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-around;
 }
 
 #btn_post_article
 {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 #control_panel_extended_buttons
 {
-	display: flex;
-	flex-flow: row wrap;
-	align-items: center;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
 }
 
 #control_panel_extended_buttons .buttons
 {
-	display: flex;
-	flex-flow: column wrap;
-	align-items: center;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
 }
 
 #btn_post_article, #select_article
 {
-	align-self: start;
+    align-self: start;
 }
 
 #select_article
 {
-	margin: 0px 20px;
-	margin-bottom: 10px;
+    margin: 0px 20px;
+    margin-bottom: 10px;
 }
 
 #btn_modify_article
 {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 #control_panel_blog_fields label
 {
-	display: inline-block;
-	margin-top: 20px;
-	margin-bottom: 10px;
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .div_category
 {
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
 }
 
 #field_article_new_category, #btn_add_category
 {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 #btn_delete_category, #field_article_new_category, #btn_add_category
 {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 #btn_preview_article
 {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 #div_btn_preview_article
 {
-	display: flex;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 @media screen and (max-width: 870px)
 {
-	#select_article
-	{
-		margin-left: 0;
-	}
+    #select_article
+    {
+        margin-left: 0;
+    }
 }
 

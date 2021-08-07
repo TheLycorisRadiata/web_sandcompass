@@ -10,21 +10,21 @@ const server = http.createServer(app);
 
 mongoose.connect('mongodb://localhost/sandcompass', 
 {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useFindAndModify: false,
-	useCreateIndex: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
 })
 .then(() => console.log('> Server connected to database'.blue))
 .catch((err) => 
 {
-	console.log('> Error: Server couldn\'t connect to database'.red);
-	console.log(err.message);
-	process.exit(1);
+    console.log('> Error: Server couldn\'t connect to database'.red);
+    console.log(err.message);
+    process.exit(1);
 });
 
 server.listen(port, hostname, () => 
 {
-	console.log(`> Server running at http://${hostname}:${port}/`.blue);
+    console.log(`> Server running at http://${hostname}:${port}/`.blue);
 });
 

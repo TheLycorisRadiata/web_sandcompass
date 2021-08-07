@@ -1,26 +1,26 @@
 #contact_form label
 {
-	margin-right: 15px;
-	font-size: 1.2rem;
+    margin-right: 15px;
+    font-size: 1.2rem;
 }
 
 #visitor_name, #visitor_email, #message_content
 {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 #message_content
 {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 #btn_reset
 {
-	margin-right: 5px;
+    margin-right: 5px;
 }
 
 #btn_send
 {
-	margin-left: 5px;
+    margin-left: 5px;
 }
 

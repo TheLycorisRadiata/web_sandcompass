@@ -1,14 +1,14 @@
 const Article = require('../models/article.model');
 const Category = require('../models/category.model');
 
-exports.retrieve_articles = (req, res) => 
+const retrieve_articles = (req, res) => 
 {
     Article.find()
     .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The articles can\'t be retrieved.' }))
     .then(articles => res.status(200).json({ status: 200, title: 'Success', message: articles }));
 };
 
-exports.post_new_article = (req, res) => 
+const post_new_article = (req, res) => 
 {
     new Article(
     {
@@ -41,7 +41,7 @@ exports.post_new_article = (req, res) =>
     });
 };
 
-exports.modify_article = (req, res) => 
+const modify_article = (req, res) => 
 {
     Article.updateOne({ _id: req.body.id },
     {
@@ -64,7 +64,7 @@ exports.modify_article = (req, res) =>
     });
 };
 
-exports.delete_article = (req, res) => 
+const delete_article = (req, res) => 
 {
     Article.deleteOne({ _id: req.body.id })
     .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be deleted.' }))
@@ -80,14 +80,14 @@ exports.delete_article = (req, res) =>
     });
 };
 
-exports.retrieve_categories = (req, res) => 
+const retrieve_categories = (req, res) => 
 {
     Category.find()
     .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The categories can\'t be retrieved.' }))
     .then(categories => res.status(200).json({ status: 200, title: 'Success', message: categories }));
 };
 
-exports.create_new_category = (req, res) => 
+const create_new_category = (req, res) => 
 {
     let new_category = req.body.new_category;
     new_category = new_category.toLowerCase();
@@ -114,7 +114,7 @@ exports.create_new_category = (req, res) =>
     });
 };
 
-exports.delete_category = (req, res) => 
+const delete_category = (req, res) => 
 {
     Article.findOne({ category: req.body.category})
     .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be deleted.' }))
@@ -138,5 +138,16 @@ exports.delete_category = (req, res) =>
             });
         }	
     });
+};
+
+module.exports = 
+{
+    retrieve_articles,
+    post_new_article,
+    modify_article,
+    delete_article,
+    retrieve_categories,
+    create_new_category,
+    delete_category
 };
 

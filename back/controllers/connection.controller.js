@@ -1,13 +1,13 @@
 const User = require('../models/user.model');
 
-exports.check_admin_connected = (req, res) => 
+const check_admin_connected = (req, res) => 
 {
     User.findOne({ rank: 'admin' })
     .catch(() => res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account couldn\'t be retrieved.' }))
     .then(admin => res.status(200).json({ message: admin.is_connected }));
 };
 
-exports.connect_admin = (req, res) => 
+const connect_admin = (req, res) => 
 {
     User.findOne({ rank: 'admin' })
     .catch(() => res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account couldn\'t be retrieved.' }))
@@ -53,7 +53,7 @@ exports.connect_admin = (req, res) =>
     });
 };
 
-exports.disconnect_admin = (req, res) => 
+const disconnect_admin = (req, res) => 
 {
     User.findOne({ rank: 'admin' })
     .catch(() => 
@@ -87,5 +87,12 @@ exports.disconnect_admin = (req, res) =>
         It may be a mere technical issue, or it may be because a third party did something.
         I don't know if this is the right reaction to have in such a situation, but at least I react.
     */
+};
+
+module.exports = 
+{
+    check_admin_connected,
+    connect_admin,
+    disconnect_admin
 };
 

@@ -1,11 +1,11 @@
-import {useState} from 'react';
-import {Link} from 'react-router-dom';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faHeart} from '@fortawesome/free-solid-svg-icons';
-import {faHeartBroken} from '@fortawesome/free-solid-svg-icons';
-import {faThumbsUp} from '@fortawesome/free-regular-svg-icons';
-import {faThumbsDown} from '@fortawesome/free-regular-svg-icons';
-import {DateInLetters, Time} from './Time';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeartBroken } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
+import { faThumbsDown } from '@fortawesome/free-regular-svg-icons';
+import { DateInLetters, Time } from '../../assets/components/Time';
 
 const icon_heart = <FontAwesomeIcon icon={faHeart} />
 const icon_heart_broken = <FontAwesomeIcon icon={faHeartBroken} />

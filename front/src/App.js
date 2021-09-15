@@ -1,16 +1,17 @@
-import {useState, useEffect} from 'react';
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
-import Home from './scripts/Home';
-import Works from './scripts/Works';
-import Contact from './scripts/Contact';
-import Licenses from './scripts/Licenses';
-import ControlPanel from './scripts/ControlPanel';
-import Blog from './scripts/Blog';
-import BlogPage from './scripts/BlogPage';
-import BlogArticle from './scripts/BlogArticle';
-import BlogEditor from './scripts/BlogEditor';
-import PageNotFound from './scripts/PageNotFound';
-import Banner from './images/banner.jpg';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Home from './views/Home/Home';
+import Works from './views/Works/Works';
+import Contact from './views/Contact/Contact';
+import Licenses from './views/Licenses/Licenses';
+import ControlPanel from './views/ControlPanel/ControlPanel';
+import Blog from './views/Blog/Blog';
+import BlogPage from './views/BlogPage/BlogPage';
+import BlogArticle from './views/BlogArticle/BlogArticle';
+import BlogEditor from './views/ControlPanel/BlogEditor';
+import PageNotFound from './views/PageNotFound/PageNotFound';
+import Banner from './assets/images/banner.jpg';
+import './style.css';
 
 const App = () => 
 {
@@ -22,7 +23,7 @@ const App = () =>
 
     useEffect(() => 
     {
-        fetch('http://localhost:3001/connection/connected/admin',
+        fetch('http://localhost:3001/api/connection/connected/admin',
         {       
             method: 'get',
             headers:
@@ -34,7 +35,7 @@ const App = () =>
         .then(res => res.json())
         .then(json => set_is_admin_logged_in(json.message));
 
-        fetch('http://localhost:3001/blog/articles',
+        fetch('http://localhost:3001/api/blog/articles',
         {
             method: 'get',
             headers:
@@ -46,7 +47,7 @@ const App = () =>
         .then(res => res.json())
         .then(json => json.status >= 400 ? console.warn('Error: The articles can\'t be retrieved.') : set_all_articles(json.message));
 
-        fetch('http://localhost:3001/blog/categories',
+        fetch('http://localhost:3001/api/blog/categories',
         {
             method: 'get',
             headers:

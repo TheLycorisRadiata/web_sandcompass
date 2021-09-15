@@ -1,6 +1,7 @@
 const express = require('express');
+const controller_blog = require('../controllers/blog');
+
 const router = express.Router();
-const controller_blog = require('../controllers/blog.controller');
 
 router.get('/articles', controller_blog.retrieve_articles);
 router.post('/articles', controller_blog.post_new_article);

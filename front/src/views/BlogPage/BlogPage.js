@@ -1,5 +1,5 @@
-import {Link} from 'react-router-dom';
-import {DateInLetters, Time} from './Time';
+import { Link } from 'react-router-dom';
+import { DateInLetters, Time } from '../../assets/components/Time';
 
 const BlogPage = (props) => 
 {

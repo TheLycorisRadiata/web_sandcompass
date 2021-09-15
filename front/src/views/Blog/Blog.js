@@ -1,5 +1,5 @@
-import {Link} from 'react-router-dom';
-import '../styles/Blog.css';
+import { Link } from 'react-router-dom';
+import './Blog.css';
 
 const Blog = (props) => 
 {

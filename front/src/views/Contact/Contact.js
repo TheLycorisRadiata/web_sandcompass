@@ -1,5 +1,5 @@
-import SocialMedia from './SocialMedia';
-import '../styles/Contact.css';
+import SocialMedia from '../../assets/components/SocialMedia';
+import './Contact.css';
 
 const Contact = () => 
 {

@@ -1,12 +1,12 @@
-import {useState, useEffect} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faWindowClose} from '@fortawesome/free-regular-svg-icons';
-import {faFolderMinus} from '@fortawesome/free-solid-svg-icons';
-import {faFolderPlus} from '@fortawesome/free-solid-svg-icons';
-import {faEye} from '@fortawesome/free-solid-svg-icons';
-import {faEyeSlash} from '@fortawesome/free-solid-svg-icons';
-import BlogArticle from './BlogArticle';
-import '../styles/ControlPanel.css';
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
+import { faFolderMinus } from '@fortawesome/free-solid-svg-icons';
+import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import BlogArticle from '../BlogArticle/BlogArticle';
+import './ControlPanel.css';
 
 const icon_window_close = <FontAwesomeIcon icon={faWindowClose} />
 const icon_folder_minus = <FontAwesomeIcon icon={faFolderMinus} />
@@ -75,7 +75,7 @@ const BlogEditor = (props) =>
     {
         if (new_category !== '')
         {
-            fetch('http://localhost:3001/blog/categories',
+            fetch('http://localhost:3001/api/blog/categories',
             {
                 method: 'post',
                 headers:
@@ -103,7 +103,7 @@ const BlogEditor = (props) =>
     {
         if (article.category !== default_category)
         {
-            fetch('http://localhost:3001/blog/categories',
+            fetch('http://localhost:3001/api/blog/categories',
             {
                 method: 'delete',
                 headers:
@@ -154,7 +154,7 @@ const BlogEditor = (props) =>
                 content: article.content
             });
 
-            fetch('http://localhost:3001/blog/articles',
+            fetch('http://localhost:3001/api/blog/articles',
             {
                 method: 'post',
                 headers:
@@ -195,7 +195,7 @@ const BlogEditor = (props) =>
                 content: article.content
             });
 
-            fetch('http://localhost:3001/blog/articles',
+            fetch('http://localhost:3001/api/blog/articles',
             {
                 method: 'put',
                 headers:
@@ -226,7 +226,7 @@ const BlogEditor = (props) =>
     {
         if (id_selected_article !== '')
         {
-            fetch('http://localhost:3001/blog/articles',
+            fetch('http://localhost:3001/api/blog/articles',
             {
                 method: 'delete',
                 headers:
@@ -283,7 +283,7 @@ const BlogEditor = (props) =>
 
     const handle_logout = () => 
     {
-        fetch('http://localhost:3001/connection/logout/admin',
+        fetch('http://localhost:3001/api/connection/logout/admin',
         {
             method: 'get',
             headers:
@@ -306,7 +306,7 @@ const BlogEditor = (props) =>
 
     useEffect(() => 
     {
-        fetch('http://localhost:3001/blog/articles',
+        fetch('http://localhost:3001/api/blog/articles',
         {
             method: 'get',
             headers:
@@ -318,7 +318,7 @@ const BlogEditor = (props) =>
         .then(res => res.json())
         .then(json => json.status >= 400 ? console.warn('Error: The article can\'t be posted.') : set_all_articles(json.message));
 
-        fetch('http://localhost:3001/blog/categories',
+        fetch('http://localhost:3001/api/blog/categories',
         {
             method: 'get',
             headers:

@@ -1,4 +1,4 @@
-import '../styles/Licenses.css';
+import './Licenses.css';
 
 const Licenses = () => 
 {

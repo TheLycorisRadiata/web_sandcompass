@@ -1,7 +1,7 @@
 const express = require('express');
-const colors = require('colors');
+const controller_connection = require('../controllers/connection');
+
 const router = express.Router();
-const controller_connection = require('../controllers/connection.controller');
 
 router.get('/connected/admin', controller_connection.check_admin_connected);
 router.post('/login/admin', controller_connection.connect_admin);

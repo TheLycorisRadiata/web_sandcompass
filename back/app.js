@@ -1,7 +1,6 @@
 const express = require('express');
-const router_connection = require('./routes/connection.route');
-const router_blog = require('./routes/blog.route');
-const controller_general = require('./controllers/general.controller');
+const router_blog = require('./routes/blog');
+const router_connection = require('./routes/connection');
 
 const app = express();
 
@@ -16,15 +15,15 @@ const cors = (req, res, next) =>
 app.use(cors);
 app.use(express.json());
 
-app.get('/', (req, res) => 
-{
-    res.status(200).json({ message: 'Hello world!' });
-});
+/* API routes */
+app.use('/api/blog', router_blog);
+app.use('/api/connection', router_connection);
 
-app.use('/connection', router_connection);
-app.use('/blog', router_blog);
+/* Static service of the front-end app's files */
+//app.use(express.static('./public'));
 
-app.get('/*', controller_general.page_not_found);
+/* Home page route */
+//app.get('/*', (req, res) => res.sendFile('./public/index.html', { root: '.' }));
 
 module.exports = app;
 

@@ -9,7 +9,7 @@ const model_article = new mongoose.Schema(
     category: String,
     title: String,
     content: String
-});
+}, { collection: 'Articles' });
 
 module.exports = mongoose.model('Article', model_article);
 

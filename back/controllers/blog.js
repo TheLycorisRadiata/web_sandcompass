@@ -1,5 +1,5 @@
-const Article = require('../models/article.model');
-const Category = require('../models/category.model');
+const Article = require('../models/article');
+const Category = require('../models/category');
 
 const retrieve_articles = (req, res) => 
 {

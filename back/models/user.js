@@ -7,7 +7,7 @@ const model_user = new mongoose.Schema(
     name: String,
     password: String,
     url_profile_picture: String
-});
+}, { collection: 'Users' });
 
 module.exports = mongoose.model('User', model_user);
 

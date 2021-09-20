@@ -41,8 +41,35 @@ const EbookFormatPicker = () =>
     const [option2, set_option2] = useState(options[1]);
     const [option3, set_option3] = useState(options[2]);
     const [user_choice, set_user_choice] = useState('');
+    const [is_option1_checked, set_is_option1_checked] = useState(false);
+    const [is_option2_checked, set_is_option2_checked] = useState(false);
+    const [is_option3_checked, set_is_option3_checked] = useState(false);
     const [is_questionnaire_finished, set_is_questionnaire_finished] = useState(false);
     const [answer, set_answer] = useState('');
+
+    const handle_click_option1 = () => 
+    {
+        set_is_option1_checked(true);
+        set_is_option2_checked(false);
+        set_is_option3_checked(false);
+        set_user_choice(option1);
+    };
+
+    const handle_click_option2 = () => 
+    {
+        set_is_option1_checked(false);
+        set_is_option2_checked(true);
+        set_is_option3_checked(false);
+        set_user_choice(option2);
+    };
+
+    const handle_click_option3 = () => 
+    {
+        set_is_option1_checked(false);
+        set_is_option2_checked(false);
+        set_is_option3_checked(true);
+        set_user_choice(option3);
+    };
 
     const handle_click_redo = () => 
     {
@@ -58,6 +85,10 @@ const EbookFormatPicker = () =>
     {
         if (user_choice !== '')
         {
+            set_is_option1_checked(false);
+            set_is_option2_checked(false);
+            set_is_option3_checked(false);
+
             switch (question)
             {
                 case questions[0]:
@@ -141,15 +172,15 @@ const EbookFormatPicker = () =>
             <>
                 <p><strong>{question}</strong></p>
                 <p id="ebook_format_options">
-                    <input type="radio" name="option" id="option_1" value="option_1" onClick={() => set_user_choice(option1)} />
+                    <input type="radio" name="option" id="option_1" value="option_1" checked={is_option1_checked} onClick={handle_click_option1} />
                     <label htmlFor="option_1">{option1}</label><br />
 
-                    <input type="radio" name="option" id="option_2" value="option_2" onClick={() => set_user_choice(option2)} />
+                    <input type="radio" name="option" id="option_2" value="option_2" checked={is_option2_checked} onClick={handle_click_option2} />
                     <label htmlFor="option_2">{option2}</label><br />
 
                     {option3 !== '' && 
                     <>
-                        <input type="radio" name="option" id="option_3" value="option_3" onClick={() => set_user_choice(option3)} />
+                        <input type="radio" name="option" id="option_3" value="option_3" checked={is_option3_checked} onClick={handle_click_option3} />
                         <label htmlFor="option_3">{option3}</label>
                     </>}
                 </p>

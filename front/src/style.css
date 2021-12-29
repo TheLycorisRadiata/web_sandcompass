@@ -1,7 +1,14 @@
+:root
+{
+    --white: #FFF;
+    /* var(--white) */
+}
+
 *
 {	
     margin: 0;
     padding: 0;
+    outline: none;
     font-size: 1.1rem;
 }
 
@@ -11,7 +18,7 @@ body
     background: linear-gradient(#E66465, #9198E5) fixed no-repeat;
     font-family: 'Fira Sans', sans-serif;
     text-align: justify;
-    word-break: break-word;
+    word-break: break-all;
     overflow-y: scroll;
 }
 
@@ -20,6 +27,8 @@ body
     margin: auto;
     width: 70%;
 }
+
+/* SCROLLBAR ----------------------------------------------------------------------------------- */
 
 ::-webkit-scrollbar
 {
@@ -45,6 +54,8 @@ body
 {
     background-color: #E24E4F;
 }
+
+/* NAV BAR ------------------------------------------------------------------------------------- */
 
 ul
 {

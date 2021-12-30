@@ -16,14 +16,14 @@ const ControlPanel = (props) =>
 
     const handle_logout = () => 
     {
-        fetch('http://localhost:3001/api/connection/logout/admin')
+        fetch('http://localhost:3001/api/connection/admin/logout/')
         .then(res => res.json())
         .then(() => props.close_access(false));
     };
 
     const handle_click = () => 
     {
-        fetch('http://localhost:3001/api/connection/login/admin',
+        fetch('http://localhost:3001/api/connection/admin/login',
         {       
             method: 'post',
             headers:

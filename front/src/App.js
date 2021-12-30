@@ -23,7 +23,7 @@ const App = () =>
 
     useEffect(() => 
     {
-        fetch('http://localhost:3001/api/connection/connected/admin',
+        fetch('http://localhost:3001/api/connection/admin/connected',
         {       
             method: 'get',
             headers:

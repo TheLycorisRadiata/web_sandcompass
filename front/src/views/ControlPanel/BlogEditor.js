@@ -283,7 +283,7 @@ const BlogEditor = (props) =>
 
     const handle_logout = () => 
     {
-        fetch('http://localhost:3001/api/connection/logout/admin',
+        fetch('http://localhost:3001/api/connection/admin/logout',
         {
             method: 'get',
             headers:

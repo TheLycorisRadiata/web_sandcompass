@@ -20,6 +20,7 @@ const Contact = () =>
                 },
                 body: JSON.stringify(
                 {
+                    is_pro: e.target[0].value !== '' ? true : false,
                     business_name: e.target[0].value,
                     last_name: e.target[1].value,
                     first_name: e.target[2].value,

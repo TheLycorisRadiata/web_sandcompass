@@ -2,14 +2,14 @@ const User = require('../models/user');
 
 const check_admin_connected = (req, res) => 
 {
-    User.findOne({ rank: 'admin' })
+    User.findOne({ is_admin: true })
     .catch(() => res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account couldn\'t be retrieved.' }))
     .then(admin => res.status(200).json({ message: admin.is_connected }));
 };
 
 const connect_admin = (req, res) => 
 {
-    User.findOne({ rank: 'admin' })
+    User.findOne({ is_admin: true })
     .catch(() => res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account couldn\'t be retrieved.' }))
     .then(admin => 
     {
@@ -35,7 +35,7 @@ const connect_admin = (req, res) =>
 
 const disconnect_admin = (req, res) => 
 {
-    User.findOne({ rank: 'admin' })
+    User.findOne({ is_admin: true })
     .catch(() => 
     {
         res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account couldn\'t be retrieved. The server will restart.' });

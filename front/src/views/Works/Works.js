@@ -45,28 +45,32 @@ const Works = () =>
                     </div>
                 </div>
 
-                <h3>Reviews</h3>
-                <p>The Booknode and Goodreads pages for <em>Cosmic Dust</em> will be available at publication.</p>
+                <div>
+                    <h3>Reviews</h3>
+                    <p>The Booknode and Goodreads pages for <em>Cosmic Dust</em> will be available at release.</p>
+                </div>
             </article>
 
             <aside>
-                <h3>The different formats</h3>
-
-                {/* 
-                    AZW (Kindle)
-                    ePub (All e-readers but Kindle)
-                    PDF (Computers, smartphones and tablets)
-                */}
-
-                <ul id="ebook_formats">
-                    <a href={File_AZW} download="Test AZW"><li>{icon_download} AZW</li></a>
-                    <a href={File_ePub} download="Test ePub"><li>{icon_download} ePub</li></a>
-                    <a href={File_PDF} download="Test PDF"><li>{icon_download} PDF</li></a>
-                    <a href={File_Zip} download="Test All"><li>{icon_download} All</li></a>
-                </ul>
-
-                <h3>The how-to of picking a format</h3>
                 <div>
+                    <h3>The different formats</h3>
+
+                    {/* 
+                        AZW (Kindle)
+                        ePub (All e-readers but Kindle)
+                        PDF (Computers, smartphones and tablets)
+                    */}
+
+                    <ul id="ebook_formats">
+                        <a href={File_AZW} download="Test AZW"><li>{icon_download} AZW</li></a>
+                        <a href={File_ePub} download="Test ePub"><li>{icon_download} ePub</li></a>
+                        <a href={File_PDF} download="Test PDF"><li>{icon_download} PDF</li></a>
+                        <a href={File_Zip} download="Test All"><li>{icon_download} All</li></a>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>The how-to of picking a format</h3>
                     <EbookFormatPicker />
                 </div>
             </aside>

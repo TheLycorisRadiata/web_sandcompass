@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import SocialMedia from '../../assets/components/SocialMedia';
 import Book_Cover from '../../assets/images/cosmic_dust_cover_eng.png';
+import SocialMedia from '../../assets/components/SocialMedia';
 
 const Home = (props) => 
 {

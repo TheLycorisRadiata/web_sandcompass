@@ -167,8 +167,13 @@ const EbookFormatPicker = () =>
     };
 
     return (
-        <>
-            {!is_questionnaire_finished && 
+        <div>
+            {is_questionnaire_finished ? 
+            <>
+                <p>{answer}</p>
+                <input type="button" name="btn_redo_ebook_format" id="btn_redo_ebook_format" value="Redo" onClick={handle_click_redo} />
+            </>
+            :
             <>
                 <p><strong>{question}</strong></p>
                 <p id="ebook_format_options">
@@ -186,13 +191,7 @@ const EbookFormatPicker = () =>
                 </p>
                 <input type="button" name="btn_next_ebook_format" id="btn_next_ebook_format" value="Next question" onClick={handle_click_next} />
             </>}
-
-            {is_questionnaire_finished && 
-            <>
-                <p>{answer}</p>
-                <input type="button" name="btn_redo_ebook_format" id="btn_redo_ebook_format" value="Redo" onClick={handle_click_redo} />
-            </>}
-        </>
+        </div>
     );
 }
 

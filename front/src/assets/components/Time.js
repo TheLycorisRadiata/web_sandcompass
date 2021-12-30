@@ -14,9 +14,9 @@ const DateInLetters = (props) =>
 const Time = (props) =>
 {
     const date = props.raw_time;
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
+    const hours = date.getUTCHours() + 1;
+    const minutes = date.getUTCMinutes();
+    const seconds = date.getUTCSeconds();
 
     return <span>{hours}:{minutes < 10 ? '0' + minutes : minutes}:{seconds < 10 ? '0' + seconds : seconds}</span>;
 };

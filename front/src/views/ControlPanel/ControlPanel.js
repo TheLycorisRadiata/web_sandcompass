@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
 import './ControlPanel.css';
+import { url_api } from '../../config.json';
 
 const icon_window_close = <FontAwesomeIcon icon={faWindowClose} />
 
@@ -16,14 +17,14 @@ const ControlPanel = (props) =>
 
     const handle_logout = () => 
     {
-        fetch('http://localhost:3001/api/connection/admin/logout/')
+        fetch(url_api + '/connection/admin/logout/')
         .then(res => res.json())
         .then(() => props.close_access(false));
     };
 
     const handle_click = () => 
     {
-        fetch('http://localhost:3001/api/connection/admin/login',
+        fetch(url_api + '/connection/admin/login',
         {       
             method: 'post',
             headers:

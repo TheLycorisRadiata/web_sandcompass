@@ -1,5 +1,6 @@
 import SocialMedia from '../../assets/components/SocialMedia';
 import './Contact.css';
+import { url_api } from '../../config.json';
 
 const Contact = () => 
 {
@@ -9,7 +10,7 @@ const Contact = () =>
 
         if (e.target[1].value !== '' && e.target[2].value !== '' && e.target[3].value !== '' && e.target[4].value !== 'default' && e.target[5].value !== '')
         {
-            fetch('http://localhost:3001/api/mailing/contact',
+            fetch(url_api + '/mailing/contact',
             {
                 method: 'POST',
                 headers:

@@ -6,6 +6,7 @@ const Licenses = () =>
         <main>
             <h1>Licenses</h1>
             <ul>
+                <li><a href="https://fonts.google.com/specimen/Fira+Sans#license" rel="nofollow noreferrer" target="_blank">Fira Sans font (light)</a></li>
                 <li><a href="https://commons.wikimedia.org/wiki/File:Old_temple_-URUK_Ancient_city.jpg" rel="nofollow noreferrer" target="_blank">Banner</a></li>
                 <li><a href="https://500px.com/p/madalinv?view=photos" rel="nofollow noreferrer" target="_blank">Book cover</a></li>
                 <li><a href="https://www.patreon.com/brand" rel="nofollow noreferrer" target="_blank">Patreon logo</a></li>

@@ -4,6 +4,12 @@
     /* var(--white) */
 }
 
+@font-face
+{
+    font-family: "Fira Sans";
+    src: url("./assets/fonts/fira_sans_light.ttf") format("truetype");
+}
+
 *
 {	
     margin: 0;
@@ -16,7 +22,7 @@ body
 {
     padding: 15px;
     background: linear-gradient(#E66465, #9198E5) fixed no-repeat;
-    font-family: 'Fira Sans', sans-serif;
+    font-family: "Fira Sans", sans-serif;
     text-align: justify;
     word-break: break-all;
     overflow-y: scroll;
@@ -318,7 +324,7 @@ footer ul
 #likes_dislikes:before, #likes_dislikes:after
 {
     display: block;
-    content: '';
+    content: "";
     background-color: #FFF;
     height: 2px;
     width: 100%;

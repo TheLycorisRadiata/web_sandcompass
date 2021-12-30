@@ -88,12 +88,12 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                if (json.status >= 400)
-                    alert('Error: The category can\'t be created.');
+                if (!json.is_success)
+                    alert(json.message);
                 else
                 {
-                    alert('New category created!');
-                    set_all_categories(json.message);
+                    alert(json.message);
+                    set_all_categories(json.data);
                 }
             });
         }
@@ -116,12 +116,12 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                if (json.status >= 400)
-                    alert('Error: The category can\'t be deleted.');
+                if (!json.is_success)
+                    alert(json.message);
                 else
                 {
-                    alert('Category deleted!');
-                    set_all_categories(json.message);
+                    alert(json.message);
+                    set_all_categories(json.data);
                 }
             });
 
@@ -167,12 +167,12 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                if (json.status >= 400)
-                    alert('Error: The article can\'t be posted.');
+                if (!json.is_success)
+                    alert(json.message);
                 else
                 {
-                    alert('New article posted!');
-                    set_all_articles(json.message);
+                    alert(json.message);
+                    set_all_articles(json.data);
                 }
             });
 
@@ -208,12 +208,12 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                if (json.status >= 400)
-                    alert('Error: The article can\'t be modified.');
+                if (!json.is_success)
+                    alert(json.message);
                 else
                 {
-                    alert('Article modified!');
-                    set_all_articles(json.message);
+                    alert(json.message);
+                    set_all_articles(json.data);
                 }
             });
 
@@ -239,12 +239,12 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                if (json.status >= 400)
-                    alert('Error: The article can\'t be deleted.');
+                if (!json.is_success)
+                    alert(json.message);
                 else
                 {
-                    alert('Article deleted!');
-                    set_all_articles(json.message);
+                    alert(json.message);
+                    set_all_articles(json.data);
                 }
             });
 
@@ -316,7 +316,7 @@ const BlogEditor = (props) =>
             }
         })
         .then(res => res.json())
-        .then(json => json.status >= 400 ? console.warn('Error: The article can\'t be posted.') : set_all_articles(json.message));
+        .then(json => !json.is_success ? console.warn(json.message) : set_all_articles(json.data));
 
         fetch(url_api + '/blog/categories',
         {
@@ -328,7 +328,7 @@ const BlogEditor = (props) =>
             }
         })
         .then(res => res.json())
-        .then(json => json.status >= 400 ? console.warn('Error: The category can\'t be created.') : set_all_categories(json.message));
+        .then(json => !json.is_success ? console.warn(json.message) : set_all_categories(json.data));
     }, []);
 
     return (

@@ -34,7 +34,7 @@ const App = () =>
             }
         })
         .then(res => res.json())
-        .then(json => set_is_admin_logged_in(json.message));
+        .then(json => set_is_admin_logged_in(json.data));
 
         fetch(url_api + '/blog/articles',
         {
@@ -46,7 +46,7 @@ const App = () =>
             }
         })
         .then(res => res.json())
-        .then(json => json.status >= 400 ? console.warn('Error: The articles can\'t be retrieved.') : set_all_articles(json.message));
+        .then(json => !json.is_success ? console.warn(json.message) : set_all_articles(json.data));
 
         fetch(url_api + '/blog/categories',
         {
@@ -58,7 +58,7 @@ const App = () =>
             }
         })
         .then(res => res.json())
-        .then(json => json.status >= 400 ? console.warn('Error: The category can\'t be retrieved.') : set_all_categories(json.message));
+        .then(json => !json.is_success ? console.warn(json.message) : set_all_categories(json.data));
     }, []);
 
     return (

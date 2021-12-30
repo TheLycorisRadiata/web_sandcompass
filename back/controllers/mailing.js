@@ -68,20 +68,20 @@ const send_visitor_mail_to_admin = (req, res) =>
     .then(admin =>
     {
         if ((admin && email_address === admin.email_address.toLowerCase()) || email_address === process.env.GMAIL_USER.toLowerCase())
-            res.status(400).json({ is_success: false, message: 'Erreur : Le message n\'a pas pu être envoyé.' });
+            res.status(400).json({ is_success: false, message: 'Error: The message couldn\'t be sent.' });
         else
         {
             // Send the email
             smtp_trans.sendMail(mail_options, (error, response) => 
             {
                 if (error)
-                    res.status(400).json({ message: 'Error: The message couldn\'t be sent', error: error });
+                    res.status(400).json({ is_success: false, message: 'Error: The message couldn\'t be sent.', error: error });
                 else
-                    res.status(200).json({ message: 'Message sent' });
+                    res.status(200).json({ is_success: true, message: 'Message sent.' });
             });
         }
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Erreur : Le message n\'a pas pu être envoyé.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The message couldn\'t be sent.', error: err }));
 };
 
 module.exports = 

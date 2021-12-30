@@ -40,10 +40,10 @@ const ControlPanel = (props) =>
         .then(res => res.json())
         .then(json => 
         {
-            set_back_title(json.title);
+            set_back_title(json.is_success ? 'Success' : 'Failure' );
             set_back_message(json.message);
 
-            if (json.status >= 400)
+            if (!json.is_success)
             {
                 set_back_status_code('back_error');
                 props.grant_access(false);

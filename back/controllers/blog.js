@@ -4,8 +4,8 @@ const Category = require('../models/category');
 const retrieve_articles = (req, res) => 
 {
     Article.find()
-    .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The articles can\'t be retrieved.' }))
-    .then(articles => res.status(200).json({ status: 200, title: 'Success', message: articles }));
+    .then(articles => res.status(200).json({ is_success: true, message: articles.length + ' articles loaded.', data: articles }))
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The articles can\'t be retrieved.', error: err }));
 };
 
 const post_new_article = (req, res) => 
@@ -15,30 +15,29 @@ const post_new_article = (req, res) =>
         ...req.body.new_article
     })
     .save()
-    .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be posted.' }))
     .then(() => 
     {
         Category.findOne({ name: req.body.new_article.category })
-        .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be posted.' }))
         .then(category => 
         {
-            if (category == null)
+            if (!category)
             {
                 new Category({ name: req.body.new_article.category })
                 .save()
-                .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be posted.' }))
-                .then(category => console.log(`> "${category.name}" category created`));
+                .catch(err => 
+                {
+                    res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but its category couldn\'t be created.', error: err });
+                    return;
+                });
             }
 
             Article.find()
-            .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be posted.' }))
-            .then(articles => 
-            {
-                console.log(`> Article added to "${category.name}" category`);
-                res.status(201).json({ status: 200, title: 'Success', message: articles });
-            });
-        });
-    });
+            .then(articles => res.status(201).json({ is_success: true, message: 'New article posted, and ' + articles.length + ' articles loaded.', data: articles }))
+            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but the articles couldn\'t be loaded.', error: err }));
+        })
+        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but if its category was new then it couldn\'t be created.', error: err }));
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article can\'t be posted.', error: err }));
 };
 
 const modify_article = (req, res) => 
@@ -51,40 +50,32 @@ const modify_article = (req, res) =>
         title: req.body.article.title,
         content: req.body.article.content
     })
-    .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be modified.' }))
     .then(() => 
     {
         Article.find()
-        .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be modified.' }))
-        .then(articles => 
-        {
-            console.log(`> Article of ID "${req.body.id}" modified`);
-            res.status(200).json({ status: 200, title: 'Article modified', message: articles });
-        });
-    });
+        .then(articles => res.status(200).json({ is_success: true, message: 'Article modified, and ' + articles.length + ' articles loaded.', data: articles }))
+        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article has been modified, but the articles couldn\'t be loaded.', error: err }));
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article can\'t be modified.', error: err }));
 };
 
 const delete_article = (req, res) => 
 {
     Article.deleteOne({ _id: req.body.id })
-    .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be deleted.' }))
     .then(() => 
     {
         Article.find()
-        .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The article can\'t be deleted.' }))
-        .then(articles => 
-        {
-            console.log(`> Article of ID "${req.body.id}" deleted`);
-            res.status(200).json({ status: 200, title: 'Article deleted', message: articles });
-        });
-    });
+        .then(articles => res.status(200).json({ is_success: true, message: 'Article deleted, and ' + articles.length + ' articles loaded.', data: articles }))
+        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article has been deleted, but the articles couldn\'t be loaded.', error: err }))
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article can\'t be deleted.', error: err }));
 };
 
 const retrieve_categories = (req, res) => 
 {
     Category.find()
-    .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The categories can\'t be retrieved.' }))
-    .then(categories => res.status(200).json({ status: 200, title: 'Success', message: categories }));
+    .then(categories => res.status(200).json({ is_success: true, message: categories.length + ' categories loaded.', data: categories }))
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The categories can\'t be retrieved.', error: err }));
 };
 
 const create_new_category = (req, res) => 
@@ -94,50 +85,49 @@ const create_new_category = (req, res) =>
     new_category = new_category[0].toUpperCase() + new_category.substring(1);
 
     Category.findOne({ name: new_category })
-    .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be created.' }))
     .then((category) => 
     {
-        if (category == null)
+        if (!category)
         {
             new Category(
             {
                 name: new_category
             })
             .save()
-            .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The new category can\'t be created.' }))
-            .then(category => console.log(`> Category "${category.name}" created`));
+            .catch(err => 
+            {
+                res.status(400).json({ is_success: false, message: 'Error: The category can\'t be created.', error: err });
+                return;
+            });
         }
 
         Category.find()
-        .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be created.' }))
-        .then(categories => res.status(201).json({ status: 201, title: 'Success', message: categories }));
-    });
+        .then(categories => res.status(201).json({ is_success: true, message: 'Category created, and ' + categories.length + ' categories loaded.', data: categories }))
+        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been created, but the categories couldn\'t be loaded.', error: err }));
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be created.', error: err }));
 };
 
 const delete_category = (req, res) => 
 {
     Article.findOne({ category: req.body.category})
-    .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be deleted.' }))
     .then(article => 
     {
-        if (article != null)
-            res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be deleted.' });
+        if (article)
+            res.status(400).json({ is_success: false, message: 'Error: The category must be void of articles before it can be deleted.' });
         else
         {
             Category.deleteOne({ name: req.body.category })
-            .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be deleted.' }))
             .then(() => 
             {
                 Category.find()
-                .catch(() => res.status(400).json({ status: 400, title: 'Failure', message: 'The category can\'t be deleted.' }))
-                .then(categories => 
-                {
-                    console.log(`> Category "${req.body.category}" deleted`);
-                    res.status(200).json({ status: 200, title: 'Category deleted', message: categories });
-                });
-            });
+                .then(categories => res.status(200).json({ is_success: true, message: 'Category deleted, and ' + categories.length + ' categories loaded.', data: categories }))
+                .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been deleted, but the categories couldn\'t be loaded.' }));
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be deleted.', error: err }));
         }	
-    });
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be deleted.', error: err }));
 };
 
 module.exports = 

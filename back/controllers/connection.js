@@ -3,69 +3,81 @@ const User = require('../models/user');
 const check_admin_connected = (req, res) => 
 {
     User.findOne({ is_admin: true })
-    .catch(() => res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account couldn\'t be retrieved.' }))
-    .then(admin => res.status(200).json({ message: admin.is_connected }));
+    .then(admin => 
+    {
+        if (admin)
+            res.status(200).json({ is_success: true, message: 'Admin\'s connection status loaded.', data: admin.is_connected });
+        else
+            res.status(404).json({ is_success: false, message: 'Error: The admin couldn\'t be retrieved.' });
+    })
+    .catch(err => res.status(500).json({ is_success: false, message: 'Error: The admin couldn\'t be retrieved.', error: err }));
 };
 
 const connect_admin = (req, res) => 
 {
     User.findOne({ is_admin: true })
-    .catch(() => res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account couldn\'t be retrieved.' }))
     .then(admin => 
     {
+        if (!admin)
+        {
+            res.status(404).json({ is_success: false, message: 'Error: The admin couldn\'t be retrieved.' });
+            return;
+        }
+
         if (req.body.field_login_username.toLowerCase() === admin.name && req.body.field_login_password === admin.password)
         {
             User.updateOne({ _id: admin._id },
             {
                 is_connected: true
             })
-            .catch((err) => res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account is unable to log in.' }))
-            .then(() => 
-            {
-                console.log('> Admin logged in'.blue);
-                res.status(200).json({ status: 200, title: 'Access Granted', message: 'Welcome home... You.' });
-            });
+            .then(() => res.status(200).json({ is_success: true, message: 'Admin connected.' }))
+            .catch(err => res.status(500).json({ is_success: false, message: 'Error: The admin is unable to log in.', error: err }));
         }
         else
         {
-            res.status(401).json({ status: 401, title: 'Access Denied', message: 'Your username and/or password are incorrect.'});
+            res.status(401).json({ is_success: false, message: 'Your username and/or password are incorrect.'});
         }
-    });
+    })
+    .catch(err => res.status(500).json({ is_success: false, message: 'Error: The admin couldn\'t be retrieved.', error: err }));
 };
 
 const disconnect_admin = (req, res) => 
 {
     User.findOne({ is_admin: true })
-    .catch(() => 
-    {
-        res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account couldn\'t be retrieved. The server will restart.' });
-        process.exit(1);
-    })
     .then(admin => 
     {
-        User.updateOne({ _id: admin._id },
+        if (!admin)
         {
-            is_connected: false
-        })
-        .catch(() => 
-        {
-            res.status(500).json({ status: 500, title: 'Internal Error', message: 'The admin account is unable to log out. The server will restart.' });
+            res.status(404).json({ is_success: false, message: 'Error: The admin couldn\'t be retrieved. The server will restart.', error: err });
             process.exit(1);
-        })
-        .then(() => 
+        }
+        else
         {
-            console.log('> Admin logged out'.blue);
-            res.status(200).json({ status: 200, title: 'Access Closed', message: 'See you later.' });
-        });
+            User.updateOne({ _id: admin._id },
+            {
+                is_connected: false
+            })
+            .then(() => res.status(200).json({ is_success: true, message: 'Admin logged out.' }))
+            .catch(err => 
+            {
+                res.status(500).json({ is_success: false, message: 'Error: The admin is unable to log out. The server will restart.', error: err });
+                process.exit(1);
+            });
+        }
+    })
+    .catch(err => 
+    {
+        res.status(500).json({ is_success: false, message: 'Error: The admin couldn\'t be retrieved. The server will restart.', error: err });
+        process.exit(1);
     });
 
     /*
-        NOTE: At the moment, the server doesn't restart automatically after a crash. I tried "Forever", and it's too deprecated, won't even run.
-
         I restarted the server because of a suspicion of hacking.
         It's not normal that the admin could log in, and now can't log out or the account can't even be found.
         It may be a mere technical issue, or it may be because a third party did something.
         I don't know if this is the right reaction to have in such a situation, but at least I react.
+
+        EDIT: At the moment, the server doesn't restart automatically after a crash. I tried "Forever", and it's too deprecated, won't even run.
     */
 };
 

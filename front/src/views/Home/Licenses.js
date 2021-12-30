@@ -1,5 +1,3 @@
-import './Licenses.css';
-
 const Licenses = () => 
 {
     return (

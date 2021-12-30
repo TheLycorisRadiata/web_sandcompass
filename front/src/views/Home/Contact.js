@@ -1,5 +1,4 @@
 import SocialMedia from '../../assets/components/SocialMedia';
-import './Contact.css';
 import { url_api } from '../../config.json';
 
 const Contact = () => 

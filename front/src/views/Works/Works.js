@@ -6,7 +6,6 @@ import File_ePub from '../../assets/files/cosmic_dust/test.epub';
 import File_PDF from '../../assets/files/cosmic_dust/test.pdf';
 import File_Zip from '../../assets/files/cosmic_dust/test.zip';
 import EbookFormatPicker from '../../assets/components/EbookFormatPicker';
-import './Works.css';
 
 const icon_download = <FontAwesomeIcon icon={faDownload} />
 

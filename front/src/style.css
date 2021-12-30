@@ -34,7 +34,7 @@ body
     width: 70%;
 }
 
-/* SCROLLBAR ----------------------------------------------------------------------------------- */
+/* SCROLLBAR ------------------------------------------------------------------------------------ */
 
 ::-webkit-scrollbar
 {
@@ -61,7 +61,7 @@ body
     background-color: #E24E4F;
 }
 
-/* NAV BAR ------------------------------------------------------------------------------------- */
+/* NAV BAR -------------------------------------------------------------------------------------- */
 
 ul
 {
@@ -353,5 +353,246 @@ footer ul
 #txt_likes, #btn_like
 {
     margin-right: 5px;
+}
+
+/* VIEW: BLOG ----------------------------------------------------------------------------------- */
+
+.blog_section
+{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+
+    margin: 15px 0px;
+    padding: 0px 15px 25px;
+    box-shadow: inset 2px 2px 4px #4D1617, inset -2px -2px 4px #4D1617;
+    border-radius: 5px;
+}
+
+/* VIEW: CONTACT -------------------------------------------------------------------------------- */
+
+#contact_form label
+{
+    margin-right: 15px;
+    font-size: 1.2rem;
+}
+
+#visitor_name, #visitor_email, #message_content
+{
+    margin-bottom: 10px;
+}
+
+#message_content
+{
+    margin-top: 10px;
+}
+
+#btn_reset
+{
+    margin-right: 5px;
+}
+
+#btn_send
+{
+    margin-left: 5px;
+}
+
+/* VIEW: CONTROL PANEL -------------------------------------------------------------------------- */
+
+main form
+{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+main input
+{
+    max-width: 300px;
+}
+
+#field_login_username, #field_login_password
+{
+    margin-bottom: 10px;
+}
+
+#back_talks
+{
+    margin-top: 40px;
+
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+
+#back_error
+{
+    color: #960018;
+}
+
+#back_ok
+{
+    color: #00693E;
+}
+
+#go_to_blogeditor
+{
+    display: flex;
+    justify-content: space-around;
+}
+
+#btn_logout_admin
+{
+    display: flex;
+    justify-content: flex-end;
+    color: #E6B000;
+}
+
+#btn_logout_admin svg
+{
+    height: 2rem;
+    width: 2rem;
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+    cursor: pointer;
+}
+
+#control_panel_blog_buttons
+{
+    margin-bottom: 20px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#btn_post_article
+{
+    margin-bottom: 20px;
+}
+
+#control_panel_extended_buttons
+{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+#control_panel_extended_buttons .buttons
+{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+
+#btn_post_article, #select_article
+{
+    align-self: start;
+}
+
+#select_article
+{
+    margin: 0px 20px;
+    margin-bottom: 10px;
+}
+
+#btn_modify_article
+{
+    margin-bottom: 10px;
+}
+
+#control_panel_blog_fields label
+{
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.div_category
+{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+#field_article_new_category, #btn_add_category
+{
+    margin-top: 10px;
+}
+
+#btn_delete_category, #field_article_new_category, #btn_add_category
+{
+    margin-left: 10px;
+}
+
+#btn_preview_article
+{
+    margin-top: 10px;
+}
+
+#div_btn_preview_article
+{
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 870px)
+{
+    #select_article
+    {
+        margin-left: 0;
+    }
+}
+
+/* VIEW: LICENSES ------------------------------------------------------------------------------- */
+
+main ul
+{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+/* VIEW: WORKS ---------------------------------------------------------------------------------- */
+
+#book_info_main, #book_info_date
+{
+    margin-bottom: 20px;
+}
+
+#book_info_summary_title
+{
+    margin-bottom: 20px;
+}
+
+#ebook_formats
+{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+#ebook_formats li
+{
+    padding: 20px;
+    background-color: #9198E5;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px inset #FFF, -2px -2px 4px inset #141426;
+}
+
+#works aside div
+{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+#ebook_format_options
+{
+    margin: 15px 0px;
+}
+
+#ebook_format_options input[type="radio"]
+{
+    margin-right: 8px;
 }
 

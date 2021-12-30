@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
-import './ControlPanel.css';
 import { url_api } from '../../config.json';
 
 const icon_window_close = <FontAwesomeIcon icon={faWindowClose} />

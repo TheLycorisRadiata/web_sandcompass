@@ -10,6 +10,7 @@ const server = http.createServer(app);
 
 mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/sandcompass', 
 {
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

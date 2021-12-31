@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 
 const model_article = new mongoose.Schema(
 {
-    likes: Number,
-    time_creation: Date,
-    time_modification: Date,
-    is_modified: Boolean,
-    category: String,
-    title: String,
-    content: String
+    likes: { type: Number, default: 0 },
+    time_creation: { type: Date, default: Date.now },
+    time_modification: { type: Date, default: Date.now },
+    is_modified: { type: Boolean, default: false },
+    category: { type: String, default: 'NO_CATEGORY' },
+    title: { type: String, default: 'NO_TITLE' },
+    content: { type: String, default: 'NO_CONTENT' }
 }, { collection: 'Articles' });
 
 module.exports = mongoose.model('Article', model_article);

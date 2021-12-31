@@ -11,7 +11,7 @@ const connect_as_admin = (req, res) =>
             return;
         }
 
-        if (req.body.email_address.toLowerCase() === admin.email_address && req.body.password === admin.password)
+        if (req.body.email_address.toLowerCase() === admin.email_address && req.body.password === admin.hashed_password)
             res.status(200).json({ is_success: true, message: 'Admin connected.', data: admin });
         else
             res.status(401).json({ is_success: false, message: 'Your email_address and/or your password are incorrect.'});

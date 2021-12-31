@@ -1,102 +1,90 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { url_api } from '../../config.json';
 
-const icon_window_close = <FontAwesomeIcon icon={faWindowClose} />
+const icon_eye = <FontAwesomeIcon icon={faEye} />;
+const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 
-const ControlPanel = (props) => 
+const ControlPanel = () => 
 {
-    const [username, set_username] = useState('');
+    const [email_address, set_email_address] = useState('');
     const [password, set_password] = useState('');
-    const [back_title, set_back_title] = useState('');
-    const [back_message, set_back_message] = useState('');
-    const [back_status_code, set_back_status_code] = useState('');
+    const [is_password_shown, set_is_password_shown] = useState(false);
+    const [access_message, set_access_message] = useState('');
+    const [is_access_granted, set_is_access_granted] = useState(false);
 
-    const handle_logout = () => 
+    const handle_submit = () => 
     {
-        fetch(url_api + '/connection/admin/logout/')
-        .then(res => res.json())
-        .then(() => props.close_access(false));
-    };
-
-    const handle_click = () => 
-    {
-        fetch(url_api + '/connection/admin/login',
-        {       
-            method: 'post',
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(
-            {
-                field_login_username: username,
-                field_login_password: password
-            })
-        })
-        .then(res => res.json())
-        .then(json => 
+        if (email_address === '' || password === '')
         {
-            set_back_title(json.is_success ? 'Success' : 'Failure' );
-            set_back_message(json.message);
-
-            if (!json.is_success)
+            set_access_message('The email address and the password are both needed.');
+        }
+        else
+        {
+            fetch(url_api + '/user/admin/login',
             {
-                set_back_status_code('back_error');
-                props.grant_access(false);
-            }
-            else
+                method: 'post',
+                headers:
+                {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                {
+                    email_address: email_address,
+                    password: password
+                })
+            })
+            .then(res => res.json())
+            .then(json => 
             {
-                set_back_status_code('back_ok');
-                props.grant_access(true);
-            }
-        });
-
-        set_username('');
-        set_password('');
+                console.log(json.message);
+                if (json.error)
+                    console.log(json.error);
+                set_access_message(json.message);
+                set_is_access_granted(json.is_success);
+            });
+        }
     };
 
-    const handle_key_press = (e) => 
+    const handle_key_press = e => 
     {
         if (e.key === 'Enter')
-            handle_click();
+            handle_submit();
+    };
+
+    const handle_password_visibility = e =>
+    {
+        e.preventDefault();
+        set_is_password_shown(is_password_shown ? false : true);
     };
 
     return (
         <main>
-            {props.is_access_granted && 
+            {is_access_granted ?
             <>
-                <div id="btn_logout_admin"><span title="Log Out" onClick={handle_logout}>{icon_window_close}</span></div>
-
                 <h1>Control Panel</h1>
-
                 <div id="go_to_blogeditor" className="page_numbers"><Link to="/controlpanel/blogeditor">Blog Editor</Link></div>
-            </>}
-
-            {!props.is_access_granted &&
+            </>
+            :
             <>
                 <h1>Control Panel</h1>
 
                 <form>
-                    <input type="text" id="field_login_username" name="field_login_username" value={username} onChange={e => set_username(e.target.value)} placeholder="Username" 
-                        onKeyPress={handle_key_press} autoFocus autoComplete="on" required />
-                    <input type="password" id="field_login_password" name="field_login_password" value={password} onChange={e => set_password(e.target.value)} placeholder="Password" 
-                        onKeyPress={handle_key_press} autoComplete="on" required />
-                    <input type="button" id="btn_login" name="btn_login" value="Log In" onClick={handle_click} />
-                </form>
+                    <input type="text" name="email_address" placeholder="Email address" value={email_address} onChange={e => set_email_address(e.target.value)} 
+                        onKeyPress={handle_key_press} autoComplete="on" required autoFocus />
 
-                {back_title !== '' && back_message !== '' && 
-                <>
-                    <div id="back_talks">
-                        <strong id={back_status_code}>{back_title}</strong><br />
-                        {back_message}
-
-                        {back_status_code === 'back_ok' && <div id="go_to_blogeditor" className="page_numbers"><Link to="/controlpanel/blogeditor">Blog Editor</Link></div>}
+                    <div className="field_password">
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Password" value={password} onChange={e => set_password(e.target.value)} 
+                            onKeyPress={handle_key_press} autoComplete="on" required />
+                        <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
-                </>}
+
+                    <input type="button" name="btn_login" value="Log In" onClick={handle_submit} />
+                    <p>{access_message}</p>
+                </form>
             </>}
         </main>
     );

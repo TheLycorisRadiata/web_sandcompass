@@ -1,7 +1,7 @@
 const express = require('express');
 const router_blog = require('./routes/blog');
 const router_mailing = require('./routes/mailing');
-const router_connection = require('./routes/connection');
+const router_user = require('./routes/user');
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.use(express.json());
 /* API routes */
 app.use('/api/blog', router_blog);
 app.use('/api/mailing', router_mailing);
-app.use('/api/connection', router_connection);
+app.use('/api/user', router_user);
 
 /* Static service of the front-end app's files */
 //app.use(express.static('./public'));

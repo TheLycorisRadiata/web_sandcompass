@@ -16,26 +16,11 @@ import { url_api } from './config.json';
 
 const App = () => 
 {
-    const [is_admin_logged_in, set_is_admin_logged_in] = useState(false);
     const [all_categories, set_all_categories] = useState([]);
     const [all_articles, set_all_articles] = useState([]);
 
-    const set_access = (is_access_granted) => set_is_admin_logged_in(is_access_granted);
-
     useEffect(() => 
     {
-        fetch(url_api + '/connection/admin/connected',
-        {       
-            method: 'get',
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(json => set_is_admin_logged_in(json.data));
-
         fetch(url_api + '/blog/articles',
         {
             method: 'get',
@@ -97,8 +82,8 @@ const App = () =>
 
                 <Route exact path="/contact"><Contact /></Route>
                 <Route exact path="/licenses"><Licenses /></Route>
-                <Route exact path="/controlpanel"><ControlPanel is_access_granted={is_admin_logged_in} grant_access={set_access} close_access={set_access} /></Route>
-                <Route exact path="/controlpanel/blogeditor"><BlogEditor is_access_granted={is_admin_logged_in} close_access={set_access} /></Route>
+                <Route exact path="/controlpanel"><ControlPanel /></Route>
+                <Route exact path="/controlpanel/blogeditor"><BlogEditor /></Route>
                 <Route path="/"><PageNotFound /></Route>
             </Switch>
 

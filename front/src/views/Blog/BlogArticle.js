@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { faHeartBroken } from '@fortawesome/free-solid-svg-icons';
-import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { faThumbsDown } from '@fortawesome/free-regular-svg-icons';
+import { faHeart, faHeartBroken } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import { DateInLetters, Time } from '../../assets/components/Time';
 
 const icon_heart = <FontAwesomeIcon icon={faHeart} />
@@ -15,13 +13,13 @@ const icon_thumbs_down = <FontAwesomeIcon icon={faThumbsDown} />
 const BlogArticle = (props) => 
 {
     const [likes, set_likes] = useState(props.article.likes);
-    const current_time = new Date();
+    const current_time = Date.now();
     const increment_likes = () => set_likes(likes + 1);
     const decrement_likes = () => set_likes(likes - 1);
 
     return (
         <>
-            {props.is_preview && 
+            {props.is_preview ? 
             <div id="main">
                 <h2 id="h1">Blog</h2>
                 <div className="page_numbers page_numbers_top"><span className="a">Other articles</span></div>
@@ -30,13 +28,13 @@ const BlogArticle = (props) =>
                     <h3>{props.article.title}</h3>
                     <p id="article_info">
                         Category: {props.article.category}.<br />
-                        Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? new Date(props.article.time_creation) : current_time} /> at <Time 
-                        raw_time={props.id_selected_article !== '' ? new Date(props.article.time_creation) : current_time} />.
+                        Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} /> at <Time 
+                        raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} />.
                         {props.article.is_modified && 
                         <>
                             <br />
-                            <span>Modified: On the <DateInLetters raw_time={props.id_selected_article !== '' ? new Date(props.article.time_modification) : current_time} /> at <Time 
-                            raw_time={props.id_selected_article !== '' ? new Date(props.article.time_modification) : current_time} />.</span>
+                            <span>Modified: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_modification : current_time} /> at <Time 
+                            raw_time={props.id_selected_article !== '' ? props.article.time_modification : current_time} />.</span>
                         </>}
                     </p>
 
@@ -50,9 +48,8 @@ const BlogArticle = (props) =>
                     <button id="btn_like" name="btn_like" onClick={increment_likes}>{icon_thumbs_up} Like</button>
                     <button id="btn_like" name="btn_dislike" onClick={decrement_likes}>{icon_thumbs_down} Dislike</button>
                 </div>
-            </div>}
-
-            {!props.is_preview && 
+            </div>
+            :
             <main>
                 <h1>Blog</h1>
                 <div className="page_numbers page_numbers_top"><Link to="/blog/page.html">Other articles</Link></div>
@@ -61,12 +58,12 @@ const BlogArticle = (props) =>
                     <h2>{props.article.title}</h2>
                     <p id="article_info">
                         Category: {props.article.category}.<br />
-                        Created: On the <DateInLetters raw_time={new Date(props.article.time_creation)} /> at <Time raw_time={new Date(props.article.time_creation)} />.
+                        Created: On the <DateInLetters raw_time={props.article.time_creation} /> at <Time raw_time={props.article.time_creation} seconds={false} />.
                         {props.article.is_modified && 
                         <>
                             <br />
-                            <span>Modified: On the <DateInLetters raw_time={new Date(props.article.time_modification)} /> at 
-                            <Time raw_time={new Date(props.article.time_modification)} />.</span>
+                            <span>Modified: On the <DateInLetters raw_time={props.article.time_modification} /> at 
+                            <Time raw_time={props.article.time_modification} />.</span>
                         </>}
                     </p>
 

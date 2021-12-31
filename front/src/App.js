@@ -95,7 +95,7 @@ const App = () =>
                 <Route exact path="/contact"><Contact /></Route>
                 <Route exact path="/licenses"><Licenses /></Route>
                 <Route exact path="/controlpanel"><ControlPanel /></Route>
-                <Route exact path="/controlpanel/blogeditor"><BlogEditor /></Route>
+                <Route exact path="/controlpanel/blogeditor"><BlogEditor articles={all_articles} set_articles={set_all_articles} categories={all_categories} set_categories={set_all_categories} /></Route>
                 <Route path="/"><PageNotFound /></Route>
             </Switch>
 

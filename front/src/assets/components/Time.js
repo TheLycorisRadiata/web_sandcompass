@@ -1,6 +1,6 @@
 const DateInLetters = (props) =>
 {
-    const date = props.raw_time;
+    const date = new Date(props.raw_time);
     const day = date.getUTCDate();
     const month = date.getUTCMonth() + 1;
     const year = date.getUTCFullYear();
@@ -13,12 +13,12 @@ const DateInLetters = (props) =>
 
 const Time = (props) =>
 {
-    const date = props.raw_time;
+    const date = new Date(props.raw_time);
     const hours = date.getUTCHours() + 1;
     const minutes = date.getUTCMinutes();
     const seconds = date.getUTCSeconds();
 
-    return <span>{hours}:{minutes < 10 ? '0' + minutes : minutes}:{seconds < 10 ? '0' + seconds : seconds}</span>;
+    return <span>{hours}:{minutes < 10 ? '0' + minutes : minutes}{!props.seconds ? '' : ':' + (seconds < 10 ? '0' + seconds : seconds)}</span>;
 };
 
 export {DateInLetters, Time};

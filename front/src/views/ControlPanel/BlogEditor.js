@@ -1,9 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolderMinus } from '@fortawesome/free-solid-svg-icons';
-import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
-import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faFolderMinus, faFolderPlus, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import BlogArticle from '../Blog/BlogArticle';
 import { url_api } from '../../config.json';
 
@@ -12,14 +9,8 @@ const icon_folder_plus = <FontAwesomeIcon icon={faFolderPlus} />
 const icon_eye = <FontAwesomeIcon icon={faEye} />
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />
 
-const BlogEditor = () => 
+const BlogEditor = (props) => 
 {
-    const [all_articles, set_all_articles] = useState([]);
-    const [all_categories, set_all_categories] = useState([]);
-    const [id_selected_article, set_id_selected_article] = useState('');
-    const [new_category, set_new_category] = useState('');
-    const [is_preview_shown, set_is_preview_shown] = useState(false);
-
     const default_category = 'No category';
     const default_title = 'No title';
     const default_content = '<p>No content.</p>';
@@ -27,8 +18,8 @@ const BlogEditor = () =>
     const default_article = 
     {
         likes: 0,
-        time_creation: new Date(),
-        time_modification: new Date(),
+        time_creation: Date.now(),
+        time_modification: Date.now(),
         is_modified: false,
         category: default_category,
         title: default_title,
@@ -36,10 +27,13 @@ const BlogEditor = () =>
     };
 
     const [article, set_article] = useState(default_article);
+    const [id_selected_article, set_id_selected_article] = useState('');
+    const [new_category, set_new_category] = useState('');
+    const [is_preview_shown, set_is_preview_shown] = useState(false);
 
     const handle_select_title = e => 
     {
-        const selected_article = all_articles.find(existing_article => existing_article.title === e.target.value);
+        const selected_article = props.articles.find(existing_article => existing_article.title === e.target.value);
 
         set_id_selected_article(selected_article._id);
 
@@ -92,7 +86,7 @@ const BlogEditor = () =>
                 alert(json.message);
 
                 if (json.is_success)
-                    set_all_categories(json.data);
+                    props.set_categories(json.data);
             });
         }
     };
@@ -120,7 +114,7 @@ const BlogEditor = () =>
                 alert(json.message);
 
                 if (json.is_success)
-                    set_all_categories(json.data);
+                    props.set_categories(json.data);
             });
 
             set_article(
@@ -144,8 +138,8 @@ const BlogEditor = () =>
             set_article(
             {
                 likes: 0,
-                time_creation: new Date(),
-                time_modification: new Date(),
+                time_creation: Date.now(),
+                time_modification: Date.now(),
                 is_modified: false,
                 category: article.category,
                 title: article.title,
@@ -171,7 +165,7 @@ const BlogEditor = () =>
                 alert(json.message);
 
                 if (json.is_success)
-                    set_all_articles(json.data);
+                    props.set_articles(json.data);
             });
 
             set_article(default_article);
@@ -186,7 +180,7 @@ const BlogEditor = () =>
             {
                 likes: article.likes,
                 time_creation: article.time_creation,
-                time_modification: new Date(),
+                time_modification: Date.now(),
                 is_modified: true,
                 category: article.category,
                 title: article.title,
@@ -212,7 +206,7 @@ const BlogEditor = () =>
                 alert(json.message);
 
                 if (json.is_success)
-                    set_all_articles(json.data);
+                    props.set_articles(json.data);
             });
 
             set_id_selected_article('');
@@ -243,7 +237,7 @@ const BlogEditor = () =>
                 alert(json.message);
 
                 if (json.is_success)
-                    set_all_articles(json.data);
+                    props.set_articles(json.data);
             });
 
             set_id_selected_article('');
@@ -284,63 +278,20 @@ const BlogEditor = () =>
         is_preview_shown ? set_is_preview_shown(false) : set_is_preview_shown(true);
     };
 
-    useEffect(() => 
-    {
-        fetch(url_api + '/blog/articles',
-        {
-            method: 'get',
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(json => 
-        {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
-            alert(json.message);
-
-            json.is_success ? set_all_articles(json.data) : console.warn(json.message);
-        });
-
-        fetch(url_api + '/blog/categories',
-        {
-            method: 'get',
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(json => 
-        {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
-            alert(json.message);
-
-            json.is_success ? set_all_categories(json.data) : console.warn(json.message);
-        });
-    }, []);
-
     return (
         <main>
             <h1>Blog Editor</h1>
 
             <div id="control_panel_blog_buttons">
                 <input type="button" name="btn_post_article" id="btn_post_article" value="Post a new article" onClick={handle_create_article} />
-                {all_articles.length && 
+                {props.articles.length && 
                 <div id="control_panel_extended_buttons">
                     <select name="select_article" id="select_article" defaultValue="default" autoComplete="off" onChange={handle_select_title}>
                         <option disabled value="default">Select an article</option>
-                            {all_categories.map(category => 
+                            {props.categories.map(category => 
                                 <optgroup label={category.name} key={category._id}>
-                                    {!all_articles.filter(article => article.category === category.name).length ? <option disabled>No article</option> : 
-                                    all_articles.filter(article => article.category === category.name).map(article => <option key={article._id}>{article.title}</option>)}
+                                    {!props.articles.filter(article => article.category === category.name).length ? <option disabled>No article</option> : 
+                                    props.articles.filter(article => article.category === category.name).map(article => <option key={article._id}>{article.title}</option>)}
                                 </optgroup>
                             )}
                     </select>
@@ -359,11 +310,11 @@ const BlogEditor = () =>
                 <label htmlFor="select_category">Category:</label><br />
                 <div className="div_category">
                     <select name="select_category" id="select_category" defaultValue="default" autoComplete="off" onChange={handle_select_category}>
-                        {!all_categories.length && <option disabled value="default">No category</option>}
-                        {all_categories.length && 
+                        {!props.categories.length && <option disabled value="default">No category</option>}
+                        {props.categories.length && 
                         <>
                             <option disabled value="default">Select a category</option>
-                            {all_categories.map(category => <option key={category._id}>{category.name}</option>)}
+                            {props.categories.map(category => <option key={category._id}>{category.name}</option>)}
                         </>}
                     </select>
                     <button name="btn_delete_category" id="btn_delete_category" onClick={handle_delete_category}>{icon_folder_minus}</button>

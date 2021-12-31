@@ -31,7 +31,13 @@ const App = () =>
             }
         })
         .then(res => res.json())
-        .then(json => !json.is_success ? console.warn(json.message) : set_all_articles(json.data));
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+            json.is_success ? set_all_articles(json.data) : console.warn(json.message);
+        });
 
         fetch(url_api + '/blog/categories',
         {
@@ -43,7 +49,13 @@ const App = () =>
             }
         })
         .then(res => res.json())
-        .then(json => !json.is_success ? console.warn(json.message) : set_all_categories(json.data));
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+            json.is_success ? set_all_categories(json.data) : console.warn(json.message);
+        });
     }, []);
 
     return (

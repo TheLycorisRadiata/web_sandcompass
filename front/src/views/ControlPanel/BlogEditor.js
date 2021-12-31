@@ -86,13 +86,13 @@ const BlogEditor = () =>
             .then(res => res.json())
             .then(json => 
             {
-                if (!json.is_success)
-                    alert(json.message);
-                else
-                {
-                    alert(json.message);
+                console.log(json.message);
+                if (json.error)
+                    console.log(json.error);
+                alert(json.message);
+
+                if (json.is_success)
                     set_all_categories(json.data);
-                }
             });
         }
     };
@@ -114,13 +114,13 @@ const BlogEditor = () =>
             .then(res => res.json())
             .then(json => 
             {
-                if (!json.is_success)
-                    alert(json.message);
-                else
-                {
-                    alert(json.message);
+                console.log(json.message);
+                if (json.error)
+                    console.log(json.error);
+                alert(json.message);
+
+                if (json.is_success)
                     set_all_categories(json.data);
-                }
             });
 
             set_article(
@@ -165,13 +165,13 @@ const BlogEditor = () =>
             .then(res => res.json())
             .then(json => 
             {
-                if (!json.is_success)
-                    alert(json.message);
-                else
-                {
-                    alert(json.message);
+                console.log(json.message);
+                if (json.error)
+                    console.log(json.error);
+                alert(json.message);
+
+                if (json.is_success)
                     set_all_articles(json.data);
-                }
             });
 
             set_article(default_article);
@@ -206,13 +206,13 @@ const BlogEditor = () =>
             .then(res => res.json())
             .then(json => 
             {
-                if (!json.is_success)
-                    alert(json.message);
-                else
-                {
-                    alert(json.message);
+                console.log(json.message);
+                if (json.error)
+                    console.log(json.error);
+                alert(json.message);
+
+                if (json.is_success)
                     set_all_articles(json.data);
-                }
             });
 
             set_id_selected_article('');
@@ -237,13 +237,13 @@ const BlogEditor = () =>
             .then(res => res.json())
             .then(json => 
             {
-                if (!json.is_success)
-                    alert(json.message);
-                else
-                {
-                    alert(json.message);
+                console.log(json.message);
+                if (json.error)
+                    console.log(json.error);
+                alert(json.message);
+
+                if (json.is_success)
                     set_all_articles(json.data);
-                }
             });
 
             set_id_selected_article('');
@@ -296,7 +296,15 @@ const BlogEditor = () =>
             }
         })
         .then(res => res.json())
-        .then(json => !json.is_success ? console.warn(json.message) : set_all_articles(json.data));
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+            alert(json.message);
+
+            json.is_success ? set_all_articles(json.data) : console.warn(json.message);
+        });
 
         fetch(url_api + '/blog/categories',
         {
@@ -308,7 +316,15 @@ const BlogEditor = () =>
             }
         })
         .then(res => res.json())
-        .then(json => !json.is_success ? console.warn(json.message) : set_all_categories(json.data));
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+            alert(json.message);
+
+            json.is_success ? set_all_categories(json.data) : console.warn(json.message);
+        });
     }, []);
 
     return (

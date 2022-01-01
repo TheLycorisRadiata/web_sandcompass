@@ -31,18 +31,19 @@ const BlogEditor = (props) =>
     const [new_category, set_new_category] = useState('');
     const [is_preview_shown, set_is_preview_shown] = useState(false);
 
-    const handle_select_title = e => 
+    const handle_select_article = e => 
     {
-        const selected_article = props.articles.find(existing_article => existing_article.title === e.target.value);
+        const index = e.target.value;
+        const selected_article = props.articles[index];
 
         set_id_selected_article(selected_article._id);
 
         set_article(
         {
-            likes: 0,
+            likes: selected_article.likes,
             time_creation: selected_article.time_creation,
             time_modification: selected_article.time_modification,
-            is_modified: selected_article.is_modified === undefined || selected_article.is_modified === false ? false : true,
+            is_modified: selected_article.is_modified,
             category: selected_article.category,
             title: selected_article.title,
             content: selected_article.content
@@ -83,7 +84,6 @@ const BlogEditor = (props) =>
                 console.log(json.message);
                 if (json.error)
                     console.log(json.error);
-                alert(json.message);
 
                 if (json.is_success)
                     props.set_categories(json.data);
@@ -111,21 +111,20 @@ const BlogEditor = (props) =>
                 console.log(json.message);
                 if (json.error)
                     console.log(json.error);
-                alert(json.message);
 
                 if (json.is_success)
                     props.set_categories(json.data);
-            });
 
-            set_article(
-            {
-                likes: article.likes,
-                time_creation: article.time_creation,
-                time_modification: article.time_modification,
-                is_modified: article.is_modified,
-                category: default_category,
-                title: article.title,
-                content: article.content
+                set_article(
+                {
+                    likes: article.likes,
+                    time_creation: article.time_creation,
+                    time_modification: article.time_modification,
+                    is_modified: article.is_modified,
+                    category: default_category,
+                    title: article.title,
+                    content: article.content
+                });
             });
         }
     };
@@ -273,10 +272,7 @@ const BlogEditor = (props) =>
         });
     };
 
-    const handle_preview = () => 
-    {
-        is_preview_shown ? set_is_preview_shown(false) : set_is_preview_shown(true);
-    };
+    const handle_preview = () => set_is_preview_shown(is_preview_shown ? false : true);
 
     return (
         <main>
@@ -286,12 +282,12 @@ const BlogEditor = (props) =>
                 <input type="button" name="btn_post_article" id="btn_post_article" value="Post a new article" onClick={handle_create_article} />
                 {props.articles.length && 
                 <div id="control_panel_extended_buttons">
-                    <select name="select_article" id="select_article" defaultValue="default" autoComplete="off" onChange={handle_select_title}>
+                    <select name="select_article" id="select_article" defaultValue="default" onChange={handle_select_article}>
                         <option disabled value="default">Select an article</option>
                             {props.categories.map(category => 
                                 <optgroup label={category.name} key={category._id}>
                                     {!props.articles.filter(article => article.category === category.name).length ? <option disabled>No article</option> : 
-                                    props.articles.filter(article => article.category === category.name).map(article => <option key={article._id}>{article.title}</option>)}
+                                    props.articles.filter(article => article.category === category.name).map((e, i) => <option key={e._id} value={i}>{e.title}</option>)}
                                 </optgroup>
                             )}
                     </select>
@@ -309,9 +305,9 @@ const BlogEditor = (props) =>
 
                 <label htmlFor="select_category">Category:</label><br />
                 <div className="div_category">
-                    <select name="select_category" id="select_category" defaultValue="default" autoComplete="off" onChange={handle_select_category}>
-                        {!props.categories.length && <option disabled value="default">No category</option>}
-                        {props.categories.length && 
+                    <select name="select_category" id="select_category" defaultValue="default" onChange={handle_select_category}>
+                        {!props.categories.length ? <option disabled value="default">No category</option>
+                        :
                         <>
                             <option disabled value="default">Select a category</option>
                             {props.categories.map(category => <option key={category._id}>{category.name}</option>)}

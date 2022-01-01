@@ -2,8 +2,6 @@ import { useState } from 'react';
 import SocialMedia from '../../assets/components/SocialMedia';
 import { url_api } from '../../config.json';
 
-// autoComplete="new-password" means "off"
-
 const Contact = () => 
 {
     const [is_visitor_pro, set_is_visitor_pro] = useState(false);

@@ -8,7 +8,8 @@ const model_user = new mongoose.Schema(
     verified_user: { type: Boolean, default: false },
     email_address: { type: String, unique: true, lowercase: true },
     hashed_password: { type: String, default: null },
-    username: { type: String, unique: true }
+    username: { type: String, unique: true },
+    newsletter: { type: Boolean, default: false }
 }, { collection: 'Users' });
 
 module.exports = mongoose.model('User', model_user);

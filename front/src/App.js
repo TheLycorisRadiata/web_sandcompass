@@ -60,49 +60,51 @@ const App = () =>
 
     return (
         <Router>
-            <header>
-                <Link to="/home/">
-                    <div id="banner">
-                        <img src={Banner} alt="Banner Gareus temple in Uruk city" />
-                        <p>Sand Compass</p>
-                    </div>
-                </Link>
+            <div>
+                <header>
+                    <Link to="/home">
+                        <div id="banner">
+                            <img src={Banner} alt="Banner Gareus temple in Uruk city" />
+                            <p>Sand Compass</p>
+                        </div>
+                    </Link>
 
-                <nav>
-                    <ul>
-                        <Link to="/home/"><li>Home</li></Link>
-                        <Link to="/works/"><li>Works</li></Link>
-                        <Link to="/blog/"><li>Blog</li></Link>
-                        <Link to="/contact/"><li>Contact</li></Link>
-                    </ul>
-                </nav>
-            </header>
+                    <nav>
+                        <ul>
+                            <Link to="/home"><li>Home</li></Link>
+                            <Link to="/works"><li>Works</li></Link>
+                            <Link to="/blog"><li>Blog</li></Link>
+                            <Link to="/contact"><li>Contact</li></Link>
+                        </ul>
+                    </nav>
+                </header>
 
-            <Switch>
-                <Route exact path="/"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
-                <Route exact path="/home"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
-                <Route exact path="/works"><Works /></Route>
-                <Route exact path="/blog"><Blog categories={all_categories} articles={all_articles} /></Route>
+                <Switch>
+                    <Route exact path="/"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
+                    <Route exact path="/home"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
+                    <Route exact path="/works"><Works /></Route>
+                    <Route exact path="/blog"><Blog categories={all_categories} articles={all_articles} /></Route>
 
-                <Route exact path="/blog/page.html"><BlogPage all_articles={all_articles} /></Route>
+                    <Route exact path="/blog/page.html"><BlogPage all_articles={all_articles} /></Route>
 
-                    {all_articles.map(article => 
-                        <Route exact path={'/blog/article' + article._id + '.html'} key={article._id}>
-                            <BlogArticle is_preview={false} article={article} />
-                        </Route>)
-                    }
+                        {all_articles.map(article => 
+                            <Route exact path={'/blog/article' + article._id + '.html'} key={article._id}>
+                                <BlogArticle is_preview={false} article={article} />
+                            </Route>)
+                        }
 
-                <Route exact path="/contact"><Contact /></Route>
-                <Route exact path="/licenses"><Licenses /></Route>
-                <Route exact path="/controlpanel"><ControlPanel /></Route>
-                <Route exact path="/controlpanel/blogeditor"><BlogEditor articles={all_articles} set_articles={set_all_articles} categories={all_categories} set_categories={set_all_categories} /></Route>
-                <Route path="/"><PageNotFound /></Route>
-            </Switch>
+                    <Route exact path="/contact"><Contact /></Route>
+                    <Route exact path="/licenses"><Licenses /></Route>
+                    <Route exact path="/controlpanel"><ControlPanel /></Route>
+                    <Route exact path="/controlpanel/blogeditor"><BlogEditor articles={all_articles} set_articles={set_all_articles} categories={all_categories} set_categories={set_all_categories} /></Route>
+                    <Route path="/"><PageNotFound /></Route>
+                </Switch>
+            </div>
 
             <footer>
                 <ul>
-                    <Link to="/licenses/"><li>Licenses</li></Link>
-                    <Link to="/controlpanel/"><li>Control Panel</li></Link>
+                    <Link to="/licenses"><li>Licenses</li></Link>
+                    <Link to="/controlpanel"><li>Control Panel</li></Link>
                     <li id="copyright">Lycoris Radiata &copy; 2021 All Rights Reserved</li>
                 </ul>
             </footer>

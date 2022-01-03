@@ -1,7 +1,13 @@
 :root
 {
-    --white: #FFF;
-    /* var(--white) */
+    --black: #1F0505;
+    --white: #DEE1FA;
+    --pink: #E66465;
+    --blue: #9198E5;
+    --dark_yellow: #E6B000;
+    --light_yellow: #FFCF33;
+    --brown: #4D1617;
+    --see_through_white: rgba(242, 223, 234, 0.7);
 }
 
 @font-face
@@ -15,17 +21,16 @@
     margin: 0;
     padding: 0;
     outline: none;
-    font-size: 1.1rem;
+    text-align: justify;
+    word-break: break-all;
+    font-family: "Fira Sans", sans-serif;
 }
 
 body
 {
     padding: 15px;
-    background: linear-gradient(#E66465, #9198E5) fixed no-repeat;
-    font-family: "Fira Sans", sans-serif;
-    text-align: justify;
-    word-break: break-all;
-    overflow-y: scroll;
+    font-size: 1.1rem;
+    background: linear-gradient(var(--pink), var(--blue)) fixed no-repeat;
 }
 
 #root
@@ -34,31 +39,34 @@ body
     width: 70%;
 }
 
+/* To push the footer to the bottom even when the view is not scrollable */
+#root
+{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 /* SCROLLBAR ------------------------------------------------------------------------------------ */
+
+body
+{
+    /* So the scrollbar is visible even when inactive */
+    overflow-y: scroll;
+}
 
 ::-webkit-scrollbar
 {
     width: 15px;
-    background-color: #141426;
-}
-
-::-webkit-scrollbar-track
-{
-    box-shadow: inset 2px 2px 3px #141426, inset -2px -2px 3px #141426;
-    background-color: #9198E5;
-    border-radius: 10px;
+    background: linear-gradient(var(--pink), var(--blue));
 }
 
 ::-webkit-scrollbar-thumb
 {
-    background-color: #B43E3F;
+    background: linear-gradient(var(--blue), var(--pink));
     border-radius: 10px;
-    box-shadow: inset 2px 2px 3px #FFF;
-}
-
-::-webkit-scrollbar-thumb:hover
-{
-    background-color: #E24E4F;
+    box-shadow: inset 2px 2px 3px var(--white);
 }
 
 /* BUTTON: PASSWORD EYE TOGGLE ------------------------- */
@@ -70,9 +78,9 @@ body
 
 .btn_eye
 {
-    color: #000;
+    color: var(--black);
     padding-left: 7px;
-    background-color: #FFF;
+    background-color: var(--white);
     cursor: pointer;
     position: absolute;
     top: 10px;
@@ -88,7 +96,7 @@ ul
 
 #banner p, h1, h2[id="h1"], h2, h3, #last_article_title
 {
-    color: #9198E5;
+    color: var(--blue);
 }
 
 #banner p, h1, h2[id="h1"], h2, h3, #last_article_title, #error_message
@@ -100,7 +108,7 @@ ul
 {
     font-weight: bold;
     font-size: 1.3rem;
-    text-shadow: 1px 1px 2px #000;
+    text-shadow: 1px 1px 2px var(--black);
 }
 
 #last_article_title, .article_info
@@ -149,7 +157,7 @@ header ul li
 
 #banner p, h1, h2[id="h1"], h2, a, span[class="a"], footer, h3
 {
-    text-shadow: 2px 2px 4px #000;
+    text-shadow: 2px 2px 4px var(--black);
 }
 
 #banner p, h1, h2[id="h1"], h2, h3, a, span[class="a"], strong, #txt_likes
@@ -164,7 +172,7 @@ em
 
 a, span[class="a"]
 {
-    color: #E6B000;
+    color: var(--dark_yellow);
     text-decoration: none;
 }
 
@@ -185,7 +193,7 @@ span[class="a"]
 
 a:hover, span[class="a"]:hover
 {
-    color: #FFCF33;
+    color: var(--light_yellow);
 }
 
 .logo img
@@ -202,7 +210,7 @@ header img, header ul li, main, div#main, input, textarea, select
 
 header img, header ul li, main, div#main
 {
-    box-shadow: 3px 3px 5px #FFF, -3px -3px 5px #FFF;
+    box-shadow: 3px 3px 5px var(--white), -3px -3px 5px var(--white);
 }
 
 header ul li, button, input[type="button"], input[type="submit"], input[type="reset"]
@@ -212,7 +220,7 @@ header ul li, button, input[type="button"], input[type="submit"], input[type="re
 
 button, input, select, textarea
 {
-    border: 3px solid #9198E5;
+    border: 3px solid var(--blue);
 }
 
 header img
@@ -248,14 +256,14 @@ header ul li
     margin: 5px;
     margin-top: 25px;
     padding: 20px;
-    background-color: rgba(234, 122, 123, 0.7);
+    background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
 }
 
 main, div#main
 {
     margin: 20px 0px;
     padding: 15px;
-    background-color: rgba(234, 122, 123, 0.7);
+    background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
 }
 
 button, input, textarea, select
@@ -305,7 +313,7 @@ footer ul
     padding: 10px;
     max-width: 350px;
     max-height: 500px;
-    box-shadow: 4px 4px 8px inset rgba(242, 223, 234, 0.8), -4px -4px 8px inset rgba(242, 223, 234, 0.8);
+    box-shadow: 4px 4px 8px inset var(--see_through_white), -4px -4px 8px inset var(--see_through_white);
     border-radius: 10px;
 }
 
@@ -313,8 +321,8 @@ footer ul
 {
     margin: 10px;
     padding: 15px;
-    background-color: #9198E5;
-    box-shadow: inset 2px 2px 4px #FFF, inset -2px -2px 4px #141426;
+    background-color: var(--blue);
+    box-shadow: inset 2px 2px 4px var(--white), inset -2px -2px 4px var(--black);
     border-radius: 50%;
 }
 
@@ -335,15 +343,15 @@ footer ul
     margin-bottom: 20px;
     text-align: center;
     font-weight: bold;
-    color: #9198E5;
-    text-shadow: 1px 1px 2px #000;
+    color: var(--blue);
+    text-shadow: 1px 1px 2px var(--black);
 }
 
 #likes_dislikes:before, #likes_dislikes:after
 {
     display: block;
     content: "";
-    background-color: #FFF;
+    background-color: var(--white);
     height: 2px;
     width: 100%;
 }
@@ -351,13 +359,13 @@ footer ul
 #likes_dislikes:before
 {
     margin-bottom: 10px;
-    box-shadow: 2px 2px 5px #1F0505;
+    box-shadow: 2px 2px 5px var(--black);
 }
 
 #likes_dislikes:after
 {
     margin-top: 10px;
-    box-shadow: -2px -2px 5px #1F0505;
+    box-shadow: -2px -2px 5px var(--black);
 }
 
 #likes_dislikes
@@ -383,7 +391,7 @@ footer ul
 
     margin: 15px 0px;
     padding: 0px 15px 25px;
-    box-shadow: inset 2px 2px 4px #4D1617, inset -2px -2px 4px #4D1617;
+    box-shadow: inset 2px 2px 4px var(--brown), inset -2px -2px 4px var(--brown);
     border-radius: 5px;
 }
 
@@ -443,35 +451,10 @@ main input
     align-items: center;
 }
 
-#back_error
-{
-    color: #960018;
-}
-
-#back_ok
-{
-    color: #00693E;
-}
-
 #go_to_blogeditor
 {
     display: flex;
     justify-content: space-around;
-}
-
-#btn_logout_admin
-{
-    display: flex;
-    justify-content: flex-end;
-    color: #E6B000;
-}
-
-#btn_logout_admin svg
-{
-    height: 2rem;
-    width: 2rem;
-    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
-    cursor: pointer;
 }
 
 #control_panel_blog_buttons
@@ -592,9 +575,9 @@ main ul
 #ebook_formats li
 {
     padding: 20px;
-    background-color: #9198E5;
+    background-color: var(--blue);
     border-radius: 5px;
-    box-shadow: 2px 2px 4px inset #FFF, -2px -2px 4px inset #141426;
+    box-shadow: 2px 2px 4px inset var(--white), -2px -2px 4px inset var(--black);
 }
 
 #works aside div

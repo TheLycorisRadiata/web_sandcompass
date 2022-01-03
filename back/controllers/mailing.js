@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const User = require('../models/user');
 const Token = require('../models/token');
 const Newsletter = require('../models/newsletter');
-const { url_client } = require('../config.json');
+const { homepage } = require('../package.json');
 
 const send_visitor_mail_to_admin = (req, res) => 
 {
@@ -106,7 +106,7 @@ const send_mail_at_account_registration = (req, res) =>
             return;
         }
 
-        link_referral = url_client + '/user/signup/' + user._id;
+        link_referral = homepage + '/user/signup/' + user._id;
 
         paragraph_newsletter = (user.newsletter ? 
             `<p>You're subscribed to the newsletter, which allows you to be updated on the projects' progress.` : 
@@ -126,7 +126,7 @@ const send_mail_at_account_registration = (req, res) =>
             Token.find({ account: user._id, action: 'email' })
             .then(tokens => 
             {
-                link_verify_email = url_client + '/token/' + tokens[tokens.length - 1]._id;
+                link_verify_email = homepage + '/token/' + tokens[tokens.length - 1]._id;
 
                 smtp_trans = nodemailer.createTransport(
                 {
@@ -194,7 +194,7 @@ const send_mail_at_newsletter_subscription = (req, res) =>
             return;
         }
 
-        link_referral = url_client + '/user/signup/' + user._id;
+        link_referral = homepage + '/user/signup/' + user._id;
 
         smtp_trans = nodemailer.createTransport(
         {
@@ -269,7 +269,7 @@ const send_mail_at_email_update = (req, res) =>
             Token.find({ account: user._id, action: 'email' })
             .then(tokens => 
             {
-                link_verify_email = url_client + '/token/' + tokens[tokens.length - 1]._id;
+                link_verify_email = homepage + '/token/' + tokens[tokens.length - 1]._id;
 
                 smtp_trans = nodemailer.createTransport(
                 {
@@ -347,7 +347,7 @@ const send_mail_for_new_password = (req, res) =>
                 Token.find({ account: user._id, action: 'pass' })
                 .then(tokens => 
                 {
-                    link_create_password = url_client + '/password/' + tokens[tokens.length - 1]._id;
+                    link_create_password = homepage + '/password/' + tokens[tokens.length - 1]._id;
 
                     smtp_trans = nodemailer.createTransport(
                     {

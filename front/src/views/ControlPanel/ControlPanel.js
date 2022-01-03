@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { url_api } from '../../config.json';
+import { backend } from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
@@ -23,7 +23,7 @@ const ControlPanel = () =>
         }
         else
         {
-            fetch(url_api + '/user/admin/login',
+            fetch(backend + '/user/admin/login',
             {
                 method: 'post',
                 headers:

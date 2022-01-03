@@ -12,7 +12,7 @@ import BlogEditor from './views/ControlPanel/BlogEditor';
 import PageNotFound from './views/PageNotFound';
 import Banner from './assets/images/banner.jpg';
 import './style.css';
-import { url_api } from './config.json';
+import { backend } from '../package.json';
 
 const App = () => 
 {
@@ -21,7 +21,7 @@ const App = () =>
 
     useEffect(() => 
     {
-        fetch(url_api + '/blog/articles',
+        fetch(backend + '/blog/articles',
         {
             method: 'get',
             headers:
@@ -39,7 +39,7 @@ const App = () =>
             json.is_success ? set_all_articles(json.data) : console.warn(json.message);
         });
 
-        fetch(url_api + '/blog/categories',
+        fetch(backend + '/blog/categories',
         {
             method: 'get',
             headers:

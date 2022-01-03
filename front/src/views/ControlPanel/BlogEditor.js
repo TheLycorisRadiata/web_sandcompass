@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderMinus, faFolderPlus, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import BlogArticle from '../Blog/BlogArticle';
-import { url_api } from '../../config.json';
+import { backend } from '../../../package.json';
 
 const icon_folder_minus = <FontAwesomeIcon icon={faFolderMinus} />
 const icon_folder_plus = <FontAwesomeIcon icon={faFolderPlus} />
@@ -68,7 +68,7 @@ const BlogEditor = (props) =>
     {
         if (new_category !== '')
         {
-            fetch(url_api + '/blog/categories',
+            fetch(backend + '/blog/categories',
             {
                 method: 'post',
                 headers:
@@ -95,7 +95,7 @@ const BlogEditor = (props) =>
     {
         if (article.category !== default_category)
         {
-            fetch(url_api + '/blog/categories',
+            fetch(backend + '/blog/categories',
             {
                 method: 'delete',
                 headers:
@@ -145,7 +145,7 @@ const BlogEditor = (props) =>
                 content: article.content
             });
 
-            fetch(url_api + '/blog/articles',
+            fetch(backend + '/blog/articles',
             {
                 method: 'post',
                 headers:
@@ -186,7 +186,7 @@ const BlogEditor = (props) =>
                 content: article.content
             });
 
-            fetch(url_api + '/blog/articles',
+            fetch(backend + '/blog/articles',
             {
                 method: 'put',
                 headers:
@@ -217,7 +217,7 @@ const BlogEditor = (props) =>
     {
         if (id_selected_article !== '')
         {
-            fetch(url_api + '/blog/articles',
+            fetch(backend + '/blog/articles',
             {
                 method: 'delete',
                 headers:

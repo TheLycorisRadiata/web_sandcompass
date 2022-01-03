@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import SocialMedia from '../../assets/components/SocialMedia';
-import { url_api } from '../../config.json';
+import { backend } from '../../../package.json';
 
 const Contact = () => 
 {
@@ -30,7 +30,7 @@ const Contact = () =>
 
         if (last_name !== '' && first_name !== '' && email_address !== '' && subject !== 'default' && message !== '')
         {
-            fetch(url_api + '/mailing/contact',
+            fetch(backend + '/mailing/contact',
             {
                 method: 'POST',
                 headers:

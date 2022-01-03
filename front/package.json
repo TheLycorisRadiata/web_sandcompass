@@ -1,6 +1,7 @@
 {
 	"name": "front",
-	"homepage": ".",
+	"homepage": "http://localhost:3000",
+	"backend": "http://localhost:3001/api",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {

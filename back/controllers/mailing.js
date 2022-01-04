@@ -156,7 +156,7 @@ const send_mail_at_account_registration = (req, res) =>
 
                             paragraph_newsletter + 
 
-                            '<p>Thank you for the attention you express towards Sand Compass ! If you wish to help projects get along, speak about Sand Compass around you and on social media.</p>' + 
+                            '<p>Thank you for the attention you express towards Sand Compass! If you wish to help projects get along, speak about Sand Compass around you and on social media.</p>' + 
                             '<p>You can also help by letting a message on the website with a remark, question or suggestion.</p>' +
                         '</body>' + 
                     '</html>'
@@ -222,7 +222,7 @@ const send_mail_at_newsletter_subscription = (req, res) =>
 
                     `<p>You're subscribed to the newsletter, which allows you to be updated on the projects' progress.` + 
 
-                    '<p>Thank you for the attention you express towards Sand Compass ! If you wish to help projects get along, speak about Sand Compass around you and on social media.</p>' + 
+                    '<p>Thank you for the attention you express towards Sand Compass! If you wish to help projects get along, speak about Sand Compass around you and on social media.</p>' + 
                     '<p>You can also help by letting a message on the website with a remark, question or suggestion.</p>' +
                 '</body>' + 
             '</html>'

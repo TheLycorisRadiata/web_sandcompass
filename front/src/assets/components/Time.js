@@ -1,5 +1,7 @@
 const DateInLetters = (props) =>
 {
+    // props.raw_time --> ISODate
+
     const date = new Date(props.raw_time);
     const day = date.getUTCDate();
     const month = date.getUTCMonth() + 1;
@@ -13,6 +15,9 @@ const DateInLetters = (props) =>
 
 const Time = (props) =>
 {
+    // props.raw_time --> ISODate
+    // props.seconds --> boolean
+
     const date = new Date(props.raw_time);
     const hours = date.getUTCHours() + 1;
     const minutes = date.getUTCMinutes();

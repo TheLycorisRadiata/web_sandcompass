@@ -3,8 +3,8 @@ const User = require('../models/user');
 
 const connect_as_admin = (req, res) => 
 {
-    const email_address = req.body.email_address.toLowerCase();
-    const password = req.body.password;
+    const email_address = req.params.email_address.toLowerCase();
+    const password = req.params.password;
 
     User.findOne({ is_admin: true })
     .then(admin => 
@@ -26,8 +26,8 @@ const connect_as_admin = (req, res) =>
 
 const connect_as_user = (req, res) => 
 {
-    const email_address = req.body.email_address.toLowerCase();
-    const password = req.body.password;
+    const email_address = req.params.email_address.toLowerCase();
+    const password = req.params.password;
 
     User.findOne({ email_address: email_address, is_admin: false })
     .then(user => 
@@ -98,10 +98,10 @@ const create_password = (req, res) =>
 
 const is_email_already_used_by_another_account = (req, res) =>
 {
-    User.findOne({ email_address: req.body.email_address.toLowerCase() })
+    User.findOne({ email_address: req.params.email_address.toLowerCase() })
     .then(user => 
     {
-        if (user && user._id.toString() !== req.body._id)
+        if (user && user._id.toString() !== req.params.id)
             res.status(400).json({ is_success: false, message: 'This email address is already used by another account.' });
         // Either no account has this email address, or the account is ours, so all is good
         else
@@ -113,10 +113,10 @@ const is_email_already_used_by_another_account = (req, res) =>
 const is_username_already_used_by_another_account = (req, res) =>
 {
     // The username's search is case insensitive
-    User.findOne({ username: { $regex: '^' + req.body.username + '$', $options: 'i' }})
+    User.findOne({ username: { $regex: '^' + req.params.username + '$', $options: 'i' }})
     .then(user => 
     {
-        if (user && user._id.toString() !== req.body._id)
+        if (user && user._id.toString() !== req.params.id)
             res.status(400).json({ is_success: false, message: 'This username is already used by another account.' });
         // Either no account has this username, or the account is ours, so all is good
         else

@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import AccountEditor from '../../assets/components/AccountEditor';
 import BlogEditor from './BlogEditor';
 import { backend } from '../../../package.json';
 
@@ -14,6 +16,7 @@ const ControlPanel = (props) =>
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [access_message, set_access_message] = useState('');
     const [is_access_granted, set_is_access_granted] = useState(false);
+    const [account_data, set_account_data] = useState(null);
 
     const handle_submit = () => 
     {
@@ -23,28 +26,17 @@ const ControlPanel = (props) =>
         }
         else
         {
-            fetch(backend + '/user/admin/login',
-            {
-                method: 'post',
-                headers:
-                {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(
-                {
-                    email_address: email_address,
-                    password: password
-                })
-            })
+            fetch(backend + `/user/admin/login/${email_address}/${password}`)
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
+                if (json.message !== '')
+                    console.log(json.message);
                 if (json.error)
                     console.log(json.error);
                 set_access_message(json.message);
                 set_is_access_granted(json.is_success);
+                set_account_data(json.account_data);
             });
         }
     };
@@ -78,10 +70,12 @@ const ControlPanel = (props) =>
 
                     <input type="button" name="btn_login" value="Log In" onClick={handle_submit} />
                     <p>{access_message}</p>
+                    <p><Link to="/password">Password forgotten?</Link></p>
                 </form>
             </>
             :
             <>
+                <AccountEditor account_data={account_data} update_account_data={set_account_data} />
                 <BlogEditor articles={props.articles} set_articles={props.set_articles} categories={props.categories} set_categories={props.set_categories} />
             </>}
         </main>

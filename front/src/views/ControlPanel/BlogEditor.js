@@ -70,7 +70,7 @@ const BlogEditor = (props) =>
         {
             fetch(backend + '/blog/categories',
             {
-                method: 'post',
+                method: 'POST',
                 headers:
                 {
                     'Accept': 'application/json',
@@ -97,7 +97,7 @@ const BlogEditor = (props) =>
         {
             fetch(backend + '/blog/categories',
             {
-                method: 'delete',
+                method: 'DELETE',
                 headers:
                 {
                     'Accept': 'application/json',
@@ -147,7 +147,7 @@ const BlogEditor = (props) =>
 
             fetch(backend + '/blog/articles',
             {
-                method: 'post',
+                method: 'POST',
                 headers:
                 {
                     'Accept': 'application/json',
@@ -188,7 +188,7 @@ const BlogEditor = (props) =>
 
             fetch(backend + '/blog/articles',
             {
-                method: 'put',
+                method: 'PUT',
                 headers:
                 {
                     'Accept': 'application/json',
@@ -219,7 +219,7 @@ const BlogEditor = (props) =>
         {
             fetch(backend + '/blog/articles',
             {
-                method: 'delete',
+                method: 'DELETE',
                 headers:
                 {
                     'Accept': 'application/json',

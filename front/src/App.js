@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashLink as Link } from 'react-router-hash-link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus, faUser } from '@fortawesome/free-solid-svg-icons';
 import Home from './views/Home/Home';
 import Works from './views/Works/Works';
 import Contact from './views/Home/Contact';
 import Licenses from './views/Home/Licenses';
 import ControlPanel from './views/ControlPanel/ControlPanel';
+import UserPanel from './views/Account/UserPanel';
+import SignUp from './views/Account/SignUp'
+import Password from './views/Account/Password';
+import ExecuteToken from './views/Account/ExecuteToken';
 import Blog from './views/Blog/Blog';
 import BlogPage from './views/Blog/BlogPage';
 import BlogArticle from './views/Blog/BlogArticle';
@@ -12,6 +19,9 @@ import PageNotFound from './views/PageNotFound';
 import Banner from './assets/images/banner.jpg';
 import './style.css';
 import { backend } from '../package.json';
+
+const icon_user_new = <FontAwesomeIcon icon={faUserPlus} />;
+const icon_user = <FontAwesomeIcon icon={faUser} />;
 
 const App = () => 
 {
@@ -22,7 +32,7 @@ const App = () =>
     {
         fetch(backend + '/blog/articles',
         {
-            method: 'get',
+            method: 'GET',
             headers:
             {
                 'Accept': 'application/json',
@@ -40,7 +50,7 @@ const App = () =>
 
         fetch(backend + '/blog/categories',
         {
-            method: 'get',
+            method: 'GET',
             headers:
             {
                 'Accept': 'application/json',
@@ -61,6 +71,13 @@ const App = () =>
         <Router>
             <div>
                 <header>
+                    <div id="user_buttons">
+                        <ul>
+                            <li><Link to="/user/signup" title="Sign Up"><span>{icon_user_new}</span></Link></li>
+                            <li><Link to="/user" title="Log In"><span>{icon_user}</span></Link></li>
+                        </ul>
+                    </div>
+
                     <Link to="/home">
                         <div id="banner">
                             <img src={Banner} alt="Banner Gareus temple in Uruk city" />
@@ -95,6 +112,10 @@ const App = () =>
                     <Route exact path="/contact"><Contact /></Route>
                     <Route exact path="/licenses"><Licenses /></Route>
                     <Route exact path="/controlpanel"><ControlPanel articles={all_articles} set_articles={set_all_articles} categories={all_categories} set_categories={set_all_categories} /></Route>
+                    <Route exact path="/user/signup"><SignUp /></Route>
+                    <Route exact path="/user"><UserPanel /></Route>
+                    <Route path="/password"><Password /></Route>
+                    <Route path="/token"><ExecuteToken /></Route>
                     <Route path="/"><PageNotFound /></Route>
                 </Switch>
             </div>

@@ -19,10 +19,10 @@ const Home = (props) =>
             </article>
 
             <section id="current_work">
-                <h2><Link to="/works/">Cosmic Dust: Sci-fi standalone novel</Link></h2>
+                <h2><Link to="/works">Cosmic Dust: Sci-fi standalone novel</Link></h2>
 
                 <div id="book_presentation">
-                    <Link to="/works/"><img src={Book_Cover} alt="Book cover Cosmic Dust" id="book_cover" /></Link>
+                    <Link to="/works"><img src={Book_Cover} alt="Book cover Cosmic Dust" id="book_cover" /></Link>
 
                     <div>
                         <p id="book_catch_phrase"><em>Is Zekharia's urge to create the proof of his sickness, or is he one of the few who function properly?</em></p>

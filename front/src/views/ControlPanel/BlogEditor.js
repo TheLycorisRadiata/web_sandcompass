@@ -275,8 +275,8 @@ const BlogEditor = (props) =>
     const handle_preview = () => set_is_preview_shown(is_preview_shown ? false : true);
 
     return (
-        <main>
-            <h1>Blog Editor</h1>
+        <section>
+            <h2>Blog Editor</h2>
 
             <div id="control_panel_blog_buttons">
                 <input type="button" name="btn_post_article" id="btn_post_article" value="Post a new article" onClick={handle_create_article} />
@@ -329,7 +329,7 @@ const BlogEditor = (props) =>
 
                 {is_preview_shown && <BlogArticle is_preview={true} id_selected_article={id_selected_article} article={article} />}
             </div>
-        </main>
+        </section>
     );
 };
 

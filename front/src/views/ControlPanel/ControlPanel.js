@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import BlogEditor from './BlogEditor';
 import { backend } from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 
-const ControlPanel = () => 
+const ControlPanel = (props) => 
 {
     const [email_address, set_email_address] = useState('');
     const [password, set_password] = useState('');
@@ -63,15 +63,9 @@ const ControlPanel = () =>
 
     return (
         <main>
-            {is_access_granted ?
+            <h1>Control Panel</h1>
+            {!is_access_granted ?
             <>
-                <h1>Control Panel</h1>
-                <div id="go_to_blogeditor" className="page_numbers"><Link to="/controlpanel/blogeditor">Blog Editor</Link></div>
-            </>
-            :
-            <>
-                <h1>Control Panel</h1>
-
                 <form>
                     <input type="text" name="email_address" placeholder="Email address" value={email_address} onChange={e => set_email_address(e.target.value)} 
                         onKeyPress={handle_key_press} autoComplete="on" required autoFocus />
@@ -85,6 +79,10 @@ const ControlPanel = () =>
                     <input type="button" name="btn_login" value="Log In" onClick={handle_submit} />
                     <p>{access_message}</p>
                 </form>
+            </>
+            :
+            <>
+                <BlogEditor articles={props.articles} set_articles={props.set_articles} categories={props.categories} set_categories={props.set_categories} />
             </>}
         </main>
     );

@@ -214,6 +214,35 @@ const delete_account = (req, res) =>
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
 };
 
+const get_stats_on_all_users = (req, res) =>
+{
+    const stats =
+    {
+        accounts:
+        {
+            total: 0,
+            verified_user: 0,
+            newsletter: 0,
+        }
+    };
+
+    User.find({ is_admin: false })
+    .then(users =>
+    {
+        if (!users.length)
+            res.status(404).json({ is_success: false, message: 'No non-admin account found.' });
+        else
+        {
+            stats.accounts.total = users.length;
+            stats.accounts.verified_user = users.filter(e => e.verified_user).length;
+            stats.accounts.newsletter = users.filter(e => e.newsletter).length;
+
+            res.status(200).json({ is_success: true, message: 'Statistics transmitted.', data: stats });
+        }
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
+};
+
 module.exports = 
 {
     connect_as_admin,
@@ -223,6 +252,7 @@ module.exports =
     is_username_already_used_by_another_account,
     create_account,
     update_account,
-    delete_account
+    delete_account,
+    get_stats_on_all_users
 };
 

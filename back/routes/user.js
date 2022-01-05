@@ -11,6 +11,7 @@ router.get('/check/username/:id/:username', controller_user.is_username_already_
 router.post('/create', controller_user.create_account);
 router.put('/update', controller_user.update_account);
 router.delete('/delete', controller_user.delete_account);
+router.get('/stats/all', controller_user.get_stats_on_all_users);
 
 module.exports = router;
 

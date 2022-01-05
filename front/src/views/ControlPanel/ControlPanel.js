@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import AccountEditor from '../../assets/components/AccountEditor';
+import Stats from '../../assets/components/Stats';
 import BlogEditor from '../../assets/components/BlogEditor';
 import NewsletterEditor from '../../assets/components/NewsletterEditor';
 import { backend } from '../../../package.json';
@@ -77,6 +78,7 @@ const ControlPanel = (props) =>
             :
             <>
                 <AccountEditor account_data={account_data} update_account_data={set_account_data} />
+                <Stats />
                 <BlogEditor articles={props.articles} set_articles={props.set_articles} categories={props.categories} set_categories={props.set_categories} />
                 <NewsletterEditor />
             </>}

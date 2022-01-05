@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faUser, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 import Home from './views/Home/Home';
 import Works from './views/Works/Works';
 import Contact from './views/Home/Contact';
@@ -22,6 +22,7 @@ import { backend } from '../package.json';
 
 const icon_user_new = <FontAwesomeIcon icon={faUserPlus} />;
 const icon_user = <FontAwesomeIcon icon={faUser} />;
+const icon_up = <FontAwesomeIcon icon={faChevronCircleUp} />;
 
 const App = () => 
 {
@@ -69,7 +70,7 @@ const App = () =>
 
     return (
         <Router>
-            <div>
+            <div id="top">
                 <header>
                     <div id="user_buttons">
                         <ul>
@@ -124,7 +125,8 @@ const App = () =>
                 <ul>
                     <Link to="/licenses"><li>Licenses</li></Link>
                     <Link to="/controlpanel"><li>Control Panel</li></Link>
-                    <li id="copyright">Lycoris Radiata &copy; 2021 All Rights Reserved</li>
+                    <li id="copyright">Lycoris Radiata &copy; 2022 All Rights Reserved</li>
+                    <Link to="#top"><li id="btn_top">{icon_up}</li></Link>
                 </ul>
             </footer>
         </Router>

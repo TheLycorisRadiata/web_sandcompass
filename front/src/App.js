@@ -4,6 +4,7 @@ import { HashLink as Link } from 'react-router-hash-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUser, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 import Home from './views/Home/Home';
+import Faq from './views/Home/Faq';
 import Works from './views/Works/Works';
 import Contact from './views/Home/Contact';
 import Licenses from './views/Home/Licenses';
@@ -26,11 +27,37 @@ const icon_up = <FontAwesomeIcon icon={faChevronCircleUp} />;
 
 const App = () => 
 {
+    const [all_questions, set_all_questions] = useState([]);
     const [all_categories, set_all_categories] = useState([]);
     const [all_articles, set_all_articles] = useState([]);
 
     useEffect(() => 
     {
+        const faq_arr = [];
+
+        fetch(backend + '/faq/all')
+        .then(res => res.json())
+        .then(json =>
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+
+            if (json.is_success)
+            {
+                json.data.forEach(e => faq_arr.push(
+                {
+                    _id: e._id,
+                    question: e.question,
+                    answer: e.answer,
+                    is_deployed: false
+                }));
+            }
+
+            set_all_questions(faq_arr);
+        })
+        .catch(err => console.log(err));
+
         fetch(backend + '/blog/articles',
         {
             method: 'GET',
@@ -89,6 +116,7 @@ const App = () =>
                     <nav>
                         <ul>
                             <Link to="/home"><li>Home</li></Link>
+                            <Link to="/faq"><li>FAQ</li></Link>
                             <Link to="/works"><li>Works</li></Link>
                             <Link to="/blog"><li>Blog</li></Link>
                             <Link to="/contact"><li>Contact</li></Link>
@@ -99,6 +127,7 @@ const App = () =>
                 <Switch>
                     <Route exact path="/"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
                     <Route exact path="/home"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
+                    <Route exact path="/faq"><Faq questions={all_questions} set_questions={set_all_questions} /></Route>
                     <Route exact path="/works"><Works /></Route>
                     <Route exact path="/blog"><Blog categories={all_categories} articles={all_articles} /></Route>
 
@@ -112,7 +141,12 @@ const App = () =>
 
                     <Route exact path="/contact"><Contact /></Route>
                     <Route exact path="/licenses"><Licenses /></Route>
-                    <Route exact path="/controlpanel"><ControlPanel articles={all_articles} set_articles={set_all_articles} categories={all_categories} set_categories={set_all_categories} /></Route>
+                    <Route exact path="/controlpanel">
+                        <ControlPanel 
+                            questions={all_questions} set_questions={set_all_questions} 
+                            articles={all_articles} set_articles={set_all_articles} 
+                            categories={all_categories} set_categories={set_all_categories} />
+                    </Route>
                     <Route exact path="/user/signup"><SignUp /></Route>
                     <Route exact path="/user"><UserPanel /></Route>
                     <Route path="/password"><Password /></Route>

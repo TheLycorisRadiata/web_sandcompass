@@ -1,5 +1,6 @@
 const express = require('express');
 const router_blog = require('./routes/blog');
+const router_faq = require('./routes/faq');
 const router_mailing = require('./routes/mailing');
 const router_user = require('./routes/user');
 const router_token = require('./routes/token');
@@ -21,6 +22,7 @@ app.use(express.json());
 
 /* API routes */
 app.use('/api/blog', router_blog);
+app.use('/api/faq', router_faq);
 app.use('/api/mailing', router_mailing);
 app.use('/api/user', router_user);
 app.use('/api/token', router_token);

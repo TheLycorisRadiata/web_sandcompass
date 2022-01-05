@@ -6,6 +6,7 @@ import AccountEditor from '../../assets/components/AccountEditor';
 import Stats from '../../assets/components/Stats';
 import BlogEditor from '../../assets/components/BlogEditor';
 import NewsletterEditor from '../../assets/components/NewsletterEditor';
+import FaqEditor from '../../assets/components/FaqEditor';
 import { backend } from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
@@ -81,6 +82,7 @@ const ControlPanel = (props) =>
                 <Stats />
                 <BlogEditor articles={props.articles} set_articles={props.set_articles} categories={props.categories} set_categories={props.set_categories} />
                 <NewsletterEditor />
+                <FaqEditor questions={props.questions} set_questions={props.set_questions} />
             </>}
         </main>
     );

@@ -419,7 +419,7 @@ const send_newsletter = (req, res) =>
             // Update the newsletter in DB
             Newsletter.updateOne({ _id: element._id }, 
             {
-                title: newsletter.title,
+                object: newsletter.object,
                 html_message: newsletter.html_message,
                 date: Date.now()
             })
@@ -431,7 +431,7 @@ const send_newsletter = (req, res) =>
             // Create the newsletter in DB
             new Newsletter(
             {
-                title: newsletter.title,
+                object: newsletter.object,
                 html_message: newsletter.html_message
             })
             .save()
@@ -471,7 +471,7 @@ const send_newsletter = (req, res) =>
                     mail_options = 
                     {
                         from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
-                        subject: newsletter.title,
+                        subject: newsletter.object,
                         html: '<html><body>' + newsletter.html_message + '</body></html>'
                     };
 

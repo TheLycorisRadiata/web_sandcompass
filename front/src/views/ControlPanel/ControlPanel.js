@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import AccountEditor from '../../assets/components/AccountEditor';
-import BlogEditor from './BlogEditor';
+import BlogEditor from '../../assets/components/BlogEditor';
+import NewsletterEditor from '../../assets/components/NewsletterEditor';
 import { backend } from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
@@ -77,6 +78,7 @@ const ControlPanel = (props) =>
             <>
                 <AccountEditor account_data={account_data} update_account_data={set_account_data} />
                 <BlogEditor articles={props.articles} set_articles={props.set_articles} categories={props.categories} set_categories={props.set_categories} />
+                <NewsletterEditor />
             </>}
         </main>
     );

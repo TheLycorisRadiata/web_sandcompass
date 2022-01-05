@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderMinus, faFolderPlus, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import BlogArticle from '../Blog/BlogArticle';
+import BlogArticle from '../../views/Blog/BlogArticle';
 import { backend } from '../../../package.json';
 
 const icon_folder_minus = <FontAwesomeIcon icon={faFolderMinus} />

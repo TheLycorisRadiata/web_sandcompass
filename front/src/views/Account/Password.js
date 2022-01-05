@@ -110,7 +110,7 @@ const Password = () =>
     };
 
     return (
-        <section>
+        <main>
             <h1>Password Creation</h1>
             <div className="section_body">
                 <form onSubmit={handle_submit}>
@@ -135,7 +135,7 @@ const Password = () =>
                     <p><span onClick={() => history.push('/user')}>Retourner à la page de connexion</span></p>
                 </form>
             </div>
-        </section>
+        </main>
     );
 };
 

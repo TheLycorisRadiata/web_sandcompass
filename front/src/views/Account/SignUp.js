@@ -72,7 +72,7 @@ const SignUp = () =>
     };
 
     return (
-        <>
+        <main>
             <h1>Sign Up</h1>
             <div className="section_body" id="block_newsletter">
                 <form onSubmit={handle_registration}>
@@ -91,7 +91,7 @@ const SignUp = () =>
                     </div>
                 </form>
             </div>
-        </>
+        </main>
     );
 };
 

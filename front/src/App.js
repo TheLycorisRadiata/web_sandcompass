@@ -97,7 +97,7 @@ const App = () =>
 
     return (
         <Router>
-            <div id="top">
+            <div>
                 <header>
                     <div id="user_buttons">
                         <ul>

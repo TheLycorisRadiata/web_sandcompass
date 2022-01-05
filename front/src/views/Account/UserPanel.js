@@ -60,30 +60,27 @@ const UserPanel = () =>
     };
 
     return (
-        <>
-            <section>
-                <h1>{!is_access_granted ? 'Log In' : 'User Account'}</h1>
-
-                <div className="section_body">
-                    {!is_access_granted ? 
-                    <form>
-                        <input type="email" name="email_address" placeholder="Email address" autoComplete="on" 
-                            value={email_address} onChange={e => set_email_address(e.target.value)} onKeyPress={handle_key_press} />
-                        <div className="field_password">
-                            <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Password" autoComplete="on"
-                                value={password} onChange={e => set_password(e.target.value)} onKeyPress={handle_key_press} />
-                            <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
-                        </div>
-                        <input type="button" className="button" value="Log In" onClick={handle_submit} />
-                        <p>{access_message}</p>
-                        <p><Link to="/password">Password forgotten?</Link></p>
-                        <p><Link to="/user/signup">Not yet registered?</Link></p>
-                    </form>
-                    :
-                    <AccountEditor account_data={account_data} update_account_data={set_account_data} />}
-                </div>
-            </section>
-        </>
+        <main>
+            <h1>{!is_access_granted ? 'Log In' : 'User Account'}</h1>
+            <div className="section_body">
+                {!is_access_granted ? 
+                <form>
+                    <input type="email" name="email_address" placeholder="Email address" autoComplete="on" 
+                        value={email_address} onChange={e => set_email_address(e.target.value)} onKeyPress={handle_key_press} />
+                    <div className="field_password">
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Password" autoComplete="on"
+                            value={password} onChange={e => set_password(e.target.value)} onKeyPress={handle_key_press} />
+                        <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                    </div>
+                    <input type="button" className="button" value="Log In" onClick={handle_submit} />
+                    <p>{access_message}</p>
+                    <p><Link to="/password">Password forgotten?</Link></p>
+                    <p><Link to="/user/signup">Not yet registered?</Link></p>
+                </form>
+                :
+                <AccountEditor account_data={account_data} update_account_data={set_account_data} />}
+            </div>
+        </main>
     );
 };
 

@@ -15,9 +15,8 @@ const Faq = (props) =>
     };
 
     return (
-        <>
+        <main>
             <h1>Frequently Asked Questions</h1>
-
             <div className="section_body">
                 {!props.questions.length ?
                     <p>The FAQ is empty.</p>
@@ -36,7 +35,7 @@ const Faq = (props) =>
                     </>
                 }
             </div>
-        </>
+        </main>
     );
 };
 

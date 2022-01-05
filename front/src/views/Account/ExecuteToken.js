@@ -33,7 +33,7 @@ const ExecuteToken = () =>
     }, []);
 
     return (
-        <section id="token">
+        <main>
             <h1>{title}</h1>
             <div className="section_body">
                 {is_token_expired && 
@@ -45,7 +45,7 @@ const ExecuteToken = () =>
                     <hr />
                 </>}
             </div>
-        </section>
+        </main>
     );
 };
 

@@ -27,7 +27,7 @@ const BlogEditor = (props) =>
     };
 
     const [article, set_article] = useState(default_article);
-    const [id_selected_article, set_id_selected_article] = useState('');
+    const [id_selected_article, set_id_selected_article] = useState(-1);
     const [new_category, set_new_category] = useState('');
     const [is_preview_shown, set_is_preview_shown] = useState(false);
 

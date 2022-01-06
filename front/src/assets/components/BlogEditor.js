@@ -276,10 +276,10 @@ const BlogEditor = (props) =>
 
     return (
         <section>
-            <h2>Blog Editor</h2>
+            <h2 className="sub_title">Blog Editor</h2>
 
             <div id="control_panel_blog_buttons">
-                <input type="button" name="btn_post_article" id="btn_post_article" value="Post a new article" onClick={handle_create_article} />
+                <input type="button" className="button" name="btn_post_article" id="btn_post_article" value="Post a new article" onClick={handle_create_article} />
                 {props.articles.length && 
                 <div id="control_panel_extended_buttons">
                     <select name="select_article" id="select_article" defaultValue="default" onChange={handle_select_article}>
@@ -293,8 +293,8 @@ const BlogEditor = (props) =>
                     </select>
 
                     <div className="buttons">
-                        <input type="button" name="btn_modify_article" id="btn_modify_article" value="Modify an article" onClick={handle_modify_article} />
-                        <input type="button" name="btn_delete_article" id="btn_delete_article" value="Delete an article" onClick={handle_delete_article} />
+                        <input type="button" className="button" name="btn_modify_article" id="btn_modify_article" value="Modify an article" onClick={handle_modify_article} />
+                        <input type="button" className="button" name="btn_delete_article" id="btn_delete_article" value="Delete an article" onClick={handle_delete_article} />
                     </div>
                 </div>}
             </div>
@@ -313,18 +313,18 @@ const BlogEditor = (props) =>
                             {props.categories.map(category => <option key={category._id}>{category.name}</option>)}
                         </>}
                     </select>
-                    <button name="btn_delete_category" id="btn_delete_category" onClick={handle_delete_category}>{icon_folder_minus}</button>
+                    <button className="button" name="btn_delete_category" id="btn_delete_category" onClick={handle_delete_category}><span className="icon">{icon_folder_minus}</span></button>
                 </div>
 
                 <div className="div_category">
                     <input type="text" name="field_article_new_category" id="field_article_new_category" placeholder="New category" onChange={e => set_new_category(e.target.value)} />
-                    <button name="btn_add_category" id="btn_add_category" onClick={handle_create_category}>{icon_folder_plus}</button>
+                    <button className="button" name="btn_add_category" id="btn_add_category" onClick={handle_create_category}><span className="icon">{icon_folder_plus}</span></button>
                 </div>
 
                 <label htmlFor="field_article_content">Content:</label><br />
                 <textarea name="field_article_content" id="field_article_content" rows="10" value={article.content} onChange={update_content}></textarea><br />
                 <div id="div_btn_preview_article">
-                    <button name="btn_preview_article" id="btn_preview_article" onClick={handle_preview}>{is_preview_shown ? icon_eye_slash : icon_eye} Preview</button>
+                    <button className="button" name="btn_preview_article" id="btn_preview_article" onClick={handle_preview}><span className="icon">{is_preview_shown ? icon_eye_slash : icon_eye}</span> Preview</button>
                 </div>
 
                 {is_preview_shown && <BlogArticle is_preview={true} id_selected_article={id_selected_article} article={article} />}

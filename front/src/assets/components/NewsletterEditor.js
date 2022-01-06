@@ -100,44 +100,42 @@ const NewsletterEditor = () =>
     };
 
     return (
-        <>
+        <section>
             <h2 className="sub_title">Newsletters</h2>
-            <section className="block_center">
-                <button className="button" title="Refresh newsletters" onClick={() => fetch_newsletters(true)}>{icon_fetch}</button>
+            <button className="button" title="Refresh newsletters" onClick={() => fetch_newsletters(true)}><span className="icon">{icon_fetch}</span></button>
     
-                <form onSubmit={handle_submit}>
-                    <select defaultValue="default" onChange={handle_select}>
-                        <option value="default" disabled>Select a newsletter</option>
-                        <option value="new">Write a new newsletter</option>
-                        {newsletters.map((e, i) => <option key={"newsletter_" + i} value={i}>{e.is_sent ? '[Sent]' : '[Not sent]'} {e.object}</option>)}
-                    </select>
+            <form onSubmit={handle_submit}>
+                <select defaultValue="default" onChange={handle_select}>
+                    <option value="default" disabled>Select a newsletter</option>
+                    <option value="new">Write a new newsletter</option>
+                    {newsletters.map((e, i) => <option key={"newsletter_" + i} value={i}>{e.is_sent ? '[Sent]' : '[Not sent]'} {e.object}</option>)}
+                </select>
 
-                    {selected_newsletter === 'default' ?
-                        null
-                    : selected_newsletter === 'new' || !newsletters[selected_newsletter].is_sent ?
-                        <>
-                            <input type="text" name="object" id="object" placeholder="Object" title="Object" value={object} onChange={e => set_object(e.target.value)} />
-                            <textarea title="Message" value={html_message} onChange={e => set_html_message(e.target.value)}></textarea>
+                {selected_newsletter === 'default' ?
+                    null
+                : selected_newsletter === 'new' || !newsletters[selected_newsletter].is_sent ?
+                    <>
+                        <input type="text" name="object" placeholder="Object" title="Object" value={object} onChange={e => set_object(e.target.value)} />
+                        <textarea title="Message" value={html_message} onChange={e => set_html_message(e.target.value)}></textarea>
 
-                            <div id="preview" dangerouslySetInnerHTML={{__html: html_message}} />
+                        <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: html_message}} />
 
-                            <div id="send_newsletter">
-                                <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(checkbox ? false : true)} />
-                                <label htmlFor="send">{' '}Send the newsletter to subscribers</label>
-                            </div>
-
-                            <input type="submit" className="button" value="Confirm" />
-                        </>
-                    : 
                         <div>
-                            <p><strong>Object:</strong> {newsletters[selected_newsletter].object}</p>
-                            <p><strong>Date:</strong> <DateInLetters raw_time={newsletters[selected_newsletter].date} /> at <Time raw_time={newsletters[selected_newsletter.data]} seconds={true} /></p>
-                            <p><strong>Message:</strong></p>
-                            <div id="preview" dangerouslySetInnerHTML={{__html: newsletters[selected_newsletter].html_message}} />
-                        </div>}
-                </form>
-            </section>
-        </>
+                            <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(checkbox ? false : true)} />
+                            <label htmlFor="send">{' '}Send the newsletter to subscribers</label>
+                        </div>
+
+                        <input type="submit" className="button" value="Confirm" />
+                    </>
+                : 
+                    <div>
+                        <p><strong>Object:</strong> {newsletters[selected_newsletter].object}</p>
+                        <p><strong>Date:</strong> <DateInLetters raw_time={newsletters[selected_newsletter].date} /> at <Time raw_time={newsletters[selected_newsletter.data]} seconds={true} /></p>
+                        <p><strong>Message:</strong></p>
+                        <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: newsletters[selected_newsletter].html_message}} />
+                    </div>}
+            </form>
+        </section>
     );
 };
 

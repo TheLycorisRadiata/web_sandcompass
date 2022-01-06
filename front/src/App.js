@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,7 +17,6 @@ import Blog from './views/Blog/Blog';
 import BlogPage from './views/Blog/BlogPage';
 import BlogArticle from './views/Blog/BlogArticle';
 import PageNotFound from './views/PageNotFound';
-import Banner from './assets/images/banner.jpg';
 import './style.css';
 import { backend } from '../package.json';
 
@@ -31,7 +30,7 @@ const App = () =>
     const [all_categories, set_all_categories] = useState([]);
     const [all_articles, set_all_articles] = useState([]);
 
-    useEffect(() => 
+    useLayoutEffect(() => 
     {
         const faq_arr = [];
 
@@ -73,7 +72,8 @@ const App = () =>
             console.log(json.message);
             if (json.error)
                 console.log(json.error);
-            json.is_success ? set_all_articles(json.data) : console.warn(json.message);
+            if (json.is_success)
+                set_all_articles(json.data);
         });
 
         fetch(backend + '/blog/categories',
@@ -91,7 +91,8 @@ const App = () =>
             console.log(json.message);
             if (json.error)
                 console.log(json.error);
-            json.is_success ? set_all_categories(json.data) : console.warn(json.message);
+            if (json.is_success)
+                set_all_categories(json.data);
         });
     }, []);
 
@@ -99,19 +100,18 @@ const App = () =>
         <Router>
             <div>
                 <header>
-                    <div id="user_buttons">
-                        <ul>
-                            <li><Link to="/user/signup" title="Sign Up"><span>{icon_user_new}</span></Link></li>
-                            <li><Link to="/user" title="Log In"><span>{icon_user}</span></Link></li>
-                        </ul>
-                    </div>
-
                     <Link to="/home">
                         <div id="banner">
-                            <img src={Banner} alt="Banner Gareus temple in Uruk city" />
                             <p>Sand Compass</p>
                         </div>
                     </Link>
+
+                    <div id="user_buttons">
+                        <ul>
+                            <li><Link to="/user/signup"><span>{icon_user_new}</span> Sign Up</Link></li>
+                            <li><Link to="/user"><span>{icon_user}</span> Log In</Link></li>
+                        </ul>
+                    </div>
 
                     <nav>
                         <ul>
@@ -159,7 +159,7 @@ const App = () =>
                 <ul>
                     <Link to="/licenses"><li>Licenses</li></Link>
                     <Link to="/controlpanel"><li>Control Panel</li></Link>
-                    <li id="copyright">Lycoris Radiata &copy; 2022 All Rights Reserved</li>
+                    <li className="txt_default_cursor">Lycoris Radiata &copy; 2022 All Rights Reserved</li>
                     <Link to="#top"><li id="btn_top">{icon_up}</li></Link>
                 </ul>
             </footer>

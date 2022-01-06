@@ -76,12 +76,12 @@ const Contact = () =>
 
     return (
         <main>
-            <h1>Contact</h1>
+            <h1 className="title">Contact</h1>
 
             <SocialMedia />
 
             <section id="contact_form">
-                <h2>Something to say?</h2>
+                <h2 className="sub_title">Something to say?</h2>
                 <form onSubmit={handle_contact}>
                     <div>
                         <input type="radio" name="visitor_type" value="personal" id="btn_pers" defaultChecked onClick={() => set_is_visitor_pro(false)} />
@@ -113,8 +113,8 @@ const Contact = () =>
                     <textarea name="message" placeholder="Message" autoComplete="new-password" required></textarea>
 
                     <div>
-                        <input type="reset" className="btn" value="Cancel" onClick={() => set_is_visitor_pro(false)} />
-                        <input type="submit" className="btn" value="Send" />
+                        <input type="reset" className="button" value="Cancel" onClick={() => set_is_visitor_pro(false)} />
+                        <input type="submit" className="button" value="Send" />
                     </div>
                 </form>
             </section>

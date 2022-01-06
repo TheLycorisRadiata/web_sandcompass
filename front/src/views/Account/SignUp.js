@@ -73,24 +73,22 @@ const SignUp = () =>
 
     return (
         <main>
-            <h1>Sign Up</h1>
-            <div className="section_body" id="block_newsletter">
-                <form onSubmit={handle_registration}>
-                    <input type="email" name="email_address" placeholder="Email address" autoComplete="on" required />
-                    <input type="email" name="repeat_email_address" placeholder="Repeat the email address" autoComplete="on" required />
-                    <input type="password" name="password" placeholder="Password" autoComplete="new-password" required />
-                    <input type="text" name="username" placeholder="Username" autoComplete="on" required />
-                    <div>
-                        <input type="checkbox" id="newsletter" name="newsletter" />
-                        <label htmlFor="newsletter">{' '} Subscribe to the newsletter</label>
-                    </div>
+            <h1 className="title">Sign Up</h1>
+            <form onSubmit={handle_registration}>
+                <input type="email" name="email_address" placeholder="Email address" autoComplete="on" required />
+                <input type="email" name="repeat_email_address" placeholder="Repeat the email address" autoComplete="on" required />
+                <input type="password" name="password" placeholder="Password" autoComplete="new-password" required />
+                <input type="text" name="username" placeholder="Username" autoComplete="on" required />
+                <div>
+                    <input type="checkbox" id="newsletter" name="newsletter" />
+                    <label htmlFor="newsletter">{' '} Subscribe to the newsletter</label>
+                </div>
 
-                    <div className="btn_reset_submit">
-                        <input type="reset" className="button" value="Cancel" />
-                        <input type="submit" className="button" value="Confirm" />
-                    </div>
-                </form>
-            </div>
+                <div className="btn_reset_submit">
+                    <input type="reset" className="button" value="Cancel" />
+                    <input type="submit" className="button" value="Confirm" />
+                </div>
+            </form>
         </main>
     );
 };

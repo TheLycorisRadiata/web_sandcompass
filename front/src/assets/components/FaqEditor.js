@@ -111,38 +111,35 @@ const FaqEditor = (props) =>
     };
 
     return (
-        <>
+        <section>
             <h2 className="sub_title">Frequently Asked Questions</h2>
-            <section className="block_center">
-                <form id="add_question" onSubmit={handle_add}>
-                    <input type="text" name="new_question" placeholder="Question" />
-                    <input type="text" name="new_answer" placeholder="Answer" />
-                    <button className="button" title="Add a new question question">{icon_add}</button>
-                </form>
 
-                {!props.questions?.length ?
-                    <p>The FAQ is empty.</p>
-                :
-                    <ol>
-                        {props.questions?.map(e => 
-                            <li key={e._id}>
-                                <p>
-                                    <strong>{e.question}</strong>
-                                    <br />
-                                    {e.answer}
-                                    <br />
+            <form onSubmit={handle_add}>
+                <input type="text" name="new_question" placeholder="Question" />
+                <input type="text" name="new_answer" placeholder="Answer" />
+                <button className="button" title="Add a new question question"><span className="icon">{icon_add}</span></button>
+            </form>
 
-                                    <span className="faq_icons">
-                                        <button className="button" title="Edit the question" onClick={() => handle_edit(e)}>{icon_edit}</button>
-                                        <button className="button" title="Delete the question" onClick={() => handle_delete(e)}>{icon_delete}</button>
-                                    </span>
-                                </p>
-                            </li>
-                        )}
-                    </ol>
-                }
-            </section>
-        </>
+            {!props.questions?.length ?
+                <p className="txt_centered">The FAQ is empty.</p>
+            :
+                <ol>
+                    {props.questions?.map(e => 
+                        <li key={e._id}>
+                            <p>
+                                <strong>{e.question}</strong>
+                                <br />
+                                {e.answer}
+                                <br />
+
+                                <span>
+                                    <button className="button" title="Edit the question" onClick={() => handle_edit(e)}><span className="icon">{icon_edit}</span></button>
+                                    <button className="button" title="Delete the question" onClick={() => handle_delete(e)}><span className="icon">{icon_delete}</span></button>
+                                </span>
+                            </p>
+                        </li>)}
+                </ol>}
+        </section>
     );
 };
 

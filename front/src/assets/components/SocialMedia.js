@@ -7,7 +7,7 @@ const SocialMedia = () =>
 {
     return (
         <section id="social_media">
-            <h2>Social Media</h2>
+            <h2 className="sub_title">Social Media</h2>
             <ul>
                 <li className="logo">
                     <a href="https://www.patreon.com/lycorisradiata" rel="noreferrer" target="_blank">

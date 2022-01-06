@@ -1,7 +1,7 @@
 :root
 {
     --black: #1F0505;
-    --white: #DEE1FA;
+    --white: #F2F4FF;
     --pink: #E66465;
     --blue: #9198E5;
     --dark_yellow: #E6B000;
@@ -31,21 +31,38 @@ body
     padding: 15px;
     font-size: 1.1rem;
     background: linear-gradient(var(--pink), var(--blue)) fixed no-repeat;
+    color: var(--black);
 }
 
 #root
 {
     margin: auto;
     width: 70%;
-}
 
-/* To push the footer to the bottom even when the view is not scrollable */
-#root
-{
+    /* To push the footer to the bottom even when the view is not scrollable */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+/* BLOCKS --------------------------------------------------------------------------------------- */
+
+main, div#main
+{
+    margin: 20px 0px;
+    padding: 15px;
+    background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
+    box-shadow: 3px 3px 5px var(--white), -3px -3px 5px var(--white);
+    border-radius: 10px;
+}
+
+footer ul
+{
+    text-shadow: 1px 1px 2px var(--brown);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* SCROLLBAR ------------------------------------------------------------------------------------ */
@@ -69,219 +86,133 @@ body
     box-shadow: inset 2px 2px 3px var(--white);
 }
 
-/* BUTTON: PASSWORD EYE TOGGLE ------------------------- */
-
-.field_password
+textarea::-webkit-scrollbar
 {
-    position: relative;
+    background: var(--white);
 }
 
-.btn_eye
+/* TITLES --------------------------------------------------------------------------------------- */
+
+.title
 {
-    color: var(--black);
-    padding-left: 7px;
-    background-color: var(--white);
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 12px;
+    margin: 20px 5px 20px 20px;
+    padding: 10px 15px;
+    color: var(--pink);
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px var(--black);
+    text-align: center;
+    text-transform: uppercase;
 }
 
-/* NAV BAR -------------------------------------------------------------------------------------- */
+.sub_title
+{
+    margin: 20px 0;
+    color: var(--blue);
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px var(--black);
+    text-align: center;
+}
+
+/* TEXT ----------------------------------------------------------------------------------------- */
+
+.txt_default_cursor
+{
+    cursor: default;
+}
+
+.txt_centered
+{
+    text-align: center;
+}
+
+strong, .txt_bold
+{
+    font-weight: bold;
+}
+
+em, .txt_italic
+{
+    font-style: italic;
+}
 
 ul
 {
     list-style-type: none;
 }
 
-#banner p, h1, h2[id="h1"], h2, h3, #last_article_title
-{
-    color: var(--blue);
-}
-
-#banner p, h1, h2[id="h1"], h2, h3, #last_article_title, #error_message
-{
-    text-align: center;
-}
-
-#last_article_title
-{
-    font-weight: bold;
-    font-size: 1.3rem;
-    text-shadow: 1px 1px 2px var(--black);
-}
-
-#last_article_title, .article_info
-{
-    margin-bottom: 10px;
-}
-
-.read_more
-{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    margin-top: 10px;
-}
-
-#banner p, h1, h2[id="h1"]
-{
-    text-transform: uppercase;
-}
-
-#banner p
-{
-    font-size: 4rem;
-}
-
-h1, h2[id="h1"], h2, h3
-{
-    margin-bottom: 20px;
-}
-
-h1, h2[id="h1"]
-{
-    font-size: 2.5rem;
-}
-
-h2, h3, h2 a
-{
-    margin-top: 20px;
-    font-size: 2rem;
-}
-
-header ul li
-{
-    font-size: 1.5rem;
-}
-
-#banner p, h1, h2[id="h1"], h2, a, span[class="a"], footer, h3
-{
-    text-shadow: 2px 2px 4px var(--black);
-}
-
-#banner p, h1, h2[id="h1"], h2, h3, a, span[class="a"], strong, #txt_likes
-{
-    font-weight: bold;
-}
-
-em
-{
-    font-style: italic;
-}
-
-a, span[class="a"]
-{
-    color: var(--dark_yellow);
-    text-decoration: none;
-}
-
-a, button, input[type="button"], select, input[type="submit"], input[type="reset"]
-{
-    cursor: pointer;
-}
-
-span[class="a"]
-{
-    cursor: not-allowed;
-}
-
-#copyright, #txt_likes
-{
-    cursor: default;
-}
-
-a:hover, span[class="a"]:hover
-{
-    color: var(--light_yellow);
-}
-
-.logo img
-{
-    margin: 10px;
-    max-width: 130px;
-    max-height: 130px;
-}
-
-header img, header ul li, main, div#main, input, textarea, select
-{
-    border-radius: 10px;
-}
-
-header img, header ul li, main, div#main
-{
-    box-shadow: 3px 3px 5px var(--white), -3px -3px 5px var(--white);
-}
-
-header ul li, button, input[type="button"], input[type="submit"], input[type="reset"]
-{
-    border-radius: 42px;
-}
-
-button, input, select, textarea
-{
-    border: 3px solid var(--blue);
-}
-
-header img
-{
-    width: 100%;
-    z-index: 0;	
-}
+/* HEADER: BANNER ------------------------------------------------------------------------------- */
 
 #banner
 {
-    position: relative;
+    margin: 10px;
+    margin-bottom: 30px;
+    max-width: 100%;
+    height: 20rem;
+    background: url("./assets/images/banner.jpg") no-repeat center center;
+    background-size: cover;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px var(--white), -3px -3px 5px var(--white);
 }
 
-#banner p
-{
-    z-index: 1;
-    position: absolute;
-    top: 20%;
-    right: 20%;
-    bottom: 20%;
-    left: 20%;
-}
+/* HEADER: NAVBAR ------------------------------------------------------------------------------- */
 
-header ul
+nav ul
 {
+    margin-bottom: 30px;
+    padding: 0 10px;
+
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: space-around;
 }
 
-header ul li
+nav ul a
 {
     margin: 5px;
     margin-top: 25px;
     padding: 20px;
     background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px var(--white), -3px -3px 5px var(--white);
+    font-size: 1.5rem;
+    border-radius: 42px;
 }
 
-main, div#main
+/* HEADER: USER BUTTONS ------------------------------------------------------------------------- */
+
+#user_buttons ul
 {
-    margin: 20px 0px;
-    padding: 15px;
-    background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
 }
 
-button, input, textarea, select
+#user_buttons a
 {
     padding: 10px;
 }
 
-footer ul
+#user_buttons a span
 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    font-size: 1.8rem;
+    filter: drop-shadow(1px 1px 1px var(--brown));
 }
 
-#social_media
+/* BUTTON: UP BUTTON ---------------------------------------------------------------------------- */
+
+#btn_top
 {
-    margin-bottom: 15px;
+    padding: 12px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    font-size: 2rem;
+    filter: drop-shadow(1px 1px 1px var(--brown));
 }
+
+/* BUTTONS: SOCIAL MEDIA ------------------------------------------------------------------------ */
 
 #social_media ul
 {
@@ -290,62 +221,38 @@ footer ul
     justify-content: center;
 }
 
-#book_presentation
-{
-    display: flex;
-    flex-flow: row nowrap;
-}
-
-#book_catch_phrase
-{
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-#book_summary p, #presentation_website p:last-child, #blog_article p
-{
-    margin-top: 20px;
-}
-
-#book_cover
-{
-    margin-right: 20px;
-    padding: 10px;
-    max-width: 350px;
-    max-height: 500px;
-    box-shadow: 4px 4px 8px inset var(--see_through_white), -4px -4px 8px inset var(--see_through_white);
-    border-radius: 10px;
-}
-
-.page_numbers a, .page_numbers span[class="a"]
+.logo img
 {
     margin: 10px;
-    padding: 15px;
-    background-color: var(--blue);
-    box-shadow: inset 2px 2px 4px var(--white), inset -2px -2px 4px var(--black);
-    border-radius: 50%;
+    max-width: 8rem;
+    max-height: 8rem;
+
+    filter: 
+    drop-shadow(1px 1px 0px var(--white)) 
+    drop-shadow(-1px 1px 0px var(--white)) 
+    drop-shadow(1px -1px 0px var(--white)) 
+    drop-shadow(-1px -1px 0px var(--white));
 }
 
-.page_numbers
+/* BUTTON: PASSWORD EYE TOGGLE ------------------------------------------------------------------ */
+
+.field_password
 {
-    margin: 35px 0px 10px 0px;
+    position: relative;
 }
 
-.page_numbers_top, .page_numbers_bottom
+.btn_eye
 {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
+    padding-left: 7px;
+    color: var(--black);
+    background-color: var(--white);
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 12px;
 }
 
-#article_info
-{
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: bold;
-    color: var(--blue);
-    text-shadow: 1px 1px 2px var(--black);
-}
+/* BUTTONS: LIKE & DISLIKE ---------------------------------------------------------------------- */
 
 #likes_dislikes:before, #likes_dislikes:after
 {
@@ -376,9 +283,114 @@ footer ul
     justify-content: flex-end;
 }
 
+#txt_likes
+{
+    cursor: default;
+    font-weight: bold;
+}
+
 #txt_likes, #btn_like
 {
     margin-right: 5px;
+}
+
+/* FORM ----------------------------------------------------------------------------------------- */
+
+form
+{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+input, select, textarea
+{
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: var(--white);
+    font-size: 1rem;
+}
+
+input, select, textarea, .button
+{
+    border: 0 none;
+    border-radius: 5px;
+}
+
+textarea
+{
+    height: 140px;
+    min-height: 20px;
+    resize: vertical;
+}
+
+input, textarea
+{
+    width: 260px;
+}
+
+select
+{
+    width: 280px;
+    cursor: pointer;
+}
+
+input[type="radio"], input[type="checkbox"], .button
+{
+    width: initial;
+}
+
+#btn_pers
+{
+    margin-bottom: 0;
+}
+
+label, .button
+{
+    margin: 15px 5px;
+}
+
+.button
+{
+    padding: 15px;
+    background-color: var(--see_through_white);
+}
+
+.button, a, span[class="a"]
+{
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--dark_yellow);
+    text-shadow: 1px 1px 2px var(--black);
+}
+
+.button:hover, .button:focus, a:hover, span[class="a"]:hover
+{
+    color: var(--light_yellow);
+}
+
+.icon
+{
+    filter: drop-shadow(0.5px 0.5px 1px var(--black));
+}
+
+a, span[class="a"]
+{
+    text-decoration: none;
+}
+
+.preview_article .a
+{
+    cursor: not-allowed;
+}
+
+/* VIEW: LICENSES ------------------------------------------------------------------------------- */
+
+#licenses ul
+{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
 }
 
 /* VIEW: BLOG ----------------------------------------------------------------------------------- */
@@ -395,66 +407,40 @@ footer ul
     border-radius: 5px;
 }
 
-/* VIEW: CONTACT -------------------------------------------------------------------------------- */
-
-#contact_form label
+#last_article_title
 {
-    margin-right: 15px;
-    font-size: 1.2rem;
+    color: var(--blue);
+    text-align: center;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px var(--black);
 }
 
-#visitor_name, #visitor_email, #message_content
+#last_article_title, .article_info
 {
     margin-bottom: 10px;
 }
 
-#message_content
+#article_info
 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--blue);
+    text-shadow: 1px 1px 2px var(--black);
+}
+
+.read_more
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
     margin-top: 10px;
 }
 
-#btn_reset
-{
-    margin-right: 5px;
-}
-
-#btn_send
-{
-    margin-left: 5px;
-}
-
-/* VIEW: CONTROL PANEL -------------------------------------------------------------------------- */
-
-main form
-{
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-}
-
-main input
-{
-    max-width: 300px;
-}
+/* COMPONENT: BLOG EDITOR ----------------------------------------------------------------------- */
 
 #field_login_username, #field_login_password
 {
     margin-bottom: 10px;
-}
-
-#back_talks
-{
-    margin-top: 40px;
-
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-}
-
-#go_to_blogeditor
-{
-    display: flex;
-    justify-content: space-around;
 }
 
 #control_panel_blog_buttons
@@ -544,16 +530,34 @@ main input
     }
 }
 
-/* VIEW: LICENSES ------------------------------------------------------------------------------- */
+/* VIEW: WORKS ---------------------------------------------------------------------------------- */
 
-main ul
+#book_presentation
 {
     display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
+    flex-flow: row nowrap;
 }
 
-/* VIEW: WORKS ---------------------------------------------------------------------------------- */
+#book_catch_phrase
+{
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#book_summary p, #presentation_website p:last-child, #blog_article p
+{
+    margin-top: 20px;
+}
+
+#book_cover
+{
+    margin-right: 20px;
+    padding: 10px;
+    max-width: 350px;
+    max-height: 500px;
+    box-shadow: 4px 4px 8px inset var(--see_through_white), -4px -4px 8px inset var(--see_through_white);
+    border-radius: 10px;
+}
 
 #book_info_main, #book_info_date
 {
@@ -595,5 +599,105 @@ main ul
 #ebook_format_options input[type="radio"]
 {
     margin-right: 8px;
+}
+
+/* VIEW: FAQ ------------------------------------------------------------------------------------ */
+
+.question
+{
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between
+}
+
+.question strong
+{
+    margin: 10px;
+    margin-top: 0;
+    text-shadow: 1px 1px 2px var(--blue);
+}
+
+.question span
+{
+    filter: drop-shadow(1px 1px 1px var(--black));
+}
+
+.question:hover
+{
+    background-color: var(--white);
+}
+
+.answer
+{
+    margin-top: 10px;
+}
+
+#add_question
+{
+    margin-bottom: 30px;
+}
+
+.faq_icons
+{
+    margin-top: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+/* COMPONENT: ACCOUNT EDITOR -------------------------------------------------------------------- */
+
+#all_account_info, #account_editor_form div.change
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#all_account_info ul
+{
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 4px var(--brown) dashed;
+    border-radius: 3px;
+    box-shadow: 4px 4px 8px inset var(--see_through_white), -4px -4px 8px inset var(--see_through_white);
+}
+
+#all_account_info ul li:first-child
+{
+    font-weight: bold;
+    text-align: center;
+}
+
+/* COMPONENT: NEWSLETTER EDITOR ----------------------------------------------------------------- */
+
+#preview_newsletter
+{
+    all: unset;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+/* VECTOR IMAGES -------------------------------------------------------------------------------- */
+
+#vector img
+{
+    /* 
+        The filter is in two parts: the first line is the filling color and the drop-shadows are the outline color.
+        Here is the link for the filling, which converts a hex color into a filter: https://codepen.io/sosuke/pen/Pjoqqp 
+        For the outline, just replace the hex code by the one you want. 
+        The chosen colors are "--black" for the filling and "--white" for the outline.
+    */
+    /*
+    filter: invert(9%) sepia(10%) saturate(3718%) hue-rotate(191deg) brightness(92%) contrast(111%) 
+    drop-shadow(1px 1px 0px var(--white)) 
+    drop-shadow(-1px 1px 0px var(--white)) 
+    drop-shadow(1px -1px 0px var(--white)) 
+    drop-shadow(-1px -1px 0px var(--white));
+    */
 }
 

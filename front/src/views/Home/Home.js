@@ -6,10 +6,10 @@ const Home = (props) =>
 {
     return (
         <main>
-            <h1>Home</h1>
+            <h1 className="title">Home</h1>
 
             <article>
-                <h2>What is this website?</h2>
+                <h2 className="sub_title">What is this website?</h2>
                 <div id="presentation_website">
                     <p>"Sand Compass" is the name of a future French company. Sand Compass has for ambition to go tickle the known world's frontiers, but will for now settle for its 
                     favorite domain: storytelling! This website therefore presents the fictitious works of Lycoris Radiata, self-proclaimed CEO, and... Lil' lady whose coding skills 
@@ -19,7 +19,7 @@ const Home = (props) =>
             </article>
 
             <section id="current_work">
-                <h2><Link to="/works">Cosmic Dust: Sci-fi standalone novel</Link></h2>
+                <h2 className="sub_title"><Link to="/works">Cosmic Dust: Sci-fi standalone novel</Link></h2>
 
                 <div id="book_presentation">
                     <Link to="/works"><img src={Book_Cover} alt="Book cover Cosmic Dust" id="book_cover" /></Link>
@@ -48,8 +48,8 @@ const Home = (props) =>
             {props.last_article !== undefined &&
             <section id="last_article">
                 <div>
-                    <h2><Link to={'/blog/article' + props.last_article._id + '.html'}>Last article</Link></h2>
-                    <p id="last_article_title">{props.last_article.title}</p>
+                    <h2 className="sub_title"><Link to={'/blog/article' + props.last_article._id + '.html'}>Last article</Link></h2>
+                    <h3 id="last_article_title" className="sub_title">{props.last_article.title}</h3>
                 </div>
 
                 <div dangerouslySetInnerHTML={{__html: props.last_article.content.substring(0, 400) + " [...]"}} />

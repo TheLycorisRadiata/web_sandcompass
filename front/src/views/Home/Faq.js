@@ -16,25 +16,22 @@ const Faq = (props) =>
 
     return (
         <main>
-            <h1>Frequently Asked Questions</h1>
-            <div className="section_body">
-                {!props.questions.length ?
-                    <p>The FAQ is empty.</p>
-                :
-                    <>
-                        {props.questions.map((e, i) =>
-                            <div key={"qa" + i}>
-                                <p className="question" onClick={() => handle_chevrons(e, i)}>
-                                    <span>{e.is_deployed ? icon_close : icon_open}</span>
-                                    <strong>{e.question}</strong>
-                                    <span>{e.is_deployed ? icon_close : icon_open}</span>
-                                </p>
-                                {e.is_deployed && <p className="answer">{e.answer}</p>}
-                            </div>
-                        )}
-                    </>
-                }
-            </div>
+            <h1 className="title">Frequently Asked Questions</h1>
+            {!props.questions.length ?
+                <p className="txt_centered">The FAQ is empty.</p>
+            :
+                <>
+                    {props.questions.map((e, i) =>
+                        <div key={"qa" + i}>
+                            <p className="question" onClick={() => handle_chevrons(e, i)}>
+                                <span className="icon">{e.is_deployed ? icon_close : icon_open}</span>
+                                <strong>{e.question}</strong>
+                                <span className="icon">{e.is_deployed ? icon_close : icon_open}</span>
+                            </p>
+                            {e.is_deployed && <p className="answer">{e.answer}</p>}
+                        </div>
+                    )}
+                </>}
         </main>
     );
 };

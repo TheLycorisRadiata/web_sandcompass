@@ -13,9 +13,9 @@ const Works = () =>
 {
     return (
         <main id="works">
-            <h1>Works</h1>
+            <h1 className="title">Works</h1>
             <article>
-                <h2>Cosmic Dust</h2>
+                <h2 className="sub_title">Cosmic Dust</h2>
 
                 <div id="book_presentation">
                     <img src={Book_Cover} alt="Book cover Cosmic Dust" id="book_cover" />
@@ -46,14 +46,14 @@ const Works = () =>
                 </div>
 
                 <div>
-                    <h3>Reviews</h3>
+                    <h3 className="sub_title">Reviews</h3>
                     <p>The Booknode and Goodreads pages for <em>Cosmic Dust</em> will be available at release.</p>
                 </div>
             </article>
 
             <aside>
                 <div>
-                    <h3>The different formats</h3>
+                    <h3 className="sub_title">The different formats</h3>
 
                     {/* 
                         AZW (Kindle)
@@ -62,15 +62,15 @@ const Works = () =>
                     */}
 
                     <ul id="ebook_formats">
-                        <a href={File_AZW} download="Test AZW"><li>{icon_download} AZW</li></a>
-                        <a href={File_ePub} download="Test ePub"><li>{icon_download} ePub</li></a>
-                        <a href={File_PDF} download="Test PDF"><li>{icon_download} PDF</li></a>
-                        <a href={File_Zip} download="Test All"><li>{icon_download} All</li></a>
+                        <a href={File_AZW} download="Test AZW"><li><span className="icon">{icon_download}</span> AZW</li></a>
+                        <a href={File_ePub} download="Test ePub"><li><span className="icon">{icon_download}</span> ePub</li></a>
+                        <a href={File_PDF} download="Test PDF"><li><span className="icon">{icon_download}</span> PDF</li></a>
+                        <a href={File_Zip} download="Test All"><li><span className="icon">{icon_download}</span> All</li></a>
                     </ul>
                 </div>
 
                 <div>
-                    <h3>The how-to of picking a format</h3>
+                    <h3 className="sub_title">The how-to of picking a format</h3>
                     <EbookFormatPicker />
                 </div>
             </aside>

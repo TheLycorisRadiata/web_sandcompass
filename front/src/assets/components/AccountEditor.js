@@ -245,63 +245,61 @@ const AccountEditor = (props) =>
     };
 
     return (
-        <>
+        <section>
             <h2 className="sub_title">Profile</h2>
-            <section className="block_center">
-                <div id="all_account_info">
-                    <div>
-                        <ul>
-                            <li>{account_data?.username}</li>
-                            <li>Rank: {account_data?.rank === 1 ? 'Employee' : account_data?.rank === 2 ? 'Moderator' : account_data?.rank === 3 ? 'Administrator' : 'Customer'}</li>
-                            <li>Registered on: <DateInLetters raw_time={account_data?.registered_on} /></li>
-                            <li>Email address: {account_data?.email_address}</li>
-                            <li>{account_data?.newsletter ? 'Subscribed' : 'Not subscribed'} to the newsletter</li>
-                        </ul>
-                    </div>
-
-                    <button className="button" onClick={handle_edit_button}>{icon_edit} Modify information</button>
-                    {!account_data?.is_admin && <button className="button" onClick={delete_account}>{icon_delete} Delete the account</button>}
+            <div id="all_account_info">
+                <div>
+                    <ul>
+                        <li>{account_data?.username}</li>
+                        <li>Rank: {account_data?.rank === 1 ? 'Employee' : account_data?.rank === 2 ? 'Moderator' : account_data?.rank === 3 ? 'Administrator' : 'Customer'}</li>
+                        <li>Registered on: <DateInLetters raw_time={account_data?.registered_on} /></li>
+                        <li>Email address: {account_data?.email_address}</li>
+                        <li>{account_data?.newsletter ? 'Subscribed' : 'Not subscribed'} to the newsletter</li>
+                    </ul>
                 </div>
 
-                {is_edit_open && 
-                <form onSubmit={update_account} id="account_editor_form">
-                    <div className="change">
-                        <label htmlFor="change_username">Change your username:</label>
-                        <input type="text" name="username" placeholder="Username" autoComplete="new-password" id="change_username" />
-                    </div>
+                {!account_data?.is_admin && <button className="button" onClick={delete_account}><span className="icon">{icon_delete}</span> Delete the account</button>}
+                <button className="button" onClick={handle_edit_button}><span className="icon">{icon_edit}</span> Modify information</button>
+            </div>
 
-                    <div className="change">
-                        <label htmlFor="change_email">Change your email address:</label>
-                        <input type="email" name="email" placeholder="New email address" autoComplete="new-password" id="change_email" />
-                        <input type="email" name="email" placeholder="Repeat the email address" autoComplete="new-password" />
-                    </div>
+            {is_edit_open && 
+            <form onSubmit={update_account} id="account_editor_form">
+                <div className="change">
+                    <label htmlFor="change_username">Change your username</label>
+                    <input type="text" name="username" placeholder="Username" autoComplete="new-password" id="change_username" />
+                </div>
 
-                    <div className="change">
-                        <label htmlFor="change_password">Change your password:</label>
-                        <div className="field_password">
-                            <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" autoComplete="new-password" id="change_password" />
-                            <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
-                        </div>
-                        <div className="field_password">
-                            <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Repeat the password" autoComplete="new-password" /> 
-                            <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
-                        </div>
-                    </div>
+                <div className="change">
+                    <label htmlFor="change_email">Change your email address</label>
+                    <input type="email" name="email" placeholder="New email address" autoComplete="new-password" id="change_email" />
+                    <input type="email" name="email" placeholder="Repeat the email address" autoComplete="new-password" />
+                </div>
 
-                    {!account_data?.is_admin && 
-                    <div id="div_checkbox_newsletter">
-                        <input type="checkbox" name="checkbox_newsletter" autoComplete="new-password" id="checkbox_newsletter" checked={checkbox_newsletter} 
-                            onChange={() => set_checkbox_newsletter(checkbox_newsletter ? false : true)} />
-                        <label htmlFor="checkbox_newsletter">{account_data?.newsletter ? ' Unsubscribe from the newsletter' : ' Subscribe to the newsletter'}</label>
-                    </div>}
-
-                    <div className="btn_reset_submit">
-                        <input type="reset" className="button" value="Cancel" onClick={() => set_checkbox_newsletter(false)} />
-                        <input type="submit" className="button" value="Confirm" />
+                <div className="change">
+                    <label htmlFor="change_password">Change your password</label>
+                    <div className="field_password">
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" autoComplete="new-password" id="change_password" />
+                        <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
-                </form>}
-            </section>
-        </>
+                    <div className="field_password">
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Repeat the password" autoComplete="new-password" /> 
+                        <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                    </div>
+                </div>
+
+                {!account_data?.is_admin && 
+                <div id="div_checkbox_newsletter">
+                    <input type="checkbox" name="checkbox_newsletter" autoComplete="new-password" id="checkbox_newsletter" checked={checkbox_newsletter} 
+                        onChange={() => set_checkbox_newsletter(checkbox_newsletter ? false : true)} />
+                    <label htmlFor="checkbox_newsletter">{account_data?.newsletter ? ' Unsubscribe from the newsletter' : ' Subscribe to the newsletter'}</label>
+                </div>}
+
+                <div className="btn_reset_submit">
+                    <input type="reset" className="button" value="Cancel" onClick={() => set_checkbox_newsletter(false)} />
+                    <input type="submit" className="button" value="Confirm" />
+                </div>
+            </form>}
+        </section>
     );
 };
 

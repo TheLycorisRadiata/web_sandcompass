@@ -111,30 +111,28 @@ const Password = () =>
 
     return (
         <main>
-            <h1>Password Creation</h1>
-            <div className="section_body">
-                <form onSubmit={handle_submit}>
-                    {!is_access_granted ? 
-                        <input type="email" name="email_address" placeholder="Email address" required />
-                    :
-                    <>
-                        <p id="pass_email_address">{email_address}</p>
+            <h1 className="title">Password Creation</h1>
+            <form onSubmit={handle_submit}>
+                {!is_access_granted ? 
+                    <input type="email" name="email_address" placeholder="Email address" required />
+                :
+                <>
+                    <p className="txt_bold">{email_address}</p>
 
-                        <div className="field_password">
-                            <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" required />
-                            <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
-                        </div>
-                        <div className="field_password">
-                            <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder="Repeat the password" required />
-                            <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
-                        </div>
-                    </>}
+                    <div className="field_password">
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" required />
+                        <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                    </div>
+                    <div className="field_password">
+                        <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder="Repeat the password" required />
+                        <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                    </div>
+                </>}
 
-                    <input type="submit" className="button" value="Create password" />
-                    <p>{response_message}</p>
-                    <p><span onClick={() => history.push('/user')}>Retourner à la page de connexion</span></p>
-                </form>
-            </div>
+                <input type="submit" className="button" value="Create password" />
+                <p>{response_message}</p>
+                <p><span className="a" onClick={() => history.push('/user')}>Retourner à la page de connexion</span></p>
+            </form>
         </main>
     );
 };

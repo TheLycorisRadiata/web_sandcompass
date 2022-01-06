@@ -58,7 +58,7 @@ const ControlPanel = (props) =>
 
     return (
         <main>
-            <h1>Control Panel</h1>
+            <h1 className="title">Control Panel</h1>
             {!is_access_granted ?
             <>
                 <form>
@@ -71,17 +71,22 @@ const ControlPanel = (props) =>
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
 
-                    <input type="button" name="btn_login" value="Log In" onClick={handle_submit} />
+                    <input type="button" className="button" name="btn_login" value="Log In" onClick={handle_submit} />
                     <p>{access_message}</p>
                     <p><Link to="/password">Password forgotten?</Link></p>
                 </form>
             </>
             :
             <>
+                <hr />
                 <AccountEditor account_data={account_data} update_account_data={set_account_data} />
+                <hr />
                 <Stats />
+                <hr />
                 <BlogEditor articles={props.articles} set_articles={props.set_articles} categories={props.categories} set_categories={props.set_categories} />
+                <hr />
                 <NewsletterEditor />
+                <hr />
                 <FaqEditor questions={props.questions} set_questions={props.set_questions} />
             </>}
         </main>

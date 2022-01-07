@@ -18,8 +18,6 @@ const ControlPanel = (props) =>
     const [password, set_password] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [access_message, set_access_message] = useState('');
-    const [is_access_granted, set_is_access_granted] = useState(false);
-    const [account_data, set_account_data] = useState(null);
 
     const handle_submit = () => 
     {
@@ -38,8 +36,8 @@ const ControlPanel = (props) =>
                 if (json.error)
                     console.log(json.error);
                 set_access_message(json.message);
-                set_is_access_granted(json.is_success);
-                set_account_data(json.account_data);
+                props.set_is_access_granted(json.is_success);
+                props.set_account_data(json.account_data);
             });
         }
     };
@@ -59,7 +57,7 @@ const ControlPanel = (props) =>
     return (
         <main>
             <h1 className="title">Control Panel</h1>
-            {!is_access_granted ?
+            {!props.is_access_granted ?
             <>
                 <form>
                     <input type="text" name="email_address" placeholder="Email address" value={email_address} onChange={e => set_email_address(e.target.value)} 
@@ -79,7 +77,7 @@ const ControlPanel = (props) =>
             :
             <>
                 <hr />
-                <AccountEditor account_data={account_data} update_account_data={set_account_data} />
+                <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} />
                 <hr />
                 <Stats />
                 <hr />

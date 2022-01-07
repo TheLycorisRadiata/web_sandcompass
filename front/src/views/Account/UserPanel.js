@@ -9,14 +9,12 @@ import { backend } from '../../../package.json';
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 
-const UserPanel = () => 
+const UserPanel = (props) => 
 {
     const [email_address, set_email_address] = useState('');
     const [password, set_password] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
-    const [is_access_granted, set_is_access_granted] = useState(false);
     const [access_message, set_access_message] = useState('');
-    const [account_data, set_account_data] = useState(null);
 
     const handle_submit = async () => 
     {
@@ -35,8 +33,8 @@ const UserPanel = () =>
                 if (json.error)
                     console.log(json.error);
                 set_access_message(json.message);
-                set_is_access_granted(json.is_success);
-                set_account_data(json.account_data);
+                props.set_is_access_granted(json.is_success);
+                props.set_account_data(json.account_data);
                 if (send_verif_email)
                     alert(json.message);
             })
@@ -61,8 +59,8 @@ const UserPanel = () =>
 
     return (
         <main>
-            <h1 className="title">{!is_access_granted ? 'Log In' : 'User Account'}</h1>
-            {!is_access_granted ? 
+            <h1 className="title">{!props.is_access_granted ? 'Log In' : 'User Account'}</h1>
+            {!props.is_access_granted ? 
                 <form>
                     <input type="email" name="email_address" placeholder="Email address" autoComplete="on" 
                         value={email_address} onChange={e => set_email_address(e.target.value)} onKeyPress={handle_key_press} />
@@ -77,7 +75,7 @@ const UserPanel = () =>
                     <p><Link to="/user/signup">Not yet registered?</Link></p>
                 </form>
             :
-                <AccountEditor account_data={account_data} update_account_data={set_account_data} />}
+                <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} />}
         </main>
     );
 };

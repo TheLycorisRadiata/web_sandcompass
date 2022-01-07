@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -16,12 +16,9 @@ const AccountEditor = (props) =>
 {
     const history = useHistory();
 
-    const [account_data, set_account_data] = useState(null);
     const [is_edit_open, set_is_edit_open] = useState(false);
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [checkbox_newsletter, set_checkbox_newsletter] = useState(false);
-
-    useEffect(() => set_account_data(props.account_data), [props.account_data]);
 
     const handle_edit_button = () => 
     {
@@ -37,14 +34,14 @@ const AccountEditor = (props) =>
 
     const is_username_already_used_by_another_account = async (username) => 
     {
-        const res = await fetch(backend + `/user/check/username/${account_data._id}/${username}`);
+        const res = await fetch(backend + `/user/check/username/${props.account_data._id}/${username}`);
         const json = await res.json();
         return json;
     };
 
     const is_email_already_used_by_another_account = async (email) => 
     {
-        const res = await fetch(backend + `/user/check/email/${account_data._id}/${email}`);
+        const res = await fetch(backend + `/user/check/email/${props.account_data._id}/${email}`);
         const json = await res.json();
         return json;
     };
@@ -61,7 +58,7 @@ const AccountEditor = (props) =>
             },
             body: JSON.stringify(
             {
-                _id: account_data._id,
+                _id: props.account_data._id,
                 password: password
             })
         });
@@ -91,7 +88,7 @@ const AccountEditor = (props) =>
         if (field_username !== '' || field_email !== '' || field_repeat_email !== '' || field_password !== '' || field_repeat_password !== '' || checkbox_newsletter) 
         {
             if (field_username === '')
-                updated_account.username = account_data.username;
+                updated_account.username = props.account_data.username;
             else
             {
                 obj_parse_username = parse_username(field_username);
@@ -118,7 +115,7 @@ const AccountEditor = (props) =>
 
             if (field_email === '' && field_repeat_email === '')
             {
-                updated_account.email_address = account_data.email_address;
+                updated_account.email_address = props.account_data.email_address;
             }
             else if (field_email === field_repeat_email)
             {
@@ -148,13 +145,13 @@ const AccountEditor = (props) =>
 
             if (field_password === '' && field_repeat_password === '')
             {
-                updated_account.hashed_password = account_data.hashed_password;
+                updated_account.hashed_password = props.account_data.hashed_password;
             }
             else if (field_password === field_repeat_password)
             {
                 /* 
                     The function invoked right below updates the password in DB, but doesn't updates our account_data state, 
-                    so this time we can't say: updated_account.hashed_password = account_data.hashed_password;
+                    so this time we can't say: updated_account.hashed_password = props.account_data.hashed_password;
 
                     But it still works just fine, because we don't need to have all the fields in the updated_account object.
                 */
@@ -168,9 +165,9 @@ const AccountEditor = (props) =>
             }
 
             // Change the status of the newsletter subscription
-            if (checkbox_newsletter && (!account_data.newsletter || window.confirm('Are you sure you want to unsubscribe from the newsletter?')))
+            if (checkbox_newsletter && (!props.account_data.newsletter || window.confirm('Are you sure you want to unsubscribe from the newsletter?')))
             {
-                updated_account.newsletter = !account_data.newsletter;
+                updated_account.newsletter = !props.account_data.newsletter;
                 has_newsletter_changed = true;
             }
 
@@ -184,7 +181,7 @@ const AccountEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
-                    _id: account_data._id,
+                    _id: props.account_data._id,
                     updated_account: updated_account
                 })
             })
@@ -195,7 +192,7 @@ const AccountEditor = (props) =>
                 alert(json.message);
 
                 if (json.is_success)
-                    props.update_account_data(json.data);
+                    props.set_account_data(json.data);
 
                 // The user changed the status of their newsletter subscription, and they're now subscribed
                 if (has_newsletter_changed && json.data.newsletter)
@@ -209,7 +206,7 @@ const AccountEditor = (props) =>
 
         // If the email address has been updated, verify it just like we did at account registration
         if (updated_account.verified_user === false)
-            send_verification_email(account_data._id, field_email, updated_account.first_name);
+            send_verification_email(props.account_data._id, field_email, updated_account.first_name);
     };
 
     const delete_account = () => 
@@ -226,7 +223,7 @@ const AccountEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id_user_to_delete: account_data._id })
+                body: JSON.stringify({ id_user_to_delete: props.account_data._id })
             })
             .then(res => res.json())
             .then(json => 
@@ -250,15 +247,15 @@ const AccountEditor = (props) =>
             <div id="all_account_info">
                 <div>
                     <ul>
-                        <li>{account_data?.username}</li>
-                        <li>Rank: {account_data?.rank === 1 ? 'Employee' : account_data?.rank === 2 ? 'Moderator' : account_data?.rank === 3 ? 'Administrator' : 'Customer'}</li>
-                        <li>Registered on: <DateInLetters raw_time={account_data?.registered_on} /></li>
-                        <li>Email address: {account_data?.email_address}</li>
-                        <li>{account_data?.newsletter ? 'Subscribed' : 'Not subscribed'} to the newsletter</li>
+                        <li>{props.account_data?.username}</li>
+                        <li>Rank: {props.account_data?.rank === 1 ? 'Employee' : props.account_data?.rank === 2 ? 'Moderator' : props.account_data?.rank === 3 ? 'Administrator' : 'Customer'}</li>
+                        <li>Registered on: <DateInLetters raw_time={props.account_data?.registered_on} /></li>
+                        <li>Email address: {props.account_data?.email_address}</li>
+                        <li>{props.account_data?.newsletter ? 'Subscribed' : 'Not subscribed'} to the newsletter</li>
                     </ul>
                 </div>
 
-                {!account_data?.is_admin && <button className="button" onClick={delete_account}><span className="icon">{icon_delete}</span> Delete the account</button>}
+                {!props.account_data?.is_admin && <button className="button" onClick={delete_account}><span className="icon">{icon_delete}</span> Delete the account</button>}
                 <button className="button" onClick={handle_edit_button}><span className="icon">{icon_edit}</span> Modify information</button>
             </div>
 
@@ -287,11 +284,11 @@ const AccountEditor = (props) =>
                     </div>
                 </div>
 
-                {!account_data?.is_admin && 
+                {!props.account_data?.is_admin && 
                 <div id="div_checkbox_newsletter">
                     <input type="checkbox" name="checkbox_newsletter" autoComplete="new-password" id="checkbox_newsletter" checked={checkbox_newsletter} 
                         onChange={() => set_checkbox_newsletter(checkbox_newsletter ? false : true)} />
-                    <label htmlFor="checkbox_newsletter">{account_data?.newsletter ? ' Unsubscribe from the newsletter' : ' Subscribe to the newsletter'}</label>
+                    <label htmlFor="checkbox_newsletter">{props.account_data?.newsletter ? ' Unsubscribe from the newsletter' : ' Subscribe to the newsletter'}</label>
                 </div>}
 
                 <div className="btn_reset_submit">

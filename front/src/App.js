@@ -26,6 +26,11 @@ const icon_up = <FontAwesomeIcon icon={faChevronCircleUp} />;
 
 const App = () => 
 {
+    const [admin_account_data, set_admin_account_data] = useState(null);
+    const [is_admin_access_granted, set_is_admin_access_granted] = useState(false);
+    const [user_account_data, set_user_account_data] = useState(null);
+    const [is_user_access_granted, set_is_user_access_granted] = useState(false);
+
     const [all_questions, set_all_questions] = useState([]);
     const [all_categories, set_all_categories] = useState([]);
     const [all_articles, set_all_articles] = useState([]);
@@ -143,12 +148,18 @@ const App = () =>
                     <Route exact path="/licenses"><Licenses /></Route>
                     <Route exact path="/controlpanel">
                         <ControlPanel 
+                            account_data={admin_account_data} set_account_data={set_admin_account_data} 
+                            is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} 
                             questions={all_questions} set_questions={set_all_questions} 
                             articles={all_articles} set_articles={set_all_articles} 
                             categories={all_categories} set_categories={set_all_categories} />
                     </Route>
                     <Route exact path="/user/signup"><SignUp /></Route>
-                    <Route exact path="/user"><UserPanel /></Route>
+                    <Route exact path="/user">
+                        <UserPanel 
+                            account_data={user_account_data} set_account_data={set_user_account_data} 
+                            is_access_granted={is_user_access_granted} set_is_access_granted={set_is_user_access_granted} />
+                    </Route>
                     <Route path="/password"><Password /></Route>
                     <Route path="/token"><ExecuteToken /></Route>
                     <Route path="/"><PageNotFound /></Route>

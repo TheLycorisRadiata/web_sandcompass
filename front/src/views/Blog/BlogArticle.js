@@ -22,11 +22,11 @@ const BlogArticle = (props) =>
             {props.is_preview ? 
             <div id="main" className="preview_article">
                 <h3 className="title">Blog</h3>
-                <div><span className="a button">Other articles</span></div>
+                <div className="btn_other_articles"><span className="a button">Other articles</span></div>
 
-                <article id="blog_article">
+                <article>
                     <h4 className="sub_title">{props.article.title}</h4>
-                    <p id="article_info" className="txt_bold">
+                    <p className="article_info">
                         Category: {props.article.category}.<br />
                         Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} /> at <Time 
                         raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} />.
@@ -41,22 +41,22 @@ const BlogArticle = (props) =>
                     <div dangerouslySetInnerHTML={{__html: props.article.content}} />
                 </article>
 
-                <div><span className="a button">Other articles</span></div>
+                <div className="btn_other_articles"><span className="a button">Other articles</span></div>
 
                 <div id="likes_dislikes">
                     <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
-                    <button className="button" id="btn_like" name="btn_like" onClick={increment_likes}><span className="icon">{icon_thumbs_up}</span> Like</button>
-                    <button className="button" id="btn_like" name="btn_dislike" onClick={decrement_likes}><span className="icon">{icon_thumbs_down}</span> Dislike</button>
+                    <button className="button" name="btn_like" onClick={increment_likes}><span className="icon">{icon_thumbs_up}</span> Like</button>
+                    <button className="button" name="btn_dislike" onClick={decrement_likes}><span className="icon">{icon_thumbs_down}</span> Dislike</button>
                 </div>
             </div>
             :
             <main>
                 <h1 className="title">Blog</h1>
-                <div><Link to="/blog/page.html" className="button">Other articles</Link></div>
+                <div className="btn_other_articles"><Link to="/blog/page.html" className="button">Other articles</Link></div>
 
-                <article id="blog_article">
+                <article>
                     <h2 className="sub_title">{props.article.title}</h2>
-                    <p id="article_info" className="txt_bold">
+                    <p className="article_info">
                         Category: {props.article.category}.<br />
                         Created: On the <DateInLetters raw_time={props.article.time_creation} /> at <Time raw_time={props.article.time_creation} seconds={false} />.
                         {props.article.is_modified && 
@@ -70,12 +70,12 @@ const BlogArticle = (props) =>
                     <div dangerouslySetInnerHTML={{__html: props.article.content}} />
                 </article>
 
-                <div><Link to="/blog/page.html" className="button">Other articles</Link></div>
+                <div className="btn_other_articles"><Link to="/blog/page.html" className="button">Other articles</Link></div>
 
                 <div id="likes_dislikes">
                     <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
-                    <button className="button" id="btn_like" name="btn_like" onClick={increment_likes}><span className="icon">{icon_thumbs_up}</span> Like</button>
-                    <button className="button" id="btn_like" name="btn_dislike" onClick={decrement_likes}><span className="icon">{icon_thumbs_down}</span> Dislike</button>
+                    <button className="button" name="btn_like" onClick={increment_likes}><span className="icon">{icon_thumbs_up}</span> Like</button>
+                    <button className="button" name="btn_dislike" onClick={decrement_likes}><span className="icon">{icon_thumbs_down}</span> Dislike</button>
                 </div>
             </main>}
         </>

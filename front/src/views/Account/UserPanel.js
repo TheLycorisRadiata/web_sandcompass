@@ -70,7 +70,7 @@ const UserPanel = (props) =>
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <input type="button" className="button" value="Log In" onClick={handle_submit} />
-                    <p>{access_message}</p>
+                    {access_message !== '' && <p>{access_message}</p>}
                     <p><Link to="/password">Password forgotten?</Link></p>
                     <p><Link to="/user/signup">Not yet registered?</Link></p>
                 </form>

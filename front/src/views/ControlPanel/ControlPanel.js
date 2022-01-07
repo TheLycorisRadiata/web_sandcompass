@@ -70,7 +70,7 @@ const ControlPanel = (props) =>
                     </div>
 
                     <input type="button" className="button" name="btn_login" value="Log In" onClick={handle_submit} />
-                    <p>{access_message}</p>
+                    {access_message !== '' && <p>{access_message}</p>}
                     <p><Link to="/password">Password forgotten?</Link></p>
                 </form>
             </>

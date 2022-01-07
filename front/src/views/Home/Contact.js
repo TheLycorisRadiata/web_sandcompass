@@ -80,14 +80,14 @@ const Contact = () =>
 
             <SocialMedia />
 
-            <section id="contact_form">
+            <section>
                 <h2 className="sub_title">Something to say?</h2>
                 <form onSubmit={handle_contact}>
-                    <div>
+                    <div className="div_pointer">
                         <input type="radio" name="visitor_type" value="personal" id="btn_pers" defaultChecked onClick={() => set_is_visitor_pro(false)} />
                         <label htmlFor="btn_pers">{' '}Particulier</label>
                     </div>
-                    <div>
+                    <div className="div_pointer">
                         <input type="radio" name="visitor_type" value="professional" id="btn_pro" onClick={() => set_is_visitor_pro(true)} />
                         <label htmlFor="btn_pro">{' '}Professionnel</label>
                     </div>

@@ -11,7 +11,7 @@ const Blog = (props) =>
             </section>
 
             {props.categories.map(category => 
-                <section className="blog_section" key={category._id}>
+                <section key={category._id} className="blog_section">
                     <h2 className="sub_title">{category.name}</h2>
                     {props.articles.map(article => article.category === category.name ? 
                         <p key={article._id}><Link to={'/blog/article' + article._id + '.html'}>{article.title}</Link></p>

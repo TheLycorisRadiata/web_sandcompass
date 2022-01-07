@@ -100,7 +100,7 @@ const NewsletterEditor = () =>
     };
 
     return (
-        <section>
+        <section id="newsletter_editor">
             <h2 className="sub_title">Newsletters</h2>
             <button className="button" title="Refresh newsletters" onClick={() => fetch_newsletters(true)}><span className="icon">{icon_fetch}</span></button>
     
@@ -120,7 +120,7 @@ const NewsletterEditor = () =>
 
                         <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: html_message}} />
 
-                        <div>
+                        <div className="div_pointer">
                             <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(checkbox ? false : true)} />
                             <label htmlFor="send">{' '}Send the newsletter to subscribers</label>
                         </div>

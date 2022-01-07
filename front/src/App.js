@@ -107,7 +107,7 @@ const App = () =>
                 <header>
                     <Link to="/home">
                         <div id="banner">
-                            <p>Sand Compass</p>
+                            <div id="title">Sand Compass</div>
                         </div>
                     </Link>
 

@@ -29,7 +29,7 @@ const Stats = () =>
     };
 
     return (
-        <section>
+        <section id="stats">
             <h2 className="sub_title">Statistics</h2>
             <button className="button" title="Refresh stats" onClick={handle_click}><span className="icon">{icon_fetch}</span></button>
 

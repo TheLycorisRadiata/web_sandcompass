@@ -285,13 +285,13 @@ const AccountEditor = (props) =>
                 </div>
 
                 {!props.account_data?.is_admin && 
-                <div id="div_checkbox_newsletter">
+                <div className="div_pointer">
                     <input type="checkbox" name="checkbox_newsletter" autoComplete="new-password" id="checkbox_newsletter" checked={checkbox_newsletter} 
                         onChange={() => set_checkbox_newsletter(checkbox_newsletter ? false : true)} />
                     <label htmlFor="checkbox_newsletter">{props.account_data?.newsletter ? ' Unsubscribe from the newsletter' : ' Subscribe to the newsletter'}</label>
                 </div>}
 
-                <div className="btn_reset_submit">
+                <div>
                     <input type="reset" className="button" value="Cancel" onClick={() => set_checkbox_newsletter(false)} />
                     <input type="submit" className="button" value="Confirm" />
                 </div>

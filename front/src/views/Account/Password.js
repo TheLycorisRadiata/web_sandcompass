@@ -130,7 +130,7 @@ const Password = () =>
                 </>}
 
                 <input type="submit" className="button" value="Create password" />
-                <p>{response_message}</p>
+                {response_message !== '' && <p>{response_message}</p>}
                 <p><span className="a" onClick={() => history.push('/user')}>Retourner à la page de connexion</span></p>
             </form>
         </main>

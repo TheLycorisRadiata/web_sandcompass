@@ -46,15 +46,31 @@ body
     justify-content: space-between;
 }
 
+@media screen and (max-width: 1000px)
+{
+    #root
+    {
+        width: 100%;
+    }
+}
+
 /* BLOCKS --------------------------------------------------------------------------------------- */
+
+#banner, nav ul a, main, div#main
+{
+    box-shadow: 0 0 15px var(--white);
+}
+
+#banner, main, div#main
+{
+    border-radius: 10px;
+}
 
 main, div#main
 {
     margin: 20px 0px;
-    padding: 15px;
+    padding: 25px;
     background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
-    box-shadow: 3px 3px 5px var(--white), -3px -3px 5px var(--white);
-    border-radius: 10px;
 }
 
 footer ul
@@ -79,9 +95,13 @@ body
     background: linear-gradient(var(--pink), var(--blue));
 }
 
-::-webkit-scrollbar-thumb
+::-webkit-scrollbar:horizontal, ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-corner
 {
     background: linear-gradient(var(--blue), var(--pink));
+}
+
+::-webkit-scrollbar-thumb
+{
     border-radius: 10px;
     box-shadow: inset 2px 2px 3px var(--white);
 }
@@ -93,15 +113,18 @@ textarea::-webkit-scrollbar
 
 /* TITLES --------------------------------------------------------------------------------------- */
 
+.title, .sub_title
+{
+    font-weight: bold;
+    text-align: center;
+}
+
 .title
 {
-    margin: 20px 5px 20px 20px;
-    padding: 10px 15px;
+    margin-bottom: 20px;
     color: var(--pink);
     font-size: 2.5rem;
-    font-weight: bold;
     text-shadow: 2px 2px 4px var(--black);
-    text-align: center;
     text-transform: uppercase;
 }
 
@@ -110,9 +133,7 @@ textarea::-webkit-scrollbar
     margin: 20px 0;
     color: var(--blue);
     font-size: 2rem;
-    font-weight: bold;
     text-shadow: 1px 1px 2px var(--black);
-    text-align: center;
 }
 
 /* TEXT ----------------------------------------------------------------------------------------- */
@@ -142,6 +163,11 @@ ul
     list-style-type: none;
 }
 
+p
+{
+    margin-top: 20px;
+}
+
 /* HEADER: BANNER ------------------------------------------------------------------------------- */
 
 #banner
@@ -152,8 +178,44 @@ ul
     height: 20rem;
     background: url("./assets/images/banner.jpg") no-repeat center center;
     background-size: cover;
-    border-radius: 10px;
-    box-shadow: 3px 3px 5px var(--white), -3px -3px 5px var(--white);
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+#banner #title
+{
+    margin: 10px;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 5rem;
+    color: var(--see_through_white);
+}
+
+@media screen and (max-width: 650px)
+{
+    #banner #title
+    {
+        font-size: 4.5rem;
+    }
+}
+
+@media screen and (max-width: 600px)
+{
+    #banner #title
+    {
+        font-size: 4rem;
+    }
+}
+
+@media screen and (max-width: 550px)
+{
+    #banner #title
+    {
+        font-size: 3.5rem;
+    }
 }
 
 /* HEADER: NAVBAR ------------------------------------------------------------------------------- */
@@ -174,8 +236,6 @@ nav ul a
     margin-top: 25px;
     padding: 20px;
     background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
-    border-radius: 10px;
-    box-shadow: 3px 3px 5px var(--white), -3px -3px 5px var(--white);
     font-size: 1.5rem;
     border-radius: 42px;
 }
@@ -186,7 +246,7 @@ nav ul a
 {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 #user_buttons a
@@ -289,9 +349,9 @@ nav ul a
     font-weight: bold;
 }
 
-#txt_likes, #btn_like
+#txt_likes
 {
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 /* FORM ----------------------------------------------------------------------------------------- */
@@ -308,11 +368,11 @@ input, select, textarea
     margin-bottom: 20px;
     padding: 10px;
     background-color: var(--white);
-    font-size: 1rem;
 }
 
 input, select, textarea, .button
 {
+    font-size: 1rem;
     border: 0 none;
     border-radius: 5px;
 }
@@ -332,6 +392,10 @@ input, textarea
 select
 {
     width: 280px;
+}
+
+select, .div_pointer input, .div_pointer label
+{
     cursor: pointer;
 }
 
@@ -402,9 +466,20 @@ a, span[class="a"]
     align-items: center;
 
     margin: 15px 0px;
-    padding: 0px 15px 25px;
+    padding: 20px;
     box-shadow: inset 2px 2px 4px var(--brown), inset -2px -2px 4px var(--brown);
     border-radius: 5px;
+}
+
+.blog_section .sub_title
+{
+    margin-top: 0;
+}
+
+.btn_other_articles
+{
+    display: flex;
+    justify-content: center;
 }
 
 #last_article_title
@@ -420,20 +495,24 @@ a, span[class="a"]
     margin-bottom: 10px;
 }
 
-#article_info
+.article_info
 {
     margin-bottom: 20px;
+    font-weight: bold;
     text-align: center;
-    color: var(--blue);
     text-shadow: 1px 1px 2px var(--black);
+    color: var(--blue);
 }
 
 .read_more
 {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
     margin-top: 10px;
+    align-self: end;
+
+    /* For Home.js */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 /* COMPONENT: BLOG EDITOR ----------------------------------------------------------------------- */
@@ -530,7 +609,7 @@ a, span[class="a"]
     }
 }
 
-/* VIEW: WORKS ---------------------------------------------------------------------------------- */
+/* VIEW: HOME/WORKS (PRESENTATION) -------------------------------------------------------------- */
 
 #book_presentation
 {
@@ -538,15 +617,9 @@ a, span[class="a"]
     flex-flow: row nowrap;
 }
 
-#book_catch_phrase
+#book_presentation #catch_phrase
 {
-    margin-bottom: 10px;
     text-align: center;
-}
-
-#book_summary p, #presentation_website p:last-child, #blog_article p
-{
-    margin-top: 20px;
 }
 
 #book_cover
@@ -559,76 +632,56 @@ a, span[class="a"]
     border-radius: 10px;
 }
 
-#book_info_main, #book_info_date
-{
-    margin-bottom: 20px;
-}
+/* VIEW: WORKS (EBOOK FORMATS) ------------------------------------------------------------------ */
 
-#book_info_summary_title
-{
-    margin-bottom: 20px;
-}
-
-#ebook_formats
+#works aside ul
 {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
-#ebook_formats li
+#works aside li
 {
+    margin: 5px;
     padding: 20px;
     background-color: var(--blue);
     border-radius: 5px;
     box-shadow: 2px 2px 4px inset var(--white), -2px -2px 4px inset var(--black);
 }
 
-#works aside div
+#ebook_format_picker
 {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
 }
 
-#ebook_format_options
+#ebook_format_picker #question, #ebook_format_picker #answer
 {
-    margin: 15px 0px;
+    margin-top: 0;
 }
 
-#ebook_format_options input[type="radio"]
+#ebook_format_picker #question
 {
-    margin-right: 8px;
+    margin-bottom: 20px;
+}
+
+#ebook_format_picker #answer
+{
+    margin-bottom: 10px;
 }
 
 /* VIEW: FAQ ------------------------------------------------------------------------------------ */
 
-.question
+#faq div
 {
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between
+    margin-bottom: 10px;
 }
 
-.question strong
+#faq div:last-child
 {
-    margin: 10px;
-    margin-top: 0;
-    text-shadow: 1px 1px 2px var(--blue);
-}
-
-.question span
-{
-    filter: drop-shadow(1px 1px 1px var(--black));
-}
-
-.question:hover
-{
-    background-color: var(--white);
+    margin-bottom: initial;
 }
 
 .answer
@@ -636,9 +689,30 @@ a, span[class="a"]
     margin-top: 10px;
 }
 
-#add_question
+.question
 {
-    margin-bottom: 30px;
+    padding: 10px;
+    cursor: pointer;
+    color: var(--dark_yellow);
+    text-shadow: 1px 1px 2px var(--black);
+    border-radius: 5px;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.question:hover
+{
+    color: var(--light_yellow);
+    background-color: var(--blue);
+}
+
+#faq_editor ol
+{
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 .faq_icons
@@ -671,6 +745,16 @@ a, span[class="a"]
 {
     font-weight: bold;
     text-align: center;
+}
+
+/* COMPONENTS IN THE CONTROL PANEL -------------------------------------------------------------- */
+
+#stats, #newsletter_editor, #faq_editor
+{
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* COMPONENT: NEWSLETTER EDITOR ----------------------------------------------------------------- */

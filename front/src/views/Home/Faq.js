@@ -15,7 +15,7 @@ const Faq = (props) =>
     };
 
     return (
-        <main>
+        <main id="faq">
             <h1 className="title">Frequently Asked Questions</h1>
             {!props.questions.length ?
                 <p className="txt_centered">The FAQ is empty.</p>

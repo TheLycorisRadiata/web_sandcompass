@@ -79,12 +79,12 @@ const SignUp = () =>
                 <input type="email" name="repeat_email_address" placeholder="Repeat the email address" autoComplete="on" required />
                 <input type="password" name="password" placeholder="Password" autoComplete="new-password" required />
                 <input type="text" name="username" placeholder="Username" autoComplete="on" required />
-                <div>
+                <div className="div_pointer">
                     <input type="checkbox" id="newsletter" name="newsletter" />
                     <label htmlFor="newsletter">{' '} Subscribe to the newsletter</label>
                 </div>
 
-                <div className="btn_reset_submit">
+                <div>
                     <input type="reset" className="button" value="Cancel" />
                     <input type="submit" className="button" value="Confirm" />
                 </div>

@@ -111,7 +111,7 @@ const FaqEditor = (props) =>
     };
 
     return (
-        <section>
+        <section id="faq_editor">
             <h2 className="sub_title">Frequently Asked Questions</h2>
 
             <form onSubmit={handle_add}>
@@ -132,7 +132,7 @@ const FaqEditor = (props) =>
                                 {e.answer}
                                 <br />
 
-                                <span>
+                                <span className="faq_icons">
                                     <button className="button" title="Edit the question" onClick={() => handle_edit(e)}><span className="icon">{icon_edit}</span></button>
                                     <button className="button" title="Delete the question" onClick={() => handle_delete(e)}><span className="icon">{icon_delete}</span></button>
                                 </span>

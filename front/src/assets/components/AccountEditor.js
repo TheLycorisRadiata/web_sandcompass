@@ -288,7 +288,7 @@ const AccountEditor = (props) =>
                 <div className="div_pointer">
                     <input type="checkbox" name="checkbox_newsletter" autoComplete="new-password" id="checkbox_newsletter" checked={checkbox_newsletter} 
                         onChange={() => set_checkbox_newsletter(checkbox_newsletter ? false : true)} />
-                    <label htmlFor="checkbox_newsletter">{props.account_data?.newsletter ? ' Unsubscribe from the newsletter' : ' Subscribe to the newsletter'}</label>
+                    <label htmlFor="checkbox_newsletter">{props.account_data?.newsletter ? 'Unsubscribe from the newsletter' : 'Subscribe to the newsletter'}</label>
                 </div>}
 
                 <div>

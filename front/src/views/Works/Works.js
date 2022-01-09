@@ -42,6 +42,7 @@ const Works = () =>
                         to a person who could as well be the Society personified. But is it this crazy to say that art is not only useful, but also essential?</p>
                         <p>Is Zekharia's urge to create the proof of his sickness, or is he one of the few who function properly? No matter the answer, two roads lie 
                         before him: twisting himself to fit in or finding the way to change mentalities.</p>
+                        <p className="clear"></p>
                     </div>
                 </div>
 

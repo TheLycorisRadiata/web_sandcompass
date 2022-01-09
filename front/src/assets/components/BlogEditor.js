@@ -27,16 +27,16 @@ const BlogEditor = (props) =>
     };
 
     const [article, set_article] = useState(default_article);
-    const [id_selected_article, set_id_selected_article] = useState(-1);
+    const [id_selected_article, set_id_selected_article] = useState(null);
     const [new_category, set_new_category] = useState('');
     const [is_preview_shown, set_is_preview_shown] = useState(false);
 
     const handle_select_article = e => 
     {
-        const index = e.target.value;
-        const selected_article = props.articles[index];
+        const id = e.target.value;
+        const selected_article = props.articles.find(e => e._id === id);
 
-        set_id_selected_article(selected_article._id);
+        set_id_selected_article(id);
 
         set_article(
         {
@@ -278,57 +278,58 @@ const BlogEditor = (props) =>
         <section>
             <h2 className="sub_title">Blog Editor</h2>
 
-            <div id="control_panel_blog_buttons">
-                <input type="button" className="button" name="btn_post_article" id="btn_post_article" value="Post a new article" onClick={handle_create_article} />
-                {props.articles.length && 
-                <div id="control_panel_extended_buttons">
-                    <select name="select_article" id="select_article" defaultValue="default" onChange={handle_select_article}>
-                        <option disabled value="default">Select an article</option>
+            <div id="blog_editor">
+                <div id="btn_article">
+                    <input type="button" className="button" name="btn_post_article" value="Post a new article" onClick={handle_create_article} />
+                    {!props.articles.length ? null : 
+                    <>
+                        <select name="select_article" defaultValue="default" onChange={handle_select_article}>
+                            <option disabled value="default">Select an article</option>
                             {props.categories.map(category => 
                                 <optgroup label={category.name} key={category._id}>
-                                    {!props.articles.filter(article => article.category === category.name).length ? <option disabled>No article</option> : 
-                                    props.articles.filter(article => article.category === category.name).map((e, i) => <option key={e._id} value={i}>{e.title}</option>)}
+                                    {!props.articles.filter(article => article.category === category.name).length ? <option disabled>No article</option> 
+                                    : props.articles.filter(article => article.category === category.name).map((e) => <option key={e._id} value={e._id}>{e.title}</option>)}
                                 </optgroup>
                             )}
-                    </select>
+                        </select>
 
-                    <div className="buttons">
-                        <input type="button" className="button" name="btn_modify_article" id="btn_modify_article" value="Modify an article" onClick={handle_modify_article} />
-                        <input type="button" className="button" name="btn_delete_article" id="btn_delete_article" value="Delete an article" onClick={handle_delete_article} />
+                        <div>
+                            <input type="button" className="button" name="btn_modify_article" value="Modify an article" onClick={handle_modify_article} />
+                            <input type="button" className="button" name="btn_delete_article" value="Delete an article" onClick={handle_delete_article} />
+                        </div>
+                    </>}
+                </div>
+
+                <input type="text" name="field_article_title" value={article.title} onChange={update_title} placeholder="Title" />
+
+                <div id="categories">
+                    <div>
+                        <select name="select_category" defaultValue="default" onChange={handle_select_category}>
+                            {!props.categories.length ? 
+                                <option disabled value="default">No category</option>
+                            :
+                            <>
+                                <option disabled value="default">Select a category</option>
+                                {props.categories.map(category => <option key={category._id}>{category.name}</option>)}
+                            </>}
+                        </select>
+                        <button className="button" name="btn_delete_category" onClick={handle_delete_category}><span className="icon">{icon_folder_minus}</span></button>
                     </div>
-                </div>}
+
+                    <div>
+                        <input type="text" name="field_article_new_category" placeholder="New category" onChange={e => set_new_category(e.target.value)} />
+                        <button className="button" name="btn_add_category" onClick={handle_create_category}><span className="icon">{icon_folder_plus}</span></button>
+                    </div>
+                </div>
+
+                <textarea name="field_article_content" value={article.content} onChange={update_content} placeholder="Content"></textarea>
+
+                <button className="button" name="btn_preview_article" onClick={handle_preview}>
+                    <span className="icon">{is_preview_shown ? icon_eye_slash : icon_eye}</span>{' '}Preview
+                </button>
             </div>
 
-            <div id="control_panel_blog_fields">
-                <label htmlFor="field_article_title">Title:</label><br />
-                <input type="text" name="field_article_title" id="field_article_title" value={article.title} onChange={update_title} /><br />
-
-                <label htmlFor="select_category">Category:</label><br />
-                <div className="div_category">
-                    <select name="select_category" id="select_category" defaultValue="default" onChange={handle_select_category}>
-                        {!props.categories.length ? <option disabled value="default">No category</option>
-                        :
-                        <>
-                            <option disabled value="default">Select a category</option>
-                            {props.categories.map(category => <option key={category._id}>{category.name}</option>)}
-                        </>}
-                    </select>
-                    <button className="button" name="btn_delete_category" id="btn_delete_category" onClick={handle_delete_category}><span className="icon">{icon_folder_minus}</span></button>
-                </div>
-
-                <div className="div_category">
-                    <input type="text" name="field_article_new_category" id="field_article_new_category" placeholder="New category" onChange={e => set_new_category(e.target.value)} />
-                    <button className="button" name="btn_add_category" id="btn_add_category" onClick={handle_create_category}><span className="icon">{icon_folder_plus}</span></button>
-                </div>
-
-                <label htmlFor="field_article_content">Content:</label><br />
-                <textarea name="field_article_content" id="field_article_content" rows="10" value={article.content} onChange={update_content}></textarea><br />
-                <div id="div_btn_preview_article">
-                    <button className="button" name="btn_preview_article" id="btn_preview_article" onClick={handle_preview}><span className="icon">{is_preview_shown ? icon_eye_slash : icon_eye}</span> Preview</button>
-                </div>
-
-                {is_preview_shown && <BlogArticle is_preview={true} id_selected_article={id_selected_article} article={article} />}
-            </div>
+            {is_preview_shown && <BlogArticle is_preview={true} id_selected_article={id_selected_article} article={article} />}
         </section>
     );
 };

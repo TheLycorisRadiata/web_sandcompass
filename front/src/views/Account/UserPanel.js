@@ -62,7 +62,7 @@ const UserPanel = (props) =>
             <h1 className="title">{!props.is_access_granted ? 'Log In' : 'User Account'}</h1>
             {!props.is_access_granted ? 
                 <form>
-                    <input type="email" name="email_address" placeholder="Email address" autoComplete="on" 
+                    <input type="email" name="email_address" placeholder="Email address" autoComplete="on" autoFocus  
                         value={email_address} onChange={e => set_email_address(e.target.value)} onKeyPress={handle_key_press} />
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Password" autoComplete="on"

@@ -179,18 +179,18 @@ const EbookFormatPicker = () =>
                 <div>
                     <div className="div_pointer">
                         <input type="radio" name="option" id="option_1" value="option_1" checked={is_option1_checked} onChange={handle_click_option1} />
-                        <label htmlFor="option_1">{' '}{option1}</label>
+                        <label htmlFor="option_1">{option1}</label>
                     </div>
 
                     <div className="div_pointer">
                         <input type="radio" name="option" id="option_2" value="option_2" checked={is_option2_checked} onChange={handle_click_option2} />
-                        <label htmlFor="option_2">{' '}{option2}</label>
+                        <label htmlFor="option_2">{option2}</label>
                     </div>
 
                     {option3 !== '' && 
                     <div className="div_pointer">
                         <input type="radio" name="option" id="option_3" value="option_3" checked={is_option3_checked} onChange={handle_click_option3} />
-                        <label htmlFor="option_3">{' '}{option3}</label>
+                        <label htmlFor="option_3">{option3}</label>
                     </div>}
                 </div>
                 <input type="button" className="button" name="btn_next_ebook_format" value="Next question" onClick={handle_click_next} />

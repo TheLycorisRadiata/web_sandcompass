@@ -21,9 +21,10 @@
     margin: 0;
     padding: 0;
     outline: none;
-    text-align: justify;
-    word-break: break-all;
     font-family: "Fira Sans", sans-serif;
+
+    /* Real justify */
+    text-align: justify;
 }
 
 body
@@ -108,6 +109,7 @@ body
 
 textarea::-webkit-scrollbar
 {
+    border-radius: 5px;
     background: var(--white);
 }
 
@@ -172,9 +174,7 @@ p
 
 #banner
 {
-    margin: 10px;
-    margin-bottom: 30px;
-    max-width: 100%;
+    margin: 5px 0 25px 0;
     height: 20rem;
     background: url("./assets/images/banner.jpg") no-repeat center center;
     background-size: cover;
@@ -190,32 +190,8 @@ p
     width: 100%;
     text-align: center;
     text-transform: uppercase;
-    font-size: 5rem;
+    font-size: calc(3vw + 3vh + 2vmin);
     color: var(--see_through_white);
-}
-
-@media screen and (max-width: 650px)
-{
-    #banner #title
-    {
-        font-size: 4.5rem;
-    }
-}
-
-@media screen and (max-width: 600px)
-{
-    #banner #title
-    {
-        font-size: 4rem;
-    }
-}
-
-@media screen and (max-width: 550px)
-{
-    #banner #title
-    {
-        font-size: 3.5rem;
-    }
 }
 
 /* HEADER: NAVBAR ------------------------------------------------------------------------------- */
@@ -279,6 +255,7 @@ nav ul a
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
+    align-items: center;
 }
 
 .logo img
@@ -404,18 +381,24 @@ input[type="radio"], input[type="checkbox"], .button
     width: initial;
 }
 
+label
+{
+    margin: 15px 0;
+}
+
+.div_pointer label
+{
+    padding-left: 10px;
+}
+
 #btn_pers
 {
     margin-bottom: 0;
 }
 
-label, .button
-{
-    margin: 15px 5px;
-}
-
 .button
 {
+    margin: 15px 5px;
     padding: 15px;
     background-color: var(--see_through_white);
 }
@@ -465,15 +448,25 @@ a, span[class="a"]
     flex-flow: column wrap;
     align-items: center;
 
-    margin: 15px 0px;
+    margin: 25px 0px;
     padding: 20px;
-    box-shadow: inset 2px 2px 4px var(--brown), inset -2px -2px 4px var(--brown);
+    box-shadow: inset 2px 2px 3px var(--brown), inset -2px -2px 3px var(--brown);
     border-radius: 5px;
 }
 
 .blog_section .sub_title
 {
-    margin-top: 0;
+    margin: 0;
+}
+
+.blog_section .article_info
+{
+    margin-bottom: 0;
+}
+
+.blog_section:last-child
+{
+    margin-bottom: 0;
 }
 
 .btn_other_articles
@@ -515,106 +508,11 @@ a, span[class="a"]
     align-items: flex-end;
 }
 
-/* COMPONENT: BLOG EDITOR ----------------------------------------------------------------------- */
-
-#field_login_username, #field_login_password
-{
-    margin-bottom: 10px;
-}
-
-#control_panel_blog_buttons
-{
-    margin-bottom: 20px;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: space-around;
-}
-
-#btn_post_article
-{
-    margin-bottom: 20px;
-}
-
-#control_panel_extended_buttons
-{
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-}
-
-#control_panel_extended_buttons .buttons
-{
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-}
-
-#btn_post_article, #select_article
-{
-    align-self: start;
-}
-
-#select_article
-{
-    margin: 0px 20px;
-    margin-bottom: 10px;
-}
-
-#btn_modify_article
-{
-    margin-bottom: 10px;
-}
-
-#control_panel_blog_fields label
-{
-    display: inline-block;
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-.div_category
-{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-}
-
-#field_article_new_category, #btn_add_category
-{
-    margin-top: 10px;
-}
-
-#btn_delete_category, #field_article_new_category, #btn_add_category
-{
-    margin-left: 10px;
-}
-
-#btn_preview_article
-{
-    margin-top: 10px;
-}
-
-#div_btn_preview_article
-{
-    display: flex;
-    justify-content: center;
-}
-
-@media screen and (max-width: 870px)
-{
-    #select_article
-    {
-        margin-left: 0;
-    }
-}
-
 /* VIEW: HOME/WORKS (PRESENTATION) -------------------------------------------------------------- */
 
-#book_presentation
+#book_presentation ul li
 {
-    display: flex;
-    flex-flow: row nowrap;
+    text-align: left;
 }
 
 #book_presentation #catch_phrase
@@ -625,11 +523,19 @@ a, span[class="a"]
 #book_cover
 {
     margin-right: 20px;
+    margin-bottom: 20px;
     padding: 10px;
+    width: 50vw;
     max-width: 350px;
-    max-height: 500px;
     box-shadow: 4px 4px 8px inset var(--see_through_white), -4px -4px 8px inset var(--see_through_white);
     border-radius: 10px;
+
+    float: left;
+}
+
+.clear
+{
+    clear: both;
 }
 
 /* VIEW: WORKS (EBOOK FORMATS) ------------------------------------------------------------------ */
@@ -749,12 +655,37 @@ a, span[class="a"]
 
 /* COMPONENTS IN THE CONTROL PANEL -------------------------------------------------------------- */
 
-#stats, #newsletter_editor, #faq_editor
+#stats, #blog_editor, #newsletter_editor, #faq_editor
 {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* COMPONENT: BLOG EDITOR ----------------------------------------------------------------------- */
+
+#btn_article, #categories
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+select[name="select_article"], #categories select, #categories button
+{
+    margin-bottom: 0;
+}
+
+input[name="field_article_title"], #blog_editor textarea
+{
+    margin-top: 20px;
+}
+
+#blog_editor textarea
+{
+    width: 80%;
+    height: 300px;
 }
 
 /* COMPONENT: NEWSLETTER EDITOR ----------------------------------------------------------------- */

@@ -85,11 +85,11 @@ const Contact = () =>
                 <form onSubmit={handle_contact}>
                     <div className="div_pointer">
                         <input type="radio" name="visitor_type" value="personal" id="btn_pers" defaultChecked onClick={() => set_is_visitor_pro(false)} />
-                        <label htmlFor="btn_pers">{' '}Particulier</label>
+                        <label htmlFor="btn_pers">Personal</label>
                     </div>
                     <div className="div_pointer">
                         <input type="radio" name="visitor_type" value="professional" id="btn_pro" onClick={() => set_is_visitor_pro(true)} />
-                        <label htmlFor="btn_pro">{' '}Professionnel</label>
+                        <label htmlFor="btn_pro">Professional</label>
                     </div>
                     {is_visitor_pro && <input type="text" name="business_name" placeholder="Business name (optional)" autoComplete="on" />}
                     <input type="text" name="last_name" placeholder="Last name" autoComplete="on" required autoFocus />

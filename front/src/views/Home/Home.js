@@ -19,7 +19,7 @@ const Home = (props) =>
             </article>
 
             <section>
-                <h2 className="sub_title"><Link to="/works">Cosmic Dust: Sci-fi standalone novel</Link></h2>
+                <h2 className="sub_title"><Link to="/works">Cosmic Dust: Standalone sci-fi novel</Link></h2>
 
                 <div id="book_presentation">
                     <Link to="/works"><img src={Book_Cover} alt="Book cover Cosmic Dust" id="book_cover" /></Link>
@@ -37,6 +37,7 @@ const Home = (props) =>
                         person who could as well be the Society personified. But is it this crazy to say that art is not only useful, but also essential?</p>
                         <p>Is Zekharia's urge to create the proof of his sickness, or is he one of the few who function properly? No matter the answer, two roads lie 
                         before him: twisting himself to fit in or finding the way to change mentalities.</p>
+                        <p className="clear"></p>
                     </div>
                 </div>
             </section>

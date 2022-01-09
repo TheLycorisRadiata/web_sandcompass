@@ -114,13 +114,13 @@ const Password = () =>
             <h1 className="title">Password Creation</h1>
             <form onSubmit={handle_submit}>
                 {!is_access_granted ? 
-                    <input type="email" name="email_address" placeholder="Email address" required />
+                    <input type="email" name="email_address" placeholder="Email address" required autoFocus />
                 :
                 <>
                     <p className="txt_bold">{email_address}</p>
 
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" required />
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" required autoFocus />
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <div className="field_password">

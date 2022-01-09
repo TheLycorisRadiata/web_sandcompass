@@ -122,7 +122,7 @@ const NewsletterEditor = () =>
 
                         <div className="div_pointer">
                             <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(checkbox ? false : true)} />
-                            <label htmlFor="send">{' '}Send the newsletter to subscribers</label>
+                            <label htmlFor="send">Send the newsletter to subscribers</label>
                         </div>
 
                         <input type="submit" className="button" value="Confirm" />

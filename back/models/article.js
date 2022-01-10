@@ -4,6 +4,7 @@ const model_article = new mongoose.Schema(
 {
     category: { type: String, default: 'NO_CATEGORY' },
     title: { type: String, default: 'NO_TITLE' },
+    author: { type: mongoose.Schema.Types.ObjectId, default: null },
     content: { type: String, default: 'NO_CONTENT' },
     time_creation: { type: Date, default: Date.now },
     time_modification: { type: Date, default: Date.now },

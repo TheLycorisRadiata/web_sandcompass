@@ -243,6 +243,19 @@ const get_stats_on_all_users = (req, res) =>
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
 };
 
+const get_username_from_id = (req, res) => 
+{
+    User.findOne({ _id: req.params.id })
+    .then(user => 
+    {
+        if (user)
+            res.status(200).json({ is_success: true, message: 'User retrieved.', data: user.username });
+        else
+            res.status(404).json({ is_success: false, message: 'Error: The user couldn\'t be retrieved.', data: null });
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
+};
+
 module.exports = 
 {
     connect_as_admin,
@@ -253,6 +266,7 @@ module.exports =
     create_account,
     update_account,
     delete_account,
-    get_stats_on_all_users
+    get_stats_on_all_users,
+    get_username_from_id
 };
 

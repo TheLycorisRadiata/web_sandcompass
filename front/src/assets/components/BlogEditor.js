@@ -23,6 +23,7 @@ const BlogEditor = (props) =>
         is_modified: false,
         category: default_category,
         title: default_title,
+        author: props.account_data._id,
         content: default_content
     };
 
@@ -46,6 +47,7 @@ const BlogEditor = (props) =>
             is_modified: selected_article.is_modified,
             category: selected_article.category,
             title: selected_article.title,
+            author: props.account_data._id,
             content: selected_article.content
         });
     };
@@ -60,6 +62,7 @@ const BlogEditor = (props) =>
             is_modified: article.is_modified,
             category: e.target.value,
             title: article.title,
+            author: props.account_data._id,
             content: article.content
         });
     };
@@ -123,6 +126,7 @@ const BlogEditor = (props) =>
                     is_modified: article.is_modified,
                     category: default_category,
                     title: article.title,
+                    author: props.account_data._id,
                     content: article.content
                 });
             });
@@ -142,6 +146,7 @@ const BlogEditor = (props) =>
                 is_modified: false,
                 category: article.category,
                 title: article.title,
+                author: props.account_data._id,
                 content: article.content
             });
 
@@ -183,6 +188,7 @@ const BlogEditor = (props) =>
                 is_modified: true,
                 category: article.category,
                 title: article.title,
+                author: props.account_data._id,
                 content: article.content
             });
 
@@ -254,6 +260,7 @@ const BlogEditor = (props) =>
             is_modified: article.is_modified,
             category: article.category,
             title: e.target.value,
+            author: props.account_data._id,
             content: article.content
         });
     };
@@ -268,6 +275,7 @@ const BlogEditor = (props) =>
             is_modified: article.is_modified,
             category: article.category,
             title: article.title,
+            author: props.account_data._id,
             content: e.target.value
         });
     };

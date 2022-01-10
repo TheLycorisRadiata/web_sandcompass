@@ -1,9 +1,12 @@
+import { useHistory } from 'react-router-dom';
 import { parse_username } from '../../assets/functions/parsing';
 import { send_registration_email, send_newsletter_email } from '../../assets/functions/mailing';
 import { backend } from '../../../package.json';
 
 const SignUp = () => 
 {
+    const history = useHistory();
+
     const handle_registration = async (e) =>
     {
         const email_address = e.target[0].value;
@@ -66,6 +69,9 @@ const SignUp = () =>
                 // The account has just been created
                 else if (json.is_success)
                     send_registration_email(email_address);
+
+                if (json.is_success)
+                    history.push('/');
             })
             .catch(err => console.log(err));
         }

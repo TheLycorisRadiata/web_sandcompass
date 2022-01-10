@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useLayoutEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faHeartBroken } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import { DateInLetters, Time } from '../../assets/components/Time';
+import { backend } from '../../../package.json';
 
 const icon_heart = <FontAwesomeIcon icon={faHeart} />
 const icon_heart_broken = <FontAwesomeIcon icon={faHeartBroken} />
@@ -12,10 +13,31 @@ const icon_thumbs_down = <FontAwesomeIcon icon={faThumbsDown} />
 
 const BlogArticle = (props) => 
 {
+    const [author, set_author] = useState('[Author not found]');
     const [likes, set_likes] = useState(props.article.likes);
+
+    const history = useHistory();
     const current_time = Date.now();
     const increment_likes = () => set_likes(likes + 1);
     const decrement_likes = () => set_likes(likes - 1);
+
+    useLayoutEffect(() => 
+    {
+        fetch(backend + `/user/username/${props.article.author}`)
+        .then(res => res.json())
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+
+            if (json.is_success)
+                set_author(json.data);
+        })
+        .catch(err => console.log(err));
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>
@@ -26,17 +48,15 @@ const BlogArticle = (props) =>
 
                 <article>
                     <h4 className="sub_title">{props.article.title}</h4>
-                    <p className="article_info">
-                        Category: {props.article.category}.<br />
-                        Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} /> at <Time 
-                        raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} />.
+                    <ul className="article_info">
+                        <li>Category: {props.article.category}.</li>
+                        <li>Author: {author}.</li>
+                        <li>Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} /> at <Time 
+                            raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} />.</li>
                         {props.article.is_modified && 
-                        <>
-                            <br />
-                            <span>Modified: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_modification : current_time} /> at <Time 
-                            raw_time={props.id_selected_article !== '' ? props.article.time_modification : current_time} />.</span>
-                        </>}
-                    </p>
+                            <li>Modified: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_modification : current_time} /> at <Time 
+                                raw_time={props.id_selected_article !== '' ? props.article.time_modification : current_time} />.</li>}
+                    </ul>
 
                     <div dangerouslySetInnerHTML={{__html: props.article.content}} />
                 </article>
@@ -52,30 +72,33 @@ const BlogArticle = (props) =>
             :
             <main>
                 <h1 className="title">Blog</h1>
-                <div className="btn_other_articles"><Link to="/blog/page.html" className="button">Other articles</Link></div>
+                <div className="btn_other_articles"><Link to="/blog/page" className="button">Other articles</Link></div>
 
                 <article>
                     <h2 className="sub_title">{props.article.title}</h2>
-                    <p className="article_info">
-                        Category: {props.article.category}.<br />
-                        Created: On the <DateInLetters raw_time={props.article.time_creation} /> at <Time raw_time={props.article.time_creation} seconds={false} />.
+                    <ul className="article_info">
+                        <li>Category: {props.article.category}.</li>
+                        <li>Author: {author}.</li>
+                        <li>Created: On the <DateInLetters raw_time={props.article.time_creation} /> at <Time raw_time={props.article.time_creation} seconds={false} />.</li>
                         {props.article.is_modified && 
-                        <>
-                            <br />
-                            <span>Modified: On the <DateInLetters raw_time={props.article.time_modification} /> at 
-                            <Time raw_time={props.article.time_modification} />.</span>
-                        </>}
-                    </p>
+                            <li>Modified: On the <DateInLetters raw_time={props.article.time_modification} /> at <Time 
+                                raw_time={props.article.time_modification} />.</li>}
+                    </ul>
 
                     <div dangerouslySetInnerHTML={{__html: props.article.content}} />
                 </article>
 
-                <div className="btn_other_articles"><Link to="/blog/page.html" className="button">Other articles</Link></div>
+                <div className="btn_other_articles"><Link to="/blog/page" className="button">Other articles</Link></div>
 
                 <div id="likes_dislikes">
                     <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
-                    <button className="button" name="btn_like" onClick={increment_likes}><span className="icon">{icon_thumbs_up}</span> Like</button>
-                    <button className="button" name="btn_dislike" onClick={decrement_likes}><span className="icon">{icon_thumbs_down}</span> Dislike</button>
+                    {!props.admin_account_data && !props.user_account_data ? 
+                        <button className="button" name="btn_login" onClick={() => history.push('/user')}>Log in to like or dislike</button>
+                    :
+                        <>
+                            <button className="button" name="btn_like" onClick={increment_likes}><span className="icon">{icon_thumbs_up}</span> Like</button>
+                            <button className="button" name="btn_dislike" onClick={decrement_likes}><span className="icon">{icon_thumbs_down}</span> Dislike</button>
+                        </>}
                 </div>
             </main>}
         </>

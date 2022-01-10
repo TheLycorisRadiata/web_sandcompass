@@ -62,25 +62,6 @@ const App = () =>
         })
         .catch(err => console.log(err));
 
-        fetch(backend + '/blog/articles',
-        {
-            method: 'GET',
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(json => 
-        {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
-            if (json.is_success)
-                set_all_articles(json.data);
-        });
-
         fetch(backend + '/blog/categories',
         {
             method: 'GET',
@@ -98,6 +79,25 @@ const App = () =>
                 console.log(json.error);
             if (json.is_success)
                 set_all_categories(json.data);
+        });
+
+        fetch(backend + '/blog/articles',
+        {
+            method: 'GET',
+            headers:
+            {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+            if (json.is_success)
+                set_all_articles(json.data);
         });
     }, []);
 
@@ -136,11 +136,11 @@ const App = () =>
                     <Route exact path="/works"><Works /></Route>
                     <Route exact path="/blog"><Blog categories={all_categories} articles={all_articles} /></Route>
 
-                    <Route exact path="/blog/page.html"><BlogPage all_articles={all_articles} /></Route>
+                    <Route exact path="/blog/page"><BlogPage all_articles={all_articles} /></Route>
 
                         {all_articles.map(article => 
-                            <Route exact path={'/blog/article' + article._id + '.html'} key={article._id}>
-                                <BlogArticle is_preview={false} article={article} />
+                            <Route exact path={'/blog/article' + article._id} key={article._id}>
+                                <BlogArticle is_preview={false} article={article} admin_account_data={admin_account_data} user_account_data={user_account_data} />
                             </Route>)
                         }
 
@@ -151,8 +151,8 @@ const App = () =>
                             account_data={admin_account_data} set_account_data={set_admin_account_data} 
                             is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} 
                             questions={all_questions} set_questions={set_all_questions} 
-                            articles={all_articles} set_articles={set_all_articles} 
-                            categories={all_categories} set_categories={set_all_categories} />
+                            categories={all_categories} set_categories={set_all_categories} 
+                            articles={all_articles} set_articles={set_all_articles} />
                     </Route>
                     <Route exact path="/user/signup"><SignUp /></Route>
                     <Route exact path="/user">

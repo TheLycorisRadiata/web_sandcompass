@@ -33,8 +33,8 @@ const UserPanel = (props) =>
                 if (json.error)
                     console.log(json.error);
                 set_access_message(json.message);
-                props.set_is_access_granted(json.is_success);
                 props.set_account_data(json.account_data);
+                props.set_is_access_granted(json.is_success);
                 if (send_verif_email)
                     alert(json.message);
             })

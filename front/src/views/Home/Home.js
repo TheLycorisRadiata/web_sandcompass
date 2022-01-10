@@ -47,14 +47,14 @@ const Home = (props) =>
             {props.last_article !== undefined &&
             <section>
                 <div>
-                    <h2 className="sub_title"><Link to={'/blog/article' + props.last_article._id + '.html'}>Last article</Link></h2>
+                    <h2 className="sub_title"><Link to={'/blog/article' + props.last_article._id}>Last article</Link></h2>
                     <h3 id="last_article_title" className="sub_title">{props.last_article.title}</h3>
                 </div>
 
                 <div dangerouslySetInnerHTML={{__html: props.last_article.content.substring(0, 400) + " [...]"}} />
 
                 <div className="read_more">
-                    <Link to={'/blog/article' + props.last_article._id + '.html'}>[Read more]</Link>
+                    <Link to={'/blog/article' + props.last_article._id}>[Read more]</Link>
                 </div>
             </section>}
         </main>

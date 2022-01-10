@@ -461,6 +461,7 @@ a, span[class="a"]
 
 .blog_section .article_info
 {
+    margin-top: 20px;
     margin-bottom: 0;
 }
 
@@ -483,18 +484,21 @@ a, span[class="a"]
     text-shadow: 1px 1px 2px var(--black);
 }
 
-#last_article_title, .article_info
+#last_article_title
 {
     margin-bottom: 10px;
 }
 
 .article_info
 {
-    margin-bottom: 20px;
     font-weight: bold;
     text-align: center;
     text-shadow: 1px 1px 2px var(--black);
     color: var(--blue);
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
 }
 
 .read_more

@@ -9,7 +9,11 @@ const model_article = new mongoose.Schema(
     time_creation: { type: Date, default: Date.now },
     time_modification: { type: Date, default: Date.now },
     is_modified: { type: Boolean, default: false },
-    likes: { type: Number, default: 0 }
+    users:
+    {
+        likes: [mongoose.Schema.Types.ObjectId],
+        dislikes: [mongoose.Schema.Types.ObjectId]
+    }
 }, { collection: 'Articles' });
 
 module.exports = mongoose.model('Article', model_article);

@@ -9,7 +9,13 @@ const model_user = new mongoose.Schema(
     email_address: { type: String, unique: true, lowercase: true },
     hashed_password: { type: String, default: null },
     username: { type: String, unique: true },
-    newsletter: { type: Boolean, default: false }
+    newsletter: { type: Boolean, default: false },
+    articles:
+    {
+        written: [mongoose.Schema.Types.ObjectId],
+        liked: [mongoose.Schema.Types.ObjectId],
+        disliked: [mongoose.Schema.Types.ObjectId]
+    }
 }, { collection: 'Users' });
 
 module.exports = mongoose.model('User', model_user);

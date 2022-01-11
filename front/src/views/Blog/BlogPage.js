@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { DateInLetters, Time } from '../../assets/components/Time';
-import { backend } from '../../../package.json';
+import { fetch_username_from_id } from '../../assets/functions/blog';
 
 const BlogPage = (props) => 
 {
@@ -9,29 +9,28 @@ const BlogPage = (props) =>
 
     useLayoutEffect(() => 
     {
-        const fetch_username = async (id) =>
+        const populate_authors = async () => 
         {
-            let res = await fetch(backend + `/user/username/${id}`);
-            res = res.json();
-            return res;
+            const arr = [];
+            let json = null;
+            let username = '';
+
+            for (const article of props.all_articles)
+            {
+                json = await fetch_username_from_id(article.author);
+                console.log(json.message);
+                if (json.error)
+                    console.log(json.error);
+                if (json.is_success)
+                    username = json.data;
+
+                arr.push(username !== '' ? username : '[Author not found]');
+            }
+
+            set_authors(arr);
         };
 
-        const arr = [];
-        let json;
-
-        for (const article of props.all_articles)
-        {
-            json = fetch_username(article.author);
-            
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
-
-            arr.push(json.is_success ? json.data : '[Author not found]');
-        }
-
-        set_authors(arr);
-
+        populate_authors();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

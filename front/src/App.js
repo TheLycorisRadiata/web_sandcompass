@@ -2,7 +2,7 @@ import { useState, useLayoutEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faUser, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
 import Home from './views/Home/Home';
 import Faq from './views/Home/Faq';
 import Works from './views/Works/Works';
@@ -27,6 +27,7 @@ import { backend } from '../package.json';
 const icon_user_new = <FontAwesomeIcon icon={faUserPlus} />;
 const icon_user = <FontAwesomeIcon icon={faUser} />;
 const icon_up = <FontAwesomeIcon icon={faChevronCircleUp} />;
+const icon_down = <FontAwesomeIcon icon={faChevronCircleDown} />;
 
 const App = () => 
 {
@@ -181,11 +182,12 @@ const App = () =>
             </div>
 
             <footer>
-                <ul>
+                <ul id="bottom">
+                    <Link to="#top"><li id="btn_top">{icon_up}</li></Link>
                     <Link to="/licenses"><li>Licenses</li></Link>
                     <Link to="/admin"><li>Control Panel</li></Link>
                     <li className="txt_default_cursor">Lycoris Radiata &copy; 2022 All Rights Reserved</li>
-                    <Link to="#top"><li id="btn_top">{icon_up}</li></Link>
+                    <Link to="#bottom"><li id="btn_bottom">{icon_down}</li></Link>
                 </ul>
             </footer>
         </Router>

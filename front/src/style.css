@@ -237,16 +237,25 @@ nav ul a
     filter: drop-shadow(1px 1px 1px var(--brown));
 }
 
-/* BUTTON: UP BUTTON ---------------------------------------------------------------------------- */
+/* BUTTON: UP & DOWN BUTTONS -------------------------------------------------------------------- */
 
-#btn_top
+#btn_top, #btn_bottom
 {
     padding: 12px;
     position: fixed;
-    right: 0;
     bottom: 0;
     font-size: 2rem;
     filter: drop-shadow(1px 1px 1px var(--brown));
+}
+
+#btn_top
+{
+    left: 0;
+}
+
+#btn_bottom
+{
+    right: 0;
 }
 
 /* BUTTONS: SOCIAL MEDIA ------------------------------------------------------------------------ */

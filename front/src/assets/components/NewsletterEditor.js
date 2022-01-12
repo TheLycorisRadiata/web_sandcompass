@@ -130,7 +130,7 @@ const NewsletterEditor = () =>
                 : 
                     <div>
                         <p><strong>Object:</strong> {newsletters[selected_newsletter].object}</p>
-                        <p><strong>Date:</strong> <DateInLetters raw_time={newsletters[selected_newsletter].date} /> at <Time raw_time={newsletters[selected_newsletter.data]} seconds={true} /></p>
+                        <p><strong>Date:</strong> <DateInLetters raw_time={newsletters[selected_newsletter].date} /> at <Time raw_time={newsletters[selected_newsletter].date} seconds={true} /></p>
                         <p><strong>Message:</strong></p>
                         <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: newsletters[selected_newsletter].html_message}} />
                     </div>}

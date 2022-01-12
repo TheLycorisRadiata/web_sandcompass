@@ -117,7 +117,7 @@ const Password = () =>
                     <input type="email" name="email_address" placeholder="Email address" required autoFocus />
                 :
                 <>
-                    <p className="txt_bold">{email_address}</p>
+                    <p className="txt_bold" id="p_password">{email_address}</p>
 
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" required autoFocus />

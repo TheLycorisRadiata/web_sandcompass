@@ -519,6 +519,26 @@ a, span[class="a"]
     align-items: flex-end;
 }
 
+/* COMPONENT: ARTICLES BY AUTHOR ---------------------------------------------------------------- */
+
+#articles_by_author
+{
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#articles_by_author #txt_click, #articles_by_author #nbr_articles, #articles_by_author ol li:first-child
+{
+    margin-top: 20px;
+}
+
+#articles_by_author #nbr_articles, #articles_by_author ol p, #articles_by_author ol li:last-child
+{
+    margin-bottom: 20px;
+}
+
 /* VIEW: HOME/WORKS (PRESENTATION) -------------------------------------------------------------- */
 
 #book_presentation ul li

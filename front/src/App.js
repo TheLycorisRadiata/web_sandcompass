@@ -158,7 +158,8 @@ const App = () =>
                     <Route exact path="/user">
                         <UserPanel 
                             account_data={user_account_data} set_account_data={set_user_account_data} 
-                            is_access_granted={is_user_access_granted} set_is_access_granted={set_is_user_access_granted} />
+                            is_access_granted={is_user_access_granted} set_is_access_granted={set_is_user_access_granted} 
+                            categories={all_categories} />
                     </Route>
                     <Route path="/password"><Password /></Route>
                     <Route path="/token"><ExecuteToken /></Route>

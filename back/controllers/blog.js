@@ -9,6 +9,13 @@ const retrieve_articles = (req, res) =>
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The articles can\'t be retrieved.', error: err }));
 };
 
+const retrieve_articles_by_author = (req, res) => 
+{
+    Article.find({ author: req.params.id_author })
+    .then(articles => res.status(200).json({ is_success: true, message: articles.length + ' articles loaded.', data: articles }))
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The articles can\'t be retrieved.', error: err }));
+};
+
 const post_new_article = (req, res) => 
 {
     const new_article = new Article({ ...req.body.new_article });
@@ -142,6 +149,7 @@ const delete_category = (req, res) =>
 module.exports = 
 {
     retrieve_articles,
+    retrieve_articles_by_author,
     post_new_article,
     modify_article,
     delete_article,

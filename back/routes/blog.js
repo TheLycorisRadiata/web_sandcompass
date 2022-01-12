@@ -4,6 +4,7 @@ const controller_blog = require('../controllers/blog');
 const router = express.Router();
 
 router.get('/articles', controller_blog.retrieve_articles);
+router.get('/articles/:id_author', controller_blog.retrieve_articles_by_author);
 router.post('/articles', controller_blog.post_new_article);
 router.put('/articles', controller_blog.modify_article);
 router.delete('/articles', controller_blog.delete_article);

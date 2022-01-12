@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_registration_email } from '../../assets/functions/mailing';
 import AccountEditor from '../../assets/components/AccountEditor';
+import ArticlesByAuthor from '../../assets/components/ArticlesByAuthor';
 import { backend } from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
@@ -75,7 +76,11 @@ const UserPanel = (props) =>
                     <p><Link to="/user/signup">Not yet registered?</Link></p>
                 </form>
             :
-                <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} />}
+                <>
+                    <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} />
+                    <hr />
+                    <ArticlesByAuthor author={props.account_data._id} categories={props.categories} />
+                </>}
         </main>
     );
 };

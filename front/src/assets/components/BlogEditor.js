@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderMinus, faFolderPlus, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import BlogArticle from '../../views/Blog/BlogArticle';
+import { parse_category } from '../functions/parsing';
 import { backend } from '../../../package.json';
 
 const icon_folder_minus = <FontAwesomeIcon icon={faFolderMinus} />
@@ -69,7 +70,9 @@ const BlogEditor = (props) =>
 
     const handle_create_category = () => 
     {
-        if (new_category !== '')
+        const parsed_category = parse_category(new_category);
+
+        if (parsed_category !== '')
         {
             fetch(backend + '/blog/categories',
             {
@@ -79,7 +82,7 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ new_category: new_category })
+                body: JSON.stringify({ new_category: parsed_category })
             })
             .then(res => res.json())
             .then(json => 
@@ -87,6 +90,7 @@ const BlogEditor = (props) =>
                 console.log(json.message);
                 if (json.error)
                     console.log(json.error);
+                alert(json.message);
 
                 if (json.is_success)
                     props.set_categories(json.data);
@@ -114,6 +118,7 @@ const BlogEditor = (props) =>
                 console.log(json.message);
                 if (json.error)
                     console.log(json.error);
+                alert(json.message);
 
                 if (json.is_success)
                     props.set_categories(json.data);

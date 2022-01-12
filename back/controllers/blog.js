@@ -108,18 +108,14 @@ const retrieve_categories = (req, res) =>
 
 const create_new_category = (req, res) => 
 {
-    let new_category = req.body.new_category;
-    new_category = new_category.toLowerCase();
-    new_category = new_category[0].toUpperCase() + new_category.substring(1);
-
-    Category.findOne({ name: new_category })
+    Category.findOne({ name: req.body.new_category })
     .then((category) => 
     {
         if (!category)
         {
             new Category(
             {
-                name: new_category
+                name: req.body.new_category
             })
             .save()
             .catch(err => 

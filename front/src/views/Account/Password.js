@@ -131,7 +131,7 @@ const Password = () =>
 
                 <input type="submit" className="button" value="Create password" />
                 {response_message !== '' && <p>{response_message}</p>}
-                <p><span className="a" onClick={() => history.push('/user')}>Retourner à la page de connexion</span></p>
+                <p><span className="a" onClick={() => history.push('/user')}>Go back to the Log In page</span></p>
             </form>
         </main>
     );

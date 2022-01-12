@@ -6,8 +6,27 @@ const parse_username = (username) =>
     return { parsed_username: parsed_username, user_approves: user_approves };
 };
 
+const parse_category = (category) => 
+{
+    // Trim the beginning and ending spaces
+    let parsed_category = category.trim();
+
+    // No more than one space between characters
+    parsed_category = parsed_category.replace(/ {2,}/g, ' ');
+
+    if (parsed_category !== '')
+    {
+        // First character as uppercase and the rest lowercase
+        parsed_category = parsed_category.toLowerCase();
+        parsed_category = parsed_category[0].toUpperCase() + parsed_category.substring(1);
+    }
+
+    return parsed_category;
+};
+
 export
 {
-    parse_username
+    parse_username,
+    parse_category
 };
 

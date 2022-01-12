@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolderMinus, faFolderPlus, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import BlogArticle from '../../views/Blog/BlogArticle';
-import { parse_category } from '../functions/parsing';
+import { faUserLock, faFolderMinus, faFolderPlus, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import BlogArticle from '../Blog/BlogArticle';
+import { parse_category } from '../../assets/functions/parsing';
 import { backend } from '../../../package.json';
 
+const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_folder_minus = <FontAwesomeIcon icon={faFolderMinus} />
 const icon_folder_plus = <FontAwesomeIcon icon={faFolderPlus} />
 const icon_eye = <FontAwesomeIcon icon={faEye} />
@@ -24,7 +25,7 @@ const BlogEditor = (props) =>
         is_modified: false,
         category: default_category,
         title: default_title,
-        author: props.account_data._id,
+        author: props.account_data?._id,
         content: default_content
     };
 
@@ -291,62 +292,67 @@ const BlogEditor = (props) =>
     const handle_preview = () => set_is_preview_shown(is_preview_shown ? false : true);
 
     return (
-        <section>
-            <h2 className="sub_title">Blog Editor</h2>
+        <main>
+            <h1 className="title">Blog Editor</h1>
+            
+            {!props.is_access_granted ? 
+                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> Access denied.</p>
+            :
+            <>
+                <div id="blog_editor">
+                    <div id="btn_article">
+                        <input type="button" className="button" name="btn_post_article" value="Post a new article" onClick={handle_create_article} />
+                        {!props.articles.length ? null : 
+                        <>
+                            <select name="select_article" defaultValue="default" onChange={handle_select_article}>
+                                <option disabled value="default">Select an article</option>
+                                {props.categories.map(category => 
+                                    <optgroup label={category.name} key={category._id}>
+                                        {!props.articles.filter(article => article.category === category.name).length ? <option disabled>No article</option> 
+                                        : props.articles.filter(article => article.category === category.name).map((e) => <option key={e._id} value={e._id}>{e.title}</option>)}
+                                    </optgroup>
+                                )}
+                            </select>
 
-            <div id="blog_editor">
-                <div id="btn_article">
-                    <input type="button" className="button" name="btn_post_article" value="Post a new article" onClick={handle_create_article} />
-                    {!props.articles.length ? null : 
-                    <>
-                        <select name="select_article" defaultValue="default" onChange={handle_select_article}>
-                            <option disabled value="default">Select an article</option>
-                            {props.categories.map(category => 
-                                <optgroup label={category.name} key={category._id}>
-                                    {!props.articles.filter(article => article.category === category.name).length ? <option disabled>No article</option> 
-                                    : props.articles.filter(article => article.category === category.name).map((e) => <option key={e._id} value={e._id}>{e.title}</option>)}
-                                </optgroup>
-                            )}
-                        </select>
+                            <div>
+                                <input type="button" className="button" name="btn_modify_article" value="Modify an article" onClick={handle_modify_article} />
+                                <input type="button" className="button" name="btn_delete_article" value="Delete an article" onClick={handle_delete_article} />
+                            </div>
+                        </>}
+                    </div>
+
+                    <input type="text" name="field_article_title" value={article.title} onChange={update_title} placeholder="Title" />
+
+                    <div id="categories">
+                        <div>
+                            <select name="select_category" defaultValue="default" onChange={handle_select_category}>
+                                {!props.categories.length ? 
+                                    <option disabled value="default">No category</option>
+                                :
+                                <>
+                                    <option disabled value="default">Select a category</option>
+                                    {props.categories.map(category => <option key={category._id}>{category.name}</option>)}
+                                </>}
+                            </select>
+                            <button className="button" name="btn_delete_category" onClick={handle_delete_category}><span className="icon">{icon_folder_minus}</span></button>
+                        </div>
 
                         <div>
-                            <input type="button" className="button" name="btn_modify_article" value="Modify an article" onClick={handle_modify_article} />
-                            <input type="button" className="button" name="btn_delete_article" value="Delete an article" onClick={handle_delete_article} />
+                            <input type="text" name="field_article_new_category" placeholder="New category" value={new_category} onChange={e => set_new_category(e.target.value)} />
+                            <button className="button" name="btn_add_category" onClick={handle_create_category}><span className="icon">{icon_folder_plus}</span></button>
                         </div>
-                    </>}
-                </div>
-
-                <input type="text" name="field_article_title" value={article.title} onChange={update_title} placeholder="Title" />
-
-                <div id="categories">
-                    <div>
-                        <select name="select_category" defaultValue="default" onChange={handle_select_category}>
-                            {!props.categories.length ? 
-                                <option disabled value="default">No category</option>
-                            :
-                            <>
-                                <option disabled value="default">Select a category</option>
-                                {props.categories.map(category => <option key={category._id}>{category.name}</option>)}
-                            </>}
-                        </select>
-                        <button className="button" name="btn_delete_category" onClick={handle_delete_category}><span className="icon">{icon_folder_minus}</span></button>
                     </div>
 
-                    <div>
-                        <input type="text" name="field_article_new_category" placeholder="New category" value={new_category} onChange={e => set_new_category(e.target.value)} />
-                        <button className="button" name="btn_add_category" onClick={handle_create_category}><span className="icon">{icon_folder_plus}</span></button>
-                    </div>
+                    <textarea name="field_article_content" value={article.content} onChange={update_content} placeholder="Content"></textarea>
+
+                    <button className="button" name="btn_preview_article" onClick={handle_preview}>
+                        <span className="icon">{is_preview_shown ? icon_eye_slash : icon_eye}</span>{' '}Preview
+                    </button>
                 </div>
 
-                <textarea name="field_article_content" value={article.content} onChange={update_content} placeholder="Content"></textarea>
-
-                <button className="button" name="btn_preview_article" onClick={handle_preview}>
-                    <span className="icon">{is_preview_shown ? icon_eye_slash : icon_eye}</span>{' '}Preview
-                </button>
-            </div>
-
-            {is_preview_shown && <BlogArticle is_preview={true} id_selected_article={id_selected_article} article={article} />}
-        </section>
+                {is_preview_shown && <BlogArticle is_preview={true} id_selected_article={id_selected_article} article={article} />}
+            </>}
+        </main>
     );
 };
 

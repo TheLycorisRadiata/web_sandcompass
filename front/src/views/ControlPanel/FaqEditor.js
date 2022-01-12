@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUserLock, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { backend } from '../../../package.json';
 
+const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_add = <FontAwesomeIcon icon={faPlus} />;
 const icon_edit = <FontAwesomeIcon icon={faEdit} />;
 const icon_delete = <FontAwesomeIcon icon={faTrash} />;
@@ -111,35 +112,40 @@ const FaqEditor = (props) =>
     };
 
     return (
-        <section id="faq_editor">
-            <h2 className="sub_title">Frequently Asked Questions</h2>
+        <main>
+            <h1 className="title">Frequently Asked Questions</h1>
 
-            <form onSubmit={handle_add}>
-                <input type="text" name="new_question" placeholder="Question" />
-                <input type="text" name="new_answer" placeholder="Answer" />
-                <button className="button" title="Add a new question question"><span className="icon">{icon_add}</span></button>
-            </form>
-
-            {!props.questions?.length ?
-                <p className="txt_centered">The FAQ is empty.</p>
+            {!props.is_access_granted ? 
+                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> Access denied.</p>
             :
-                <ol>
-                    {props.questions?.map(e => 
-                        <li key={e._id}>
-                            <p>
-                                <strong>{e.question}</strong>
-                                <br />
-                                {e.answer}
-                                <br />
+            <div id="faq_editor">
+                <form onSubmit={handle_add}>
+                    <input type="text" name="new_question" placeholder="Question" />
+                    <input type="text" name="new_answer" placeholder="Answer" />
+                    <button className="button" title="Add a new question question"><span className="icon">{icon_add}</span></button>
+                </form>
 
-                                <span className="faq_icons">
-                                    <button className="button" title="Edit the question" onClick={() => handle_edit(e)}><span className="icon">{icon_edit}</span></button>
-                                    <button className="button" title="Delete the question" onClick={() => handle_delete(e)}><span className="icon">{icon_delete}</span></button>
-                                </span>
-                            </p>
-                        </li>)}
-                </ol>}
-        </section>
+                {!props.questions?.length ?
+                    <p className="txt_centered">The FAQ is empty.</p>
+                :
+                    <ol>
+                        {props.questions?.map(e => 
+                            <li key={e._id}>
+                                <p>
+                                    <strong>{e.question}</strong>
+                                    <br />
+                                    {e.answer}
+                                    <br />
+
+                                    <span className="faq_icons">
+                                        <button className="button" title="Edit the question" onClick={() => handle_edit(e)}><span className="icon">{icon_edit}</span></button>
+                                        <button className="button" title="Delete the question" onClick={() => handle_delete(e)}><span className="icon">{icon_delete}</span></button>
+                                    </span>
+                                </p>
+                            </li>)}
+                    </ol>}
+            </div>}
+        </main>
     );
 };
 

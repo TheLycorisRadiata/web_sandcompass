@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
-import { DateInLetters, Time } from './Time';
+import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import { DateInLetters, Time } from '../../assets/components/Time';
 import { backend } from '../../../package.json';
 
+const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 
-const NewsletterEditor = () => 
+const NewsletterEditor = (props) => 
 {
     const [newsletters, set_newsletters] = useState([]);
     const [selected_newsletter, set_selected_newsletter] = useState('default');
@@ -100,42 +101,47 @@ const NewsletterEditor = () =>
     };
 
     return (
-        <section id="newsletter_editor">
-            <h2 className="sub_title">Newsletters</h2>
-            <button className="button" title="Refresh newsletters" onClick={() => fetch_newsletters(true)}><span className="icon">{icon_fetch}</span></button>
+        <main>
+            <h1 className="title">Newsletters</h1>
+            {!props.is_access_granted ?
+                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> Access denied.</p>
+            :
+            <div id="newsletter_editor">
+                <button className="button" title="Refresh newsletters" onClick={() => fetch_newsletters(true)}><span className="icon">{icon_fetch}</span></button>
     
-            <form onSubmit={handle_submit}>
-                <select defaultValue="default" onChange={handle_select}>
-                    <option value="default" disabled>Select a newsletter</option>
-                    <option value="new">Write a new newsletter</option>
-                    {newsletters.map((e, i) => <option key={"newsletter_" + i} value={i}>{e.is_sent ? '[Sent]' : '[Not sent]'} {e.object}</option>)}
-                </select>
+                <form onSubmit={handle_submit}>
+                    <select defaultValue="default" onChange={handle_select}>
+                        <option value="default" disabled>Select a newsletter</option>
+                        <option value="new">Write a new newsletter</option>
+                        {newsletters.map((e, i) => <option key={"newsletter_" + i} value={i}>{e.is_sent ? '[Sent]' : '[Not sent]'} {e.object}</option>)}
+                    </select>
 
-                {selected_newsletter === 'default' ?
-                    null
-                : selected_newsletter === 'new' || !newsletters[selected_newsletter].is_sent ?
-                    <>
-                        <input type="text" name="object" placeholder="Object" title="Object" value={object} onChange={e => set_object(e.target.value)} />
-                        <textarea title="Message" value={html_message} onChange={e => set_html_message(e.target.value)}></textarea>
+                    {selected_newsletter === 'default' ?
+                        null
+                    : selected_newsletter === 'new' || !newsletters[selected_newsletter].is_sent ?
+                        <>
+                            <input type="text" name="object" placeholder="Object" title="Object" value={object} onChange={e => set_object(e.target.value)} />
+                            <textarea title="Message" value={html_message} onChange={e => set_html_message(e.target.value)}></textarea>
 
-                        <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: html_message}} />
+                            <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: html_message}} />
 
-                        <div className="div_pointer">
-                            <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(checkbox ? false : true)} />
-                            <label htmlFor="send">Send the newsletter to subscribers</label>
-                        </div>
+                            <div className="div_pointer">
+                                <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(checkbox ? false : true)} />
+                                <label htmlFor="send">Send the newsletter to subscribers</label>
+                            </div>
 
-                        <input type="submit" className="button" value="Confirm" />
-                    </>
-                : 
-                    <div>
-                        <p><strong>Object:</strong> {newsletters[selected_newsletter].object}</p>
-                        <p><strong>Date:</strong> <DateInLetters raw_time={newsletters[selected_newsletter].date} /> at <Time raw_time={newsletters[selected_newsletter].date} seconds={true} /></p>
-                        <p><strong>Message:</strong></p>
-                        <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: newsletters[selected_newsletter].html_message}} />
-                    </div>}
-            </form>
-        </section>
+                            <input type="submit" className="button" value="Confirm" />
+                        </>
+                    : 
+                        <div>
+                            <p><strong>Object:</strong> {newsletters[selected_newsletter].object}</p>
+                            <p><strong>Date:</strong> <DateInLetters raw_time={newsletters[selected_newsletter].date} /> at <Time raw_time={newsletters[selected_newsletter].date} seconds={true} /></p>
+                            <p><strong>Message:</strong></p>
+                            <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: newsletters[selected_newsletter].html_message}} />
+                        </div>}
+                </form>
+            </div>}
+        </main>
     );
 };
 

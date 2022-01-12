@@ -9,6 +9,10 @@ import Works from './views/Works/Works';
 import Contact from './views/Home/Contact';
 import Licenses from './views/Home/Licenses';
 import ControlPanel from './views/ControlPanel/ControlPanel';
+import Stats from './views/ControlPanel/Stats';
+import BlogEditor from './views/ControlPanel/BlogEditor';
+import NewsletterEditor from './views/ControlPanel/NewsletterEditor';
+import FaqEditor from './views/ControlPanel/FaqEditor';
 import UserPanel from './views/Account/UserPanel';
 import SignUp from './views/Account/SignUp'
 import Password from './views/Account/Password';
@@ -146,14 +150,23 @@ const App = () =>
 
                     <Route exact path="/contact"><Contact /></Route>
                     <Route exact path="/licenses"><Licenses /></Route>
-                    <Route exact path="/controlpanel">
+
+                    <Route exact path="/admin/stats"><Stats is_access_granted={is_admin_access_granted} /></Route>
+                    <Route exact path="/admin/blog">
+                        <BlogEditor 
+                            account_data={admin_account_data} is_access_granted={is_admin_access_granted} 
+                            articles={all_articles} set_articles={set_all_articles} 
+                            categories={all_categories} set_categories={set_all_categories} />
+                    </Route>
+                    <Route exact path="/admin/newsletter"><NewsletterEditor is_access_granted={is_admin_access_granted} /></Route>
+                    <Route exact path="/admin/faq"><FaqEditor is_access_granted={is_admin_access_granted} questions={all_questions} set_questions={set_all_questions} /></Route>
+                    <Route exact path="/admin">
                         <ControlPanel 
                             account_data={admin_account_data} set_account_data={set_admin_account_data} 
                             is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} 
-                            questions={all_questions} set_questions={set_all_questions} 
-                            categories={all_categories} set_categories={set_all_categories} 
-                            articles={all_articles} set_articles={set_all_articles} />
+                            categories={all_categories} />
                     </Route>
+
                     <Route exact path="/user/signup"><SignUp /></Route>
                     <Route exact path="/user">
                         <UserPanel 
@@ -170,7 +183,7 @@ const App = () =>
             <footer>
                 <ul>
                     <Link to="/licenses"><li>Licenses</li></Link>
-                    <Link to="/controlpanel"><li>Control Panel</li></Link>
+                    <Link to="/admin"><li>Control Panel</li></Link>
                     <li className="txt_default_cursor">Lycoris Radiata &copy; 2022 All Rights Reserved</li>
                     <Link to="#top"><li id="btn_top">{icon_up}</li></Link>
                 </ul>

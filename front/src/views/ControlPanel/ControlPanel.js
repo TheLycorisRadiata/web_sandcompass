@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faFileAlt, faComment, faQuoteRight, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import AccountEditor from '../../assets/components/AccountEditor';
 import ArticlesByAuthor from '../../assets/components/ArticlesByAuthor';
-import Stats from '../../assets/components/Stats';
-import BlogEditor from '../../assets/components/BlogEditor';
-import NewsletterEditor from '../../assets/components/NewsletterEditor';
-import FaqEditor from '../../assets/components/FaqEditor';
 import { backend } from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
+const icon_stats = <FontAwesomeIcon icon={faFileAlt} />;
+const icon_faq = <FontAwesomeIcon icon={faComment} />;
+const icon_blog = <FontAwesomeIcon icon={faQuoteRight} />;
+const icon_newsletter = <FontAwesomeIcon icon={faEnvelope} />;
 
 const ControlPanel = (props) => 
 {
@@ -77,18 +77,17 @@ const ControlPanel = (props) =>
             </>
             :
             <>
+                <div id="control_panel_buttons">
+                    <button className="button"><Link to="/admin/stats"><span className="icon">{icon_stats}</span> Statistics</Link></button>
+                    <button className="button"><Link to="/admin/faq"><span className="icon">{icon_faq}</span> FAQ Editor</Link></button>
+                    <button className="button"><Link to="/admin/blog"><span className="icon">{icon_blog}</span> Blog Editor</Link></button>
+                    <button className="button"><Link to="/admin/newsletter"><span className="icon">{icon_newsletter}</span> Newsletter Editor</Link></button>
+                </div>
+
                 <hr />
                 <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} />
                 <hr />
                 <ArticlesByAuthor author={props.account_data._id} categories={props.categories} />
-                <hr />
-                <Stats />
-                <hr />
-                <BlogEditor account_data={props.account_data} articles={props.articles} set_articles={props.set_articles} categories={props.categories} set_categories={props.set_categories} />
-                <hr />
-                <NewsletterEditor />
-                <hr />
-                <FaqEditor questions={props.questions} set_questions={props.set_questions} />
             </>}
         </main>
     );

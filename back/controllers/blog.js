@@ -18,52 +18,36 @@ const post_new_article = (req, res) =>
     new_article.save()
     .then(() => 
     {
-        Category.findOne({ name: new_article.category })
-        .then(category => 
+        User.findOne({ _id: new_article.author })
+        .then(author => 
         {
-            if (!category)
+            if (!author)
             {
-                new Category({ name: new_article.category })
-                .save()
-                .catch(err => 
-                {
-                    res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but its category couldn\'t be created.', error: err });
-                    return;
-                });
+                res.status(404).json({ is_success: false, message: 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.' });
+                return;
             }
 
-            User.findOne({ _id: new_article.author })
-            .then(author => 
+            arr_user_articles = [...author.articles.written];
+            arr_user_articles.push(id_new_article);
+
+            User.updateOne({ _id: author._id }, 
             {
-                if (!author)
+                articles: 
                 {
-                    res.status(404).json({ is_success: false, message: 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.' });
-                    return;
+                    written: arr_user_articles,
+                    liked: [...author.articles.liked],
+                    disliked: [...author.articles.disliked]
                 }
-
-                arr_user_articles = [...author.articles.written];
-                arr_user_articles.push(id_new_article);
-
-                User.updateOne({ _id: author._id }, 
-                {
-                    articles: 
-                    {
-                        written: arr_user_articles,
-                        liked: [...author.articles.liked],
-                        disliked: [...author.articles.disliked]
-                    }
-                })
-                .then(() => 
-                {
-                    Article.find()
-                    .then(articles => res.status(201).json({ is_success: true, message: 'New article posted, and ' + articles.length + ' articles loaded.', data: articles }))
-                    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but the articles couldn\'t be loaded.', error: err }));
-                })
-                .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.', error: err }));
             })
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.' }));
+            .then(() => 
+            {
+                Article.find()
+                .then(articles => res.status(201).json({ is_success: true, message: 'New article posted, and ' + articles.length + ' articles loaded.', data: articles }))
+                .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but the articles couldn\'t be loaded.', error: err }));
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.', error: err }));
         })
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but if its category was new then it couldn\'t be created.', error: err }));
+        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.' }));
     })
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article can\'t be posted.', error: err }));
 };
@@ -109,25 +93,26 @@ const retrieve_categories = (req, res) =>
 const create_new_category = (req, res) => 
 {
     Category.findOne({ name: req.body.new_category })
-    .then((category) => 
+    .then(category => 
     {
         if (!category)
         {
-            new Category(
-            {
-                name: req.body.new_category
-            })
+            new Category({ name: req.body.new_category })
             .save()
-            .catch(err => 
+            .then(() => 
             {
-                res.status(400).json({ is_success: false, message: 'Error: The category can\'t be created.', error: err });
-                return;
-            });
+                Category.find()
+                .then(categories => res.status(201).json({ is_success: true, message: 'Category created, and ' + categories.length + ' categories loaded.', data: categories }))
+                .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been created, but the categories couldn\'t be loaded.', error: err }));
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be created.', error: err }));
         }
-
-        Category.find()
-        .then(categories => res.status(201).json({ is_success: true, message: 'Category created, and ' + categories.length + ' categories loaded.', data: categories }))
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been created, but the categories couldn\'t be loaded.', error: err }));
+        else
+        {
+            Category.find()
+            .then(categories => res.status(201).json({ is_success: true, message: 'Category created, and ' + categories.length + ' categories loaded.', data: categories }))
+            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been created, but the categories couldn\'t be loaded.', error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be created.', error: err }));
 };

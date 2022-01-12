@@ -70,7 +70,7 @@ const BlogEditor = (props) =>
 
     const handle_create_category = () => 
     {
-        const parsed_category = parse_category(new_category);
+        const parsed_category = new_category === '' ? '' : parse_category(new_category);
 
         if (parsed_category !== '')
         {
@@ -93,7 +93,10 @@ const BlogEditor = (props) =>
                 alert(json.message);
 
                 if (json.is_success)
+                {
+                    set_new_category('');
                     props.set_categories(json.data);
+                }
             });
         }
     };
@@ -330,7 +333,7 @@ const BlogEditor = (props) =>
                     </div>
 
                     <div>
-                        <input type="text" name="field_article_new_category" placeholder="New category" onChange={e => set_new_category(e.target.value)} />
+                        <input type="text" name="field_article_new_category" placeholder="New category" value={new_category} onChange={e => set_new_category(e.target.value)} />
                         <button className="button" name="btn_add_category" onClick={handle_create_category}><span className="icon">{icon_folder_plus}</span></button>
                     </div>
                 </div>

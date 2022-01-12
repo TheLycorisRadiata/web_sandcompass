@@ -39,17 +39,18 @@ const ExecuteToken = () =>
     }, []);
 
     return (
-        <main>
+        <main id="tokens">
             <h1 className="title">{title}</h1>
             <p className="txt_centered">{message}</p>
 
             {is_token_expired && 
             <>
-                <hr />
-                <br />
-                <p><strong>Link to verify the email address</strong><br />Try to log in. If your email address is not yet verified, a pop-up asks whether you wish to receive a new link.</p>
-                <p><strong>Link to modify the password</strong><br />Click on "Password forgotten?".</p>
-                <hr />
+                <span className="divider"></span>
+                <div>
+                    <p><strong>Link to verify the email address</strong><br />Try to log in. If your email address is not yet verified, a pop-up asks whether you wish to receive a new link.</p>
+                    <p><strong>Link to modify the password</strong><br />Click on "Password forgotten?".</p>
+                </div>
+                <span className="divider"></span>
             </>}
         </main>
     );

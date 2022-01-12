@@ -171,6 +171,19 @@ p
     margin-top: 20px;
 }
 
+/* DIVIDER -------------------------------------------------------------------------------------- */
+
+.divider
+{
+    margin: 20px 0;
+    display: block;
+    content: "";
+    background-color: var(--see_through_white);
+    height: 2px;
+    width: 100%;
+    box-shadow: 2px 2px 5px var(--brown), -2px -2px 5px var(--brown);
+}
+
 /* HEADER: BANNER ------------------------------------------------------------------------------- */
 
 #banner
@@ -469,6 +482,13 @@ a, span[class="a"]
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+}
+
+/* VIEW: TOKENS --------------------------------------------------------------------------------- */
+
+#tokens .divider:last-child
+{
+    margin-bottom: 0;
 }
 
 /* VIEW: BLOG ----------------------------------------------------------------------------------- */

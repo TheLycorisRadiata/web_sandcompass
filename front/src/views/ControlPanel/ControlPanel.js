@@ -84,9 +84,9 @@ const ControlPanel = (props) =>
                     <button className="button"><Link to="/admin/newsletter"><span className="icon">{icon_newsletter}</span> Newsletter Editor</Link></button>
                 </div>
 
-                <hr />
+                <span className="divider"></span>
                 <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} />
-                <hr />
+                <span className="divider"></span>
                 <ArticlesByAuthor author={props.account_data._id} categories={props.categories} />
             </>}
         </main>

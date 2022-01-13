@@ -249,7 +249,12 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id: id_selected_article })
+                body: JSON.stringify(
+                { 
+                    id: id_selected_article,
+                    author: props.account_data._id,
+                    author_list_articles: props.account_data.articles
+                })
             })
             .then(res => res.json())
             .then(json => 

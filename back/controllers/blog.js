@@ -20,7 +20,7 @@ const post_new_article = (req, res) =>
 {
     const new_article = new Article({ ...req.body.new_article });
     const id_new_article = new_article._id;
-    let arr_user_articles = null;
+    let arr_user_written_articles = null;
 
     new_article.save()
     .then(() => 
@@ -34,14 +34,14 @@ const post_new_article = (req, res) =>
                 return;
             }
 
-            arr_user_articles = [...author.articles.written];
-            arr_user_articles.push(id_new_article);
+            arr_user_written_articles = [...author.articles.written];
+            arr_user_written_articles.push(id_new_article);
 
             User.updateOne({ _id: author._id }, 
             {
                 articles: 
                 {
-                    written: arr_user_articles,
+                    written: arr_user_written_articles,
                     liked: [...author.articles.liked],
                     disliked: [...author.articles.disliked]
                 }
@@ -80,12 +80,25 @@ const modify_article = (req, res) =>
 
 const delete_article = (req, res) => 
 {
-    Article.deleteOne({ _id: req.body.id })
+    const id_article_to_delete = req.body.id;
+    const id_author = req.body.author;
+    const obj_author_articles = req.body.author_list_articles;
+
+    // Remove the article from the Articles collection
+    Article.deleteOne({ _id: id_article_to_delete })
     .then(() => 
     {
-        Article.find()
-        .then(articles => res.status(200).json({ is_success: true, message: 'Article deleted, and ' + articles.length + ' articles loaded.', data: articles }))
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article has been deleted, but the articles couldn\'t be loaded.', error: err }))
+        // Remove the article from the author's written articles
+        obj_author_articles.written = obj_author_articles.written.filter(id => id !== id_article_to_delete);
+
+        User.updateOne({ _id: id_author }, { articles: obj_author_articles })
+        .then(() => 
+        {
+            Article.find()
+            .then(articles => res.status(200).json({ is_success: true, message: 'Article deleted, and ' + articles.length + ' articles loaded.', data: articles }))
+            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article has been deleted, but the articles couldn\'t be loaded.', error: err }))
+        })
+        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article has been deleted, but it couldn\'t be removed from the author\'s list.', error: err }));
     })
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article can\'t be deleted.', error: err }));
 };

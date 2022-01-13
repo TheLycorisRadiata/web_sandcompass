@@ -15,11 +15,39 @@ const BlogArticle = (props) =>
 {
     const [author, set_author] = useState('[Author not found]');
     const [likes, set_likes] = useState(props.article.likes);
+    const [id_user, set_id_user] = useState(null);
+    const [arr_user_articles, set_arr_user_articles] = useState({});
 
     const history = useHistory();
     const current_time = Date.now();
-    const increment_likes = () => set_likes(likes + 1);
-    const decrement_likes = () => set_likes(likes - 1);
+
+    const increment_likes = () => 
+    {
+        const nbr_likes = likes + 1;
+
+        if (id_user === props.article.author)
+        {
+            alert('You would really upvote your own article?');
+        }
+        else
+        {
+            set_likes(nbr_likes);
+        }
+    };
+
+    const decrement_likes = () => 
+    {
+        const nbr_likes = likes - 1;
+
+        if (id_user === props.article.author)
+        {
+            alert('Don\'t be too hard on yourself.');
+        }
+        else
+        {
+            set_likes(nbr_likes)
+        }
+    };
 
     useLayoutEffect(() => 
     {
@@ -35,6 +63,17 @@ const BlogArticle = (props) =>
                 set_author(json.data);
         })
         .catch(err => console.log(err));
+
+        if (props.admin_account_data)
+        {
+            set_id_user(props.admin_account_data._id);
+            set_arr_user_articles(props.admin_account_data.articles);
+        }
+        else if (props.user_account_data)
+        {
+            set_id_user(props.user_account_data._id);
+            set_arr_user_articles(props.user_account_data.articles);
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -65,8 +104,8 @@ const BlogArticle = (props) =>
 
                 <div id="likes_dislikes">
                     <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
-                    <button className="button" name="btn_like" onClick={increment_likes}><span className="icon">{icon_thumbs_up}</span> Like</button>
-                    <button className="button" name="btn_dislike" onClick={decrement_likes}><span className="icon">{icon_thumbs_down}</span> Dislike</button>
+                    <button className="button" name="btn_like"><span className="icon">{icon_thumbs_up}</span> Like</button>
+                    <button className="button" name="btn_dislike"><span className="icon">{icon_thumbs_down}</span> Dislike</button>
                 </div>
             </div>
             :

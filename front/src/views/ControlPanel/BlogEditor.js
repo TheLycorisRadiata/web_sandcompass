@@ -150,20 +150,19 @@ const BlogEditor = (props) =>
 
     const handle_create_article = () => 
     {
+        const new_article = {};
+
         if (article.category !== default_category && article.title !== default_title && article.content !== default_content 
             && article.category !== '' && article.title !== '' && article.content !== '')
         {
-            set_article(
-            {
-                likes: 0,
-                time_creation: Date.now(),
-                time_modification: Date.now(),
-                is_modified: false,
-                category: article.category,
-                title: article.title,
-                author: props.account_data._id,
-                content: article.content
-            });
+            new_article.likes = 0;
+            new_article.time_creation = Date.now();
+            new_article.time_modification = Date.now();
+            new_article.is_modified = false;
+            new_article.category = article.category;
+            new_article.title = article.title;
+            new_article.author = props.account_data._id;
+            new_article.content = article.content;
 
             fetch(backend + '/blog/articles',
             {
@@ -173,7 +172,7 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ new_article: article })
+                body: JSON.stringify({ new_article: new_article })
             })
             .then(res => res.json())
             .then(json => 
@@ -184,30 +183,30 @@ const BlogEditor = (props) =>
                 alert(json.message);
 
                 if (json.is_success)
+                {
+                    set_id_selected_article('default');
+                    set_id_selected_category('default');
+                    set_article(default_article);
                     props.set_articles(json.data);
+                }
             });
-
-            set_id_selected_article('default');
-            set_id_selected_category('default');
-            set_article(default_article);
         }
     };
 
     const handle_modify_article = () => 
     {
+        const updated_article = {};
+
         if (id_selected_article !== 'default')
         {
-            set_article(
-            {
-                likes: article.likes,
-                time_creation: article.time_creation,
-                time_modification: Date.now(),
-                is_modified: true,
-                category: article.category,
-                title: article.title,
-                author: props.account_data._id,
-                content: article.content
-            });
+            updated_article.likes = article.likes;
+            updated_article.time_creation = article.time_creation;
+            updated_article.time_modification = Date.now();
+            updated_article.is_modified = true;
+            updated_article.category = article.category;
+            updated_article.title = article.title;
+            updated_article.author = props.account_data._id;
+            updated_article.content = article.content;
 
             fetch(backend + '/blog/articles',
             {
@@ -217,7 +216,7 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id: id_selected_article, article: article })
+                body: JSON.stringify({ id: id_selected_article, article: updated_article })
             })
             .then(res => res.json())
             .then(json => 
@@ -228,12 +227,13 @@ const BlogEditor = (props) =>
                 alert(json.message);
 
                 if (json.is_success)
+                {
+                    set_id_selected_article('default');
+                    set_id_selected_category('default');
+                    set_article(default_article);
                     props.set_articles(json.data);
+                }
             });
-
-            set_id_selected_article('default');
-            set_id_selected_category('default');
-            set_article(default_article);
         }
     };
 

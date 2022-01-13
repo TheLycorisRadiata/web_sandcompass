@@ -23,7 +23,7 @@ const parse_category = (category) =>
     parsed_category = parsed_category.replace(/ {2,}/g, ' ');
 
     // Allow spaces, but remove everything else that isn't a number or a letter (case insensitive)
-    parsed_category = parsed_category.replace(/[^a-z0-9\ ]/gi,'');
+    parsed_category = parsed_category.replace(/[^a-z0-9 ]/gi,'');
 
     if (parsed_category !== '')
     {

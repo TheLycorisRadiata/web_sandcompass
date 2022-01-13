@@ -135,7 +135,6 @@ const FaqEditor = (props) =>
                                     <strong>{e.question}</strong>
                                     <br />
                                     {e.answer}
-                                    <br />
 
                                     <span className="faq_icons">
                                         <button className="button" title="Edit the question" onClick={() => handle_edit(e)}><span className="icon">{icon_edit}</span></button>

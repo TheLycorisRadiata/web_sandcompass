@@ -1,11 +1,19 @@
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { parse_username } from '../../assets/functions/parsing';
 import { send_registration_email, send_newsletter_email } from '../../assets/functions/mailing';
 import { backend } from '../../../package.json';
 
+const icon_eye = <FontAwesomeIcon icon={faEye} />;
+const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
+
 const SignUp = () => 
 {
     const history = useHistory();
+
+    const [is_password_shown, set_is_password_shown] = useState(false);
 
     const handle_registration = async (e) =>
     {
@@ -77,13 +85,24 @@ const SignUp = () =>
         }
     };
 
+    const handle_password_visibility = (e) => 
+    {
+        e.preventDefault();
+        set_is_password_shown(is_password_shown ? false : true);
+    };
+
     return (
         <main>
             <h1 className="title">Sign Up</h1>
             <form onSubmit={handle_registration}>
                 <input type="email" name="email_address" placeholder="Email address" autoComplete="on" required autoFocus />
                 <input type="email" name="repeat_email_address" placeholder="Repeat the email address" autoComplete="on" required />
-                <input type="password" name="password" placeholder="Password" autoComplete="new-password" required />
+
+                <div className="field_password">
+                    <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Password" autoComplete="new-password" required />
+                    <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                </div>
+
                 <input type="text" name="username" placeholder="Username" autoComplete="on" required />
                 <div className="div_pointer">
                     <input type="checkbox" id="newsletter" name="newsletter" />

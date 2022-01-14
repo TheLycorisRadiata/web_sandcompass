@@ -145,7 +145,11 @@ const App = () =>
 
                         {all_articles.map(article => 
                             <Route exact path={'/blog/article' + article._id} key={article._id}>
-                                <BlogArticle is_preview={false} article={article} admin_account_data={admin_account_data} user_account_data={user_account_data} />
+                                <BlogArticle 
+                                    is_preview={false} article={article} 
+                                    articles={all_articles} set_articles={set_all_articles} 
+                                    admin_account_data={admin_account_data} user_account_data={user_account_data} 
+                                    set_admin_account_data={set_admin_account_data} set_user_account_data={set_user_account_data} />
                             </Route>)
                         }
 

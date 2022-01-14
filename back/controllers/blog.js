@@ -159,6 +159,157 @@ const delete_category = (req, res) =>
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be deleted.', error: err }));
 };
 
+const like_or_dislike_article = (req, res) => 
+{
+    const id_article = req.body.id_article;
+    const id_user = req.body.id_user;
+    const new_user_vote = req.body.user_vote;
+    let old_user_vote = 0;
+    let final_user_vote = 0;
+    let user_articles = null;
+    let article_users = null;
+
+    Article.findOne({ _id: id_article })
+    .then(article => 
+    {
+        if (!article)
+            res.status(404).json({ is_success: false, message: 'Error: It seems like the article doesn\'t exist anymore.' });
+        else
+        {
+            User.findOne({ _id: id_user })
+            .then(user => 
+            {
+                if (!user)
+                    res.status(404).json({ is_success: false, message: 'Error: Your account cannot be found.' });
+                else
+                {
+                    if (user.articles.liked.includes(id_article))
+                        old_user_vote = 1;
+                    else if (user.articles.disliked.includes(id_article))
+                        old_user_vote = -1;
+                    else
+                        old_user_vote = 0;
+
+                    user_articles = user.articles;
+                    article_users = article.users;
+
+                    if (!old_user_vote)
+                    {
+                        // User clicks on "like" for the first time
+                        if (new_user_vote === 1)
+                        {
+                            user_articles.liked.push(id_article);
+                            article_users.likes.push(id_user);
+                            final_user_vote = 1;
+                        }
+                        // User clicks on "dislike" for the first time
+                        else
+                        {
+                            user_articles.disliked.push(id_article);
+                            article_users.dislikes.push(id_user);
+                            final_user_vote = -1;
+                        }
+                    }
+                    else if (old_user_vote === new_user_vote)
+                    {
+                        // User clicks on "like" again
+                        if (new_user_vote === 1)
+                        {
+                            user_articles.liked = user_articles.liked.filter(id => id !== id_article);
+                            article_users.likes = article_users.likes.filter(id => id !== id_user);
+                            final_user_vote = 0;
+                        }
+                        // User clicks on "dislike" again
+                        else
+                        {
+                            user_articles.disliked = user_articles.disliked.filter(id => id !== id_article);
+                            article_users.dislikes = article_users.dislikes.filter(id => id !== id_user);
+                            final_user_vote = 0;
+                        }
+                    }
+                    else
+                    {
+                        // User goes from "dislike" to "like"
+                        if (new_user_vote === 1)
+                        {
+                            user_articles.disliked = user_articles.disliked.filter(id => id !== id_article);
+                            article_users.dislikes = article_users.dislikes.filter(id => id !== id_user);
+                            user_articles.liked.push(id_article);
+                            article_users.likes.push(id_user);
+                            final_user_vote = 1;
+                        }
+                        // User goes from "like" to "dislike"
+                        else
+                        {
+                            user_articles.liked = user_articles.liked.filter(id => id !== id_article);
+                            article_users.likes = article_users.likes.filter(id => id !== id_user);
+                            user_articles.disliked.push(id_article);
+                            article_users.dislikes.push(id_user);
+                            final_user_vote = -1;
+                        }
+                    }
+
+                    /*
+                        Update the user first, because in case the second update fails it's better that it happens to the article.
+
+                        Imagine the opposite scenario: the user likes, and the like is added to the article but not to the user because failure. 
+                        Then, the user clicks on "like" again because it didn't seem to work, and so here in this controller we see that the user 
+                        had a choice of 0 (no vote) and then asks for 1 (like), and in such a case, what happens? The user is added to the article's 
+                        likes list a second time.
+
+                        While, if the failure happens on the article and not the user, it's true that the user will think they liked while the like 
+                        didn't reach the article, but in case they click on "like" again for whatever reason, it will go from 1 ("fake" like) to 1 (like),
+                        which simply removes the user from the article's likes list, and since it wasn't inside to begin with, it does nothing, and the 
+                        article is removed from the user's likes list as well, so they will see that there's no like and we're back safely to square one.
+
+                        Sure, I could also browse the entire likes list of the article to see if the user isn't already there by any chance, and same with 
+                        the dislikes list, but do you have any pity for our dear machines? I already browse both the liked and disliked lists of the user. 
+                        And yeah, on the subject, I do so because I can't trust the front copy of the user object, as the user could have done some fuckery 
+                        such as interacting with an article through two sessions at once or something: both sessions start with nothing (0), then a like from 
+                        session A, and then a like again from session B, so "0 to 1" instead of "1 to 1" as it actually is, which doesn't remove the like but 
+                        adds a second one. Exploit: 0 - Me: 1.
+
+                        If I am to browse though arrays, it's more realistic to go for the user's, as for instance 1M users but only 10K articles is more 
+                        likely than the contrary.
+                    */
+
+                    User.updateOne({ _id: user._id }, { articles: user_articles })
+                    .then(() => 
+                    {
+                        Article.updateOne({ _id: article._id }, { users: article_users })
+                        .then(() => 
+                        {
+                            User.findOne({ _id: user._id })
+                            .then(updated_user => 
+                            {
+                                if (!updated_user)
+                                    res.status(404).json({ is_success: false, message: 'Error: An error occured.' });
+                                else
+                                {
+                                    Article.findOne({ _id: article._id })
+                                    .then(updated_article => 
+                                    {
+                                        if (!updated_article)
+                                            res.status(404).json({ is_success: false, message: 'Error: An error occured.' });
+                                        else
+                                            res.status(200).json({ is_success: true, message: 'Vote counted.', user_vote: final_user_vote, user: updated_user, article: updated_article });
+                                    })
+                                    .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
+                                }
+                            })
+                            .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
+                        })
+                        .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The vote couldn\'t be counted. You may try again.', error: err }));
+                }
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The vote couldn\'t be counted. You may try again.', error: err }));
+        }
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The vote couldn\'t be counted. You may try again.', error: err }));
+};
+
 module.exports = 
 {
     retrieve_articles,
@@ -168,6 +319,7 @@ module.exports =
     delete_article,
     retrieve_categories,
     create_new_category,
-    delete_category
+    delete_category,
+    like_or_dislike_article
 };
 

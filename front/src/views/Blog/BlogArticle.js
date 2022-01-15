@@ -28,6 +28,10 @@ const BlogArticle = (props) =>
         const articles = [...props.articles];
         const index_current_article = articles.findIndex(e => e._id === props.article._id);
 
+        // Block the feature
+        alert('This feature is a work in progress');
+        return;
+
         // Should be impossible
         if (index_current_article === -1)
         {
@@ -88,6 +92,10 @@ const BlogArticle = (props) =>
     {
         const articles = [...props.articles];
         const index_current_article = articles.findIndex(e => e._id === props.article._id);
+
+        // Block the feature
+        alert('This feature is a work in progress');
+        return;
 
         // Should be impossible
         if (index_current_article === -1)

@@ -17,7 +17,6 @@ import UserPanel from './views/Account/UserPanel';
 import SignUp from './views/Account/SignUp'
 import Password from './views/Account/Password';
 import ExecuteToken from './views/Account/ExecuteToken';
-import Blog from './views/Blog/Blog';
 import BlogPage from './views/Blog/BlogPage';
 import BlogArticle from './views/Blog/BlogArticle';
 import PageNotFound from './views/PageNotFound';
@@ -139,9 +138,7 @@ const App = () =>
                     <Route exact path="/home"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
                     <Route exact path="/faq"><Faq questions={all_questions} set_questions={set_all_questions} /></Route>
                     <Route exact path="/works"><Works /></Route>
-                    <Route exact path="/blog"><Blog categories={all_categories} articles={all_articles} /></Route>
-
-                    <Route exact path="/blog/page"><BlogPage all_articles={all_articles} all_categories={all_categories} /></Route>
+                    <Route exact path="/blog"><BlogPage all_articles={all_articles} all_categories={all_categories} /></Route>
 
                         {all_articles.map(article => 
                             <Route exact path={'/blog/article' + article._id} key={article._id}>

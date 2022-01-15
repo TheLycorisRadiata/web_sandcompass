@@ -227,7 +227,7 @@ const BlogArticle = (props) =>
             :
             <main>
                 <h1 className="title">Blog</h1>
-                <div className="btn_other_articles"><Link to="/blog/page" className="button">Other articles</Link></div>
+                <div className="btn_other_articles"><Link to="/blog" className="button">Other articles</Link></div>
 
                 <article>
                     <h2 className="sub_title">{props.article.title}</h2>
@@ -243,7 +243,7 @@ const BlogArticle = (props) =>
                     <div dangerouslySetInnerHTML={{__html: props.article.content}} />
                 </article>
 
-                <div className="btn_other_articles"><Link to="/blog/page" className="button">Other articles</Link></div>
+                <div className="btn_other_articles"><Link to="/blog" className="button">Other articles</Link></div>
 
                 <div id="likes_dislikes">
                     <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>

@@ -183,6 +183,18 @@ p
     box-shadow: 2px 2px 5px var(--brown), -2px -2px 5px var(--brown);
 }
 
+/* HEADER: LANGUAGE ICON ------------------------------------------------------------------------ */
+
+#icon_lang
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    padding: 12px;
+    font-size: 2rem;
+}
+
 /* HEADER: BANNER ------------------------------------------------------------------------------- */
 
 #banner
@@ -374,6 +386,7 @@ input, select, textarea, .button
     font-size: 1rem;
     border: 0 none;
     border-radius: 5px;
+    filter: drop-shadow(1px 1px 1px var(--brown));
 }
 
 textarea
@@ -518,6 +531,17 @@ a, span[class="a"]
 .blog_section:last-child
 {
     margin-bottom: 0;
+}
+
+#sort_buttons
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+#sort_buttons button
+{
+    margin: 0 10px;
 }
 
 .btn_other_articles

@@ -15,7 +15,7 @@ const icon_filled_dislike = <FontAwesomeIcon icon={faThumbsDownSolid} />;
 
 const BlogArticle = (props) => 
 {
-    const [author, set_author] = useState('[Author not found]');
+    const [username, set_username] = useState('[User not found]');
     const [likes, set_likes] = useState(props.article.likes);
     const [id_user, set_id_user] = useState(null);
     const [user_vote, set_user_vote] = useState(0);
@@ -165,7 +165,7 @@ const BlogArticle = (props) =>
                 console.log(json.error);
 
             if (json.is_success)
-                set_author(json.data);
+                set_username(json.data);
         })
         .catch(err => console.log(err));
 
@@ -213,7 +213,7 @@ const BlogArticle = (props) =>
                     <h4 className="sub_title">{props.article.title}</h4>
                     <ul className="article_info">
                         <li>Category: {props.category[0]}.</li>
-                        <li>Author: {author}.</li>
+                        <li>Author: {username}.</li>
                         <li>Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} /> at <Time 
                             raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} />.</li>
                         {props.article.is_modified && 
@@ -241,7 +241,7 @@ const BlogArticle = (props) =>
                     <h2 className="sub_title">{props.article.title}</h2>
                     <ul className="article_info">
                         <li>Category: {props.category[0]}.</li>
-                        <li>Author: {author}.</li>
+                        <li>Author: {username}.</li>
                         <li>Created: On the <DateInLetters raw_time={props.article.time_creation} /> at <Time raw_time={props.article.time_creation} seconds={false} />.</li>
                         {props.article.is_modified && 
                             <li>Modified: On the <DateInLetters raw_time={props.article.time_modification} /> at <Time 

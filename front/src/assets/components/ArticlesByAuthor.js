@@ -44,11 +44,9 @@ const ArticlesByAuthor = (props) =>
                         <span key={'span' + category._id}>
                             <li key={category.name[0]} className="txt_bold txt_centered">{category.name[0]}</li>
                             <ol key={category._id}>
-                                {!articles.filter(e => e.category === category._id).length ? 
-                                    <p key={category._id + '_empty'}>[Empty]</p>
-                                :
-                                    articles.map(article => article.category !== category._id ? null : 
-                                        <li key={article._id}><Link to={'/blog/article' + article._id}>{article.title}</Link></li>)}
+                                {!category.articles.length ? <p key={category._id + '_empty'}>[Empty]</p> 
+                                : 
+                                category.articles.map(id => <li key={id}><Link to={'/blog/article' + id}>{articles.find(e => e._id === id).title}</Link></li>)}
                             </ol>
                         </span>)}
                     </>}

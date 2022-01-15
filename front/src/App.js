@@ -2,7 +2,7 @@ import { useState, useLayoutEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
 import Home from './views/Home/Home';
 import Faq from './views/Home/Faq';
 import Works from './views/Works/Works';
@@ -23,6 +23,7 @@ import PageNotFound from './views/PageNotFound';
 import './style.css';
 import { backend } from '../package.json';
 
+const icon_lang = <FontAwesomeIcon icon={faGlobe} />;
 const icon_user_new = <FontAwesomeIcon icon={faUserPlus} />;
 const icon_user = <FontAwesomeIcon icon={faUser} />;
 const icon_up = <FontAwesomeIcon icon={faChevronCircleUp} />;
@@ -109,6 +110,8 @@ const App = () =>
         <Router>
             <div>
                 <header>
+                    <div id="icon_lang" className="button"><span className="icon">{icon_lang}</span></div>
+
                     <Link to="/home">
                         <div id="banner">
                             <div id="title">Sand Compass</div>
@@ -138,7 +141,7 @@ const App = () =>
                     <Route exact path="/home"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
                     <Route exact path="/faq"><Faq questions={all_questions} set_questions={set_all_questions} /></Route>
                     <Route exact path="/works"><Works /></Route>
-                    <Route exact path="/blog"><BlogPage all_articles={all_articles} all_categories={all_categories} /></Route>
+                    <Route exact path="/blog"><BlogPage articles={all_articles} categories={all_categories} /></Route>
 
                         {all_articles.map(article => 
                             <Route exact path={'/blog/article' + article._id} key={article._id}>

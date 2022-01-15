@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const model_article = new mongoose.Schema(
 {
-    category: { type: String, default: 'NO_CATEGORY' },
+    language: Number,
+    category: mongoose.Schema.Types.ObjectId,
     title: { type: String, default: 'NO_TITLE' },
     author: { type: mongoose.Schema.Types.ObjectId, default: null },
     content: { type: String, default: 'NO_CONTENT' },

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +19,23 @@ const AccountEditor = (props) =>
     const [is_edit_open, set_is_edit_open] = useState(false);
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [checkbox_newsletter, set_checkbox_newsletter] = useState(false);
+    const [rank, set_rank] = useState(null);
+
+    useLayoutEffect(() => 
+    {
+        fetch(backend + `/rank/${props.account_data?.rank}`)
+        .then(res => res.json())
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+            if (json.is_success)
+                set_rank(json.data);
+        })
+        .catch(err => console.log(err));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handle_edit_button = () => 
     {
@@ -248,7 +265,7 @@ const AccountEditor = (props) =>
                 <div>
                     <ul>
                         <li>{props.account_data?.username}</li>
-                        <li>Rank: {props.account_data?.rank === 1 ? 'Employee' : props.account_data?.rank === 2 ? 'Moderator' : props.account_data?.rank === 3 ? 'Administrator' : 'Customer'}</li>
+                        <li>Rank: {rank && rank.name[0]}</li>
                         <li>Registered on: <DateInLetters raw_time={props.account_data?.registered_on} /></li>
                         <li>Email address: {props.account_data?.email_address}</li>
                         <li>{props.account_data?.newsletter ? 'Subscribed' : 'Not subscribed'} to the newsletter</li>

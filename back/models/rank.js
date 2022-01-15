@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const model_rank = new mongoose.Schema(
 {
     index: { type: Number, unique: true },
-    name: String
+    name: [String]
 }, { collection: 'Ranks' });
 
 module.exports = mongoose.model('Rank', model_rank);

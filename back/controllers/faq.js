@@ -11,8 +11,8 @@ const add_question = (req, res) =>
 {
     new Question(
     {
-        question: req.body.question,
-        answer: req.body.answer
+        question: req.body.arr_question,
+        answer: req.body.arr_answer
     })
     .save()
     .then(() => 
@@ -28,8 +28,8 @@ const edit_question = (req, res) =>
 {
     Question.updateOne({ _id: req.body._id },
     {
-        question: req.body.question,
-        answer: req.body.answer
+        question: req.body.arr_question,
+        answer: req.body.arr_answer
     })
     .then(() => 
     {

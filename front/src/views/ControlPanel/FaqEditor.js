@@ -11,9 +11,16 @@ const FaqEditor = (props) =>
 {
     const handle_add = (e) => 
     {
+        const eng_question = e.target[0].value;
+        const eng_answer = e.target[1].value;
+        const fr_question = e.target[2].value;
+        const fr_answer = e.target[3].value;
+        const jp_question = e.target[4].value;
+        const jp_answer = e.target[5].value;
+
         e.preventDefault();
 
-        if (e.target[0].value !== '' && e.target[1].value !== '')
+        if (eng_question !== '' && eng_answer !== '' && fr_question !== '' && fr_answer !== '' && jp_question !== '' && jp_answer !== '')
         {
             fetch(backend + '/faq/add',
             {
@@ -25,8 +32,8 @@ const FaqEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
-                    question: e.target[0].value,
-                    answer: e.target[1].value
+                    arr_question: [eng_question, fr_question, jp_question],
+                    arr_answer: [eng_answer, fr_answer, jp_answer]
                 })
             })
             .then(res => res.json())
@@ -36,8 +43,13 @@ const FaqEditor = (props) =>
                 if (json.error)
                     console.log(json.error);
                 props.set_questions(json.is_success ? json.data : []);
+
                 e.target[0].value = '';
                 e.target[1].value = '';
+                e.target[2].value = '';
+                e.target[3].value = '';
+                e.target[4].value = '';
+                e.target[5].value = '';
             })
             .catch(err => console.log(err));
         }
@@ -45,18 +57,38 @@ const FaqEditor = (props) =>
 
     const handle_edit = (e) => 
     {
-        const edited_question = window.prompt('Question', e.question);
-        let edited_answer = '';
+        const eng_edited_question = window.prompt('Question (English)', e.question[0]);
+        let eng_edited_answer = '';
+        let fr_edited_question = '';
+        let fr_edited_answer = '';
+        let jp_edited_question = '';
+        let jp_edited_answer = '';
 
-        if (!edited_question)
+        if (!eng_edited_question)
             return;
 
-        edited_answer = window.prompt('Answer', e.answer);
-
-        if (!edited_answer)
+        eng_edited_answer = window.prompt('Answer (English)', e.answer[0]);
+        if (!eng_edited_answer)
             return;
 
-        if (edited_question !== '' && edited_answer !== '' && (edited_question !== e.question || edited_answer !== e.answer))
+        fr_edited_question = window.prompt('Question (French)', e.question[1]);
+        if (!fr_edited_question)
+            return;
+
+        fr_edited_answer = window.prompt('Answer (French)', e.answer[1]);
+        if (!fr_edited_answer)
+            return;
+
+        jp_edited_question = window.prompt('Question (Japanese)', e.question[2]);
+        if (!jp_edited_question)
+            return;
+
+        jp_edited_answer = window.prompt('Answer (Japanese)', e.answer[2]);
+        if (!jp_edited_answer)
+            return;
+
+
+        if (eng_edited_question !== '' && eng_edited_answer !== '' && fr_edited_question !== '' && fr_edited_answer !== '' && jp_edited_question !== '' && jp_edited_answer !== '')
         {
             fetch(backend + '/faq/edit',
             {
@@ -69,8 +101,8 @@ const FaqEditor = (props) =>
                 body: JSON.stringify(
                 {
                     _id: e._id,
-                    question: edited_question,
-                    answer: edited_answer
+                    arr_question: [eng_edited_question, fr_edited_question, jp_edited_question],
+                    arr_answer: [eng_edited_answer, fr_edited_answer, jp_edited_answer]
                 })
             })
             .then(res => res.json())
@@ -120,8 +152,24 @@ const FaqEditor = (props) =>
             :
             <div id="faq_editor">
                 <form onSubmit={handle_add}>
-                    <input type="text" name="new_question" placeholder="Question" />
-                    <input type="text" name="new_answer" placeholder="Answer" />
+                    <div id="languages">
+                        <div>
+                            <label htmlFor="eng_ques">English</label>
+                            <input type="text" name="new_question" id="eng_ques" placeholder="Question" />
+                            <input type="text" name="new_answer" placeholder="Answer" />
+                        </div>
+                        <div>
+                            <label htmlFor="fr_ques">French</label>
+                            <input type="text" name="new_question" id="fr_ques" placeholder="Question" />
+                            <input type="text" name="new_answer" placeholder="Réponse" />
+                        </div>
+                        <div>
+                            <label htmlFor="jp_ques">Japanese</label>
+                            <input type="text" name="new_question" id="jp_ques" placeholder="Question" />
+                            <input type="text" name="new_answer" placeholder="Answer" />
+                        </div>
+                    </div>
+
                     <button className="button" title="Add a new question question"><span className="icon">{icon_add}</span></button>
                 </form>
 
@@ -131,16 +179,18 @@ const FaqEditor = (props) =>
                     <ol>
                         {props.questions?.map(e => 
                             <li key={e._id}>
-                                <p>
-                                    <strong>{e.question}</strong>
-                                    <br />
-                                    {e.answer}
+                                <div>
+                                    <div className="display_question">
+                                        <div title="English"><p><strong>{e.question[0]}</strong>{e.answer[0]}</p></div>
+                                        <div title="French"><p><strong>{e.question[1]}</strong>{e.answer[1]}</p></div>
+                                        <div title="Japanese"><p><strong>{e.question[2]}</strong>{e.answer[2]}</p></div>
+                                    </div>
 
                                     <span className="faq_icons">
                                         <button className="button" title="Edit the question" onClick={() => handle_edit(e)}><span className="icon">{icon_edit}</span></button>
                                         <button className="button" title="Delete the question" onClick={() => handle_delete(e)}><span className="icon">{icon_delete}</span></button>
                                     </span>
-                                </p>
+                                </div>
                             </li>)}
                     </ol>}
             </div>}

@@ -45,7 +45,7 @@ const BlogPage = (props) =>
                     <article className="blog_section" key={e._id}>
                         <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title}</Link></h2>
                         <ul className="article_info">
-                            <li>Category: {e.category}.</li>
+                            <li>Category: {props.all_categories.find(category => category._id === e.category).name[0]}.</li>
                             <li>Author: {authors[i]}.</li>
                             <li>Created: On the <DateInLetters raw_time={e.time_creation} /> at <Time raw_time={e.time_creation} />.</li>
                             {e.is_modified && 

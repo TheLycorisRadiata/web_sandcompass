@@ -42,12 +42,12 @@ const ArticlesByAuthor = (props) =>
 
                         {props.categories.map(category => 
                         <span key={'span' + category._id}>
-                            <li key={category.name} className="txt_bold txt_centered">{category.name}</li>
+                            <li key={category.name[0]} className="txt_bold txt_centered">{category.name[0]}</li>
                             <ol key={category._id}>
-                                {!articles.filter(e => e.category === category.name).length ? 
+                                {!articles.filter(e => e.category === category._id).length ? 
                                     <p key={category._id + '_empty'}>[Empty]</p>
                                 :
-                                    articles.map(article => article.category !== category.name ? null : 
+                                    articles.map(article => article.category !== category._id ? null : 
                                         <li key={article._id}><Link to={'/blog/article' + article._id}>{article.title}</Link></li>)}
                             </ol>
                         </span>)}

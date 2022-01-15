@@ -12,8 +12,8 @@ const Blog = (props) =>
 
             {props.categories.map(category => 
                 <section key={category._id} className="blog_section">
-                    <h2 className="sub_title">{category.name}</h2>
-                    {props.articles.map(article => article.category !== category.name ? null : 
+                    <h2 className="sub_title">{category.name[0]}</h2>
+                    {props.articles.map(article => article.category !== category._id ? null : 
                         <p key={article._id}><Link to={'/blog/article' + article._id}>{article.title}</Link></p>
                     )}
                 </section>)}

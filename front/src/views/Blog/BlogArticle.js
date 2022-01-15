@@ -204,7 +204,7 @@ const BlogArticle = (props) =>
                 <article>
                     <h4 className="sub_title">{props.article.title}</h4>
                     <ul className="article_info">
-                        <li>Category: {props.article.category}.</li>
+                        <li>Category: {props.category[0]}.</li>
                         <li>Author: {author}.</li>
                         <li>Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} /> at <Time 
                             raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} />.</li>
@@ -232,7 +232,7 @@ const BlogArticle = (props) =>
                 <article>
                     <h2 className="sub_title">{props.article.title}</h2>
                     <ul className="article_info">
-                        <li>Category: {props.article.category}.</li>
+                        <li>Category: {props.category[0]}.</li>
                         <li>Author: {author}.</li>
                         <li>Created: On the <DateInLetters raw_time={props.article.time_creation} /> at <Time raw_time={props.article.time_creation} seconds={false} />.</li>
                         {props.article.is_modified && 

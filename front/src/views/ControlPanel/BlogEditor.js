@@ -86,7 +86,7 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ new_category: parsed_category })
+                body: JSON.stringify({ new_category: [parsed_category, '', ''] })
             })
             .then(res => res.json())
             .then(json => 
@@ -118,7 +118,7 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ category: article.category })
+                body: JSON.stringify({ _id: id_selected_category })
             })
             .then(res => res.json())
             .then(json => 

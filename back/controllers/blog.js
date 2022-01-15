@@ -112,41 +112,27 @@ const retrieve_categories = (req, res) =>
 
 const create_new_category = (req, res) => 
 {
-    Category.findOne({ name: req.body.new_category })
-    .then(category => 
+    new Category({ name: req.body.new_category })
+    .save()
+    .then(() => 
     {
-        if (!category)
-        {
-            new Category({ name: req.body.new_category })
-            .save()
-            .then(() => 
-            {
-                Category.find()
-                .then(categories => res.status(201).json({ is_success: true, message: 'Category created, and ' + categories.length + ' categories loaded.', data: categories }))
-                .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been created, but the categories couldn\'t be loaded.', error: err }));
-            })
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be created.', error: err }));
-        }
-        else
-        {
-            Category.find()
-            .then(categories => res.status(201).json({ is_success: true, message: 'Category created, and ' + categories.length + ' categories loaded.', data: categories }))
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been created, but the categories couldn\'t be loaded.', error: err }));
-        }
+        Category.find()
+        .then(categories => res.status(201).json({ is_success: true, message: 'Category created, and ' + categories.length + ' categories loaded.', data: categories }))
+        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been created, but the categories couldn\'t be loaded.', error: err }));
     })
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be created.', error: err }));
 };
 
 const delete_category = (req, res) => 
 {
-    Article.findOne({ category: req.body.category})
+    Article.findOne({ category: req.body._id })
     .then(article => 
     {
         if (article)
             res.status(400).json({ is_success: false, message: 'Error: The category must be void of articles before it can be deleted.' });
         else
         {
-            Category.deleteOne({ name: req.body.category })
+            Category.deleteOne({ _id: req.body._id })
             .then(() => 
             {
                 Category.find()

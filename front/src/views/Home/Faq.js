@@ -25,10 +25,10 @@ const Faq = (props) =>
                         <div key={"qa" + i}>
                             <p className="question" onClick={() => handle_chevrons(e, i)}>
                                 <span className="icon">{e.is_deployed ? icon_close : icon_open}</span>
-                                <strong>{e.question}</strong>
+                                <strong>{e.question[0]}</strong>
                                 <span className="icon">{e.is_deployed ? icon_close : icon_open}</span>
                             </p>
-                            {e.is_deployed && <p className="answer">{e.answer}</p>}
+                            {e.is_deployed && <p className="answer">{e.answer[0]}</p>}
                         </div>
                     )}
                 </>}

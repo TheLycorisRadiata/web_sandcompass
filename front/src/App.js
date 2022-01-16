@@ -31,6 +31,8 @@ const icon_down = <FontAwesomeIcon icon={faChevronCircleDown} />;
 
 const App = () => 
 {
+    const [language, set_language] = useState(0);
+
     const [admin_account_data, set_admin_account_data] = useState(null);
     const [is_admin_access_granted, set_is_admin_access_granted] = useState(false);
     const [user_account_data, set_user_account_data] = useState(null);
@@ -42,7 +44,15 @@ const App = () =>
 
     useLayoutEffect(() => 
     {
+        const lang = navigator.language || navigator.userLanguage;
         const faq_arr = [];
+
+        if (lang === 'fr' || lang.split('-')[0] === 'fr')
+            set_language(1); // French
+        else if (lang === 'ja' || lang.split('-')[0] === 'ja')
+            set_language(2); // Japanese
+        else
+            set_language(0); // English (default)
 
         fetch(backend + '/faq/all')
         .then(res => res.json())
@@ -146,7 +156,7 @@ const App = () =>
                         {all_articles.map(article => 
                             <Route exact path={'/blog/article' + article._id} key={article._id}>
                                 <BlogArticle 
-                                    is_preview={false} article={article} category={all_categories.find(e => e._id === article.category).name} 
+                                    is_preview={false} article={article} category={all_categories.find(e => e._id === article.category)?.name} 
                                     articles={all_articles} set_articles={set_all_articles} 
                                     admin_account_data={admin_account_data} user_account_data={user_account_data} 
                                     set_admin_account_data={set_admin_account_data} set_user_account_data={set_user_account_data} />

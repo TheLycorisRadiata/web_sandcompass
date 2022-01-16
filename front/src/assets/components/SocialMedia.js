@@ -1,7 +1,7 @@
-import Logo_Patreon from '../images/logo_patreon.png';
-import Logo_YouTube from '../images/logo_youtube.png';
-import Logo_GitHub from '../images/logo_github.png';
-import Logo_Reddit from '../images/logo_reddit.png';
+import Logo_Patreon from '../images/logos/patreon.png';
+import Logo_YouTube from '../images/logos/youtube.png';
+import Logo_GitHub from '../images/logos/github.png';
+import Logo_Reddit from '../images/logos/reddit.png';
 
 const SocialMedia = () => 
 {

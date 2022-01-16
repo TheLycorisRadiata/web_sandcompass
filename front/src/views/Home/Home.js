@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Book_Cover from '../../assets/images/cosmic_dust_cover_eng.png';
+import Book_Cover from '../../assets/images/works/cosmic_dust/cover_eng.png';
 import SocialMedia from '../../assets/components/SocialMedia';
 
 const Home = (props) => 

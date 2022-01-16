@@ -27,6 +27,11 @@
     text-align: justify;
 }
 
+html
+{
+    scroll-behavior: smooth;
+}
+
 body
 {
     padding: 15px;
@@ -72,6 +77,24 @@ main, div#main
     margin: 20px 0px;
     padding: 25px;
     background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
+
+    opacity: 1;
+    animation-name: fade_in_opacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.5s;
+}
+
+@keyframes fade_in_opacity
+{
+	0%
+    {
+        opacity: 0;
+    }
+    100%
+    {
+        opacity: 1;
+    }
 }
 
 footer ul
@@ -94,6 +117,7 @@ body
 {
     width: 15px;
     background: linear-gradient(var(--pink), var(--blue));
+    scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar:horizontal, ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-corner

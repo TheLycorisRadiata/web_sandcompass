@@ -630,6 +630,16 @@ a, span[class="a"]
     margin-bottom: 20px;
 }
 
+.mini_flag
+{
+    max-width: 20px;
+}
+
+#articles_by_author ol li a
+{
+    margin-left: 5px;
+}
+
 /* VIEW: HOME/WORKS (PRESENTATION) -------------------------------------------------------------- */
 
 #book_presentation ul li

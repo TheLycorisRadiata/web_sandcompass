@@ -1,3 +1,4 @@
+import { confirm_resend_verification_email } from './lang';
 import { backend } from '../../../package.json';
 
 const send_registration_email = async (email_address) => 
@@ -78,7 +79,7 @@ const send_verification_email = async (user_id, email_address, first_name) =>
     .catch(err => console.log(err));
 };
 
-const send_password_email = async (email_address) => 
+const send_password_email = async (lang, email_address) => 
 {
     await fetch(backend + '/mailing/password',
     {
@@ -101,7 +102,7 @@ const send_password_email = async (email_address) =>
             console.log(json.error);
         alert(json.message);
 
-        if (json.send_verif_email && window.confirm('Do you wish for the verification email to be sent again?'))
+        if (json.send_verif_email && window.confirm(confirm_resend_verification_email(lang)))
             send_registration_email(email_address);
     })
     .catch(err => console.log(err));

@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { AppContext } from '../../App';
+import { sign_up, cancel, confirm } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { parse_username } from '../../assets/functions/parsing';
@@ -11,6 +13,7 @@ const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 
 const SignUp = () => 
 {
+    const ct = useContext(AppContext);
     const history = useHistory();
 
     const [is_password_shown, set_is_password_shown] = useState(false);
@@ -35,7 +38,7 @@ const SignUp = () =>
                 return;
             }
 
-            obj_parse_username = parse_username(username);
+            obj_parse_username = parse_username(ct.lang, username);
             if (!obj_parse_username.user_approves)
                 return;
             else
@@ -93,7 +96,7 @@ const SignUp = () =>
 
     return (
         <main>
-            <h1 className="title">Sign Up</h1>
+            <h1 className="title">{sign_up(ct.lang)}</h1>
             <form onSubmit={handle_registration}>
                 <input type="email" name="email_address" placeholder="Email address" autoComplete="on" required autoFocus />
                 <input type="email" name="repeat_email_address" placeholder="Repeat the email address" autoComplete="on" required />
@@ -110,8 +113,8 @@ const SignUp = () =>
                 </div>
 
                 <div>
-                    <input type="reset" className="button" value="Cancel" />
-                    <input type="submit" className="button" value="Confirm" />
+                    <input type="reset" className="button" value={cancel(ct.lang)} />
+                    <input type="submit" className="button" value={confirm(ct.lang)} />
                 </div>
             </form>
         </main>

@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AppContext } from '../../App';
+import { confirm } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import { DateInLetters, Time } from '../../assets/components/Time';
@@ -9,6 +11,8 @@ const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 
 const NewsletterEditor = (props) => 
 {
+    const ct = useContext(AppContext);
+
     const [newsletters, set_newsletters] = useState([]);
     const [selected_newsletter, set_selected_newsletter] = useState('default');
     const [object, set_object] = useState('');
@@ -130,7 +134,7 @@ const NewsletterEditor = (props) =>
                                 <label htmlFor="send">Send the newsletter to subscribers</label>
                             </div>
 
-                            <input type="submit" className="button" value="Confirm" />
+                            <input type="submit" className="button" value={confirm(ct.lang)} />
                         </>
                     : 
                         <div>

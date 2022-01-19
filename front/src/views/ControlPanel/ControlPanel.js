@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../../App';
+import { control_panel } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faFileAlt, faComment, faQuoteRight, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import AccountEditor from '../../assets/components/AccountEditor';
@@ -15,6 +17,8 @@ const icon_newsletter = <FontAwesomeIcon icon={faEnvelope} />;
 
 const ControlPanel = (props) => 
 {
+    const ct = useContext(AppContext);
+
     const [email_address, set_email_address] = useState('');
     const [password, set_password] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
@@ -57,7 +61,7 @@ const ControlPanel = (props) =>
 
     return (
         <main>
-            <h1 className="title">Control Panel</h1>
+            <h1 className="title">{control_panel(ct.lang)}</h1>
             {!props.is_access_granted ?
             <>
                 <form>

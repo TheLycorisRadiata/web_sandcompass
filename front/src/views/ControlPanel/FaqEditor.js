@@ -1,3 +1,13 @@
+import { useContext } from 'react';
+import { AppContext } from '../../App';
+import {
+    access_denied, 
+    faq_long, faq_is_empty, 
+    english, french, japanese, 
+    question, answer, 
+    question_eng, answer_eng, question_fr, answer_fr, question_jp, answer_jp, 
+    add_question, edit_question, delete_question, confirm_delete_question 
+} from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { backend } from '../../../package.json';
@@ -9,6 +19,8 @@ const icon_delete = <FontAwesomeIcon icon={faTrash} />;
 
 const FaqEditor = (props) => 
 {
+    const ct = useContext(AppContext);
+
     const handle_add = (e) => 
     {
         const eng_question = e.target[0].value;
@@ -57,7 +69,7 @@ const FaqEditor = (props) =>
 
     const handle_edit = (e) => 
     {
-        const eng_edited_question = window.prompt('Question (English)', e.question[0]);
+        const eng_edited_question = window.prompt(question_eng(ct.lang), e.question[0]);
         let eng_edited_answer = '';
         let fr_edited_question = '';
         let fr_edited_answer = '';
@@ -67,23 +79,23 @@ const FaqEditor = (props) =>
         if (!eng_edited_question)
             return;
 
-        eng_edited_answer = window.prompt('Answer (English)', e.answer[0]);
+        eng_edited_answer = window.prompt(answer_eng(ct.lang), e.answer[0]);
         if (!eng_edited_answer)
             return;
 
-        fr_edited_question = window.prompt('Question (French)', e.question[1]);
+        fr_edited_question = window.prompt(question_fr(ct.lang), e.question[1]);
         if (!fr_edited_question)
             return;
 
-        fr_edited_answer = window.prompt('Answer (French)', e.answer[1]);
+        fr_edited_answer = window.prompt(answer_fr(ct.lang), e.answer[1]);
         if (!fr_edited_answer)
             return;
 
-        jp_edited_question = window.prompt('Question (Japanese)', e.question[2]);
+        jp_edited_question = window.prompt(question_jp(ct.lang), e.question[2]);
         if (!jp_edited_question)
             return;
 
-        jp_edited_answer = window.prompt('Answer (Japanese)', e.answer[2]);
+        jp_edited_answer = window.prompt(answer_jp(ct.lang), e.answer[2]);
         if (!jp_edited_answer)
             return;
 
@@ -119,7 +131,7 @@ const FaqEditor = (props) =>
 
     const handle_delete = (e) => 
     {
-        if (window.confirm('Are you sure you want to delete the question?'))
+        if (window.confirm(confirm_delete_question(ct.lang)))
         {
             fetch(backend + '/faq/remove',
             {
@@ -145,50 +157,50 @@ const FaqEditor = (props) =>
 
     return (
         <main>
-            <h1 className="title">Frequently Asked Questions</h1>
+            <h1 className="title">{faq_long(ct.lang)}</h1>
 
             {!props.is_access_granted ? 
-                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> Access denied.</p>
+                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> {access_denied(ct.lang)}</p>
             :
             <div id="faq_editor">
                 <form onSubmit={handle_add}>
                     <div id="languages">
                         <div>
-                            <label htmlFor="eng_ques">English</label>
-                            <input type="text" name="new_question" id="eng_ques" placeholder="Question" />
-                            <input type="text" name="new_answer" placeholder="Answer" />
+                            <label htmlFor="eng_ques">{english(ct.lang)}</label>
+                            <input type="text" name="new_question" id="eng_ques" placeholder={question(ct.lang)} />
+                            <input type="text" name="new_answer" placeholder={answer(ct.lang)} />
                         </div>
                         <div>
-                            <label htmlFor="fr_ques">French</label>
-                            <input type="text" name="new_question" id="fr_ques" placeholder="Question" />
-                            <input type="text" name="new_answer" placeholder="Réponse" />
+                            <label htmlFor="fr_ques">{french(ct.lang)}</label>
+                            <input type="text" name="new_question" id="fr_ques" placeholder={question(ct.lang)} />
+                            <input type="text" name="new_answer" placeholder={answer(ct.lang)} />
                         </div>
                         <div>
-                            <label htmlFor="jp_ques">Japanese</label>
-                            <input type="text" name="new_question" id="jp_ques" placeholder="Question" />
-                            <input type="text" name="new_answer" placeholder="Answer" />
+                            <label htmlFor="jp_ques">{japanese(ct.lang)}</label>
+                            <input type="text" name="new_question" id="jp_ques" placeholder={question(ct.lang)} />
+                            <input type="text" name="new_answer" placeholder={answer(ct.lang)} />
                         </div>
                     </div>
 
-                    <button className="button" title="Add a new question question"><span className="icon">{icon_add}</span></button>
+                    <button className="button" title={add_question(ct.lang)}><span className="icon">{icon_add}</span></button>
                 </form>
 
                 {!props.questions?.length ?
-                    <p className="txt_centered">The FAQ is empty.</p>
+                    <p className="txt_centered">{faq_is_empty(ct.lang)}</p>
                 :
                     <ol>
                         {props.questions?.map(e => 
                             <li key={e._id}>
                                 <div>
                                     <div className="display_question">
-                                        <div title="English"><p><strong>{e.question[0]}</strong>{e.answer[0]}</p></div>
-                                        <div title="French"><p><strong>{e.question[1]}</strong>{e.answer[1]}</p></div>
-                                        <div title="Japanese"><p><strong>{e.question[2]}</strong>{e.answer[2]}</p></div>
+                                        <div title={english(ct.lang)}><p><strong>{e.question[0]}</strong>{e.answer[0]}</p></div>
+                                        <div title={french(ct.lang)}><p><strong>{e.question[1]}</strong>{e.answer[1]}</p></div>
+                                        <div title={japanese(ct.lang)}><p><strong>{e.question[2]}</strong>{e.answer[2]}</p></div>
                                     </div>
 
                                     <span className="faq_icons">
-                                        <button className="button" title="Edit the question" onClick={() => handle_edit(e)}><span className="icon">{icon_edit}</span></button>
-                                        <button className="button" title="Delete the question" onClick={() => handle_delete(e)}><span className="icon">{icon_delete}</span></button>
+                                        <button className="button" title={edit_question(ct.lang)} onClick={() => handle_edit(e)}><span className="icon">{icon_edit}</span></button>
+                                        <button className="button" title={delete_question(ct.lang)} onClick={() => handle_delete(e)}><span className="icon">{icon_delete}</span></button>
                                     </span>
                                 </div>
                             </li>)}

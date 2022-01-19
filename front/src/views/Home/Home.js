@@ -1,42 +1,37 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import Book_Cover from '../../assets/images/works/cosmic_dust/cover_eng.png';
+import { AppContext } from '../../App';
+import {
+    home, title_about_website, msg_about_website, 
+    home_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, 
+    last_article, read_more 
+} from '../../assets/functions/lang';
+import DisplayCover from '../../assets/components/DisplayCover';
 import SocialMedia from '../../assets/components/SocialMedia';
 
 const Home = (props) => 
 {
+    const ct = useContext(AppContext);
+
     return (
         <main>
-            <h1 className="title">Home</h1>
+            <h1 className="title">{home(ct.lang)}</h1>
 
             <article>
-                <h2 className="sub_title">What is this website?</h2>
-                <div>
-                    <p>"Sand Compass" is the name of a future French company. Sand Compass has for ambition to go tickle the known world's frontiers, but will for now settle for its 
-                    favorite domain: storytelling! This website therefore presents the fictitious works of Lycoris Radiata, self-proclaimed CEO, and... Lil' lady whose coding skills 
-                    surely need some refining.</p>
-                    <p>If this is not your first visit, welcome back! I thank you for your patience and loyalty, they will be rewarded.</p>
-                </div>
+                <h2 className="sub_title">{title_about_website(ct.lang)}</h2>
+                <div dangerouslySetInnerHTML={{__html: msg_about_website(ct.lang)}} />
             </article>
 
             <section>
-                <h2 className="sub_title"><Link to="/works">Cosmic Dust: Standalone sci-fi novel</Link></h2>
+                <h2 className="sub_title"><Link to="/works">{home_cosmic_dust(ct.lang)}</Link></h2>
 
                 <div id="book_presentation">
-                    <Link to="/works"><img src={Book_Cover} alt="Book cover Cosmic Dust" id="book_cover" /></Link>
+                    <Link to="/works"><DisplayCover lang={ct.lang} /></Link>
 
                     <div>
-                        <p id="catch_phrase"><em>Is Zekharia's urge to create the proof of his sickness, or is he one of the few who function properly?</em></p>
+                        <p id="catch_phrase"><em>{catch_phrase_cosmic_dust(ct.lang)}</em></p>
 
-                        <p>Zekharia Bettelheim is an unpretentious citizen of the Society of Arks, a spaceship on a quest for a new planet. Suffering, he tries to find an 
-                        explanation to his affliction and is helped for this by the character he created. His imaginary friend helps with putting his thoughts in order, but 
-                        he knows that someday he will need to call on a real person.</p>
-                        <p>A chain of circumstances leads him to contact a former classmate who, contrary to Zekharia, seems to blossom in their little world and have 
-                        everything going for him. This man can become the friend he needs, but first his being trustworthy has yet to be confirmed.</p>
-                        <p>There is a real difference between a creation we know about and a human being, who always keeps their share of mystery and is therefore able of 
-                        betrayal. In a world elevating the useful in dogma, it is difficult to admit to anyone that art makes us going through the day, even more so to a 
-                        person who could as well be the Society personified. But is it this crazy to say that art is not only useful, but also essential?</p>
-                        <p>Is Zekharia's urge to create the proof of his sickness, or is he one of the few who function properly? No matter the answer, two roads lie 
-                        before him: twisting himself to fit in or finding the way to change mentalities.</p>
+                        {summary_cosmic_dust(ct.lang).map((e, i) => <p key={'summary_' + i}>{e}</p>)}
                         <p className="clear"></p>
                     </div>
                 </div>
@@ -47,14 +42,14 @@ const Home = (props) =>
             {props.last_article !== undefined &&
             <section>
                 <div>
-                    <h2 className="sub_title"><Link to={'/blog/article' + props.last_article._id}>Last article</Link></h2>
+                    <h2 className="sub_title"><Link to={'/blog/article' + props.last_article._id}>{last_article(ct.lang)}</Link></h2>
                     <h3 id="last_article_title" className="sub_title">{props.last_article.title}</h3>
                 </div>
 
                 <div dangerouslySetInnerHTML={{__html: props.last_article.content.substring(0, 400) + " [...]"}} />
 
                 <div className="read_more">
-                    <Link to={'/blog/article' + props.last_article._id}>[Read more]</Link>
+                    <Link to={'/blog/article' + props.last_article._id}>{read_more(ct.lang)}</Link>
                 </div>
             </section>}
         </main>

@@ -1,5 +1,7 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../../App';
+import { blog, info_author, read_more } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglassEnd, faHourglassStart } from '@fortawesome/free-solid-svg-icons';
 import { DateInLetters, Time } from '../../assets/components/Time';
@@ -10,6 +12,8 @@ const icon_sorted_recent = <FontAwesomeIcon icon={faHourglassStart} />;
 
 const BlogPage = (props) => 
 {
+    const ct = useContext(AppContext);
+
     const [sort, set_sort] = useState('old');
     const [category, set_category] = useState('all');
     const [usernames, set_usernames] = useState([]);
@@ -86,7 +90,7 @@ const BlogPage = (props) =>
 
     return (
         <main>
-            <h1 className="title">Blog</h1>
+            <h1 className="title">{blog(ct.lang)}</h1>
             {!props.articles.length ? 
                 <p className="txt_centered">The blog is empty.</p>
             :
@@ -101,23 +105,28 @@ const BlogPage = (props) =>
                     <div>
                         <select value={category} onChange={filter_category}>
                             <option value="all">All categories</option>
-                            {props.categories.map((e, i) => <option key={'cat_' + i} value={e._id}>{i + 1}. {e.name[0]}</option>)}
+                            {props.categories.map((e, i) => <option key={'cat_' + i} value={e._id}>{i + 1}. {e.name[ct.lang]}</option>)}
                         </select>
                     </div>
                 </div>
 
-                {category !== 'all' && !props.categories.find(e => e._id === category).articles.length ?
-                    <p className="txt_centered">This category is empty.</p>
+                {category !== 'all' && 
+                    ((ct.lang === 0 && !props.categories.find(e => e._id === category).articles.eng.length) 
+                    || 
+                    (ct.lang === 1 && !props.categories.find(e => e._id === category).articles.fr.length) 
+                    || 
+                    (ct.lang === 2 && !props.categories.find(e => e._id === category).articles.jp.length)) ?
+                        <p className="txt_centered">This category is empty.</p>
                 :
                 <>
                     {sort === 'old' ?
                     props.articles.map((e, i) => 
-                        (category === 'all' || category === e.category) && 
+                        (category === 'all' || category === e.category) && ct.lang === e.language  && 
                             <article className="blog_section" key={e._id}>
                                 <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title}</Link></h2>
                                 <ul className="article_info">
-                                    <li>Category: {props.categories.find(category => category._id === e.category).name[0]}.</li>
-                                    <li>Author: {usernames[i]}.</li>
+                                    <li>Category: {props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
+                                    <li>{info_author(ct.lang)}{usernames[i]}.</li>
                                     <li>Created: On the <DateInLetters raw_time={e.time_creation} /> at <Time raw_time={e.time_creation} />.</li>
                                     {e.is_modified && 
                                         <li>Modified: On the <DateInLetters raw_time={e.time_modification} /> at <Time raw_time={e.time_modification} seconds={false} />.</li>}
@@ -125,17 +134,17 @@ const BlogPage = (props) =>
 
                                 <div dangerouslySetInnerHTML={{__html: e.content.substring(0, 400) + " [...]"}} />
                                 <div className="read_more">
-                                    <Link to={'/blog/article' + e._id}>[Read more]</Link>
+                                    <Link to={'/blog/article' + e._id}>{read_more(ct.lang)}</Link>
                                 </div>
                             </article>)
                     :
                     props.articles.slice(0).reverse().map((e, i) => 
-                        (category === 'all' || category === e.category) && 
+                        (category === 'all' || category === e.category) && ct.lang === e.language && 
                             <article className="blog_section" key={e._id}>
                                 <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title}</Link></h2>
                                 <ul className="article_info">
-                                    <li>Category: {props.categories.find(category => category._id === e.category).name[0]}.</li>
-                                    <li>Author: {usernames[i]}.</li>
+                                    <li>Category: {props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
+                                    <li>{info_author(ct.lang)}{usernames[i]}.</li>
                                     <li>Created: On the <DateInLetters raw_time={e.time_creation} /> at <Time raw_time={e.time_creation} />.</li>
                                     {e.is_modified && 
                                         <li>Modified: On the <DateInLetters raw_time={e.time_modification} /> at <Time raw_time={e.time_modification} seconds={false} />.</li>}
@@ -143,7 +152,7 @@ const BlogPage = (props) =>
 
                                 <div dangerouslySetInnerHTML={{__html: e.content.substring(0, 400) + " [...]"}} />
                                 <div className="read_more">
-                                    <Link to={'/blog/article' + e._id}>[Read more]</Link>
+                                    <Link to={'/blog/article' + e._id}>{read_more(ct.lang)}</Link>
                                 </div>
                             </article>)}
                 </>}

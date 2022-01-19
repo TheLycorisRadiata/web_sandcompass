@@ -1,60 +1,76 @@
+import { useState, useEffect, useContext } from 'react';
+import { AppContext } from '../../App';
+import {
+    works, info_title, info_author, info_type, info_genre, info_release_date, info_summary, 
+    radiata_lycoris, standalone_novel, science_fiction, work_in_progress, 
+    title_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, 
+    reviews, disclaimer_reviews_1_on_2, disclaimer_reviews_2_on_2, 
+    different_formats, file_name_azw, file_name_epub, file_name_pdf, file_name_all, all, how_to_pick_format, 
+    arr_ebook_format_picker_questions, arr_ebook_format_picker_options, arr_ebook_format_picker_answers 
+} from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-import Book_Cover from '../../assets/images/works/cosmic_dust/cover_eng.png';
 import File_AZW from '../../assets/files/works/cosmic_dust/test.azw3';
 import File_ePub from '../../assets/files/works/cosmic_dust/test.epub';
 import File_PDF from '../../assets/files/works/cosmic_dust/test.pdf';
 import File_Zip from '../../assets/files/works/cosmic_dust/test.zip';
+import DisplayCover from '../../assets/components/DisplayCover';
 import EbookFormatPicker from '../../assets/components/EbookFormatPicker';
 
 const icon_download = <FontAwesomeIcon icon={faDownload} />
 
 const Works = () => 
 {
+    const ct = useContext(AppContext);
+
+    const [picker_questions, set_picker_questions] = useState(null);
+    const [picker_options, set_picker_options] = useState(null);
+    const [picker_answers, set_picker_answers] = useState(null);
+
+    useEffect(() => 
+    {
+        set_picker_questions(arr_ebook_format_picker_questions(ct.lang));
+        set_picker_options(arr_ebook_format_picker_options(ct.lang));
+        set_picker_answers(arr_ebook_format_picker_answers(ct.lang));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <main id="works">
-            <h1 className="title">Works</h1>
+            <h1 className="title">{works(ct.lang)}</h1>
             <article>
-                <h2 className="sub_title">Cosmic Dust</h2>
+                <h2 className="sub_title">{title_cosmic_dust(ct.lang)}</h2>
 
                 <div id="book_presentation">
-                    <img src={Book_Cover} alt="Book cover Cosmic Dust" id="book_cover" />
+                    <DisplayCover lang={ct.lang} />
 
                     <div>
                         <ul>
-                            <li><span className="txt_bold">Title:</span> Cosmic Dust</li>
-                            <li><span className="txt_bold">Author:</span> Lycoris Radiata</li>
-                            <li><span className="txt_bold">Type:</span> Standalone novel</li>
-                            <li><span className="txt_bold">Genre:</span> Science fiction</li>
-                            <li><span className="txt_bold">Release date:</span> Work In Progress</li>
+                            <li><span className="txt_bold">{info_title(ct.lang)}</span>{title_cosmic_dust(ct.lang)}</li>
+                            <li><span className="txt_bold">{info_author(ct.lang)}</span>{radiata_lycoris(ct.lang)}</li>
+                            <li><span className="txt_bold">{info_type(ct.lang)}</span>{standalone_novel(ct.lang)}</li>
+                            <li><span className="txt_bold">{info_genre(ct.lang)}</span>{science_fiction(ct.lang)}</li>
+                            <li><span className="txt_bold">{info_release_date(ct.lang)}</span>{work_in_progress(ct.lang)}</li>
                         </ul>
 
-                        <p className="txt_bold">Summary:</p>
-                        <p id="catch_phrase" className="txt_italic">Is Zekharia's urge to create the proof of his sickness, or is he one of the few who function properly?</p>
+                        <p className="txt_bold">{info_summary(ct.lang)}</p>
+                        <p id="catch_phrase" className="txt_italic">{catch_phrase_cosmic_dust(ct.lang)}</p>
 
-                        <p>Zekharia Bettelheim is an unpretentious citizen of the Society of Arks, a spaceship on a quest for a new planet. Suffering, he tries to find 
-                        an explanation to his affliction and is helped for this by the character he created. His imaginary friend helps with putting his thoughts in 
-                        order, but he knows that someday he will need to call on a real person.</p>
-                        <p>A chain of circumstances leads him to contact a former classmate who, contrary to Zekharia, seems to blossom in their little world and have 
-                        everything going for him. This man can become the friend he needs, but first his being trustworthy has yet to be confirmed.</p>
-                        <p>There is a real difference between a creation we know about and a human being, who always keeps their share of mystery and is therefore able 
-                        of betrayal. In a world elevating the useful in dogma, it is difficult to admit to anyone that art makes us going through the day, even more so 
-                        to a person who could as well be the Society personified. But is it this crazy to say that art is not only useful, but also essential?</p>
-                        <p>Is Zekharia's urge to create the proof of his sickness, or is he one of the few who function properly? No matter the answer, two roads lie 
-                        before him: twisting himself to fit in or finding the way to change mentalities.</p>
+                        {summary_cosmic_dust(ct.lang).map((e, i) => <p key={'summary_' + i}>{e}</p>)}
                         <p className="clear"></p>
                     </div>
                 </div>
 
                 <div>
-                    <h3 className="sub_title">Reviews</h3>
-                    <p>The Booknode and Goodreads pages for <em>Cosmic Dust</em> will be available at release.</p>
+                    <h3 className="sub_title">{reviews(ct.lang)}</h3>
+                    {ct.lang === 2 ? <p>{disclaimer_reviews_1_on_2(ct.lang)}{'「'}{title_cosmic_dust(ct.lang)}{'」'}{disclaimer_reviews_2_on_2(ct.lang)}</p>
+                    : <p>{disclaimer_reviews_1_on_2(ct.lang)}<em>{title_cosmic_dust(ct.lang)}</em>{disclaimer_reviews_2_on_2(ct.lang)}</p>}
                 </div>
             </article>
 
             <aside>
                 <div>
-                    <h3 className="sub_title">The different formats</h3>
+                    <h3 className="sub_title">{different_formats(ct.lang)}</h3>
 
                     {/* 
                         AZW (Kindle)
@@ -63,16 +79,16 @@ const Works = () =>
                     */}
 
                     <ul>
-                        <a href={File_AZW} download="Test AZW"><li><span className="icon">{icon_download}</span> AZW</li></a>
-                        <a href={File_ePub} download="Test ePub"><li><span className="icon">{icon_download}</span> ePub</li></a>
-                        <a href={File_PDF} download="Test PDF"><li><span className="icon">{icon_download}</span> PDF</li></a>
-                        <a href={File_Zip} download="Test All"><li><span className="icon">{icon_download}</span> All</li></a>
+                        <a href={File_AZW} download={file_name_azw(ct.lang)}><li><span className="icon">{icon_download}</span> AZW</li></a>
+                        <a href={File_ePub} download={file_name_epub(ct.lang)}><li><span className="icon">{icon_download}</span> ePub</li></a>
+                        <a href={File_PDF} download={file_name_pdf(ct.lang)}><li><span className="icon">{icon_download}</span> PDF</li></a>
+                        <a href={File_Zip} download={file_name_all(ct.lang)}><li><span className="icon">{icon_download}</span> {all(ct.lang)}</li></a>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 className="sub_title">The how-to of picking a format</h3>
-                    <EbookFormatPicker />
+                    <h3 className="sub_title">{how_to_pick_format(ct.lang)}</h3>
+                    {picker_questions && picker_options && picker_answers && <EbookFormatPicker questions={picker_questions} options={picker_options} answers={picker_answers} />}
                 </div>
             </aside>
         </main>

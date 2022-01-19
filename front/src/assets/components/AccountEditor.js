@@ -1,5 +1,13 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { AppContext } from '../../App';
+import {
+    profile, info_rank, info_registered_on, info_email_address, info_newsletter, 
+    btn_delete_account, modify_information, cancel, confirm, 
+    disclaimer_email, disclaimer_password, confirm_newsletter, confirm_delete_account, 
+    change_username, username, change_email, new_email, repeat_email, 
+    change_password, new_password, repeat_password, sub_newsletter
+} from '../functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { DateInLetters } from './Time';
@@ -14,6 +22,7 @@ const icon_delete = <FontAwesomeIcon icon={faTrashAlt} />;
 
 const AccountEditor = (props) => 
 {
+    const ct = useContext(AppContext);
     const history = useHistory();
 
     const [is_edit_open, set_is_edit_open] = useState(false);
@@ -108,7 +117,7 @@ const AccountEditor = (props) =>
                 updated_account.username = props.account_data.username;
             else
             {
-                obj_parse_username = parse_username(field_username);
+                obj_parse_username = parse_username(ct.lang, field_username);
                 if (!obj_parse_username.user_approves)
                     return;
                 else
@@ -156,7 +165,7 @@ const AccountEditor = (props) =>
             // If they don't match or if only one field is filled, then warning
             else
             {
-                alert('The same email address is asked in both fields.');
+                alert(disclaimer_email(ct.lang));
                 return;
             }
 
@@ -177,12 +186,12 @@ const AccountEditor = (props) =>
             // If they don't match or if only one field is filled, then warning
             else
             {
-                alert('The same password is asked in both fields.');
+                alert(disclaimer_password(ct.lang));
                 return;
             }
 
             // Change the status of the newsletter subscription
-            if (checkbox_newsletter && (!props.account_data.newsletter || window.confirm('Are you sure you want to unsubscribe from the newsletter?')))
+            if (checkbox_newsletter && (!props.account_data.newsletter || window.confirm(confirm_newsletter(ct.lang))))
             {
                 updated_account.newsletter = !props.account_data.newsletter;
                 has_newsletter_changed = true;
@@ -228,7 +237,7 @@ const AccountEditor = (props) =>
 
     const delete_account = () => 
     {
-        if (window.confirm('Are you sure you want to delete your account? This action is irreversible.'))
+        if (window.confirm(confirm_delete_account(ct.lang)))
         {
             set_is_edit_open(false);
 
@@ -260,43 +269,43 @@ const AccountEditor = (props) =>
 
     return (
         <section>
-            <h2 className="sub_title">Profile</h2>
+            <h2 className="sub_title">{profile(ct.lang)}</h2>
             <div id="all_account_info">
                 <div>
                     <ul>
                         <li>{props.account_data?.username}</li>
-                        <li>Rank: {rank && rank.name[0]}</li>
-                        <li>Registered on: <DateInLetters raw_time={props.account_data?.registered_on} /></li>
-                        <li>Email address: {props.account_data?.email_address}</li>
-                        <li>{props.account_data?.newsletter ? 'Subscribed' : 'Not subscribed'} to the newsletter</li>
+                        <li>{info_rank(ct.lang, rank?.name[ct.lang])}</li>
+                        <li>{info_registered_on(ct.lang)}<DateInLetters raw_time={props.account_data?.registered_on} /></li>
+                        <li>{info_email_address(ct.lang)}{props.account_data?.email_address}</li>
+                        <li>{info_newsletter(ct.lang, props.account_data?.newsletter)}</li>
                     </ul>
                 </div>
 
-                {!props.account_data?.is_admin && <button className="button" onClick={delete_account}><span className="icon">{icon_delete}</span> Delete the account</button>}
-                <button className="button" onClick={handle_edit_button}><span className="icon">{icon_edit}</span> Modify information</button>
+                {!props.account_data?.is_admin && <button className="button" onClick={delete_account}><span className="icon">{icon_delete}</span> {btn_delete_account(ct.lang)}</button>}
+                <button className="button" onClick={handle_edit_button}><span className="icon">{icon_edit}</span> {modify_information(ct.lang)}</button>
             </div>
 
             {is_edit_open && 
             <form onSubmit={update_account} id="account_editor_form">
                 <div className="change">
-                    <label htmlFor="change_username">Change your username</label>
-                    <input type="text" name="username" placeholder="Username" autoComplete="new-password" id="change_username" />
+                    <label htmlFor="change_username">{change_username(ct.lang)}</label>
+                    <input type="text" name="username" placeholder={username(ct.lang)} autoComplete="new-password" id="change_username" />
                 </div>
 
                 <div className="change">
-                    <label htmlFor="change_email">Change your email address</label>
-                    <input type="email" name="email" placeholder="New email address" autoComplete="new-password" id="change_email" />
-                    <input type="email" name="email" placeholder="Repeat the email address" autoComplete="new-password" />
+                    <label htmlFor="change_email">{change_email(ct.lang)}</label>
+                    <input type="email" name="email" placeholder={new_email(ct.lang)} autoComplete="new-password" id="change_email" />
+                    <input type="email" name="email" placeholder={repeat_email(ct.lang)} autoComplete="new-password" />
                 </div>
 
                 <div className="change">
-                    <label htmlFor="change_password">Change your password</label>
+                    <label htmlFor="change_password">{change_password(ct.lang)}</label>
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" autoComplete="new-password" id="change_password" />
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} autoComplete="new-password" id="change_password" />
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Repeat the password" autoComplete="new-password" /> 
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={repeat_password(ct.lang)} autoComplete="new-password" /> 
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                 </div>
@@ -305,12 +314,12 @@ const AccountEditor = (props) =>
                 <div className="div_pointer">
                     <input type="checkbox" name="checkbox_newsletter" autoComplete="new-password" id="checkbox_newsletter" checked={checkbox_newsletter} 
                         onChange={() => set_checkbox_newsletter(checkbox_newsletter ? false : true)} />
-                    <label htmlFor="checkbox_newsletter">{props.account_data?.newsletter ? 'Unsubscribe from the newsletter' : 'Subscribe to the newsletter'}</label>
+                    <label htmlFor="checkbox_newsletter">{sub_newsletter(ct.lang, props.account_data?.newsletter)}</label>
                 </div>}
 
                 <div>
-                    <input type="reset" className="button" value="Cancel" onClick={() => set_checkbox_newsletter(false)} />
-                    <input type="submit" className="button" value="Confirm" />
+                    <input type="reset" className="button" value={cancel(ct.lang)} onClick={() => set_checkbox_newsletter(false)} />
+                    <input type="submit" className="button" value={confirm(ct.lang)} />
                 </div>
             </form>}
         </section>

@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AppContext } from '../../App';
+import { contact, cancel } from '../../assets/functions/lang';
 import SocialMedia from '../../assets/components/SocialMedia';
 import { backend } from '../../../package.json';
 
 const Contact = () => 
 {
+    const ct = useContext(AppContext);
     const [is_visitor_pro, set_is_visitor_pro] = useState(false);
 
     const handle_contact = (e) => 
@@ -76,7 +79,7 @@ const Contact = () =>
 
     return (
         <main>
-            <h1 className="title">Contact</h1>
+            <h1 className="title">{contact(ct.lang)}</h1>
 
             <SocialMedia />
 
@@ -113,7 +116,7 @@ const Contact = () =>
                     <textarea name="message" placeholder="Message" autoComplete="new-password" required></textarea>
 
                     <div>
-                        <input type="reset" className="button" value="Cancel" onClick={() => set_is_visitor_pro(false)} />
+                        <input type="reset" className="button" value={cancel(ct.lang)} onClick={() => set_is_visitor_pro(false)} />
                         <input type="submit" className="button" value="Send" />
                     </div>
                 </form>

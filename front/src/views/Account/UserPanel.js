@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../../App';
+import { log_in, confirm_resend_verification_email } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_registration_email } from '../../assets/functions/mailing';
@@ -12,6 +14,8 @@ const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 
 const UserPanel = (props) => 
 {
+    const ct = useContext(AppContext);
+
     const [email_address, set_email_address] = useState('');
     const [password, set_password] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
@@ -41,7 +45,7 @@ const UserPanel = (props) =>
             })
             .catch(err => console.log(err));
 
-            if (send_verif_email && window.confirm('Do you wish for the verification email to be sent again?'))
+            if (send_verif_email && window.confirm(confirm_resend_verification_email(ct.lang)))
                 send_registration_email(email_address);
         }
     };
@@ -60,7 +64,7 @@ const UserPanel = (props) =>
 
     return (
         <main>
-            <h1 className="title">{!props.is_access_granted ? 'Log In' : 'User Account'}</h1>
+            <h1 className="title">{!props.is_access_granted ? log_in(ct.lang) : 'User Account'}</h1>
             {!props.is_access_granted ? 
                 <form>
                     <input type="email" name="email_address" placeholder="Email address" autoComplete="on" autoFocus  
@@ -70,7 +74,7 @@ const UserPanel = (props) =>
                             value={password} onChange={e => set_password(e.target.value)} onKeyPress={handle_key_press} />
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
-                    <input type="button" className="button" value="Log In" onClick={handle_submit} />
+                    <input type="button" className="button" value={log_in(ct.lang)} onClick={handle_submit} />
                     {access_message !== '' && <p>{access_message}</p>}
                     <p><Link to="/password">Password forgotten?</Link></p>
                     <p><Link to="/user/signup">Not yet registered?</Link></p>

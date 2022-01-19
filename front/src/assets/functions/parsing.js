@@ -1,4 +1,6 @@
-const parse_username = (username) => 
+import { username_disclaimer, username_disclaimer_and_display } from './lang';
+
+const parse_username = (lang, username) => 
 {
     // Remove spaces and what is not a number or a letter (case insensitive)
     const parsed_username = username.replace(/[^a-z0-9]/gi,'');
@@ -7,9 +9,9 @@ const parse_username = (username) =>
     if (parsed_username === username)
         user_approves = true;
     else if (parsed_username === '')
-        alert('Usernames can only have letters and numbers.');
+        alert(username_disclaimer(lang));
     else
-        user_approves = window.confirm(`Usernames can only have letters and numbers. Does "${parsed_username}" suit you?`); 
+        user_approves = window.confirm(username_disclaimer_and_display(lang, parsed_username)); 
 
     return { parsed_username: parsed_username, user_approves: user_approves };
 };

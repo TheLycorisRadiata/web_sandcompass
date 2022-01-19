@@ -1,5 +1,7 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { AppContext } from '../../App';
+import { blog, info_author } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faHeartBroken, faThumbsUp as faThumbsUpSolid, faThumbsDown as faThumbsDownSolid } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
@@ -15,13 +17,14 @@ const icon_filled_dislike = <FontAwesomeIcon icon={faThumbsDownSolid} />;
 
 const BlogArticle = (props) => 
 {
+    const ct = useContext(AppContext);
+    const history = useHistory();
+    const current_time = Date.now();
+
     const [username, set_username] = useState('[User not found]');
     const [likes, set_likes] = useState(props.article.likes);
     const [id_user, set_id_user] = useState(null);
     const [user_vote, set_user_vote] = useState(0);
-
-    const history = useHistory();
-    const current_time = Date.now();
 
     const increment_likes = () => 
     {
@@ -206,14 +209,14 @@ const BlogArticle = (props) =>
         <>
             {props.is_preview ? 
             <div id="main" className="preview_article">
-                <h3 className="title">Blog</h3>
+                <h3 className="title">{blog(ct.lang)}</h3>
                 <div className="btn_other_articles"><span className="a button">Other articles</span></div>
 
                 <article>
                     <h4 className="sub_title">{props.article.title}</h4>
                     <ul className="article_info">
                         <li>Category: {props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
-                        <li>Author: {username}.</li>
+                        <li>{info_author(ct.lang)}{username}.</li>
                         <li>Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} /> at <Time 
                             raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} />.</li>
                         {props.article.is_modified && 
@@ -234,14 +237,14 @@ const BlogArticle = (props) =>
             </div>
             :
             <main>
-                <h1 className="title">Blog</h1>
+                <h1 className="title">{blog(ct.lang)}</h1>
                 <div className="btn_other_articles"><Link to="/blog" className="button">Other articles</Link></div>
 
                 <article>
                     <h2 className="sub_title">{props.article.title}</h2>
                     <ul className="article_info">
                         <li>Category: {props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
-                        <li>Author: {username}.</li>
+                        <li>{info_author(ct.lang)}{username}.</li>
                         <li>Created: On the <DateInLetters raw_time={props.article.time_creation} /> at <Time raw_time={props.article.time_creation} seconds={false} />.</li>
                         {props.article.is_modified && 
                             <li>Modified: On the <DateInLetters raw_time={props.article.time_modification} /> at <Time 

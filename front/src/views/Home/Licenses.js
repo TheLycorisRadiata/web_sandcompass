@@ -1,8 +1,14 @@
+import { useContext } from 'react';
+import { AppContext } from '../../App';
+import { licenses } from '../../assets/functions/lang';
+
 const Licenses = () => 
 {
+    const ct = useContext(AppContext);
+
     return (
         <main id="licenses">
-            <h1 className="title">Licenses</h1>
+            <h1 className="title">{licenses(ct.lang)}</h1>
 
             <p className="txt_centered txt_italic">Use the contact form to ask for details</p>
 

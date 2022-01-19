@@ -211,12 +211,56 @@ p
 
 #icon_lang
 {
+    z-index: 0;
     position: absolute;
     top: 0;
     right: 0;
 
     padding: 12px;
     font-size: 2rem;
+}
+
+#flag_menu
+{
+    z-index: 1;
+    position: absolute;
+    top: 15px;
+    right: 5px;
+
+    padding: 10px;
+    background-color: var(--see_through_white);
+    border-radius: 10px;
+}
+
+#flag_menu li
+{
+    cursor: pointer;
+    color: var(--dark_yellow);
+    font-weight: bold;
+    text-shadow: 1px 1px 2px var(--black);
+    display: flex;
+    align-items: center;
+}
+
+#flag_menu li:hover
+{
+    color: var(--light_yellow);
+}
+
+#flag_menu img
+{
+    margin-right: 10px;
+    max-width: 40px;
+}
+
+#flag_menu li
+{
+    margin-bottom: 10px;
+}
+
+#flag_menu li:last-child
+{
+    margin-bottom: 0;
 }
 
 /* HEADER: BANNER ------------------------------------------------------------------------------- */
@@ -655,7 +699,7 @@ a, span[class="a"]
 #book_cover
 {
     margin-right: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     padding: 10px;
     width: 50vw;
     max-width: 350px;

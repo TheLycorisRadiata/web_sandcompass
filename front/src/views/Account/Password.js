@@ -1,5 +1,6 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { AppContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_password_email } from '../../assets/functions/mailing';
@@ -10,6 +11,7 @@ const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 
 const Password = () => 
 {
+    const ct = useContext(AppContext);
     const history = useHistory();
 
     const [is_access_granted, set_is_access_granted] = useState(false);
@@ -81,7 +83,7 @@ const Password = () =>
         if (!is_access_granted)
         {
             if (e.target[0].value !== '')
-                await send_password_email(e.target[0].value);
+                await send_password_email(ct.lang, e.target[0].value);
         }
         else if (field_password !== '' && field_repeat_password !== '')
         {

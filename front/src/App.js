@@ -53,6 +53,7 @@ const App = () =>
     const [all_questions, set_all_questions] = useState([]);
     const [all_categories, set_all_categories] = useState([]);
     const [all_articles, set_all_articles] = useState([]);
+    const [last_article, set_last_article] = useState([]);
 
     const context_value = 
     {
@@ -63,7 +64,9 @@ const App = () =>
     useLayoutEffect(() => 
     {
         const lang = navigator.language || navigator.userLanguage;
-        const faq_arr = [];
+        const arr_faq = [];
+        const arr_last_article = [];
+        let arr_reversed_articles = null;
 
         if (lang === 'fr' || lang.split('-')[0] === 'fr')
             set_lang(1); // French
@@ -82,7 +85,7 @@ const App = () =>
 
             if (json.is_success)
             {
-                json.data.forEach(e => faq_arr.push(
+                json.data.forEach(e => arr_faq.push(
                 {
                     _id: e._id,
                     question: e.question,
@@ -91,7 +94,7 @@ const App = () =>
                 }));
             }
 
-            set_all_questions(faq_arr);
+            set_all_questions(arr_faq);
         })
         .catch(err => console.log(err));
 
@@ -129,8 +132,22 @@ const App = () =>
             console.log(json.message);
             if (json.error)
                 console.log(json.error);
-            if (json.is_success)
+            if (json.is_success && json.data.length) 
+            {
+                // full list
                 set_all_articles(json.data);
+
+                // last article (in all languages)
+                arr_reversed_articles = [...json.data];
+                arr_reversed_articles.reverse();
+                arr_last_article.push(arr_reversed_articles.find(e => e.language === 0));
+                arr_last_article.push(arr_reversed_articles.find(e => e.language === 1));
+                arr_last_article.push(arr_reversed_articles.find(e => e.language === 2));
+                arr_last_article[0] = arr_last_article[0] === undefined ? null : arr_last_article[0];
+                arr_last_article[1] = arr_last_article[1] === undefined ? null : arr_last_article[1];
+                arr_last_article[2] = arr_last_article[2] === undefined ? null : arr_last_article[2];
+                set_last_article(arr_last_article);
+            }
         });
     }, []);
 
@@ -172,8 +189,8 @@ const App = () =>
                     </header>
 
                     <Switch>
-                        <Route exact path="/"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
-                        <Route exact path="/home"><Home last_article={all_articles[all_articles.length - 1]} /></Route>
+                        <Route exact path="/"><Home last_article={last_article} /></Route>
+                        <Route exact path="/home"><Home last_article={last_article} /></Route>
                         <Route exact path="/faq"><Faq questions={all_questions} set_questions={set_all_questions} /></Route>
                         <Route exact path="/works"><Works /></Route>
                         <Route exact path="/blog"><BlogPage articles={all_articles} categories={all_categories} /></Route>

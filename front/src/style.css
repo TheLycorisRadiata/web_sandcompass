@@ -223,7 +223,7 @@ p
 #flag_menu
 {
     z-index: 1;
-    position: absolute;
+    position: fixed;
     top: 15px;
     right: 5px;
 

@@ -39,17 +39,17 @@ const Home = (props) =>
 
             <SocialMedia />
 
-            {props.last_article !== undefined &&
+            {props.last_article[ct.lang] && 
             <section>
                 <div>
-                    <h2 className="sub_title"><Link to={'/blog/article' + props.last_article._id}>{last_article(ct.lang)}</Link></h2>
-                    <h3 id="last_article_title" className="sub_title">{props.last_article.title}</h3>
+                    <h2 className="sub_title"><Link to={'/blog/article' + props.last_article[ct.lang]._id}>{last_article(ct.lang)}</Link></h2>
+                    <h3 id="last_article_title" className="sub_title">{props.last_article[ct.lang].title}</h3>
                 </div>
 
-                <div dangerouslySetInnerHTML={{__html: props.last_article.content.substring(0, 400) + " [...]"}} />
+                <div dangerouslySetInnerHTML={{__html: props.last_article[ct.lang].content.substring(0, 400) + " [...]"}} />
 
                 <div className="read_more">
-                    <Link to={'/blog/article' + props.last_article._id}>{read_more(ct.lang)}</Link>
+                    <Link to={'/blog/article' + props.last_article[ct.lang]._id}>{read_more(ct.lang)}</Link>
                 </div>
             </section>}
         </main>

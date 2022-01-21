@@ -61,16 +61,25 @@ const App = () =>
         set_lang
     };
 
+    const update_lang = (index) => 
+    {
+        set_lang(index);
+        localStorage.setItem('lang', JSON.stringify({ index: index }));
+    };
+
     useLayoutEffect(() => 
     {
-        const lang = navigator.language || navigator.userLanguage;
+        const lang_machine = navigator.language || navigator.userLanguage;
+        const lang_localstorage = JSON.parse(localStorage.getItem('lang'));
         const arr_faq = [];
         const arr_last_article = [];
         let arr_reversed_articles = null;
 
-        if (lang === 'fr' || lang.split('-')[0] === 'fr')
+        if (lang_localstorage)
+            set_lang(lang_localstorage.index);
+        else if (lang_machine === 'fr' || lang_machine.split('-')[0] === 'fr')
             set_lang(1); // French
-        else if (lang === 'ja' || lang.split('-')[0] === 'ja')
+        else if (lang_machine === 'ja' || lang_machine.split('-')[0] === 'ja')
             set_lang(2); // Japanese
         else
             set_lang(0); // English (default)
@@ -156,12 +165,12 @@ const App = () =>
             <Router>
                 <div>
                     <header>
-                        <div id="icon_lang" className="button" onMouseOver={() => set_is_flag_menu_displayed(true)}><span className="icon">{icon_lang}</span></div>
+                        <div id="icon_lang" className="button" onMouseEnter={() => set_is_flag_menu_displayed(true)}><span className="icon">{icon_lang}</span></div>
                         {is_flag_menu_displayed && 
-                            <ul id="flag_menu" onMouseOut={() => set_is_flag_menu_displayed(false)}>
-                                <li><img src={Flag_Eng} alt={english(lang)} className="icon" /> <span>{english(lang)}</span></li>
-                                <li><img src={Flag_Fr} alt={french(lang)} className="icon" /> <span>{french(lang)}</span></li>
-                                <li><img src={Flag_Jp} alt={japanese(lang)} className="icon" /> <span>{japanese(lang)}</span></li>
+                            <ul id="flag_menu" onMouseLeave={() => set_is_flag_menu_displayed(false)}>
+                                <li onClick={() => update_lang(0)}><img src={Flag_Eng} alt={english(lang)} className="icon" /> <span>{english(lang)}</span></li>
+                                <li onClick={() => update_lang(1)}><img src={Flag_Fr} alt={french(lang)} className="icon" /> <span>{french(lang)}</span></li>
+                                <li onClick={() => update_lang(2)}><img src={Flag_Jp} alt={japanese(lang)} className="icon" /> <span>{japanese(lang)}</span></li>
                             </ul>}
 
                         <Link to="/home">

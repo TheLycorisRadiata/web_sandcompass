@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import { log_in, confirm_resend_verification_email } from '../../assets/functions/lang';
@@ -61,6 +61,16 @@ const UserPanel = (props) =>
         e.preventDefault();
         set_is_password_shown(is_password_shown ? false : true);
     };
+
+    useEffect(() => 
+    {
+        if (props.is_access_granted)
+        {
+            ct.set_lang(props.account_data.language);
+            localStorage.setItem('lang', JSON.stringify({ index: props.account_data.language }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.is_access_granted]);
 
     return (
         <main>

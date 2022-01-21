@@ -765,6 +765,19 @@ export const info_registered_on = (lang) =>
     }
 };
 
+export const info_preferred_language = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Langue de préférence : ';
+        case 2:
+            return 'Preferred language: ';
+        default:
+            return 'Preferred language: ';
+    }
+};
+
 export const info_email_address = (lang) => 
 {
     switch (lang)
@@ -944,6 +957,19 @@ export const repeat_password = (lang) =>
             return 'Repeat the password';
         default:
             return 'Repeat the password';
+    }
+};
+
+export const change_language = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Changer votre langue de préférence';
+        case 2:
+            return 'Change your preferred language';
+        default:
+            return 'Change your preferred language';
     }
 };
 

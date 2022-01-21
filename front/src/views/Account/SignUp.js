@@ -57,7 +57,8 @@ const SignUp = () =>
                     email_address: email_address,
                     password: password,
                     username: username,
-                    newsletter: newsletter
+                    newsletter: newsletter,
+                    language: ct.lang
                 })
             })
             .then(res => res.json())

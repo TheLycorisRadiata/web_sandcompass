@@ -2,11 +2,12 @@ import { useState, useLayoutEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    profile, info_rank, info_registered_on, info_email_address, info_newsletter, 
+    profile, info_rank, info_registered_on, info_preferred_language, info_email_address, info_newsletter, 
     btn_delete_account, modify_information, cancel, confirm, 
     disclaimer_email, disclaimer_password, confirm_newsletter, confirm_delete_account, 
     change_username, username, change_email, new_email, repeat_email, 
-    change_password, new_password, repeat_password, sub_newsletter
+    change_password, new_password, repeat_password, sub_newsletter, 
+    change_language, english, french, japanese 
 } from '../functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -27,6 +28,7 @@ const AccountEditor = (props) =>
 
     const [is_edit_open, set_is_edit_open] = useState(false);
     const [is_password_shown, set_is_password_shown] = useState(false);
+    const [checked_lang, set_checked_lang] = useState(props.account_data?.language);
     const [checkbox_newsletter, set_checkbox_newsletter] = useState(false);
     const [rank, set_rank] = useState(null);
 
@@ -111,7 +113,8 @@ const AccountEditor = (props) =>
         e.preventDefault();
 
         // Check for whether any field is filled or any button checked, otherwise no update
-        if (field_username !== '' || field_email !== '' || field_repeat_email !== '' || field_password !== '' || field_repeat_password !== '' || checkbox_newsletter) 
+        if (field_username !== '' || field_email !== '' || field_repeat_email !== '' || field_password !== '' || field_repeat_password !== '' 
+            || props.account_data.language !== checked_lang || checkbox_newsletter) 
         {
             if (field_username === '')
                 updated_account.username = props.account_data.username;
@@ -190,6 +193,9 @@ const AccountEditor = (props) =>
                 return;
             }
 
+            // Change the preferred language
+            updated_account.language = checked_lang;
+
             // Change the status of the newsletter subscription
             if (checkbox_newsletter && (!props.account_data.newsletter || window.confirm(confirm_newsletter(ct.lang))))
             {
@@ -218,7 +224,10 @@ const AccountEditor = (props) =>
                 alert(json.message);
 
                 if (json.is_success)
+                {
                     props.set_account_data(json.data);
+                    ct.set_lang(json.data.language);
+                }
 
                 // The user changed the status of their newsletter subscription, and they're now subscribed
                 if (has_newsletter_changed && json.data.newsletter)
@@ -276,6 +285,8 @@ const AccountEditor = (props) =>
                         <li>{props.account_data?.username}</li>
                         <li>{info_rank(ct.lang, rank?.name[ct.lang])}</li>
                         <li>{info_registered_on(ct.lang)}<DateInLetters raw_time={props.account_data?.registered_on} /></li>
+                        <li>{info_preferred_language(ct.lang)}
+                            {props.account_data?.language === 1 ? french(ct.lang) : props.account_data?.language === 2 ? japanese(ct.lang) : english(ct.lang)}</li>
                         <li>{info_email_address(ct.lang)}{props.account_data?.email_address}</li>
                         <li>{info_newsletter(ct.lang, props.account_data?.newsletter)}</li>
                     </ul>
@@ -307,6 +318,24 @@ const AccountEditor = (props) =>
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={repeat_password(ct.lang)} autoComplete="new-password" /> 
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                    </div>
+                </div>
+
+                <div className="change">
+                    <label>{change_language(ct.lang)}</label>
+                    <div>
+                        <div className="div_pointer">
+                            <input type="radio" name="language" value="0" id="eng" checked={checked_lang === 0} onClick={() => set_checked_lang(0)} />
+                            <label htmlFor="eng">{english(ct.lang)}</label>
+                        </div>
+                        <div className="div_pointer">
+                            <input type="radio" name="language" value="1" id="fr" checked={checked_lang === 1} onClick={() => set_checked_lang(1)} />
+                            <label htmlFor="fr">{french(ct.lang)}</label>
+                        </div>
+                        <div className="div_pointer">
+                            <input type="radio" name="language" value="2" id="jp" checked={checked_lang === 2} onClick={() => set_checked_lang(2)} />
+                            <label htmlFor="jp">{japanese(ct.lang)}</label>
+                        </div>
                     </div>
                 </div>
 

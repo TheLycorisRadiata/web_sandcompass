@@ -10,6 +10,7 @@ const model_user = new mongoose.Schema(
     hashed_password: { type: String, default: null },
     username: { type: String, unique: true },
     newsletter: { type: Boolean, default: false },
+    language: { type: Number, default: 0 },
     articles:
     {
         written: [mongoose.Schema.Types.ObjectId],

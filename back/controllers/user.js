@@ -127,8 +127,6 @@ const is_username_already_used_by_another_account = (req, res) =>
 
 const create_account = (req, res) => 
 {
-    const newsletter = req.body.newsletter !== undefined ? req.body.newsletter : false;
-
     const salt_rounds = 10;
     const salt = bcrypt.genSaltSync(salt_rounds);
     const password = req.body.password !== undefined ? req.body.password : null;
@@ -141,7 +139,7 @@ const create_account = (req, res) =>
         if (user)
         {
             // If the user already exists, check whether this is not just a newsletter subscription attempt
-            if (newsletter)
+            if (req.body.newsletter)
             {
                 // Also, if this is the admin account, it can't subscribe to the newsletter
                 if (user.newsletter || user.is_admin)
@@ -181,7 +179,8 @@ const create_account = (req, res) =>
                 email_address: req.body.email_address.toLowerCase(),
                 hashed_password: hashed_password,
                 username: req.body.username,
-                newsletter: newsletter
+                newsletter: req.body.newsletter,
+                language: req.body.language
             })
             .save()
             .then(() => res.status(201).json({ is_success: true, message: 'The account has been created.' }))
@@ -223,6 +222,12 @@ const get_stats_on_all_users = (req, res) =>
             total: 0,
             verified_user: 0,
             newsletter: 0,
+            language:
+            {
+                english: 0,
+                french: 0,
+                japanese: 0
+            }
         }
     };
 
@@ -236,6 +241,9 @@ const get_stats_on_all_users = (req, res) =>
             stats.accounts.total = users.length;
             stats.accounts.verified_user = users.filter(e => e.verified_user).length;
             stats.accounts.newsletter = users.filter(e => e.newsletter).length;
+            stats.accounts.language.english = users.filter(e => e.language === 0).length;
+            stats.accounts.language.french = users.filter(e => e.language === 1).length;
+            stats.accounts.language.japanese = users.filter(e => e.language === 2).length;
 
             res.status(200).json({ is_success: true, message: 'Statistics transmitted.', data: stats });
         }

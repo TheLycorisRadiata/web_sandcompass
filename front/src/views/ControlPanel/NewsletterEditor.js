@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../../App';
-import { confirm } from '../../assets/functions/lang';
+import { confirm, dynamic_language, english, french, japanese } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import { DateInLetters, Time } from '../../assets/components/Time';
@@ -17,6 +17,7 @@ const NewsletterEditor = (props) =>
     const [selected_newsletter, set_selected_newsletter] = useState('default');
     const [object, set_object] = useState('');
     const [html_message, set_html_message] = useState('<hr /><h1 style="text-align: center;">Hello world!</h1><hr /><p>Lorem ipsum</p>');
+    const [language, set_language] = useState('default');
     const [checkbox, set_checkbox] = useState(false);
 
     const fetch_newsletters = (trigger_alert) => 
@@ -40,6 +41,7 @@ const NewsletterEditor = (props) =>
         set_selected_newsletter('default');
         set_object('');
         set_html_message('<hr /><h1 style="text-align: center;">Hello world!</h1><hr /><p>Lorem ipsum</p>');
+        set_language('default');
         set_checkbox(false);
     };
 
@@ -53,6 +55,7 @@ const NewsletterEditor = (props) =>
         {
             set_object(newsletters[option].object);
             set_html_message(newsletters[option].html_message);
+            set_language(newsletters[option].language);
             set_checkbox(false);
         }
 
@@ -66,14 +69,17 @@ const NewsletterEditor = (props) =>
         {
             object: e.target[1].value,
             html_message: e.target[2].value,
-            do_send: e.target[3].checked,
+            language: e.target[3].value,
+            do_send: e.target[4].checked,
             _id: selected_newsletter === 'new' ? null : newsletters[selected_newsletter]._id
         };
 
         e.preventDefault();
 
         if (newsletter.object === '' || newsletter.html_message === '')
-            alert('The object and the message must be filled.');
+            alert('The object and the message have to be filled.');
+        else if (newsletter.language === 'default')
+            alert('The language has to be selected.');
         else
         {
             fetch(backend + '/mailing/newsletter/send',
@@ -117,7 +123,8 @@ const NewsletterEditor = (props) =>
                     <select defaultValue="default" onChange={handle_select}>
                         <option value="default" disabled>Select a newsletter</option>
                         <option value="new">Write a new newsletter</option>
-                        {newsletters.map((e, i) => <option key={"newsletter_" + i} value={i}>{e.is_sent ? '[Sent]' : '[Not sent]'} {e.object}</option>)}
+                        {newsletters.map((e, i) => 
+                            <option key={"newsletter_" + i} value={i}>[{dynamic_language(ct.lang, e.language)}] {e.is_sent ? '[Sent]' : '[Not sent]'} {e.object}</option>)}
                     </select>
 
                     {selected_newsletter === 'default' ?
@@ -129,6 +136,13 @@ const NewsletterEditor = (props) =>
 
                             <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: html_message}} />
 
+                            <select value={language} onChange={e => set_language(e.target.value)}>
+                                <option value="default" disabled>Select a language</option>
+                                <option value="0">{english(ct.lang)}</option>
+                                <option value="1">{french(ct.lang)}</option>
+                                <option value="2">{japanese(ct.lang)}</option>
+                            </select>
+
                             <div className="div_pointer">
                                 <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(checkbox ? false : true)} />
                                 <label htmlFor="send">Send the newsletter to subscribers</label>
@@ -138,6 +152,7 @@ const NewsletterEditor = (props) =>
                         </>
                     : 
                         <div>
+                            <p><strong>Language:</strong> {dynamic_language(ct.lang, newsletters[selected_newsletter].language)}</p>
                             <p><strong>Object:</strong> {newsletters[selected_newsletter].object}</p>
                             <p><strong>Date:</strong> <DateInLetters raw_time={newsletters[selected_newsletter].date} /> at <Time raw_time={newsletters[selected_newsletter].date} seconds={true} /></p>
                             <p><strong>Message:</strong></p>

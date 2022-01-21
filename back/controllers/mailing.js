@@ -421,7 +421,8 @@ const send_newsletter = (req, res) =>
             {
                 object: newsletter.object,
                 html_message: newsletter.html_message,
-                date: Date.now()
+                date: Date.now(),
+                language: newsletter.language
             })
             .catch(() => has_an_error_occured = true)
         }
@@ -432,7 +433,8 @@ const send_newsletter = (req, res) =>
             new Newsletter(
             {
                 object: newsletter.object,
-                html_message: newsletter.html_message
+                html_message: newsletter.html_message,
+                language: newsletter.language
             })
             .save()
             .catch(() => has_an_error_occured = true);
@@ -449,11 +451,11 @@ const send_newsletter = (req, res) =>
         // Send the newsletter, and upon success update its date and its "is_sent" attribute to true
         else
         {
-            User.find({ newsletter: true })
+            User.find({ newsletter: true, language: newsletter.language })
             .then(users => 
             {
                 if (!users.length)
-                    res.status(404).json({ is_success: false, message: 'Error: The newsletter is saved, but couldn\'t be sent because no account is subscribed to the newsletter.' });
+                    res.status(404).json({ is_success: false, message: 'Error: The newsletter is saved, but couldn\'t be sent because no account using this language is subscribed to the newsletter.' });
                 else
                 {
                     smtp_trans = nodemailer.createTransport(
@@ -509,7 +511,7 @@ const send_newsletter = (req, res) =>
                     });
                 }
             })
-            .catch(err => res.status(400).json({ is_success: false, message: 'Erreur : La newsletter est sauvegardée, mais elle n\'a pas pu être envoyée. Re-essayez.', error: err }));
+            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The newsletter is saved, but couldn\'t be sent. Try again.', error: error }));
         }
     })
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: Try again.', error: err }));

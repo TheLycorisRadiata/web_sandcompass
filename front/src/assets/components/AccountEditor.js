@@ -2,7 +2,7 @@ import { useState, useLayoutEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    profile, info_rank, info_registered_on, info_preferred_language, info_email_address, info_newsletter, 
+    profile, info_rank, info_registered_on, info_preferred_language, dynamic_language, info_email_address, info_newsletter, 
     btn_delete_account, modify_information, cancel, confirm, 
     disclaimer_email, disclaimer_password, confirm_newsletter, confirm_delete_account, 
     change_username, username, change_email, new_email, repeat_email, 
@@ -285,8 +285,7 @@ const AccountEditor = (props) =>
                         <li>{props.account_data?.username}</li>
                         <li>{info_rank(ct.lang, rank?.name[ct.lang])}</li>
                         <li>{info_registered_on(ct.lang)}<DateInLetters raw_time={props.account_data?.registered_on} /></li>
-                        <li>{info_preferred_language(ct.lang)}
-                            {props.account_data?.language === 1 ? french(ct.lang) : props.account_data?.language === 2 ? japanese(ct.lang) : english(ct.lang)}</li>
+                        <li>{info_preferred_language(ct.lang)}{dynamic_language(ct.lang, props.account_data?.language)}</li>
                         <li>{info_email_address(ct.lang)}{props.account_data?.email_address}</li>
                         <li>{info_newsletter(ct.lang, props.account_data?.newsletter)}</li>
                     </ul>

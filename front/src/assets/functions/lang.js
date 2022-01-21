@@ -13,6 +13,19 @@ export const access_denied = (lang) =>
     }
 };
 
+export const dynamic_language = (lang, index) => 
+{
+    switch (index)
+    {
+        case 1:
+            return french(lang);
+        case 2:
+            return japanese(lang);
+        default:
+            return english(lang);
+    }
+};
+
 export const english = (lang) => 
 {
     switch (lang)

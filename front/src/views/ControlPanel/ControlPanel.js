@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
-import { control_panel } from '../../assets/functions/lang';
+import { control_panel, email_address } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faFileAlt, faComment, faQuoteRight, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import AccountEditor from '../../assets/components/AccountEditor';
@@ -19,20 +19,20 @@ const ControlPanel = (props) =>
 {
     const ct = useContext(AppContext);
 
-    const [email_address, set_email_address] = useState('');
+    const [field_email_address, set_field_email_address] = useState('');
     const [password, set_password] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [access_message, set_access_message] = useState('');
 
     const handle_submit = () => 
     {
-        if (email_address === '' || password === '')
+        if (field_email_address === '' || password === '')
         {
             set_access_message('The email address and the password are both needed.');
         }
         else
         {
-            fetch(backend + `/user/admin/login/${email_address}/${password}`)
+            fetch(backend + `/user/admin/login/${field_email_address}/${password}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -75,7 +75,7 @@ const ControlPanel = (props) =>
             {!props.is_access_granted ?
             <>
                 <form>
-                    <input type="text" name="email_address" placeholder="Email address" value={email_address} onChange={e => set_email_address(e.target.value)} 
+                    <input type="text" name="email_address" placeholder={email_address(ct.lang)} value={field_email_address} onChange={e => set_field_email_address(e.target.value)} 
                         onKeyPress={handle_key_press} autoComplete="on" required autoFocus />
 
                     <div className="field_password">

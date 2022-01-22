@@ -1,6 +1,7 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
+import { email_address } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_password_email } from '../../assets/functions/mailing';
@@ -15,7 +16,7 @@ const Password = () =>
     const history = useHistory();
 
     const [is_access_granted, set_is_access_granted] = useState(false);
-    const [email_address, set_email_address] = useState('');
+    const [field_email_address, set_field_email_address] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [response_message, set_response_message] = useState('');
 
@@ -39,7 +40,7 @@ const Password = () =>
 
                 if (json.email_address)
                 {
-                    set_email_address(json.email_address);
+                    set_field_email_address(json.email_address);
                     set_is_access_granted(true);
                 }
             })
@@ -63,7 +64,7 @@ const Password = () =>
             },
             body: JSON.stringify(
             {
-                email_address: email_address,
+                email_address: field_email_address,
                 password: password
             })
         });
@@ -116,10 +117,10 @@ const Password = () =>
             <h1 className="title">Password Creation</h1>
             <form onSubmit={handle_submit}>
                 {!is_access_granted ? 
-                    <input type="email" name="email_address" placeholder="Email address" required autoFocus />
+                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} required autoFocus />
                 :
                 <>
-                    <p className="txt_bold" id="p_password">{email_address}</p>
+                    <p className="txt_bold" id="p_password">{field_email_address}</p>
 
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" required autoFocus />

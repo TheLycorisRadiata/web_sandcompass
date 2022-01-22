@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
-import { sign_up, cancel, confirm } from '../../assets/functions/lang';
+import { sign_up, email_address, cancel, confirm } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { parse_username } from '../../assets/functions/parsing';
@@ -99,7 +99,7 @@ const SignUp = () =>
         <main>
             <h1 className="title">{sign_up(ct.lang)}</h1>
             <form onSubmit={handle_registration}>
-                <input type="email" name="email_address" placeholder="Email address" autoComplete="on" required autoFocus />
+                <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoComplete="on" required autoFocus />
                 <input type="email" name="repeat_email_address" placeholder="Repeat the email address" autoComplete="on" required />
 
                 <div className="field_password">

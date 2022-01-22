@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
-import { blog, info_author } from '../../assets/functions/lang';
+import { blog, info_category, info_author } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faHeartBroken, faThumbsUp as faThumbsUpSolid, faThumbsDown as faThumbsDownSolid } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
@@ -215,7 +215,7 @@ const BlogArticle = (props) =>
                 <article>
                     <h4 className="sub_title">{props.article.title}</h4>
                     <ul className="article_info">
-                        <li>Category: {props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
+                        <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
                         <li>{info_author(ct.lang)}{username}.</li>
                         <li>Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} /> at <Time 
                             raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} />.</li>
@@ -243,7 +243,7 @@ const BlogArticle = (props) =>
                 <article>
                     <h2 className="sub_title">{props.article.title}</h2>
                     <ul className="article_info">
-                        <li>Category: {props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
+                        <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
                         <li>{info_author(ct.lang)}{username}.</li>
                         <li>Created: On the <DateInLetters raw_time={props.article.time_creation} /> at <Time raw_time={props.article.time_creation} seconds={false} />.</li>
                         {props.article.is_modified && 

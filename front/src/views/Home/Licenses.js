@@ -1,6 +1,11 @@
 import { useContext } from 'react';
 import { AppContext } from '../../App';
-import { licenses } from '../../assets/functions/lang';
+import {
+    licenses, license_contact, free, bought, 
+    font, favicon, banner, round_country_flags, 
+    logo_patreon, logo_youtube, logo_github, logo_reddit, 
+    book_cover_cosmic_dust 
+} from '../../assets/functions/lang';
 
 const Licenses = () => 
 {
@@ -10,23 +15,23 @@ const Licenses = () =>
         <main id="licenses">
             <h1 className="title">{licenses(ct.lang)}</h1>
 
-            <p className="txt_centered txt_italic">Use the contact form to ask for details</p>
+            <p className="txt_centered txt_italic">{license_contact(ct.lang)}</p>
 
-            <p className="txt_centered txt_bold">Free</p>
+            <p className="txt_centered txt_bold">{free(ct.lang)}</p>
             <ul>
-                <li><a href="https://fonts.google.com/specimen/Fira+Sans#license" rel="nofollow noreferrer" target="_blank">Fira Sans font (light)</a></li>
-                <li><a href="https://openclipart.org/share" rel="nofollow noreferrer" target="_blank">Favicon</a></li>
-                <li><a href="https://commons.wikimedia.org/wiki/File:Old_temple_-URUK_Ancient_city.jpg" rel="nofollow noreferrer" target="_blank">Banner</a></li>
-                <li><a href="https://www.patreon.com/brand" rel="nofollow noreferrer" target="_blank">Patreon logo</a></li>
-                <li><a href="https://www.youtube.com/about/brand-resources/#logos-icons-colors" rel="nofollow noreferrer" target="_blank">YouTube logo</a></li>
-                <li><a href="https://github.com/logos" rel="nofollow noreferrer" target="_blank">GitHub logo</a></li>
-                <li><a href="https://www.redditinc.com/brand" rel="nofollow noreferrer" target="_blank">Reddit logo</a></li>
+                <li><a href="https://fonts.google.com/specimen/Fira+Sans#license" rel="nofollow noreferrer" target="_blank">{font(ct.lang, 'Fira Sans', 'light')}</a></li>
+                <li><a href="https://openclipart.org/share" rel="nofollow noreferrer" target="_blank">{favicon(ct.lang)}</a></li>
+                <li><a href="https://commons.wikimedia.org/wiki/File:Old_temple_-URUK_Ancient_city.jpg" rel="nofollow noreferrer" target="_blank">{banner(ct.lang)}</a></li>
+                <li><a href="https://www.patreon.com/brand" rel="nofollow noreferrer" target="_blank">{logo_patreon(ct.lang)}</a></li>
+                <li><a href="https://www.youtube.com/about/brand-resources/#logos-icons-colors" rel="nofollow noreferrer" target="_blank">{logo_youtube(ct.lang)}</a></li>
+                <li><a href="https://github.com/logos" rel="nofollow noreferrer" target="_blank">{logo_github(ct.lang)}</a></li>
+                <li><a href="https://www.redditinc.com/brand" rel="nofollow noreferrer" target="_blank">{logo_reddit(ct.lang)}</a></li>
             </ul>
 
-            <p className="txt_centered txt_bold">Bought</p>
+            <p className="txt_centered txt_bold">{bought(ct.lang)}</p>
             <ul>
-                <li><a href="https://www.countryflags.com/license-agreement/" rel="nofollow noreferrer" target="_blank">Round country flags</a></li>
-                <li><a href="https://500px.com/p/madalinv?view=photos" rel="nofollow noreferrer" target="_blank">Cosmic Dust (book covers)</a></li>
+                <li><a href="https://www.countryflags.com/license-agreement/" rel="nofollow noreferrer" target="_blank">{round_country_flags(ct.lang)}</a></li>
+                <li><a href="https://500px.com/p/madalinv?view=photos" rel="nofollow noreferrer" target="_blank">{book_cover_cosmic_dust(ct.lang)}</a></li>
             </ul>
         </main>
     );

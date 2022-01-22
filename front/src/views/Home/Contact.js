@@ -1,6 +1,13 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../../App';
-import { contact, cancel } from '../../assets/functions/lang';
+import {
+    contact, something_to_say, 
+    personal, professional, optional_business_name, 
+    last_name, first_name, email_address, message, select_subject, 
+    opt_projects, opt_cosmic_dust, opt_persistence, opt_another_project, 
+    opt_misc, opt_this_website, opt_legal_stuff, opt_other, 
+    cancel, send 
+} from '../../assets/functions/lang';
 import SocialMedia from '../../assets/components/SocialMedia';
 import { backend } from '../../../package.json';
 
@@ -84,40 +91,40 @@ const Contact = () =>
             <SocialMedia />
 
             <section>
-                <h2 className="sub_title">Something to say?</h2>
+                <h2 className="sub_title">{something_to_say(ct.lang)}</h2>
                 <form onSubmit={handle_contact}>
                     <div className="div_pointer">
                         <input type="radio" name="visitor_type" value="personal" id="btn_pers" defaultChecked onClick={() => set_is_visitor_pro(false)} />
-                        <label htmlFor="btn_pers">Personal</label>
+                        <label htmlFor="btn_pers">{personal(ct.lang)}</label>
                     </div>
                     <div className="div_pointer">
                         <input type="radio" name="visitor_type" value="professional" id="btn_pro" onClick={() => set_is_visitor_pro(true)} />
-                        <label htmlFor="btn_pro">Professional</label>
+                        <label htmlFor="btn_pro">{professional(ct.lang)}</label>
                     </div>
-                    {is_visitor_pro && <input type="text" name="business_name" placeholder="Business name (optional)" autoComplete="on" />}
-                    <input type="text" name="last_name" placeholder="Last name" autoComplete="on" required autoFocus />
-                    <input type="text" name="first_name" placeholder="First name" autoComplete="on" required />
-                    <input type="email" name="email_address" placeholder="Email address" autoComplete="on" required />
+                    {is_visitor_pro && <input type="text" name="business_name" placeholder={optional_business_name(ct.lang)} autoComplete="on" />}
+                    <input type="text" name="last_name" placeholder={last_name(ct.lang)} autoComplete="on" required autoFocus />
+                    <input type="text" name="first_name" placeholder={first_name(ct.lang)} autoComplete="on" required />
+                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoComplete="on" required />
 
                     <select name="subject" defaultValue="default" autoComplete="new-password" required>
-                        <option disabled value="default">Select a subject</option>
-                        <optgroup label="Projects">
-                            <option value="subject_work_cosmic_dust">Book: Cosmic Dust</option>
-                            <option value="subject_work_persistence">Game: Persistence</option>
-                            <option value="subject_work_other">Another project</option>
+                        <option disabled value="default">{select_subject(ct.lang)}</option>
+                        <optgroup label={opt_projects(ct.lang)}>
+                            <option value="subject_work_cosmic_dust">{opt_cosmic_dust(ct.lang)}</option>
+                            <option value="subject_work_persistence">{opt_persistence(ct.lang)}</option>
+                            <option value="subject_work_other">{opt_another_project(ct.lang)}</option>
                         </optgroup>
-                        <optgroup label="Miscellaneous">
-                            <option value="subject_website">This website</option>
-                            <option value="subject_legal">Legal stuff</option>
-                            <option value="subject_other">Other</option>
+                        <optgroup label={opt_misc(ct.lang)}>
+                            <option value="subject_website">{opt_this_website(ct.lang)}</option>
+                            <option value="subject_legal">{opt_legal_stuff(ct.lang)}</option>
+                            <option value="subject_other">{opt_other(ct.lang)}</option>
                         </optgroup>
                     </select>
 
-                    <textarea name="message" placeholder="Message" autoComplete="new-password" required></textarea>
+                    <textarea name="message" placeholder={message(ct.lang)} autoComplete="new-password" required></textarea>
 
                     <div>
                         <input type="reset" className="button" value={cancel(ct.lang)} onClick={() => set_is_visitor_pro(false)} />
-                        <input type="submit" className="button" value="Send" />
+                        <input type="submit" className="button" value={send(ct.lang)} />
                     </div>
                 </form>
             </section>

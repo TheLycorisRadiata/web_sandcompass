@@ -1,7 +1,11 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
-import { blog, info_author, read_more } from '../../assets/functions/lang';
+import {
+    blog, blog_is_empty, sort_from_oldest, sort_from_most_recent,
+    all_categories, category_is_empty, 
+    info_category, info_author, read_more 
+} from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglassEnd, faHourglassStart } from '@fortawesome/free-solid-svg-icons';
 import { DateInLetters, Time } from '../../assets/components/Time';
@@ -92,19 +96,19 @@ const BlogPage = (props) =>
         <main>
             <h1 className="title">{blog(ct.lang)}</h1>
             {!props.articles.length ? 
-                <p className="txt_centered">The blog is empty.</p>
+                <p className="txt_centered">{blog_is_empty(ct.lang)}</p>
             :
             <>
                 <div id="sort_buttons">
                     <div>
-                        <button className="button" title="Sort from oldest to most recent" onClick={sort_old}>
+                        <button className="button" title={sort_from_oldest(ct.lang)} onClick={sort_old}>
                             <span className="icon">{icon_sorted_old}</span></button>
-                        <button className="button" title="Sort from most recent to oldest" onClick={sort_recent}>
+                        <button className="button" title={sort_from_most_recent(ct.lang)} onClick={sort_recent}>
                             <span className="icon">{icon_sorted_recent}</span></button>
                     </div>
                     <div>
                         <select value={category} onChange={filter_category}>
-                            <option value="all">All categories</option>
+                            <option value="all">{all_categories(ct.lang)}</option>
                             {props.categories.map((e, i) => <option key={'cat_' + i} value={e._id}>{i + 1}. {e.name[ct.lang]}</option>)}
                         </select>
                     </div>
@@ -116,7 +120,7 @@ const BlogPage = (props) =>
                     (ct.lang === 1 && !props.categories.find(e => e._id === category).articles.fr.length) 
                     || 
                     (ct.lang === 2 && !props.categories.find(e => e._id === category).articles.jp.length)) ?
-                        <p className="txt_centered">This category is empty.</p>
+                        <p className="txt_centered">{category_is_empty(ct.lang)}</p>
                 :
                 <>
                     {sort === 'old' ?
@@ -125,7 +129,7 @@ const BlogPage = (props) =>
                             <article className="blog_section" key={e._id}>
                                 <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title}</Link></h2>
                                 <ul className="article_info">
-                                    <li>Category: {props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
+                                    <li>{info_category(ct.lang)}{props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
                                     <li>{info_author(ct.lang)}{usernames[i]}.</li>
                                     <li>Created: On the <DateInLetters raw_time={e.time_creation} /> at <Time raw_time={e.time_creation} />.</li>
                                     {e.is_modified && 
@@ -143,7 +147,7 @@ const BlogPage = (props) =>
                             <article className="blog_section" key={e._id}>
                                 <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title}</Link></h2>
                                 <ul className="article_info">
-                                    <li>Category: {props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
+                                    <li>{info_category(ct.lang)}{props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
                                     <li>{info_author(ct.lang)}{usernames[i]}.</li>
                                     <li>Created: On the <DateInLetters raw_time={e.time_creation} /> at <Time raw_time={e.time_creation} />.</li>
                                     {e.is_modified && 

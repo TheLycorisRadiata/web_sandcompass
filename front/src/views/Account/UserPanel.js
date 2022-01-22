@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
-import { log_in, confirm_resend_verification_email } from '../../assets/functions/lang';
+import { log_in, confirm_resend_verification_email, email_address } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_registration_email } from '../../assets/functions/mailing';
@@ -16,7 +16,7 @@ const UserPanel = (props) =>
 {
     const ct = useContext(AppContext);
 
-    const [email_address, set_email_address] = useState('');
+    const [field_email_address, set_field_email_address] = useState('');
     const [password, set_password] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [access_message, set_access_message] = useState('');
@@ -25,9 +25,9 @@ const UserPanel = (props) =>
     {
         let send_verif_email = false;
 
-        if (email_address !== '' && password !== '')
+        if (field_email_address !== '' && password !== '')
         {
-            await fetch(backend + `/user/login/${email_address}/${password}`)
+            await fetch(backend + `/user/login/${field_email_address}/${password}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -46,7 +46,7 @@ const UserPanel = (props) =>
             .catch(err => console.log(err));
 
             if (send_verif_email && window.confirm(confirm_resend_verification_email(ct.lang)))
-                send_registration_email(email_address);
+                send_registration_email(field_email_address);
         }
     };
 
@@ -77,8 +77,8 @@ const UserPanel = (props) =>
             <h1 className="title">{!props.is_access_granted ? log_in(ct.lang) : 'User Account'}</h1>
             {!props.is_access_granted ? 
                 <form>
-                    <input type="email" name="email_address" placeholder="Email address" autoComplete="on" autoFocus  
-                        value={email_address} onChange={e => set_email_address(e.target.value)} onKeyPress={handle_key_press} />
+                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoComplete="on" autoFocus  
+                        value={field_email_address} onChange={e => set_field_email_address(e.target.value)} onKeyPress={handle_key_press} />
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Password" autoComplete="on"
                             value={password} onChange={e => set_password(e.target.value)} onKeyPress={handle_key_press} />

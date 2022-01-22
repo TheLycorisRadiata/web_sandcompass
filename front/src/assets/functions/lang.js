@@ -205,7 +205,7 @@ export const faq_is_empty = (lang) =>
         case 1:
             return 'La FAQ est vide.';
         case 2:
-            return 'FAQは空っぽでございます。';
+            return 'FAQは空っぽです。';
         default:
             return 'The FAQ is empty.';
     }
@@ -427,10 +427,12 @@ export const logo_patreon = (lang) =>
 {
     switch (lang)
     {
+        case 1:
+            return 'Logo Patreon';
         case 2:
             return '「パトレオン」ロゴ';
         default:
-            return 'Logo Patreon';
+            return 'Patreon logo';
     }
 };
 
@@ -438,10 +440,12 @@ export const logo_youtube = (lang) =>
 {
     switch (lang)
     {
+        case 1:
+            return 'Logo YouTube';
         case 2:
             return '「ユーチューブ」ロゴ';
         default:
-            return 'Logo YouTube';
+            return 'YouTube logo';
     }
 };
 
@@ -449,10 +453,12 @@ export const logo_github = (lang) =>
 {
     switch (lang)
     {
+        case 1:
+            return 'Logo GitHub';
         case 2:
             return '「ギットハブ」ロゴ';
         default:
-            return 'Logo GitHub';
+            return 'GitHub logo';
     }
 };
 
@@ -460,10 +466,12 @@ export const logo_reddit = (lang) =>
 {
     switch (lang)
     {
+        case 1:
+            return 'Logo Reddit';
         case 2:
             return '「レディット」ロゴ';
         default:
-            return 'Logo Reddit';
+            return 'Reddit logo';
     }
 };
 
@@ -1214,7 +1222,7 @@ export const info_author = (lang) =>
         case 1:
             return 'Auteur : ';
         case 2:
-            return 'Author: ';
+            return '作家：';
         default:
             return 'Author: ';
     }
@@ -1403,7 +1411,7 @@ export const title_about_website = (lang) =>
     switch (lang)
     {
         case 1:
-            return 'C\'est quoi ce site ?'
+            return 'C\'est quoi ce site ?';
         case 2:
             return 'このウェブサイトは何でしょうか';
         default:
@@ -1429,7 +1437,7 @@ export const home_cosmic_dust = (lang) =>
     switch (lang)
     {
         case 1:
-            return 'Une Poussière du cosmos : Roman standalone de SF'
+            return 'Une Poussière du cosmos : Roman standalone de SF';
         case 2:
             return '「宇宙塵」: スタンドアロン空想科学小説';
         default:
@@ -1442,7 +1450,7 @@ export const last_article = (lang) =>
     switch (lang)
     {
         case 1:
-            return 'Dernier article'
+            return 'Dernier article';
         case 2:
             return 'Last article';
         default:
@@ -1455,11 +1463,440 @@ export const read_more = (lang) =>
     switch (lang)
     {
         case 1:
-            return '[Lire plus]'
+            return '[Lire plus]';
         case 2:
             return '[Read more]';
         default:
             return '[Read more]';
+    }
+};
+
+/* LICENSES ------------------------------------------------------------------------------------- */
+
+export const license_contact = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Utilisez le formulaire de contact pour des détails';
+        case 2:
+            return 'Use the contact form to ask for details';
+        default:
+            return 'Use the contact form to ask for details';
+    }
+};
+
+export const free = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Gratuits';
+        case 2:
+            return '無料';
+        default:
+            return 'Free';
+    }
+};
+
+export const bought = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Achetés';
+        case 2:
+            return '買った';
+        default:
+            return 'Bought';
+    }
+};
+
+export const font = (lang, font, type) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Police ${font} (${type})`
+        case 2:
+            return `${font} font (${type})`;
+        default:
+            return `${font} font (${type})`;
+    }
+};
+
+export const favicon = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'ファビコン';
+        default:
+            return 'Favicon';
+    }
+};
+
+export const banner = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Bannière';
+        case 2:
+            return 'バナー';
+        default:
+            return 'Banner';
+    }
+};
+
+export const round_country_flags = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Drapeaux de pays arrondis';
+        case 2:
+            return 'Round country flags';
+        default:
+            return 'Round country flags';
+    }
+};
+
+export const book_cover_cosmic_dust = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Première de couverture de "${title_cosmic_dust(lang)}"`;
+        case 2:
+            return `「${title_cosmic_dust(lang)}」の書皮`;
+        default:
+            return `Book cover of "${title_cosmic_dust(lang)}"`;
+    }
+};
+
+/* CONTACT -------------------------------------------------------------------------------------- */
+
+export const something_to_say = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Une chose à dire ?';
+        case 2:
+            return '何か言いたいんですか。';
+        default:
+            return 'Something to say?';
+    }
+};
+
+export const personal = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Particulier';
+        case 2:
+            return '個人';
+        default:
+            return 'Personal';
+    }
+};
+
+export const professional = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Professionnel';
+        case 2:
+            return 'プロフェッショナル';
+        default:
+            return 'Professional';
+    }
+};
+
+export const optional_business_name = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Raison sociale (optionnel)';
+        case 2:
+            return '会社名（随意的）';
+        default:
+            return 'Business name (optional)';
+    }
+};
+
+export const last_name = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Nom';
+        case 2:
+            return '苗字';
+        default:
+            return 'Last name';
+    }
+};
+
+export const first_name = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Prénom';
+        case 2:
+            return '名前';
+        default:
+            return 'First name';
+    }
+};
+
+export const email_address = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Adresse email';
+        case 2:
+            return 'メールアドレス';
+        default:
+            return 'Email address';
+    }
+};
+
+export const select_subject = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sélectionnez un sujet';
+        case 2:
+            return '話題を選んで';
+        default:
+            return 'Select a subject';
+    }
+};
+
+export const opt_projects = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Projets';
+        case 2:
+            return 'プロジェクト';
+        default:
+            return 'Projects';
+    }
+};
+
+export const opt_cosmic_dust = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Livre : ${title_cosmic_dust(lang)}`;
+        case 2:
+            return `本：${title_cosmic_dust(lang)}`;
+        default:
+            return `Book: ${title_cosmic_dust(lang)}`;
+    }
+};
+
+export const title_persistence = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'ペルシステンス';
+        default:
+            return 'Persistence';
+    }
+};
+
+export const opt_persistence = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Jeu : ${title_persistence(lang)}`;
+        case 2:
+            return `ゲーム：${title_persistence(lang)}`;
+        default:
+            return `Game: ${title_persistence(lang)}`;
+    }
+};
+
+export const opt_another_project = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Un autre projet';
+        case 2:
+            return '他のプロジェクト';
+        default:
+            return 'Another project';
+    }
+};
+
+export const opt_misc = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Divers';
+        case 2:
+            return '雑多';
+        default:
+            return 'Miscellaneous';
+    }
+};
+
+export const opt_this_website = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Ce site web';
+        case 2:
+            return 'このウェブサイト';
+        default:
+            return 'This website';
+    }
+};
+
+export const opt_legal_stuff = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Chose légale';
+        case 2:
+            return '法的な者';
+        default:
+            return 'Legal stuff';
+    }
+};
+
+export const opt_other = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Autre';
+        case 2:
+            return '他の事';
+        default:
+            return 'Other';
+    }
+};
+
+export const message = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'メッセージ';
+        default:
+            return 'Message';
+    }
+};
+
+export const send = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Envoyer';
+        case 2:
+            return '送る';
+        default:
+            return 'Send';
+    }
+};
+
+/* BLOG ----------------------------------------------------------------------------------------- */
+
+export const blog_is_empty = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le blog est vide.';
+        case 2:
+            return 'ブログは空っぽです。';
+        default:
+            return 'The blog is empty.';
+    }
+};
+
+export const sort_from_oldest = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Ordonne du plus ancien au plus récent';
+        case 2:
+            return 'Sort from oldest to most recent';
+        default:
+            return 'Sort from oldest to most recent';
+    }
+};
+
+export const sort_from_most_recent = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Ordonne du plus récent au plus ancien';
+        case 2:
+            return 'Sort from most recent to oldest';
+        default:
+            return 'Sort from most recent to oldest';
+    }
+};
+
+export const all_categories = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Toutes catégories';
+        case 2:
+            return '全ての範疇';
+        default:
+            return 'All categories';
+    }
+};
+
+export const category_is_empty = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Cette catégorie est vide.';
+        case 2:
+            return 'この範疇は空っぽです。';
+        default:
+            return 'This category is empty.';
+    }
+};
+
+export const info_category = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Catégorie : ';
+        case 2:
+            return '範疇：';
+        default:
+            return 'Category: ';
     }
 };
 

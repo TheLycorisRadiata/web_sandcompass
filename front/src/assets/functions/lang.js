@@ -423,19 +423,6 @@ export const social_media = (lang) =>
     }
 };
 
-export const logo_patreon = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Logo Patreon';
-        case 2:
-            return '「パトレオン」ロゴ';
-        default:
-            return 'Patreon logo';
-    }
-};
-
 export const logo_youtube = (lang) => 
 {
     switch (lang)
@@ -472,19 +459,6 @@ export const logo_reddit = (lang) =>
             return '「レディット」ロゴ';
         default:
             return 'Reddit logo';
-    }
-};
-
-export const my_patreon = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Ma page Patreon';
-        case 2:
-            return '自分の「パトレオン」ページ';
-        default:
-            return 'My Patreon page';
     }
 };
 

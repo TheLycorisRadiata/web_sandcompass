@@ -2,10 +2,9 @@ import { useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     social_media, 
-    logo_patreon, logo_youtube, logo_github, logo_reddit, 
-    my_patreon, my_youtube, my_github, my_reddit 
+    logo_youtube, logo_github, logo_reddit, 
+    my_youtube, my_github, my_reddit 
 } from '../functions/lang';
-import Logo_Patreon from '../images/logos/patreon.png';
 import Logo_YouTube from '../images/logos/youtube.png';
 import Logo_GitHub from '../images/logos/github.png';
 import Logo_Reddit from '../images/logos/reddit.png';
@@ -18,10 +17,6 @@ const SocialMedia = () =>
         <section id="social_media">
             <h2 className="sub_title">{social_media(ct.lang)}</h2>
             <ul>
-                <li className="logo">
-                    <a href="https://www.patreon.com/lycorisradiata" rel="noreferrer" target="_blank">
-                        <img src={Logo_Patreon} alt={logo_patreon(ct.lang)} title={my_patreon(ct.lang)} /></a>
-                </li>
                 <li className="logo">
                     <a href="https://www.youtube.com/channel/UCowO_RtloSQ3qnKmvymsBRA" rel="noreferrer" target="_blank">
                         <img src={Logo_YouTube} alt={logo_youtube(ct.lang)} title={my_youtube(ct.lang)} /></a>

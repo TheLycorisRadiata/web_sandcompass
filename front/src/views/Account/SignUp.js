@@ -1,7 +1,11 @@
 import { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
-import { sign_up, email_address, cancel, confirm } from '../../assets/functions/lang';
+import {
+    sign_up, 
+    email_address, repeat_email, password, username, 
+    sub_newsletter, disclaimer_email, cancel, confirm 
+} from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { parse_username } from '../../assets/functions/parsing';
@@ -22,7 +26,7 @@ const SignUp = () =>
     {
         const email_address = e.target[0].value;
         const repeat_email_address = e.target[1].value;
-        const password = e.target[2].value;
+        const chosen_password = e.target[2].value;
         const newsletter = e.target[4].checked;
 
         let username = e.target[3].value;
@@ -30,11 +34,11 @@ const SignUp = () =>
 
         e.preventDefault();
 
-        if (email_address !== '' && repeat_email_address !== '' && password !== '' && username !== '')
+        if (email_address !== '' && repeat_email_address !== '' && chosen_password !== '' && username !== '')
         {
             if (email_address !== repeat_email_address)
             {
-                alert('The same email address is asked in both fields.');
+                alert(disclaimer_email(ct.lang));
                 return;
             }
 
@@ -55,7 +59,7 @@ const SignUp = () =>
                 body: JSON.stringify(
                 {
                     email_address: email_address,
-                    password: password,
+                    password: chosen_password,
                     username: username,
                     newsletter: newsletter,
                     language: ct.lang
@@ -100,17 +104,17 @@ const SignUp = () =>
             <h1 className="title">{sign_up(ct.lang)}</h1>
             <form onSubmit={handle_registration}>
                 <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoComplete="on" required autoFocus />
-                <input type="email" name="repeat_email_address" placeholder="Repeat the email address" autoComplete="on" required />
+                <input type="email" name="repeat_email_address" placeholder={repeat_email(ct.lang)} autoComplete="on" required />
 
                 <div className="field_password">
-                    <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Password" autoComplete="new-password" required />
+                    <input type={is_password_shown ? "text" : "password"} name="password" placeholder={password(ct.lang)} autoComplete="new-password" required />
                     <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                 </div>
 
-                <input type="text" name="username" placeholder="Username" autoComplete="on" required />
+                <input type="text" name="username" placeholder={username(ct.lang)} autoComplete="on" required />
                 <div className="div_pointer">
                     <input type="checkbox" id="newsletter" name="newsletter" />
-                    <label htmlFor="newsletter">Subscribe to the newsletter</label>
+                    <label htmlFor="newsletter">{sub_newsletter(ct.lang, false)}</label>
                 </div>
 
                 <div>

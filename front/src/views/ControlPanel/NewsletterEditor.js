@@ -1,9 +1,16 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../../App';
-import { confirm, dynamic_language, english, french, japanese } from '../../assets/functions/lang';
+import {
+    newsletter_editor, access_denied, refresh_newsletters, 
+    select_newsletter, write_new_newsletter, sent, not_sent, 
+    confirm, send_newsletter, object, message, 
+    select_language, dynamic_language, english, french, japanese, 
+    info_language, info_object, info_date, info_message, 
+    disclaimer_obj_and_msg, disclaimer_language 
+} from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
-import { DateInLetters, Time } from '../../assets/components/Time';
+import { date_in_letters, time } from '../../assets/functions/time';
 import { backend } from '../../../package.json';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
@@ -15,7 +22,7 @@ const NewsletterEditor = (props) =>
 
     const [newsletters, set_newsletters] = useState([]);
     const [selected_newsletter, set_selected_newsletter] = useState('default');
-    const [object, set_object] = useState('');
+    const [field_object, set_field_object] = useState('');
     const [html_message, set_html_message] = useState('<hr /><h1 style="text-align: center;">Hello world!</h1><hr /><p>Lorem ipsum</p>');
     const [language, set_language] = useState('default');
     const [checkbox, set_checkbox] = useState(false);
@@ -39,7 +46,7 @@ const NewsletterEditor = (props) =>
     const clear_form = () => 
     {
         set_selected_newsletter('default');
-        set_object('');
+        set_field_object('');
         set_html_message('<hr /><h1 style="text-align: center;">Hello world!</h1><hr /><p>Lorem ipsum</p>');
         set_language('default');
         set_checkbox(false);
@@ -53,7 +60,7 @@ const NewsletterEditor = (props) =>
             clear_form();
         else if (option !== 'default')
         {
-            set_object(newsletters[option].object);
+            set_field_object(newsletters[option].object);
             set_html_message(newsletters[option].html_message);
             set_language(newsletters[option].language);
             set_checkbox(false);
@@ -77,9 +84,9 @@ const NewsletterEditor = (props) =>
         e.preventDefault();
 
         if (newsletter.object === '' || newsletter.html_message === '')
-            alert('The object and the message have to be filled.');
+            alert(disclaimer_obj_and_msg(ct.lang));
         else if (newsletter.language === 'default')
-            alert('The language has to be selected.');
+            alert(disclaimer_language(ct.lang));
         else
         {
             fetch(backend + '/mailing/newsletter/send',
@@ -112,32 +119,32 @@ const NewsletterEditor = (props) =>
 
     return (
         <main>
-            <h1 className="title">Newsletters</h1>
+            <h1 className="title">{newsletter_editor(ct.lang)}</h1>
             {!props.is_access_granted ?
-                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> Access denied.</p>
+                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> {access_denied(ct.lang)}</p>
             :
             <div id="newsletter_editor">
-                <button className="button" title="Refresh newsletters" onClick={() => fetch_newsletters(true)}><span className="icon">{icon_fetch}</span></button>
+                <button className="button" title={refresh_newsletters(ct.lang)} onClick={() => fetch_newsletters(true)}><span className="icon">{icon_fetch}</span></button>
     
                 <form onSubmit={handle_submit}>
                     <select defaultValue="default" onChange={handle_select}>
-                        <option value="default" disabled>Select a newsletter</option>
-                        <option value="new">Write a new newsletter</option>
+                        <option value="default" disabled>{select_newsletter(ct.lang)}</option>
+                        <option value="new">{write_new_newsletter(ct.lang)}</option>
                         {newsletters.map((e, i) => 
-                            <option key={"newsletter_" + i} value={i}>[{dynamic_language(ct.lang, e.language)}] {e.is_sent ? '[Sent]' : '[Not sent]'} {e.object}</option>)}
+                            <option key={"newsletter_" + i} value={i}>[{dynamic_language(ct.lang, e.language)}] {e.is_sent ? sent(ct.lang) : not_sent(ct.lang)} {e.object}</option>)}
                     </select>
 
                     {selected_newsletter === 'default' ?
                         null
                     : selected_newsletter === 'new' || !newsletters[selected_newsletter].is_sent ?
                         <>
-                            <input type="text" name="object" placeholder="Object" title="Object" value={object} onChange={e => set_object(e.target.value)} />
-                            <textarea title="Message" value={html_message} onChange={e => set_html_message(e.target.value)}></textarea>
+                            <input type="text" name="object" placeholder={object(ct.lang)} title={object(ct.lang)} value={field_object} onChange={e => set_field_object(e.target.value)} />
+                            <textarea placeholder={message(ct.lang)} title={message(ct.lang)} value={html_message} onChange={e => set_html_message(e.target.value)}></textarea>
 
                             <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: html_message}} />
 
                             <select value={language} onChange={e => set_language(e.target.value)}>
-                                <option value="default" disabled>Select a language</option>
+                                <option value="default" disabled>{select_language(ct.lang)}</option>
                                 <option value="0">{english(ct.lang)}</option>
                                 <option value="1">{french(ct.lang)}</option>
                                 <option value="2">{japanese(ct.lang)}</option>
@@ -145,17 +152,17 @@ const NewsletterEditor = (props) =>
 
                             <div className="div_pointer">
                                 <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(checkbox ? false : true)} />
-                                <label htmlFor="send">Send the newsletter to subscribers</label>
+                                <label htmlFor="send">{send_newsletter(ct.lang)}</label>
                             </div>
 
                             <input type="submit" className="button" value={confirm(ct.lang)} />
                         </>
                     : 
                         <div>
-                            <p><strong>Language:</strong> {dynamic_language(ct.lang, newsletters[selected_newsletter].language)}</p>
-                            <p><strong>Object:</strong> {newsletters[selected_newsletter].object}</p>
-                            <p><strong>Date:</strong> <DateInLetters raw_time={newsletters[selected_newsletter].date} /> at <Time raw_time={newsletters[selected_newsletter].date} seconds={true} /></p>
-                            <p><strong>Message:</strong></p>
+                            <p><strong>{info_language(ct.lang)}</strong>{dynamic_language(ct.lang, newsletters[selected_newsletter].language)}</p>
+                            <p><strong>{info_object(ct.lang)}</strong>{newsletters[selected_newsletter].object}</p>
+                            <p><strong>{info_date(ct.lang)}</strong>{date_in_letters(ct.lang, newsletters[selected_newsletter].date)} at {time(newsletters[selected_newsletter].date, true)}</p>
+                            <p><strong>{info_message(ct.lang)}</strong></p>
                             <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: newsletters[selected_newsletter].html_message}} />
                         </div>}
                 </form>

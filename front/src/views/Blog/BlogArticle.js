@@ -1,11 +1,16 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
-import { blog, info_category, info_author } from '../../assets/functions/lang';
+import {
+    blog, other_articles, like, dislike, vote_instruction, 
+    info_category, info_author, info_created, info_modified, 
+    user_not_found, wip, error_article_doesnt_exist, 
+    like_own_article, dislike_own_article 
+} from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faHeartBroken, faThumbsUp as faThumbsUpSolid, faThumbsDown as faThumbsDownSolid } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
-import { DateInLetters, Time } from '../../assets/components/Time';
+import { date_in_letters, time } from '../../assets/functions/time';
 import { backend } from '../../../package.json';
 
 const icon_heart = <FontAwesomeIcon icon={faHeart} />;
@@ -21,7 +26,7 @@ const BlogArticle = (props) =>
     const history = useHistory();
     const current_time = Date.now();
 
-    const [username, set_username] = useState('[User not found]');
+    const [username, set_username] = useState(user_not_found(ct.lang));
     const [likes, set_likes] = useState(props.article.likes);
     const [id_user, set_id_user] = useState(null);
     const [user_vote, set_user_vote] = useState(0);
@@ -32,20 +37,20 @@ const BlogArticle = (props) =>
         const index_current_article = articles.findIndex(e => e._id === props.article._id);
 
         // Block the feature
-        alert('This feature is a work in progress');
+        alert(wip(ct.lang));
         return;
 
         // Should be impossible
         if (index_current_article === -1)
         {
-            alert('Error: It seems like the article doesn\'t exist anymore.');
+            alert(error_article_doesnt_exist(ct.lang));
             history.push('/blog');
             return;
         }
 
         if (id_user === props.article.author)
         {
-            alert('You would really upvote your own article?');
+            alert(like_own_article(ct.lang));
         }
         else
         {
@@ -97,20 +102,20 @@ const BlogArticle = (props) =>
         const index_current_article = articles.findIndex(e => e._id === props.article._id);
 
         // Block the feature
-        alert('This feature is a work in progress');
+        alert(wip(ct.lang));
         return;
 
         // Should be impossible
         if (index_current_article === -1)
         {
-            alert('Error: It seems like the article doesn\'t exist anymore.');
+            alert(error_article_doesnt_exist(ct.lang));
             history.push('/blog');
             return;
         }
 
         if (id_user === props.article.author)
         {
-            alert('Don\'t be too hard on yourself.');
+            alert(dislike_own_article(ct.lang));
         }
         else
         {
@@ -210,62 +215,67 @@ const BlogArticle = (props) =>
             {props.is_preview ? 
             <div id="main" className="preview_article">
                 <h3 className="title">{blog(ct.lang)}</h3>
-                <div className="btn_other_articles"><span className="a button">Other articles</span></div>
+                <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>
 
                 <article>
                     <h4 className="sub_title">{props.article.title}</h4>
                     <ul className="article_info">
                         <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
                         <li>{info_author(ct.lang)}{username}.</li>
-                        <li>Created: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} /> at <Time 
-                            raw_time={props.id_selected_article !== '' ? props.article.time_creation : current_time} />.</li>
+                        <li>
+                            {info_created(ct.lang, 
+                                date_in_letters(ct.lang, props.id_selected_article !== '' ? props.article.time_creation : current_time), 
+                                time(props.id_selected_article !== '' ? props.article.time_creation : current_time, false))}
+                        </li>
                         {props.article.is_modified && 
-                            <li>Modified: On the <DateInLetters raw_time={props.id_selected_article !== '' ? props.article.time_modification : current_time} /> at <Time 
-                                raw_time={props.id_selected_article !== '' ? props.article.time_modification : current_time} />.</li>}
+                            <li>
+                                {info_modified(ct.lang, 
+                                    date_in_letters(ct.lang, props.id_selected_article !== '' ? props.article.time_modification : current_time), 
+                                    time(props.id_selected_article !== '' ? props.article.time_modification : current_time, false))}
+                            </li>}
                     </ul>
 
                     <div dangerouslySetInnerHTML={{__html: props.article.content}} />
                 </article>
 
-                <div className="btn_other_articles"><span className="a button">Other articles</span></div>
+                <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>
 
                 <div id="likes_dislikes">
                     <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
-                    <button className="button" name="btn_like"><span className="icon">{icon_empty_like}</span> Like</button>
-                    <button className="button" name="btn_dislike"><span className="icon">{icon_empty_dislike}</span> Dislike</button>
+                    <button className="button" name="btn_like"><span className="icon">{icon_empty_like}</span> {like(ct.lang)}</button>
+                    <button className="button" name="btn_dislike"><span className="icon">{icon_empty_dislike}</span> {dislike(ct.lang)}</button>
                 </div>
             </div>
             :
             <main>
                 <h1 className="title">{blog(ct.lang)}</h1>
-                <div className="btn_other_articles"><Link to="/blog" className="button">Other articles</Link></div>
+                <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>
 
                 <article>
                     <h2 className="sub_title">{props.article.title}</h2>
                     <ul className="article_info">
                         <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
                         <li>{info_author(ct.lang)}{username}.</li>
-                        <li>Created: On the <DateInLetters raw_time={props.article.time_creation} /> at <Time raw_time={props.article.time_creation} seconds={false} />.</li>
+                        <li>{info_created(ct.lang, date_in_letters(ct.lang, props.article.time_creation), time(props.article.time_creation, false))}</li>
                         {props.article.is_modified && 
-                            <li>Modified: On the <DateInLetters raw_time={props.article.time_modification} /> at <Time 
-                                raw_time={props.article.time_modification} />.</li>}
+                            <li>{info_modified(ct.lang, date_in_letters(ct.lang, props.article.time_modification), time(props.article.time_modification, false))}</li>}
                     </ul>
 
                     <div dangerouslySetInnerHTML={{__html: props.article.content}} />
                 </article>
 
-                <div className="btn_other_articles"><Link to="/blog" className="button">Other articles</Link></div>
+                <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>
 
                 <div id="likes_dislikes">
                     <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
                     {!props.admin_account_data && !props.user_account_data ? 
-                        <button className="button" name="btn_login" onClick={() => history.push('/user')}>Log in to like or dislike</button>
+                        <button className="button" name="btn_login" onClick={() => history.push('/user')}>{vote_instruction(ct.lang)}</button>
                     :
                         <>
                             <button className="button" name="btn_like" onClick={increment_likes}>
-                                <span className="icon">{user_vote === 1 ? icon_filled_like : icon_empty_like}</span> Like</button>
+                                <span className="icon">{user_vote === 1 ? icon_filled_like : icon_empty_like}</span> {like(ct.lang)}</button>
                             <button className="button" name="btn_dislike" onClick={decrement_likes}>
-                                <span className="icon">{user_vote === -1 ? icon_filled_dislike : icon_empty_dislike}</span> Dislike</button>
+                                <span className="icon">{user_vote === -1 ? icon_filled_dislike : icon_empty_dislike}</span> {dislike(ct.lang)}</button>
                         </>}
                 </div>
             </main>}

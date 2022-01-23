@@ -1,7 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
-import { log_in, confirm_resend_verification_email, email_address } from '../../assets/functions/lang';
+import {
+    log_in, user_account, confirm_resend_verification_email, 
+    email_address, password, password_forgotten, not_yet_registered 
+} from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_registration_email } from '../../assets/functions/mailing';
@@ -17,7 +20,7 @@ const UserPanel = (props) =>
     const ct = useContext(AppContext);
 
     const [field_email_address, set_field_email_address] = useState('');
-    const [password, set_password] = useState('');
+    const [field_password, set_field_password] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [access_message, set_access_message] = useState('');
 
@@ -25,9 +28,9 @@ const UserPanel = (props) =>
     {
         let send_verif_email = false;
 
-        if (field_email_address !== '' && password !== '')
+        if (field_email_address !== '' && field_password !== '')
         {
-            await fetch(backend + `/user/login/${field_email_address}/${password}`)
+            await fetch(backend + `/user/login/${field_email_address}/${field_password}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -74,20 +77,20 @@ const UserPanel = (props) =>
 
     return (
         <main>
-            <h1 className="title">{!props.is_access_granted ? log_in(ct.lang) : 'User Account'}</h1>
+            <h1 className="title">{!props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang)}</h1>
             {!props.is_access_granted ? 
                 <form>
                     <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoComplete="on" autoFocus  
                         value={field_email_address} onChange={e => set_field_email_address(e.target.value)} onKeyPress={handle_key_press} />
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="Password" autoComplete="on"
-                            value={password} onChange={e => set_password(e.target.value)} onKeyPress={handle_key_press} />
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={password(ct.lang)} autoComplete="on"
+                            value={field_password} onChange={e => set_field_password(e.target.value)} onKeyPress={handle_key_press} />
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <input type="button" className="button" value={log_in(ct.lang)} onClick={handle_submit} />
                     {access_message !== '' && <p>{access_message}</p>}
-                    <p><Link to="/password">Password forgotten?</Link></p>
-                    <p><Link to="/user/signup">Not yet registered?</Link></p>
+                    <p><Link to="/password">{password_forgotten(ct.lang)}</Link></p>
+                    <p><Link to="/user/signup">{not_yet_registered(ct.lang)}</Link></p>
                 </form>
             :
                 <>

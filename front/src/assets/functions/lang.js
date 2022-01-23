@@ -1874,3 +1874,714 @@ export const info_category = (lang) =>
     }
 };
 
+export const info_created = (lang, date, time) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Créé le ${date} à ${time}.`;
+        case 2:
+            return `${date}${time}時に書かれました。`;
+        default:
+            return `Created on the ${date} at ${time}.`;
+    }
+};
+
+export const info_modified = (lang, date, time) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Modifié le ${date} à ${time}.`;
+        case 2:
+            return `${date}${time}時に修正されました。`;
+        default:
+            return `Modified on the ${date} at ${time}.`;
+    }
+};
+
+export const user_not_found = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return '[Utilisateur non trouvé]';
+        case 2:
+            return '[ユーザーが見つかりません]';
+        default:
+            return '[User not found]';
+    }
+};
+
+export const other_articles = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Autres articles';
+        case 2:
+            return '他の記事';
+        default:
+            return 'Other articles';
+    }
+};
+
+export const like = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'ライク';
+        default:
+            return 'Like';
+    }
+};
+
+export const dislike = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'ディスライク';
+        default:
+            return 'Dislike';
+    }
+};
+
+export const vote_instruction = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Connecte-toi pour liker ou disliker';
+        case 2:
+            return 'ライクとディスライクをする為、ログインして下さい';
+        default:
+            return 'Log in to like or dislike';
+    }
+};
+
+export const wip = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Cette fonctionnalité est en travaux';
+        case 2:
+            return 'This feature is a work in progress';
+        default:
+            return 'This feature is a work in progress';
+    }
+};
+
+export const error_article_doesnt_exist = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Il semble que cet article n\'existe plus.';
+        case 2:
+            return 'Error: It seems like the article doesn\'t exist anymore.';
+        default:
+            return 'Error: It seems like the article doesn\'t exist anymore.';
+    }
+};
+
+export const like_own_article = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Vous likeriez vraiment votre propre article ?';
+        case 2:
+            return 'You would really upvote your own article?';
+        default:
+            return 'You would really upvote your own article?';
+    }
+};
+
+export const dislike_own_article = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Ne soyez pas trop dur avec vous-même.';
+        case 2:
+            return 'Don\'t be too hard on yourself.';
+        default:
+            return 'Don\'t be too hard on yourself.';
+    }
+};
+
+/* ACCOUNT -------------------------------------------------------------------------------------- */
+
+export const user_account = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Compte utilisateur';
+        case 2:
+            return 'ユーザーアカウント';
+        default:
+            return 'User Account';
+    }
+};
+
+export const password = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Mot de passe';
+        case 2:
+            return 'パスワード';
+        default:
+            return 'Password';
+    }
+};
+
+export const password_forgotten = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Mot de passe oublié ?';
+        case 2:
+            return 'パスワードを忘れちゃいましたか。';
+        default:
+            return 'Password forgotten?';
+    }
+};
+
+export const not_yet_registered = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Pas encore inscrit(e) ?';
+        case 2:
+            return 'まだユーザーじゃないんですか。';
+        default:
+            return 'Not yet registered?';
+    }
+};
+
+export const password_creation = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Création de mot de passe';
+        case 2:
+            return 'パスワード作り';
+        default:
+            return 'Password Creation';
+    }
+};
+
+export const create_password = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Créer le mot de passe';
+        case 2:
+            return 'パスワードを作る';
+        default:
+            return 'Create password';
+    }
+};
+
+export const go_back_log_in = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Retourner à la page de connexion';
+        case 2:
+            return 'ログインページに戻る';
+        default:
+            return 'Go back to the Log In page';
+    }
+};
+
+export const token_title_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Lien pour vérifier l\'adresse email';
+        case 2:
+            return 'Link to verify the email address';
+        default:
+            return 'Link to verify the email address';
+    }
+};
+
+export const token_instruction_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Essayez de vous connecter. Si votre adresse email n\'est pas encore vérifiée, une pop-up demande si vous désirez recevoir un nouveau lien.';
+        case 2:
+            return 'Try to log in. If your email address is not yet verified, a pop-up asks whether you wish to receive a new link.';
+        default:
+            return 'Try to log in. If your email address is not yet verified, a pop-up asks whether you wish to receive a new link.';
+    }
+};
+
+export const token_title_password = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Lien pour modifier le mot de passe';
+        case 2:
+            return 'Link to modify the password';
+        default:
+            return 'Link to modify the password';
+    }
+};
+
+export const token_instruction_password = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Cliquez sur "${password_forgotten(lang)}".`;
+        case 2:
+            return `「${password_forgotten(lang)}」をクリックして下さい。`;
+        default:
+            return `Click on "${password_forgotten(lang)}".`;
+    }
+};
+
+export const oops = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Oups...';
+        case 2:
+            return 'Oops...';
+        default:
+            return 'Oops...';
+    }
+};
+
+export const success = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Succès';
+        case 2:
+            return 'Success';
+        default:
+            return 'Success';
+    }
+};
+
+export const error_occured = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Une erreur est survenue.';
+        case 2:
+            return 'A problem occured.';
+        default:
+            return 'A problem occured.';
+    }
+};
+
+/* CONTROL PANEL -------------------------------------------------------------------------------- */
+
+export const statistics = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Statistiques';
+        case 2:
+            return 'Statistics';
+        default:
+            return 'Statistics';
+    }
+};
+
+export const faq_editor = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Éditeur de FAQ';
+        case 2:
+            return 'FAQ Editor';
+        default:
+            return 'FAQ Editor';
+    }
+};
+
+export const blog_editor = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Éditeur de blog';
+        case 2:
+            return 'Blog Editor';
+        default:
+            return 'Blog Editor';
+    }
+};
+
+export const newsletter_editor = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Éditeur de newsletter';
+        case 2:
+            return 'Newsletter Editor';
+        default:
+            return 'Newsletter Editor';
+    }
+};
+
+export const refresh_stats = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Actualiser les stats';
+        case 2:
+            return 'Refresh stats';
+        default:
+            return 'Refresh stats';
+    }
+};
+
+export const click_for_stats = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Cliquez pour obtenir les stats';
+        case 2:
+            return 'Click to get the stats';
+        default:
+            return 'Click to get the stats';
+    }
+};
+
+export const admin_not_counted = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Notez que l\'administrateur n\'est pas compté';
+        case 2:
+            return 'Note that the administrator is not counted';
+        default:
+            return 'Note that the administrator is not counted';
+    }
+};
+
+export const info_verified_users = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Utilisateurs vérifiés : ';
+        case 2:
+            return 'Verified users: ';
+        default:
+            return 'Verified users: ';
+    }
+};
+
+export const info_newsletter_subscribers = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Abonnés à la newsletter : ';
+        case 2:
+            return 'Newsletter subscribers: ';
+        default:
+            return 'Newsletter subscribers: ';
+    }
+};
+
+export const info_english_users = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Utilisateurs préférant l\'Anglais : ';
+        case 2:
+            return 'English preferring users: ';
+        default:
+            return 'English preferring users: ';
+    }
+};
+
+export const info_french_users = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Utilisateurs préférant le Français : ';
+        case 2:
+            return 'French preferring users: ';
+        default:
+            return 'French preferring users: ';
+    }
+};
+
+export const info_japanese_users = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Utilisateurs préférant le Japonais : ';
+        case 2:
+            return 'Japanese preferring users: ';
+        default:
+            return 'Japanese preferring users: ';
+    }
+};
+
+export const simple_stat = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return number + '。';
+        default:
+            return number + '.';
+    }
+};
+
+export const slash_stat = (lang, number, total) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return number + '/' + total + '。';
+        default:
+            return number + '/' + total + '.';
+    }
+};
+
+export const percentage_on_all_users = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + '% de tous les utilisateurs';
+        case 2:
+            return number + '% of all users';
+        default:
+            return number + '% of all users';
+    }
+};
+
+export const percentage_on_verified_users = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + '% des utilisateurs vérifiés';
+        case 2:
+            return number + '% of verified users';
+        default:
+            return number + '% of verified users';
+    }
+};
+
+export const refresh_newsletters = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Actualiser les newsletters';
+        case 2:
+            return 'Refresh newsletters';
+        default:
+            return 'Refresh newsletters';
+    }
+};
+
+export const select_newsletter = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sélectionnez une newsletter';
+        case 2:
+            return 'Select a newsletter';
+        default:
+            return 'Select a newsletter';
+    }
+};
+
+export const write_new_newsletter = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Écrire une nouvelle newsletter';
+        case 2:
+            return '新しいニュースレターを書く';
+        default:
+            return 'Write a new newsletter';
+    }
+};
+
+export const sent = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return '[Envoyée]';
+        case 2:
+            return '[Sent]';
+        default:
+            return '[Sent]';
+    }
+};
+
+export const not_sent = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return '[Non envoyée]';
+        case 2:
+            return '[Not sent]';
+        default:
+            return '[Not sent]';
+    }
+};
+
+export const object = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Objet';
+        case 2:
+            return '話題';
+        default:
+            return 'Object';
+    }
+};
+
+export const select_language = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sélectionnez une langue';
+        case 2:
+            return 'Select a language';
+        default:
+            return 'Select a language';
+    }
+};
+
+export const send_newsletter = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Envoyer la newsletter aux abonnés';
+        case 2:
+            return 'Send the newsletter to subscribers';
+        default:
+            return 'Send the newsletter to subscribers';
+    }
+};
+
+export const info_language = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Langue : ';
+        case 2:
+            return '言語：';
+        default:
+            return 'Language: ';
+    }
+};
+
+export const info_object = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Objet : ';
+        case 2:
+            return '話題：';
+        default:
+            return 'Object: ';
+    }
+};
+
+export const info_date = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Date : ';
+        case 2:
+            return '発行日：';
+        default:
+            return 'Date: ';
+    }
+};
+
+export const info_message = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Message : ';
+        case 2:
+            return 'メッセージ：';
+        default:
+            return 'Message: ';
+    }
+};
+
+export const disclaimer_obj_and_msg = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'The object and the message have to be filled.';
+        case 2:
+            return 'The object and the message have to be filled.';
+        default:
+            return 'The object and the message have to be filled.';
+    }
+};
+
+export const disclaimer_language = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'The language has to be selected.';
+        case 2:
+            return 'The language has to be selected.';
+        default:
+            return 'The language has to be selected.';
+    }
+};
+

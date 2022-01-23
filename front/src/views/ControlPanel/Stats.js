@@ -1,3 +1,10 @@
+import { useContext } from 'react';
+import { AppContext } from '../../App';
+import {
+    statistics, access_denied, refresh_stats, click_for_stats, admin_not_counted, 
+    info_verified_users, info_newsletter_subscribers, info_english_users, info_french_users, info_japanese_users, 
+    simple_stat, slash_stat, percentage_on_all_users, percentage_on_verified_users 
+} from '../../assets/functions/lang';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +15,8 @@ const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 
 const Stats = (props) => 
 {
+    const ct = useContext(AppContext);
+
     const [stats, set_stats] = useState(null);
 
     const handle_click = e => 
@@ -31,39 +40,39 @@ const Stats = (props) =>
 
     return (
         <main>
-            <h1 className="title">Statistics</h1>
+            <h1 className="title">{statistics(ct.lang)}</h1>
             {!props.is_access_granted ? 
-                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> Access denied.</p>
+                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> {access_denied(ct.lang)}</p>
             :
             <div id="stats">
-                <button className="button" title="Refresh stats" onClick={handle_click}><span className="icon">{icon_fetch}</span></button>
+                <button className="button" title={refresh_stats(ct.lang)} onClick={handle_click}><span className="icon">{icon_fetch}</span></button>
 
                 <ul>
                     {!stats ? 
                     <>
-                        <li>Click to get the stats</li>
-                        <li>Note that the administrator is not counted</li>
+                        <li>{click_for_stats(ct.lang)}</li>
+                        <li>{admin_not_counted(ct.lang)}</li>
                     </>
                     : !stats.accounts.verified_user ? 
                     <>
-                        <li><strong>Verified users:</strong> 0/{stats.accounts.total}.</li>
-                        <li><strong>Newsletter subscribers:</strong> {stats.accounts.newsletter}.</li>
-                        <li><strong>English preferring users:</strong> {stats.accounts.language.english}.</li>
-                        <li><strong>French preferring users:</strong> {stats.accounts.language.french}.</li>
-                        <li><strong>Japanese preferring users:</strong> {stats.accounts.language.japanese}.</li>
+                        <li><strong>{info_verified_users(ct.lang)}</strong>{slash_stat(ct.lang, 0, stats.accounts.total)}</li>
+                        <li><strong>{info_newsletter_subscribers(ct.lang)}</strong>{simple_stat(ct.lang, stats.accounts.newsletter)}</li>
+                        <li><strong>{info_english_users(ct.lang)}</strong>{simple_stat(ct.lang, stats.accounts.language.english)}</li>
+                        <li><strong>{info_french_users(ct.lang)}</strong>{simple_stat(ct.lang, stats.accounts.language.french)}</li>
+                        <li><strong>{info_japanese_users(ct.lang)}</strong>{simple_stat(ct.lang, stats.accounts.language.japanese)}</li>
                     </>
                     :
                     <>
-                        <li title={stats.accounts.verified_user * 100 / stats.accounts.total + '% of all users'}>
-                            <strong>Verified users:</strong> {stats.accounts.verified_user}/{stats.accounts.total}.</li>
-                        <li title={stats.accounts.newsletter * 100 / stats.accounts.verified_user + '% of verified users'}>
-                            <strong>Newsletter subscribers:</strong> {stats.accounts.newsletter}.</li>
-                        <li title={stats.accounts.language.english * 100 / stats.accounts.verified_user + '% of verified users'}>
-                            <strong>English preferring users:</strong> {stats.accounts.language.english}.</li>
-                        <li title={stats.accounts.language.french * 100 / stats.accounts.verified_user + '% of verified users'}>
-                            <strong>French preferring users:</strong> {stats.accounts.language.french}.</li>
-                        <li title={stats.accounts.language.japanese * 100 / stats.accounts.verified_user + '% of verified users'}>
-                            <strong>Japanese preferring users:</strong> {stats.accounts.language.japanese}.</li>
+                        <li title={percentage_on_all_users(ct.lang, stats.accounts.verified_user * 100 / stats.accounts.total)}>
+                            <strong>{info_verified_users(ct.lang)}</strong>{slash_stat(ct.lang, stats.accounts.verified_user, stats.accounts.total)}</li>
+                        <li title={percentage_on_verified_users(ct.lang, stats.accounts.newsletter * 100 / stats.accounts.verified_user)}>
+                            <strong>{info_newsletter_subscribers(ct.lang)}</strong>{simple_stat(ct.lang, stats.accounts.newsletter)}</li>
+                        <li title={percentage_on_verified_users(ct.lang, stats.accounts.language.english * 100 / stats.accounts.verified_user)}>
+                            <strong>{info_english_users(ct.lang)}</strong>{simple_stat(ct.lang, stats.accounts.language.english)}</li>
+                        <li title={percentage_on_verified_users(ct.lang, stats.accounts.language.french * 100 / stats.accounts.verified_user)}>
+                            <strong>{info_french_users(ct.lang)}</strong>{simple_stat(ct.lang, stats.accounts.language.french)}</li>
+                        <li title={percentage_on_verified_users(ct.lang, stats.accounts.language.japanese * 100 / stats.accounts.verified_user)}>
+                            <strong>{info_japanese_users(ct.lang)}</strong>{simple_stat(ct.lang, stats.accounts.language.japanese)}</li>
                     </>}
                 </ul>
             </div>}

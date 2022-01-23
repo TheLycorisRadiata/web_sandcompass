@@ -1,7 +1,11 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
-import { email_address } from '../../assets/functions/lang';
+import {
+    password_creation, oops, error_occured, disclaimer_password, 
+    email_address, new_password, repeat_password, 
+    create_password, go_back_log_in 
+} from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_password_email } from '../../assets/functions/mailing';
@@ -47,9 +51,11 @@ const Password = () =>
             .catch(err => 
             {
                 console.log(err);
-                set_response_message('Oops... A problem occured.');
+                set_response_message(oops(ct.lang) + ' ' + error_occured(ct.lang));
             });
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const set_password = async (password) => 
@@ -90,7 +96,7 @@ const Password = () =>
         {
             if (field_password !== field_repeat_password)
             {
-                alert('The same password is asked in both fields.');
+                alert(disclaimer_password(ct.lang));
                 return;
             }
 
@@ -114,7 +120,7 @@ const Password = () =>
 
     return (
         <main>
-            <h1 className="title">Password Creation</h1>
+            <h1 className="title">{password_creation(ct.lang)}</h1>
             <form onSubmit={handle_submit}>
                 {!is_access_granted ? 
                     <input type="email" name="email_address" placeholder={email_address(ct.lang)} required autoFocus />
@@ -123,18 +129,18 @@ const Password = () =>
                     <p className="txt_bold" id="p_password">{field_email_address}</p>
 
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder="New password" required autoFocus />
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} required autoFocus />
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder="Repeat the password" required />
+                        <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder={repeat_password(ct.lang)} required />
                         <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                 </>}
 
-                <input type="submit" className="button" value="Create password" />
+                <input type="submit" className="button" value={create_password(ct.lang)} />
                 {response_message !== '' && <p>{response_message}</p>}
-                <p><span className="a" onClick={() => history.push('/user')}>Go back to the Log In page</span></p>
+                <p><span className="a" onClick={() => history.push('/user')}>{go_back_log_in(ct.lang)}</span></p>
             </form>
         </main>
     );

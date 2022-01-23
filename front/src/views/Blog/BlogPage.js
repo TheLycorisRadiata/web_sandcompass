@@ -4,11 +4,12 @@ import { AppContext } from '../../App';
 import {
     blog, blog_is_empty, sort_from_oldest, sort_from_most_recent,
     all_categories, category_is_empty, 
-    info_category, info_author, read_more 
+    info_category, info_author, info_created, info_modified, 
+    read_more, user_not_found 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglassEnd, faHourglassStart } from '@fortawesome/free-solid-svg-icons';
-import { DateInLetters, Time } from '../../assets/components/Time';
+import { date_in_letters, time } from '../../assets/functions/time';
 import { fetch_username_from_id } from '../../assets/functions/blog';
 
 const icon_sorted_old = <FontAwesomeIcon icon={faHourglassEnd} />;
@@ -41,7 +42,7 @@ const BlogPage = (props) =>
                 if (json.is_success)
                     username = json.data;
 
-                arr.push(username !== '' ? username : '[User not found]');
+                arr.push(username !== '' ? username : user_not_found(ct.lang));
             }
 
             set_usernames(arr);
@@ -131,9 +132,9 @@ const BlogPage = (props) =>
                                 <ul className="article_info">
                                     <li>{info_category(ct.lang)}{props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
                                     <li>{info_author(ct.lang)}{usernames[i]}.</li>
-                                    <li>Created: On the <DateInLetters raw_time={e.time_creation} /> at <Time raw_time={e.time_creation} />.</li>
+                                    <li>{info_created(ct.lang, date_in_letters(ct.lang, e.time_creation), time(e.time_creation, false))}</li>
                                     {e.is_modified && 
-                                        <li>Modified: On the <DateInLetters raw_time={e.time_modification} /> at <Time raw_time={e.time_modification} seconds={false} />.</li>}
+                                        <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
                                 </ul>
 
                                 <div dangerouslySetInnerHTML={{__html: e.content.substring(0, 400) + " [...]"}} />
@@ -149,9 +150,9 @@ const BlogPage = (props) =>
                                 <ul className="article_info">
                                     <li>{info_category(ct.lang)}{props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
                                     <li>{info_author(ct.lang)}{usernames[i]}.</li>
-                                    <li>Created: On the <DateInLetters raw_time={e.time_creation} /> at <Time raw_time={e.time_creation} />.</li>
+                                    <li>{info_created(ct.lang, date_in_letters(ct.lang, e.time_creation), time(e.time_creation, false))}</li>
                                     {e.is_modified && 
-                                        <li>Modified: On the <DateInLetters raw_time={e.time_modification} /> at <Time raw_time={e.time_modification} seconds={false} />.</li>}
+                                        <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
                                 </ul>
 
                                 <div dangerouslySetInnerHTML={{__html: e.content.substring(0, 400) + " [...]"}} />

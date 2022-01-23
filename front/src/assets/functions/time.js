@@ -1,13 +1,8 @@
-import { useContext } from 'react';
-import { AppContext } from '../../App';
-
-const DateInLetters = (props) =>
+const date_in_letters = (lang, raw_time) =>
 {
-    const ct = useContext(AppContext);
+    // raw_time --> ISODate
 
-    // props.raw_time --> ISODate
-
-    const date = new Date(props.raw_time);
+    const date = new Date(raw_time);
     const day = date.getUTCDate();
     const month = date.getUTCMonth() + 1;
     const year = date.getUTCFullYear();
@@ -15,7 +10,7 @@ const DateInLetters = (props) =>
     let month_in_letters = '';
     let final_string = '';
 
-    if (ct.lang === 1) // French
+    if (lang === 1) // French
     {
         day_ending = day === 1 ? 'er' : '';
 
@@ -24,7 +19,7 @@ const DateInLetters = (props) =>
 
         final_string = day + day_ending + ' ' + month_in_letters + ' ' + year;
     }
-    else if (ct.lang === 2) // Japanese
+    else if (lang === 2) // Japanese
     {
         final_string = year + '年' + month + '月' + day + '日';
     }
@@ -38,21 +33,21 @@ const DateInLetters = (props) =>
         final_string = day + day_ending + ' of ' + month_in_letters + ' ' + year;
     }
 
-    return <span>{final_string}</span>;
+    return final_string;
 };
 
-const Time = (props) =>
+const time = (raw_time, add_seconds) =>
 {
-    // props.raw_time --> ISODate
-    // props.seconds --> boolean
+    // raw_time --> ISODate
+    // add_seconds --> boolean
 
-    const date = new Date(props.raw_time);
+    const date = new Date(raw_time);
     const hours = date.getUTCHours() + 1;
     const minutes = date.getUTCMinutes();
     const seconds = date.getUTCSeconds();
 
-    return <span>{hours}:{minutes < 10 ? '0' + minutes : minutes}{!props.seconds ? '' : ':' + (seconds < 10 ? '0' + seconds : seconds)}</span>;
+    return hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + (!add_seconds ? '' : ':' + (seconds < 10 ? '0' + seconds : seconds));
 };
 
-export {DateInLetters, Time};
+export { date_in_letters, time };
 

@@ -11,7 +11,7 @@ import {
 } from '../functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { DateInLetters } from './Time';
+import { date_in_letters } from '../functions/time';
 import { parse_username } from '../functions/parsing';
 import { send_newsletter_email, send_verification_email } from '../functions/mailing';
 import { backend } from '../../../package.json';
@@ -48,10 +48,16 @@ const AccountEditor = (props) =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const reset_form = () => 
+    {
+        set_checkbox_newsletter(false);
+        set_checked_lang(props.account_data?.language);
+    };
+
     const handle_edit_button = () => 
     {
         is_edit_open ? set_is_edit_open(false) : set_is_edit_open(true);
-        set_checkbox_newsletter(false);
+        reset_form();
     };
 
     const handle_password_visibility = (e) => 
@@ -284,7 +290,7 @@ const AccountEditor = (props) =>
                     <ul>
                         <li>{props.account_data?.username}</li>
                         <li>{info_rank(ct.lang, rank?.name[ct.lang])}</li>
-                        <li>{info_registered_on(ct.lang)}<DateInLetters raw_time={props.account_data?.registered_on} /></li>
+                        <li>{info_registered_on(ct.lang)}{date_in_letters(ct.lang, props.account_data?.registered_on)}</li>
                         <li>{info_preferred_language(ct.lang)}{dynamic_language(ct.lang, props.account_data?.language)}</li>
                         <li>{info_email_address(ct.lang)}{props.account_data?.email_address}</li>
                         <li>{info_newsletter(ct.lang, props.account_data?.newsletter)}</li>
@@ -346,7 +352,7 @@ const AccountEditor = (props) =>
                 </div>}
 
                 <div>
-                    <input type="reset" className="button" value={cancel(ct.lang)} onClick={() => set_checkbox_newsletter(false)} />
+                    <input type="reset" className="button" value={cancel(ct.lang)} onClick={reset_form} />
                     <input type="submit" className="button" value={confirm(ct.lang)} />
                 </div>
             </form>}

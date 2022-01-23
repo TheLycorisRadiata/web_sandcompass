@@ -1,8 +1,17 @@
+import { useContext } from 'react';
+import { AppContext } from '../../App';
+import {
+    token_title_email, token_instruction_email,
+    token_title_password, token_instruction_password, 
+    oops, success, error_occured 
+} from '../../assets/functions/lang';
 import { useState, useLayoutEffect } from 'react';
 import { backend } from '../../../package.json';
 
 const ExecuteToken = () => 
 {
+    const ct = useContext(AppContext);
+
     const [title, set_title] = useState('');
     const [message, set_message] = useState('');
     const [is_token_expired, set_is_token_expired] = useState(false);
@@ -24,18 +33,20 @@ const ExecuteToken = () =>
 
             if (!json.is_success)
             {
-                set_title('Oops...');
+                set_title(oops(ct.lang));
                 set_is_token_expired(true);
             }
             else
-                set_title('Success!');
+                set_title(success(ct.lang));
         })
         .catch(err => 
         {
             console.log(err);
-            set_title('A problem occured');
+            set_title(error_occured(ct.lang));
             set_is_token_expired(true);
         });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -47,8 +58,8 @@ const ExecuteToken = () =>
             <>
                 <span className="divider"></span>
                 <div>
-                    <p><strong>Link to verify the email address</strong><br />Try to log in. If your email address is not yet verified, a pop-up asks whether you wish to receive a new link.</p>
-                    <p><strong>Link to modify the password</strong><br />Click on "Password forgotten?".</p>
+                    <p><strong>{token_title_email(ct.lang)}</strong><br />{token_instruction_email(ct.lang)}</p>
+                    <p><strong>{token_title_password(ct.lang)}</strong><br />{token_instruction_password(ct.lang)}</p>
                 </div>
                 <span className="divider"></span>
             </>}

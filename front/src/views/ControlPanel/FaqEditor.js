@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     access_denied, 
-    faq_long, faq_is_empty, 
+    faq_editor, faq_is_empty, 
     english, french, japanese, 
     question, answer, 
     question_eng, answer_eng, question_fr, answer_fr, question_jp, answer_jp, 
@@ -157,7 +157,7 @@ const FaqEditor = (props) =>
 
     return (
         <main>
-            <h1 className="title">{faq_long(ct.lang)}</h1>
+            <h1 className="title">{faq_editor(ct.lang)}</h1>
 
             {!props.is_access_granted ? 
                 <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> {access_denied(ct.lang)}</p>

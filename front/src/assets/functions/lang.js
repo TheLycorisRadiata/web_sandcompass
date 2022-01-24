@@ -2067,6 +2067,19 @@ export const not_yet_registered = (lang) =>
     }
 };
 
+export const disclaimer_email_and_password = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'L\'adresse email et le mot de passe sont tous deux nécessaires.';
+        case 2:
+            return 'The email address and the password are both required.';
+        default:
+            return 'The email address and the password are both required.';
+    }
+};
+
 export const password_creation = (lang) => 
 {
     switch (lang)

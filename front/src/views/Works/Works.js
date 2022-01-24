@@ -1,12 +1,11 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     works, info_title, info_author, info_type, info_genre, info_release_date, info_summary, 
     radiata_lycoris, standalone_novel, science_fiction, work_in_progress, 
     title_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, 
     reviews, disclaimer_reviews_1_on_2, disclaimer_reviews_2_on_2, 
-    different_formats, file_name_azw, file_name_epub, file_name_pdf, file_name_all, all, how_to_pick_format, 
-    arr_ebook_format_picker_questions, arr_ebook_format_picker_options, arr_ebook_format_picker_answers 
+    different_formats, file_name_azw, file_name_epub, file_name_pdf, file_name_all, all, how_to_pick_format 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
@@ -22,18 +21,6 @@ const icon_download = <FontAwesomeIcon icon={faDownload} />
 const Works = () => 
 {
     const ct = useContext(AppContext);
-
-    const [picker_questions, set_picker_questions] = useState(null);
-    const [picker_options, set_picker_options] = useState(null);
-    const [picker_answers, set_picker_answers] = useState(null);
-
-    useEffect(() => 
-    {
-        set_picker_questions(arr_ebook_format_picker_questions(ct.lang));
-        set_picker_options(arr_ebook_format_picker_options(ct.lang));
-        set_picker_answers(arr_ebook_format_picker_answers(ct.lang));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <main id="works">
@@ -88,7 +75,7 @@ const Works = () =>
 
                 <div>
                     <h3 className="sub_title">{how_to_pick_format(ct.lang)}</h3>
-                    {picker_questions && picker_options && picker_answers && <EbookFormatPicker questions={picker_questions} options={picker_options} answers={picker_answers} />}
+                    <EbookFormatPicker />
                 </div>
             </aside>
         </main>

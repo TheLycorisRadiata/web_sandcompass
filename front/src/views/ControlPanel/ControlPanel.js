@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    control_panel, email_address, password, log_in, password_forgotten, 
+    control_panel, email_address, password, log_in, password_forgotten, disclaimer_email_and_password, 
     statistics, faq_editor, blog_editor, newsletter_editor 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,7 +29,9 @@ const ControlPanel = (props) =>
 
     const handle_submit = () => 
     {
-        if (field_email_address !== '' && field_password !== '')
+        if (field_email_address === '' || field_password === '')
+            set_access_message(disclaimer_email_and_password(ct.lang));
+        else
         {
             fetch(backend + `/user/admin/login/${field_email_address}/${field_password}`)
             .then(res => res.json())

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    log_in, user_account, confirm_resend_verification_email, 
+    log_in, user_account, disclaimer_email_and_password, confirm_resend_verification_email, 
     email_address, password, password_forgotten, not_yet_registered 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,7 +28,9 @@ const UserPanel = (props) =>
     {
         let send_verif_email = false;
 
-        if (field_email_address !== '' && field_password !== '')
+        if (field_email_address === '' || field_password === '')
+            set_access_message(disclaimer_email_and_password(ct.lang));
+        else
         {
             await fetch(backend + `/user/login/${field_email_address}/${field_password}`)
             .then(res => res.json())

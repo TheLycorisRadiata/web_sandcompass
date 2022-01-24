@@ -24,7 +24,7 @@ const send_visitor_mail_to_admin = (req, res) =>
     // Body
     const is_pro = req.body.is_pro ? 'The professional ' : '';
     const business_name = req.body.business_name === '' ? '' : ' of the company ' + req.body.business_name;
-    const full_name = req.body.last_name.toUpperCase() + ' ' + req.body.first_name;
+    const name = req.body.name;
     const email_address = req.body.email_address.toLowerCase();
     const subject = req.body.subject === 'subject_work_cosmic_dust' ? 'Projects - Book: Cosmic Dust' 
         : req.body.subject === 'subject_work_persistence' ? 'Projects - Game: Persistence' 
@@ -51,14 +51,14 @@ const send_visitor_mail_to_admin = (req, res) =>
     // Email
     const mail_options = 
     {
-        from: `"${full_name}" <${email_address}>`,
+        from: `"${name}" <${email_address}>`,
         to: process.env.GMAIL_USER,
         subject: 'Contact form | ' + subject,
         html: '' +
         '<html>' +
             '<body>' +
                 '<hr />' +
-                `<p style="font-weight: bold;">${is_pro}${full_name} (${email_address})${business_name} says:</p>` +
+                `<p style="font-weight: bold;">${is_pro}${name} (${email_address})${business_name} says:</p>` +
                 '<hr />' +
 
                 `<p>${message}</p>` +

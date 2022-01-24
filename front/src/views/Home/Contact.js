@@ -3,7 +3,7 @@ import { AppContext } from '../../App';
 import {
     contact, something_to_say, 
     personal, professional, optional_business_name, 
-    last_name, first_name, email_address, message, select_subject, 
+    name, email_address, message, select_subject, 
     opt_projects, opt_cosmic_dust, opt_persistence, opt_another_project, 
     opt_misc, opt_this_website, opt_legal_stuff, opt_other, 
     cancel, send 
@@ -20,25 +20,23 @@ const Contact = () =>
     {
         // Radio buttons: e.target[0].checked + e.target[1].checked
         let business_name = e.target[2].value;
-        let last_name = e.target[3].value;
-        let first_name = e.target[4].value;
-        let email_address = e.target[5].value;
-        let subject = e.target[6].value;
-        let message = e.target[7].value;
+        let name = e.target[3].value;
+        let email_address = e.target[4].value;
+        let subject = e.target[5].value;
+        let message = e.target[6].value;
 
         if (!is_visitor_pro)
         {
             business_name = '';
-            last_name = e.target[2].value;
-            first_name = e.target[3].value;
-            email_address = e.target[4].value;
-            subject = e.target[5].value;
-            message = e.target[6].value;
+            name = e.target[2].value;
+            email_address = e.target[3].value;
+            subject = e.target[4].value;
+            message = e.target[5].value;
         }
 
         e.preventDefault();
 
-        if (last_name !== '' && first_name !== '' && email_address !== '' && subject !== 'default' && message !== '')
+        if (name !== '' && email_address !== '' && subject !== 'default' && message !== '')
         {
             fetch(backend + '/mailing/contact',
             {
@@ -52,8 +50,7 @@ const Contact = () =>
                 {
                     is_pro: is_visitor_pro,
                     business_name: business_name,
-                    last_name: last_name,
-                    first_name: first_name,
+                    name: name,
                     email_address: email_address,
                     subject: subject,
                     message: message
@@ -75,9 +72,8 @@ const Contact = () =>
                     e.target[1].checked = false;
                     e.target[2].value = '';
                     e.target[3].value = '';
-                    e.target[4].value = '';
-                    e.target[5].value = 'default';
-                    e.target[6].value = '';
+                    e.target[4].value = 'default';
+                    e.target[5].value = '';
                 }
             })
             .catch(err => console.log(err));
@@ -102,8 +98,7 @@ const Contact = () =>
                         <label htmlFor="btn_pro">{professional(ct.lang)}</label>
                     </div>
                     {is_visitor_pro && <input type="text" name="business_name" placeholder={optional_business_name(ct.lang)} autoComplete="on" />}
-                    <input type="text" name="last_name" placeholder={last_name(ct.lang)} autoComplete="on" required autoFocus />
-                    <input type="text" name="first_name" placeholder={first_name(ct.lang)} autoComplete="on" required />
+                    <input type="text" name="name" placeholder={name(ct.lang)} autoComplete="on" required autoFocus />
                     <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoComplete="on" required />
 
                     <select name="subject" defaultValue="default" autoComplete="new-password" required>

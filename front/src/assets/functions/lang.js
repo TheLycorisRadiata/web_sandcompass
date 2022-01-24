@@ -1603,29 +1603,16 @@ export const optional_business_name = (lang) =>
     }
 };
 
-export const last_name = (lang) => 
+export const name = (lang) => 
 {
     switch (lang)
     {
         case 1:
             return 'Nom';
         case 2:
-            return '苗字';
-        default:
-            return 'Last name';
-    }
-};
-
-export const first_name = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Prénom';
-        case 2:
             return '名前';
         default:
-            return 'First name';
+            return 'Name';
     }
 };
 

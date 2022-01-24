@@ -706,7 +706,8 @@ a, span[class="a"]
 {
     margin-bottom: 15px;
     padding: 10px;
-    max-width: 350px;
+    width: 350px;
+    max-width: 80%;
     box-shadow: 4px 4px 8px inset var(--see_through_white), -4px -4px 8px inset var(--see_through_white);
     border-radius: 10px;
 }
@@ -721,7 +722,6 @@ a, span[class="a"]
     #book_cover img
     {
         margin-right: 20px;
-        width: 50vw;
         float: left;
     }
 }

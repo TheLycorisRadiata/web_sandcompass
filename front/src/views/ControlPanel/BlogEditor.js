@@ -1,4 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AppContext } from '../../App';
+import {
+    blog_editor, access_denied, 
+    select_language, english, french, japanese, 
+    select_category 
+} from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faFolderMinus, faFolderPlus, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import BlogArticle from '../Blog/BlogArticle';
@@ -13,9 +19,7 @@ const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />
 
 const BlogEditor = (props) => 
 {
-    const default_category = 'No category';
-    const default_title = 'No title';
-    const default_content = '<p>No content.</p>';
+    const ct = useContext(AppContext);
 
     const default_article = 
     {
@@ -23,41 +27,43 @@ const BlogEditor = (props) =>
         time_creation: Date.now(),
         time_modification: Date.now(),
         is_modified: false,
-        category: default_category,
-        title: default_title,
+        category: '',
+        title: '',
         author: props.account_data?._id,
-        content: default_content
+        content: ''
     };
 
     const [article, set_article] = useState(default_article);
-    const [id_selected_article, set_id_selected_article] = useState('default');
-    const [id_selected_category, set_id_selected_category] = useState('default');
+    const [selected_language, set_selected_language] = useState('default');
+    const [selected_article, set_selected_article] = useState('default');
+    const [selected_category, set_selected_category] = useState('default');
     const [new_category, set_new_category] = useState('');
     const [is_preview_shown, set_is_preview_shown] = useState(false);
 
     const handle_select_article = e => 
     {
         const id = e.target.value;
-        const selected_article = props.articles.find(e => e._id === id);
+        const obj_article = props.articles.find(e => e._id === id);
 
-        set_id_selected_article(id);
+        set_selected_article(id);
 
         set_article(
         {
-            likes: selected_article.likes,
-            time_creation: selected_article.time_creation,
-            time_modification: selected_article.time_modification,
-            is_modified: selected_article.is_modified,
-            category: selected_article.category,
-            title: selected_article.title,
+            likes: obj_article.likes,
+            time_creation: obj_article.time_creation,
+            time_modification: obj_article.time_modification,
+            is_modified: obj_article.is_modified,
+            category: obj_article.category,
+            title: obj_article.title,
             author: props.account_data._id,
-            content: selected_article.content
+            content: obj_article.content
         });
     };
 
     const handle_select_category = e => 
     {
-        set_id_selected_category(e.target.value);
+        const id = e.target.value;
+        set_selected_category(id);
 
         set_article(
         {
@@ -65,19 +71,31 @@ const BlogEditor = (props) =>
             time_creation: article.time_creation,
             time_modification: article.time_modification,
             is_modified: article.is_modified,
-            category: e.target.value,
+            category: id,
             title: article.title,
             author: props.account_data._id,
             content: article.content
         });
     };
 
+    const reset_form = (fetched_articles) => 
+    {
+        set_selected_language('default');
+        set_selected_article('default');
+        set_selected_category('default');
+        set_article(default_article);
+        props.set_articles(fetched_articles);
+    };
+
     const handle_create_category = () => 
     {
         const parsed_category = new_category === '' ? '' : parse_category(new_category);
+        const arr = ['', '', ''];
 
         if (parsed_category !== '')
         {
+            arr[selected_language] = parsed_category;
+
             fetch(backend + '/blog/categories',
             {
                 method: 'POST',
@@ -86,7 +104,7 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ new_category: [parsed_category, '', ''] })
+                body: JSON.stringify({ new_category: arr })
             })
             .then(res => res.json())
             .then(json => 
@@ -98,7 +116,7 @@ const BlogEditor = (props) =>
 
                 if (json.is_success)
                 {
-                    set_id_selected_category('default');
+                    set_selected_category('default');
                     set_new_category('');
                     props.set_categories(json.data);
                 }
@@ -108,7 +126,7 @@ const BlogEditor = (props) =>
 
     const handle_delete_category = () => 
     {
-        if (article.category !== default_category)
+        if (article.category !== '')
         {
             fetch(backend + '/blog/categories',
             {
@@ -118,7 +136,7 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ _id: id_selected_category })
+                body: JSON.stringify({ _id: selected_category })
             })
             .then(res => res.json())
             .then(json => 
@@ -131,7 +149,7 @@ const BlogEditor = (props) =>
                 if (json.is_success)
                     props.set_categories(json.data);
 
-                set_id_selected_category('default');
+                set_selected_category('default');
 
                 set_article(
                 {
@@ -139,7 +157,7 @@ const BlogEditor = (props) =>
                     time_creation: article.time_creation,
                     time_modification: article.time_modification,
                     is_modified: article.is_modified,
-                    category: default_category,
+                    category: '',
                     title: article.title,
                     author: props.account_data._id,
                     content: article.content
@@ -152,13 +170,21 @@ const BlogEditor = (props) =>
     {
         const new_article = {};
 
-        if (article.category !== default_category && article.title !== default_title && article.content !== default_content 
-            && article.category !== '' && article.title !== '' && article.content !== '')
+        if (selected_language !== 'default')
+            alert('The article needs a language.');
+        else if (article.title === '')
+            alert('The article needs a title.');
+        else if (article.category === '')
+            alert('The article needs a category.');
+        else if (article.content === '')
+            alert('The article needs a content.');
+        else
         {
             new_article.likes = 0;
             new_article.time_creation = Date.now();
             new_article.time_modification = Date.now();
             new_article.is_modified = false;
+            new_article.language = selected_language;
             new_article.category = article.category;
             new_article.title = article.title;
             new_article.author = props.account_data._id;
@@ -183,12 +209,7 @@ const BlogEditor = (props) =>
                 alert(json.message);
 
                 if (json.is_success)
-                {
-                    set_id_selected_article('default');
-                    set_id_selected_category('default');
-                    set_article(default_article);
-                    props.set_articles(json.data);
-                }
+                    reset_form(json.data);
             });
         }
     };
@@ -197,7 +218,7 @@ const BlogEditor = (props) =>
     {
         const updated_article = {};
 
-        if (id_selected_article !== 'default')
+        if (selected_article !== 'default')
         {
             updated_article.likes = article.likes;
             updated_article.time_creation = article.time_creation;
@@ -216,7 +237,7 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id: id_selected_article, article: updated_article })
+                body: JSON.stringify({ id: selected_article, article: updated_article })
             })
             .then(res => res.json())
             .then(json => 
@@ -227,19 +248,14 @@ const BlogEditor = (props) =>
                 alert(json.message);
 
                 if (json.is_success)
-                {
-                    set_id_selected_article('default');
-                    set_id_selected_category('default');
-                    set_article(default_article);
-                    props.set_articles(json.data);
-                }
+                    reset_form(json.data);
             });
         }
     };
 
     const handle_delete_article = () => 
     {
-        if (id_selected_article !== 'default')
+        if (selected_article !== 'default')
         {
             fetch(backend + '/blog/articles',
             {
@@ -251,7 +267,7 @@ const BlogEditor = (props) =>
                 },
                 body: JSON.stringify(
                 { 
-                    id: id_selected_article,
+                    id: selected_article,
                     author: props.account_data._id,
                     author_list_articles: props.account_data.articles
                 })
@@ -265,12 +281,8 @@ const BlogEditor = (props) =>
                 alert(json.message);
 
                 if (json.is_success)
-                    props.set_articles(json.data);
+                    reset_form(json.data);
             });
-
-            set_id_selected_article('default');
-            set_id_selected_category('default');
-            set_article(default_article);
         }
     };
 
@@ -308,25 +320,39 @@ const BlogEditor = (props) =>
 
     return (
         <main>
-            <h1 className="title">Blog Editor</h1>
+            <h1 className="title">{blog_editor(ct.lang)}</h1>
             
             {!props.is_access_granted ? 
-                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> Access denied.</p>
+                <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> {access_denied(ct.lang)}</p>
             :
             <>
                 <div id="blog_editor">
+                    <select name="select_language" value={selected_language} onChange={e => set_selected_language(e.target.value)}>
+                        <option disabled value="default">{select_language(ct.lang)}</option>
+                        <option value="0">{english(ct.lang)}</option>
+                        <option value="1">{french(ct.lang)}</option>
+                        <option value="2">{japanese(ct.lang)}</option>
+                    </select>
+
                     <div id="btn_article">
                         <input type="button" className="button" name="btn_post_article" value="Post a new article" onClick={handle_create_article} />
                         {!props.articles.length ? null : 
                         <>
-                            <select name="select_article" value={id_selected_article} onChange={handle_select_article}>
+                            <select name="select_article" value={selected_article} onChange={handle_select_article}>
                                 <option disabled value="default">Select an article</option>
-                                {props.categories.map(category => 
-                                    <optgroup label={category.name} key={category._id}>
-                                        {!props.articles.filter(article => article.category === category.name).length ? <option disabled>No article</option> 
-                                        : props.articles.filter(article => article.category === category.name).map((e) => <option key={e._id} value={e._id}>{e.title}</option>)}
-                                    </optgroup>
-                                )}
+                                {selected_language === 'default' ? <option disabled>No language selected</option> 
+                                :
+                                    props.categories.map(category => 
+                                        <optgroup label={category.name[ct.lang]} key={category._id}>
+                                            {selected_language === 0 && !category.articles.eng.length ? <option disabled>No article</option> 
+                                            : selected_language === 0 ? category.articles.eng.map(e => <option key={e} value={e}>{props.articles.find(i => i._id === e).title}</option>) 
+                                            : selected_language === 1 && !category.articles.fr.length ? <option disabled>No article</option> 
+                                            : selected_language === 1 ? category.articles.fr.map(e => <option key={e} value={e}>{props.articles.find(i => i._id === e).title}</option>) 
+                                            : selected_language === 2 && !category.articles.jp.length ? <option disabled>No article</option> 
+                                            : selected_language === 2 ? category.articles.jp.map(e => <option key={e} value={e}>{props.articles.find(i => i._id === e).title}</option>) 
+                                            : <option disabled>No language selected</option>}
+                                        </optgroup>
+                                    )}
                             </select>
 
                             <div>
@@ -340,13 +366,13 @@ const BlogEditor = (props) =>
 
                     <div id="categories">
                         <div>
-                            <select name="select_category" value={id_selected_category} onChange={handle_select_category}>
+                            <select name="select_category" value={selected_category} onChange={handle_select_category}>
                                 {!props.categories.length ? 
                                     <option disabled value="default">No category</option>
                                 :
                                 <>
-                                    <option disabled value="default">Select a category</option>
-                                    {props.categories.map(category => <option key={category._id}>{category.name}</option>)}
+                                    <option disabled value="default">{select_category(ct.lang)}</option>
+                                    {props.categories.map(category => <option key={category._id} value={category._id}>{category.name[ct.lang]}</option>)}
                                 </>}
                             </select>
                             <button className="button" name="btn_delete_category" onClick={handle_delete_category}><span className="icon">{icon_folder_minus}</span></button>
@@ -365,7 +391,7 @@ const BlogEditor = (props) =>
                     </button>
                 </div>
 
-                {is_preview_shown && <BlogArticle is_preview={true} id_selected_article={id_selected_article} article={article} />}
+                {is_preview_shown && <BlogArticle is_preview={true} selected_article={selected_article} article={article} />}
             </>}
         </main>
     );

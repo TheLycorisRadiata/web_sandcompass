@@ -4,8 +4,8 @@ import { AppContext } from '../../App';
 import {
     blog, other_articles, like, dislike, vote_instruction, 
     info_category, info_author, info_created, info_modified, 
-    user_not_found, wip, error_article_doesnt_exist, 
-    like_own_article, dislike_own_article 
+    title_not_found, category_not_found, user_not_found, content_not_found, 
+    wip, error_article_doesnt_exist, like_own_article, dislike_own_article 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faHeartBroken, faThumbsUp as faThumbsUpSolid, faThumbsDown as faThumbsDownSolid } from '@fortawesome/free-solid-svg-icons';
@@ -218,9 +218,9 @@ const BlogArticle = (props) =>
                 <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>
 
                 <article>
-                    <h4 className="sub_title">{props.article.title}</h4>
+                    <h4 className="sub_title">{props.article.title === undefined || props.article.title === '' ? title_not_found(ct.lang) : props.article.title}</h4>
                     <ul className="article_info">
-                        <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
+                        <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? category_not_found(ct.lang) : props.category[0]}.</li>
                         <li>{info_author(ct.lang)}{username}.</li>
                         <li>
                             {info_created(ct.lang, 
@@ -235,7 +235,7 @@ const BlogArticle = (props) =>
                             </li>}
                     </ul>
 
-                    <div dangerouslySetInnerHTML={{__html: props.article.content}} />
+                    <div dangerouslySetInnerHTML={{__html: props.article.content === undefined || props.article.content === '' ? content_not_found(ct.lang) : props.article.content }} />
                 </article>
 
                 <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>
@@ -252,16 +252,16 @@ const BlogArticle = (props) =>
                 <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>
 
                 <article>
-                    <h2 className="sub_title">{props.article.title}</h2>
+                    <h2 className="sub_title">{props.article.title === undefined || props.article.title === '' ? title_not_found(ct.lang) : props.article.title}</h2>
                     <ul className="article_info">
-                        <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? '' : props.category[0]}.</li>
+                        <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? category_not_found(ct.lang) : props.category[0]}.</li>
                         <li>{info_author(ct.lang)}{username}.</li>
                         <li>{info_created(ct.lang, date_in_letters(ct.lang, props.article.time_creation), time(props.article.time_creation, false))}</li>
                         {props.article.is_modified && 
                             <li>{info_modified(ct.lang, date_in_letters(ct.lang, props.article.time_modification), time(props.article.time_modification, false))}</li>}
                     </ul>
 
-                    <div dangerouslySetInnerHTML={{__html: props.article.content}} />
+                    <div dangerouslySetInnerHTML={{__html: props.article.content === undefined || props.article.content === '' ? content_not_found(ct.lang) : props.article.content }} />
                 </article>
 
                 <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>

@@ -26,6 +26,19 @@ export const dynamic_language = (lang, index) =>
     }
 };
 
+export const dynamic_language_short = (lang, index) => 
+{
+    switch (index)
+    {
+        case 1:
+            return 'fr';
+        case 2:
+            return 'jp';
+        default:
+            return 'eng';
+    }
+};
+
 export const english = (lang) => 
 {
     switch (lang)
@@ -1887,6 +1900,32 @@ export const info_modified = (lang, date, time) =>
     }
 };
 
+export const title_not_found = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return '[Titre non trouvé]';
+        case 2:
+            return '[タイトルが見つかりません]';
+        default:
+            return '[Title not found]';
+    }
+};
+
+export const category_not_found = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return '[Catégorie non trouvée]';
+        case 2:
+            return '[範疇が見つかりません]';
+        default:
+            return '[Category not found]';
+    }
+};
+
 export const user_not_found = (lang) => 
 {
     switch (lang)
@@ -1897,6 +1936,19 @@ export const user_not_found = (lang) =>
             return '[ユーザーが見つかりません]';
         default:
             return '[User not found]';
+    }
+};
+
+export const content_not_found = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return '<p>[Contenu non trouvé]</p>';
+        case 2:
+            return '<p>[コンテンツが見つかりません]</p>';
+        default:
+            return '<p>[Content not found]</p>';
     }
 };
 
@@ -2582,6 +2634,21 @@ export const disclaimer_language = (lang) =>
             return 'The language has to be selected.';
         default:
             return 'The language has to be selected.';
+    }
+};
+
+/* BLOG EDITOR ---------------------------------------------------------------------------------- */
+
+export const select_category = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sélectionnez une catégorie';
+        case 2:
+            return 'Select a category';
+        default:
+            return 'Select a category';
     }
 };
 

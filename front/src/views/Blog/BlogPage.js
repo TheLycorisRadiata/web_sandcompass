@@ -1,5 +1,6 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
     blog, blog_is_empty, sort_from_oldest, sort_from_most_recent,
@@ -131,7 +132,7 @@ const BlogPage = (props) =>
                                         <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
                                 </ul>
 
-                                <div dangerouslySetInnerHTML={{__html: e.content.substring(0, 400) + " [...]"}} />
+                                <div>{Parser(e.content.substring(0, 400) + " [...]")}</div>
                                 <div className="read_more">
                                     <Link to={'/blog/article' + e._id}>{read_more(ct.lang)}</Link>
                                 </div>
@@ -149,7 +150,7 @@ const BlogPage = (props) =>
                                         <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
                                 </ul>
 
-                                <div dangerouslySetInnerHTML={{__html: e.content.substring(0, 400) + " [...]"}} />
+                                <div>{Parser(e.content.substring(0, 400) + " [...]")}</div>
                                 <div className="read_more">
                                     <Link to={'/blog/article' + e._id}>{read_more(ct.lang)}</Link>
                                 </div>

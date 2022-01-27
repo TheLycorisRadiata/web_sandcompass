@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
     newsletter_editor, access_denied, refresh_newsletters, 
@@ -141,7 +142,7 @@ const NewsletterEditor = (props) =>
                             <input type="text" name="object" placeholder={object(ct.lang)} title={object(ct.lang)} value={field_object} onChange={e => set_field_object(e.target.value)} />
                             <textarea placeholder={message(ct.lang)} title={message(ct.lang)} value={html_message} onChange={e => set_html_message(e.target.value)}></textarea>
 
-                            <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: html_message}} />
+                            <div id="preview_newsletter">{Parser(html_message)}</div>
 
                             <select value={language} onChange={e => set_language(e.target.value)}>
                                 <option value="default" disabled>{select_language(ct.lang)}</option>
@@ -163,7 +164,7 @@ const NewsletterEditor = (props) =>
                             <p><strong>{info_object(ct.lang)}</strong>{newsletters[selected_newsletter].object}</p>
                             <p><strong>{info_date(ct.lang)}</strong>{date_in_letters(ct.lang, newsletters[selected_newsletter].date)} at {time(newsletters[selected_newsletter].date, true)}</p>
                             <p><strong>{info_message(ct.lang)}</strong></p>
-                            <div id="preview_newsletter" dangerouslySetInnerHTML={{__html: newsletters[selected_newsletter].html_message}} />
+                            <div id="preview_newsletter">{Parser(newsletters[selected_newsletter].html_message)}</div>
                         </div>}
                 </form>
             </div>}

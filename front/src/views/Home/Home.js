@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
     home, title_about_website, msg_about_website, 
@@ -19,7 +20,7 @@ const Home = (props) =>
 
             <article>
                 <h2 className="sub_title">{title_about_website(ct.lang)}</h2>
-                <div dangerouslySetInnerHTML={{__html: msg_about_website(ct.lang)}} />
+                <div>{Parser(msg_about_website(ct.lang))}</div>
             </article>
 
             <section>
@@ -46,7 +47,7 @@ const Home = (props) =>
                     <h3 id="last_article_title" className="sub_title">{props.last_article[ct.lang].title}</h3>
                 </div>
 
-                <div dangerouslySetInnerHTML={{__html: props.last_article[ct.lang].content.substring(0, 400) + " [...]"}} />
+                <div>{Parser(props.last_article[ct.lang].content.substring(0, 400) + " [...]")}</div>
 
                 <div className="read_more">
                     <Link to={'/blog/article' + props.last_article[ct.lang]._id}>{read_more(ct.lang)}</Link>

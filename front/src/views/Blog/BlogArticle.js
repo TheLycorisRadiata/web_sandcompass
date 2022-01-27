@@ -1,5 +1,6 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
     blog, other_articles, like, dislike, vote_instruction, 
@@ -238,7 +239,7 @@ const BlogArticle = (props) =>
                             </li>}
                     </ul>
 
-                    <div dangerouslySetInnerHTML={{__html: props.article.content === undefined || props.article.content === '' ? content_not_found(ct.lang) : props.article.content }} />
+                    <div>{Parser(props.article.content === undefined || props.article.content === '' ? content_not_found(ct.lang) : props.article.content)}</div>
                 </article>
 
                 <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>
@@ -264,7 +265,7 @@ const BlogArticle = (props) =>
                             <li>{info_modified(ct.lang, date_in_letters(ct.lang, props.article.time_modification), time(props.article.time_modification, false))}</li>}
                     </ul>
 
-                    <div dangerouslySetInnerHTML={{__html: props.article.content === undefined || props.article.content === '' ? content_not_found(ct.lang) : props.article.content }} />
+                    <div>{Parser(props.article.content === undefined || props.article.content === '' ? content_not_found(ct.lang) : props.article.content)}</div>
                 </article>
 
                 <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>

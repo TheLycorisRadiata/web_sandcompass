@@ -529,6 +529,7 @@ span.lock
     margin-right: 5px;
     font-size: 1.4rem;
     color: var(--red);
+    filter: drop-shadow(0.5px 0.5px 1px var(--white));
 }
 
 .txt_access_denied
@@ -917,7 +918,32 @@ a, span[class="a"]
     align-items: center;
 }
 
-select[name="select_article"], #categories select, #categories button
+#categories
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#categories select, #categories input, #categories button
+{
+    margin: 3px;
+}
+
+#categories form
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#categories form div
+{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+select[name="select_article"]
 {
     margin-bottom: 0;
 }

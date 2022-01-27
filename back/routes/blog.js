@@ -11,6 +11,7 @@ router.delete('/articles', controller_blog.delete_article);
 
 router.get('/categories', controller_blog.retrieve_categories);
 router.post('/categories', controller_blog.create_new_category);
+router.put('/categories', controller_blog.modify_category);
 router.delete('/categories', controller_blog.delete_category);
 
 router.put('/vote/article', controller_blog.like_or_dislike_article);

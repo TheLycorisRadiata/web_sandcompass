@@ -31,6 +31,9 @@ const BlogArticle = (props) =>
     const [id_user, set_id_user] = useState(null);
     const [user_vote, set_user_vote] = useState(0);
 
+    const display_title = () => props.article.title === undefined || props.article.title === '' ? title_not_found(ct.lang) : props.article.title;
+    const display_category = () => props.category === undefined || props.category === null ? category_not_found(ct.lang) : props.category[ct.lang];
+
     const increment_likes = () => 
     {
         const articles = [...props.articles];
@@ -218,9 +221,9 @@ const BlogArticle = (props) =>
                 <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>
 
                 <article>
-                    <h4 className="sub_title">{props.article.title === undefined || props.article.title === '' ? title_not_found(ct.lang) : props.article.title}</h4>
+                    <h4 className="sub_title">{display_title()}</h4>
                     <ul className="article_info">
-                        <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? category_not_found(ct.lang) : props.category[0]}.</li>
+                        <li>{info_category(ct.lang)}{display_category()}.</li>
                         <li>{info_author(ct.lang)}{username}.</li>
                         <li>
                             {info_created(ct.lang, 
@@ -242,8 +245,8 @@ const BlogArticle = (props) =>
 
                 <div id="likes_dislikes">
                     <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
-                    <button className="button" name="btn_like"><span className="icon">{icon_empty_like}</span> {like(ct.lang)}</button>
-                    <button className="button" name="btn_dislike"><span className="icon">{icon_empty_dislike}</span> {dislike(ct.lang)}</button>
+                    <button className="a button" name="btn_like"><span className="icon">{icon_empty_like}</span> {like(ct.lang)}</button>
+                    <button className="a button" name="btn_dislike"><span className="icon">{icon_empty_dislike}</span> {dislike(ct.lang)}</button>
                 </div>
             </div>
             :
@@ -252,9 +255,9 @@ const BlogArticle = (props) =>
                 <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>
 
                 <article>
-                    <h2 className="sub_title">{props.article.title === undefined || props.article.title === '' ? title_not_found(ct.lang) : props.article.title}</h2>
+                    <h2 className="sub_title">{display_title()}</h2>
                     <ul className="article_info">
-                        <li>{info_category(ct.lang)}{props.category === undefined || props.category.length < 3 ? category_not_found(ct.lang) : props.category[0]}.</li>
+                        <li>{info_category(ct.lang)}{display_category()}.</li>
                         <li>{info_author(ct.lang)}{username}.</li>
                         <li>{info_created(ct.lang, date_in_letters(ct.lang, props.article.time_creation), time(props.article.time_creation, false))}</li>
                         {props.article.is_modified && 

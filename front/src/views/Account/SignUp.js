@@ -93,12 +93,6 @@ const SignUp = () =>
         }
     };
 
-    const handle_password_visibility = (e) => 
-    {
-        e.preventDefault();
-        set_is_password_shown(is_password_shown ? false : true);
-    };
-
     return (
         <main>
             <h1 className="title">{sign_up(ct.lang)}</h1>
@@ -108,7 +102,7 @@ const SignUp = () =>
 
                 <div className="field_password">
                     <input type={is_password_shown ? "text" : "password"} name="password" placeholder={password(ct.lang)} autoComplete="new-password" required />
-                    <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                    <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                 </div>
 
                 <input type="text" name="username" placeholder={username(ct.lang)} autoComplete="on" required />

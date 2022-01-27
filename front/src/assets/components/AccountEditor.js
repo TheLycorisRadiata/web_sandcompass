@@ -56,14 +56,8 @@ const AccountEditor = (props) =>
 
     const handle_edit_button = () => 
     {
-        is_edit_open ? set_is_edit_open(false) : set_is_edit_open(true);
+        set_is_edit_open(!is_edit_open);
         reset_form();
-    };
-
-    const handle_password_visibility = (e) => 
-    {
-        e.preventDefault();
-        set_is_password_shown(is_password_shown ? false : true);
     };
 
     const is_username_already_used_by_another_account = async (username) => 
@@ -318,11 +312,11 @@ const AccountEditor = (props) =>
                     <label htmlFor="change_password">{change_password(ct.lang)}</label>
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} autoComplete="new-password" id="change_password" />
-                        <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={repeat_password(ct.lang)} autoComplete="new-password" /> 
-                        <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                 </div>
 

@@ -115,13 +115,7 @@ const BlogPage = (props) =>
                     </div>
                 </div>
 
-                {category !== 'all' && 
-                    ((ct.lang === 0 && !props.categories.find(e => e._id === category).articles.eng.length) 
-                    || 
-                    (ct.lang === 1 && !props.categories.find(e => e._id === category).articles.fr.length) 
-                    || 
-                    (ct.lang === 2 && !props.categories.find(e => e._id === category).articles.jp.length)) ?
-                        <p className="txt_centered">{category_is_empty(ct.lang)}</p>
+                {category !== 'all' && !props.articles.filter(e => e.category === category).length ? <p className="txt_centered">{category_is_empty(ct.lang)}</p>
                 :
                 <>
                     {sort === 'old' ?

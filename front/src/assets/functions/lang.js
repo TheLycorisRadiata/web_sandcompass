@@ -2639,6 +2639,97 @@ export const disclaimer_language = (lang) =>
 
 /* BLOG EDITOR ---------------------------------------------------------------------------------- */
 
+export const post_new_article = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Poster un nouvel article';
+        case 2:
+            return 'Post a new article';
+        default:
+            return 'Post a new article';
+    }
+};
+
+export const select_article = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sélectionnez un article';
+        case 2:
+            return 'Select an article';
+        default:
+            return 'Select an article';
+    }
+};
+
+export const no_article = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Aucun article';
+        case 2:
+            return 'No article';
+        default:
+            return 'No article';
+    }
+};
+
+export const modify_article = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Modifier un article';
+        case 2:
+            return 'Modify an article';
+        default:
+            return 'Modify an article';
+    }
+};
+
+export const delete_article = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Supprimer un article';
+        case 2:
+            return '記事を消す';
+        default:
+            return 'Delete an article';
+    }
+};
+
+export const title = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Titre';
+        case 2:
+            return 'タイトル';
+        default:
+            return 'Title';
+    }
+};
+
+export const no_category = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Aucune catégorie';
+        case 2:
+            return 'No category';
+        default:
+            return 'No category';
+    }
+};
+
 export const select_category = (lang) => 
 {
     switch (lang)
@@ -2649,6 +2740,162 @@ export const select_category = (lang) =>
             return 'Select a category';
         default:
             return 'Select a category';
+    }
+};
+
+export const manage_categories = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Gérer les catégories';
+        case 2:
+            return 'Manage categories';
+        default:
+            return 'Manage categories';
+    }
+};
+
+export const new_category = (lang, index) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Nouvelle catégorie (${dynamic_language(lang, index)})`;
+        case 2:
+            return `New category（${dynamic_language(lang, index)}）`;
+        default:
+            return `New category (${dynamic_language(lang, index)})`;
+    }
+};
+
+export const add_category = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Ajouter une catégorie';
+        case 2:
+            return 'Add a category';
+        default:
+            return 'Add a category';
+    }
+};
+
+export const delete_category = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Supprimer une catégorie';
+        case 2:
+            return 'Delete a category';
+        default:
+            return 'Delete a category';
+    }
+};
+
+export const modify_category = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Modifier une catégorie';
+        case 2:
+            return 'Modify a category';
+        default:
+            return 'Modify a category';
+    }
+};
+
+export const content = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Contenu';
+        case 2:
+            return 'コンテンツ';
+        default:
+            return 'Content';
+    }
+};
+
+export const preview = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Aperçu';
+        case 2:
+            return 'プレビュー';
+        default:
+            return 'Preview';
+    }
+};
+
+export const disclaimer_blog_editor_language = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'L\'article a besoin d\'une langue.';
+        case 2:
+            return 'The article needs a language.';
+        default:
+            return 'The article needs a language.';
+    }
+};
+
+export const disclaimer_blog_editor_title = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'L\'article a besoin d\'un titre.';
+        case 2:
+            return 'The article needs a title.';
+        default:
+            return 'The article needs a title.';
+    }
+};
+
+export const disclaimer_blog_editor_category = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'L\'article a besoin d\'une catégorie.';
+        case 2:
+            return 'The article needs a category.';
+        default:
+            return 'The article needs a category.';
+    }
+};
+
+export const disclaimer_blog_editor_content = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'L\'article a besoin de contenu.';
+        case 2:
+            return 'The article needs content.';
+        default:
+            return 'The article needs content.';
+    }
+};
+
+export const confirm_change_article_language = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'La langue sélectionnée dans l\'éditeur de blog est différente de la langue originelle de l\'article. Voulez-vous l\'utiliser comme nouvelle langue pour l\'article ?';
+        case 2:
+            return 'The language selected in the blog editor is different from the article\'s original language. Do you want to use it as the new language for the article?';
+        default:
+            return 'The language selected in the blog editor is different from the article\'s original language. Do you want to use it as the new language for the article?';
     }
 };
 

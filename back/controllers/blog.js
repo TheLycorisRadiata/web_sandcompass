@@ -61,13 +61,14 @@ const post_new_article = (req, res) =>
 
 const modify_article = (req, res) => 
 {
-    Article.updateOne({ _id: req.body.id },
+    Article.updateOne({ _id: req.body._id },
     {
         time_modification: req.body.article.time_modification,
         is_modified: true,
         category: req.body.article.category,
         title: req.body.article.title,
-        content: req.body.article.content
+        content: req.body.article.content,
+        language: req.body.article.language
     })
     .then(() => 
     {
@@ -80,7 +81,7 @@ const modify_article = (req, res) =>
 
 const delete_article = (req, res) => 
 {
-    const id_article_to_delete = req.body.id;
+    const id_article_to_delete = req.body._id;
     const id_author = req.body.author;
     const obj_author_articles = req.body.author_list_articles;
 
@@ -121,6 +122,29 @@ const create_new_category = (req, res) =>
         .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been created, but the categories couldn\'t be loaded.', error: err }));
     })
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be created.', error: err }));
+};
+
+const modify_category = (req, res) => 
+{
+    Category.findOne({ _id: req.body._id })
+    .then(category => 
+    {
+        if (!category)
+        {
+            res.status(404).json({ is_success: false, message: 'Error: The category can\'t be modified.' });
+            return;
+        }
+
+        Category.updateOne({ _id: req.body._id }, { name: req.body.updated_category })
+        .then(() => 
+        {
+            Category.find()
+            .then(categories => res.status(201).json({ is_success: true, message: 'Category modified, and ' + categories.length + ' categories loaded.', data: categories }))
+            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been modified, but the categories couldn\'t be loaded.', error: err }));
+        })
+        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be modified.', error: err }));
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be modified.', error: err }));
 };
 
 const delete_category = (req, res) => 
@@ -305,6 +329,7 @@ module.exports =
     delete_article,
     retrieve_categories,
     create_new_category,
+    modify_category,
     delete_category,
     like_or_dislike_article
 };

@@ -61,12 +61,6 @@ const UserPanel = (props) =>
             handle_submit();
     };
 
-    const handle_password_visibility = (e) => 
-    {
-        e.preventDefault();
-        set_is_password_shown(is_password_shown ? false : true);
-    };
-
     useEffect(() => 
     {
         if (props.is_access_granted)
@@ -87,7 +81,7 @@ const UserPanel = (props) =>
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={password(ct.lang)} autoComplete="on"
                             value={field_password} onChange={e => set_field_password(e.target.value)} onKeyPress={handle_key_press} />
-                        <span className="btn_eye" onClick={handle_password_visibility}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <input type="button" className="button" value={log_in(ct.lang)} onClick={handle_submit} />
                     {access_message !== '' && <p>{access_message}</p>}

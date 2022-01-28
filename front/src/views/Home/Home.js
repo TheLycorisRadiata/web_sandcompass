@@ -5,10 +5,11 @@ import { AppContext } from '../../App';
 import {
     home, title_about_website, msg_about_website, 
     home_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, 
-    last_article, read_more 
+    last_article 
 } from '../../assets/functions/lang';
 import DisplayCover from '../../assets/components/DisplayCover';
 import SocialMedia from '../../assets/components/SocialMedia';
+import ArticleExcerpt from '../../assets/components/ArticleExcerpt';
 
 const Home = (props) => 
 {
@@ -47,11 +48,7 @@ const Home = (props) =>
                     <h3 id="last_article_title" className="sub_title">{props.last_article[ct.lang].title}</h3>
                 </div>
 
-                <div>{Parser(props.last_article[ct.lang].content.substring(0, 400) + " [...]")}</div>
-
-                <div className="read_more">
-                    <Link to={'/blog/article' + props.last_article[ct.lang]._id}>{read_more(ct.lang)}</Link>
-                </div>
+                <ArticleExcerpt content={props.last_article[ct.lang].content} id={props.last_article[ct.lang]._id} />
             </section>}
         </main>
     );

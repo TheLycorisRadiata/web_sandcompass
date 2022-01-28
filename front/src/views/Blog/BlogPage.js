@@ -1,17 +1,17 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
     blog, blog_is_empty, sort_from_oldest, sort_from_most_recent,
     all_categories, category_is_empty, 
     info_category, info_author, info_created, info_modified, 
-    read_more, user_not_found 
+    user_not_found 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglassEnd, faHourglassStart } from '@fortawesome/free-solid-svg-icons';
 import { date_in_letters, time } from '../../assets/functions/time';
 import { fetch_username_from_id } from '../../assets/functions/blog';
+import ArticleExcerpt from '../../assets/components/ArticleExcerpt';
 
 const icon_sorted_old = <FontAwesomeIcon icon={faHourglassEnd} />;
 const icon_sorted_recent = <FontAwesomeIcon icon={faHourglassStart} />;
@@ -132,10 +132,7 @@ const BlogPage = (props) =>
                                         <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
                                 </ul>
 
-                                <div>{Parser(e.content.substring(0, 400) + " [...]")}</div>
-                                <div className="read_more">
-                                    <Link to={'/blog/article' + e._id}>{read_more(ct.lang)}</Link>
-                                </div>
+                                <ArticleExcerpt content={e.content} id={e._id} />
                             </article>)
                     :
                     props.articles.slice(0).reverse().map((e, i) => 
@@ -150,10 +147,7 @@ const BlogPage = (props) =>
                                         <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
                                 </ul>
 
-                                <div>{Parser(e.content.substring(0, 400) + " [...]")}</div>
-                                <div className="read_more">
-                                    <Link to={'/blog/article' + e._id}>{read_more(ct.lang)}</Link>
-                                </div>
+                                <ArticleExcerpt content={e.content} id={e._id} />
                             </article>)}
                 </>}
             </>}

@@ -4,9 +4,9 @@ const model_article = new mongoose.Schema(
 {
     language: Number,
     category: mongoose.Schema.Types.ObjectId,
-    title: { type: String, default: 'NO_TITLE' },
+    title: String,
     author: { type: mongoose.Schema.Types.ObjectId, default: null },
-    content: { type: String, default: 'NO_CONTENT' },
+    content: String,
     time_creation: { type: Date, default: Date.now },
     time_modification: { type: Date, default: Date.now },
     is_modified: { type: Boolean, default: false },

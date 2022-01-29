@@ -2,10 +2,21 @@ import { username_disclaimer, username_disclaimer_and_display } from './lang';
 
 const parse_username = (lang, username) => 
 {
-    // Remove spaces and what is not a number or a letter (case insensitive)
-    const parsed_username = username.replace(/[^a-z0-9]/gi,'');
-
+    let parsed_username = username.split('');
     let user_approves = false;
+    let i;
+
+    // Remove < > [ ] and `
+    for (i = 0; i < parsed_username.length; ++i)
+    {
+        if (parsed_username[i] === '<' || parsed_username[i] === '>' || parsed_username[i] === '[' || parsed_username[i] === ']' || parsed_username[i] === '`')
+            parsed_username[i] = '';
+    }
+    parsed_username = parsed_username.join('');
+
+    // Remove spaces
+    parsed_username = parsed_username.replace(/\s/g, '');
+
     if (parsed_username === username)
         user_approves = true;
     else if (parsed_username === '')
@@ -18,14 +29,22 @@ const parse_username = (lang, username) =>
 
 const parse_category = (category) => 
 {
+    let parsed_category = category.split('');
+    let i;
+
+    // Remove < > [ ] and `
+    for (i = 0; i < parsed_category.length; ++i)
+    {
+        if (parsed_category[i] === '<' || parsed_category[i] === '>' || parsed_category[i] === '[' || parsed_category[i] === ']' || parsed_category[i] === '`')
+            parsed_category[i] = '';
+    }
+    parsed_category = parsed_category.join('');
+
     // Trim the beginning and ending spaces
-    let parsed_category = category.trim();
+    parsed_category = parsed_category.trim();
 
     // No more than one space between characters
     parsed_category = parsed_category.replace(/ {2,}/g, ' ');
-
-    // Allow spaces, but remove everything else that isn't a number or a letter (case insensitive)
-    parsed_category = parsed_category.replace(/[^a-z0-9 ]/gi,'');
 
     if (parsed_category !== '')
     {

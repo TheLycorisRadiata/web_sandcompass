@@ -385,11 +385,11 @@ export const username_disclaimer = (lang) =>
     switch (lang)
     {
         case 1:
-            return 'Les pseudos ne peuvent avoir que des chiffres et des lettres.';
+            return 'Les pseudos ne peuvent pas avoir d\'espaces ni certains caractères spéciaux.';
         case 2:
-            return 'Usernames can only have letters and numbers.';
+            return 'Usernames cannot have spaces nor certain special characters.';
         default:
-            return 'Usernames can only have letters and numbers.';
+            return 'Usernames cannot have spaces nor certain special characters.';
     }
 };
 
@@ -398,11 +398,11 @@ export const username_disclaimer_and_display = (lang, parsed_username) =>
     switch (lang)
     {
         case 1:
-            return `Les pseudos ne peuvent avoir que des chiffres et des lettres. "${parsed_username}" vous convient-il ?`;
+            return `Les pseudos ne peuvent pas avoir d'espaces ni certains caractères spéciaux. "${parsed_username}" vous convient-il ?`;
         case 2:
-            return `Usernames can only have letters and numbers. Does "${parsed_username}" suit you?`;
+            return `Usernames cannot have spaces nor certain special characters. Does "${parsed_username}" suit you?`;
         default:
-            return `Usernames can only have letters and numbers. Does "${parsed_username}" suit you?`;
+            return `Usernames cannot have spaces nor certain special characters. Does "${parsed_username}" suit you?`;
     }
 };
 

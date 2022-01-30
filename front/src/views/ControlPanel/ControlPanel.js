@@ -33,7 +33,7 @@ const ControlPanel = (props) =>
             set_access_message(disclaimer_email_and_password(ct.lang));
         else
         {
-            fetch(backend + `/user/admin/login/${field_email_address}/${field_password}`)
+            fetch(`${backend}/user/${ct.lang}/admin/login/${field_email_address}/${field_password}`)
             .then(res => res.json())
             .then(json => 
             {

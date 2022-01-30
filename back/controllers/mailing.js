@@ -3,9 +3,16 @@ const User = require('../models/user');
 const Token = require('../models/token');
 const Newsletter = require('../models/newsletter');
 const { homepage } = require('../package.json');
+const {
+    short_lang, long_lang, failure_try_again, success_message_sent, 
+    welcome_to_sandcompass, welcome_to_sandcompass_user, click_email_validation_link, user_is_subscribed_to_newsletter, suggest_subscription_to_newsletter, help_by_speaking_about_sc, help_by_leaving_message, failure_account_validation_email, success_account_validation_email, 
+    failure_newsletter_subscription_email, 
+} = require('../lang');
 
 const send_visitor_mail_to_admin = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     /* SUBJECT
         Not supposed to happen:
             'default' > No subject selected
@@ -53,12 +60,12 @@ const send_visitor_mail_to_admin = (req, res) =>
     {
         from: `"${name}" <${email_address}>`,
         to: process.env.GMAIL_USER,
-        subject: 'Contact form | ' + subject,
+        subject: `[${short_lang(lang)}] Contact form | ${subject}`,
         html: '' +
         '<html>' +
             '<body>' +
                 '<hr />' +
-                `<p style="font-weight: bold;">${is_pro}${name} (${email_address})${business_name} says:</p>` +
+                `<p style="font-weight: bold;">${is_pro}${name} (${email_address})${business_name} says in ${long_lang(lang)}:</p>` +
                 '<hr />' +
 
                 `<p>${message}</p>` +
@@ -71,24 +78,25 @@ const send_visitor_mail_to_admin = (req, res) =>
     .then(admin =>
     {
         if ((admin && email_address === admin.email_address.toLowerCase()) || email_address === process.env.GMAIL_USER.toLowerCase())
-            res.status(400).json({ is_success: false, message: 'Error: Try again.' });
+            res.status(400).json({ is_success: false, message: failure_try_again(lang) });
         else
         {
             // Send the email
             smtp_trans.sendMail(mail_options, (error, response) => 
             {
                 if (error)
-                    res.status(400).json({ is_success: false, message: 'Error: Try again.', error: error });
+                    res.status(400).json({ is_success: false, message: failure_try_again(lang), error: error });
                 else
-                    res.status(200).json({ is_success: true, message: 'Message sent.' });
+                    res.status(200).json({ is_success: true, message: success_message_sent(lang) });
             });
         }
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: Try again.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_try_again(lang), error: err }));
 };
 
 const send_mail_at_account_registration = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const email_address = req.body.email_address.toLowerCase();
 
     let smtp_trans = null;
@@ -102,15 +110,11 @@ const send_mail_at_account_registration = (req, res) =>
     {
         if (!user)
         {
-            res.status(400).json({ is_success: false, message: 'Error: The account validation email couldn\'t be sent.' });
+            res.status(400).json({ is_success: false, message: failure_account_validation_email(lang) });
             return;
         }
 
         link_referral = homepage + '/user/signup/' + user._id;
-
-        paragraph_newsletter = (user.newsletter ? 
-            `<p>You're subscribed to the newsletter, which allows you to be updated on the projects' progress.` : 
-            `<p>If you desire to be updated on the projects' progress, subscribe to the newsletter from your Sand Compass account.`) 
 
         // Create the token for email verification
         new Token(
@@ -144,20 +148,20 @@ const send_mail_at_account_registration = (req, res) =>
                 {
                     from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
                     to: email_address,
-                    subject: 'Welcome to Sand Compass',
+                    subject: welcome_to_sandcompass(lang),
                     html: '' + 
                     '<html>' + 
                         '<body>' + 
                             '<hr />' + 
-                            `<h1 style="text-align: center;">Welcome to Sand Compass, ${user.username}!</h1>` + 
+                            `<h1 style="text-align: center;">${welcome_to_sandcompass_user(lang, user.username)}</h1>` + 
                             '<hr />' + 
 
-                            `<p>To be assured you're behind this registration, you're invited to <a href="${link_verify_email}">click here</a> to verify your email address.</p>` + 
+                            `<p>${click_email_validation_link(lang, link_verify_email)}</p>` + 
 
-                            paragraph_newsletter + 
+                            (user.newsletter ? `<p>${user_is_subscribed_to_newsletter(lang)}</p>` : `<p>${suggest_subscription_to_newsletter(lang)}</p>`) + 
 
-                            '<p>Thank you for the attention you express towards Sand Compass! If you wish to help projects get along, speak about Sand Compass around you and on social media.</p>' + 
-                            '<p>You can also help by letting a message on the website with a remark, question or suggestion.</p>' +
+                            `<p>${help_by_speaking_about_sc(lang)}</p>` + 
+                            `<p>${help_by_leaving_message(lang)}</p>` + 
                         '</body>' + 
                     '</html>'
                 };
@@ -165,21 +169,22 @@ const send_mail_at_account_registration = (req, res) =>
                 smtp_trans.sendMail(mail_options, (err, response) => 
                 {
                     if (err)
-                        res.status(400).json({ is_success: false, message: 'Error: The account validation email couldn\'t be sent.', error: err });
+                        res.status(400).json({ is_success: false, message: failure_account_validation_email(lang), error: err });
                     else
-                        res.status(200).json({ is_success: true, message: 'You\'ve just been sent an email! It contains a clickable link to verify your email address.' });
+                        res.status(200).json({ is_success: true, message: success_account_validation_email(lang) });
                 });
             })
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The account validation email couldn\'t be sent.', error: err }));
+            .catch(err => res.status(400).json({ is_success: false, message: failure_account_validation_email(lang), error: err }));
         })
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The account validation email couldn\'t be sent.', error: err }));
+        .catch(err => res.status(400).json({ is_success: false, message: failure_account_validation_email(lang), error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The account validation email couldn\'t be sent.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_account_validation_email(lang), error: err }));
 };
 
 // This controller is only if the account has been previously created but without a newsletter subscription
 const send_mail_at_newsletter_subscription = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const email_address = req.body.email_address.toLowerCase();
 
     let smtp_trans = null;
@@ -190,7 +195,7 @@ const send_mail_at_newsletter_subscription = (req, res) =>
     {
         if (!user)
         {
-            res.status(404).json({ is_success: false, message: 'Error: The newsletter email couldn\'t be sent.' });
+            res.status(404).json({ is_success: false, message: failure_newsletter_subscription_email(lang) });
             return;
         }
 
@@ -231,17 +236,18 @@ const send_mail_at_newsletter_subscription = (req, res) =>
         smtp_trans.sendMail(mail_options, (err, response) => 
         {
             if (err)
-                res.status(400).json({ is_success: false, message: 'Error: The newsletter email couldn\'t be sent.', error: err });
+                res.status(400).json({ is_success: false, message: failure_newsletter_subscription_email(lang), error: err });
             else
                 res.status(200).json({ is_success: true, message: 'You\'ve just been sent an email.' });
         });
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The newsletter email couldn\'t be sent.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_subscription_email(lang), error: err }));
 };
 
 // This controller is only if the email address has been updated from the account editor
 const send_mail_at_email_update = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const email_address = req.body.email_address.toLowerCase();
     
     let smtp_trans = null;
@@ -317,6 +323,7 @@ const send_mail_at_email_update = (req, res) =>
 
 const send_mail_for_new_password = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const email_address = req.body.email_address.toLowerCase();
 
     let smtp_trans = null;
@@ -381,21 +388,23 @@ const send_mail_for_new_password = (req, res) =>
                     smtp_trans.sendMail(mail_options, (err, response) => 
                     {
                         if (err)
-                            res.status(400).json({ is_success: false, message: 'Error: Try again.', error: err });
+                            res.status(400).json({ is_success: false, message: failure_try_again(lang), error: err });
                         else
                             res.status(200).json({ is_success: true, message: 'You\'ve just been sent an email! It contains a clickable link to set your password.' });
                     });
                 })
-                .catch(err => res.status(400).json({ is_sucess: false, message: 'Error: Try again.', error: err }));
+                .catch(err => res.status(400).json({ is_sucess: false, message: failure_try_again(lang), error: err }));
             })
-            .catch(err => res.status(400).json({ is_sucess: false, message: 'Error: Try again.', error: err }));
+            .catch(err => res.status(400).json({ is_sucess: false, message: failure_try_again(lang), error: err }));
         }
     })
-    .catch(err => res.status(400).json({ is_sucess: false, message: 'Error: Try again.', error: err }));
+    .catch(err => res.status(400).json({ is_sucess: false, message: failure_try_again(lang), error: err }));
 };
 
 const retrieve_all_newsletters = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Newsletter.find()
     .then(newsletters => res.status(200).json({ is_success: true, data: newsletters, message: newsletters.length + ' newsletters loaded.' }))
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
@@ -403,6 +412,7 @@ const retrieve_all_newsletters = (req, res) =>
 
 const send_newsletter = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const newsletter = req.body.newsletter;
     let has_an_error_occured = false;
     let smtp_trans = null;
@@ -442,7 +452,7 @@ const send_newsletter = (req, res) =>
 
         if (has_an_error_occured)
         {
-            res.status(400).json({ is_success: false, message: 'Error: Try again.' });
+            res.status(400).json({ is_success: false, message: failure_try_again(lang) });
         }
         else if (!newsletter.do_send)
         {
@@ -514,7 +524,7 @@ const send_newsletter = (req, res) =>
             .catch(err => res.status(400).json({ is_success: false, message: 'Error: The newsletter is saved, but couldn\'t be sent. Try again.', error: error }));
         }
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: Try again.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_try_again(lang), error: err }));
 };
 
 module.exports = 

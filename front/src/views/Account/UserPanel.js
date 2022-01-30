@@ -32,7 +32,7 @@ const UserPanel = (props) =>
             set_access_message(disclaimer_email_and_password(ct.lang));
         else
         {
-            await fetch(backend + `/user/login/${field_email_address}/${field_password}`)
+            await fetch(`${backend}/user/${ct.lang}/login/${field_email_address}/${field_password}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -51,7 +51,7 @@ const UserPanel = (props) =>
             .catch(err => console.log(err));
 
             if (send_verif_email && window.confirm(confirm_resend_verification_email(ct.lang)))
-                send_registration_email(field_email_address);
+                send_registration_email(ct.lang, field_email_address);
         }
     };
 

@@ -23,7 +23,7 @@ const Stats = (props) =>
     {
         e.preventDefault();
 
-        fetch(backend + '/user/stats/all')
+        fetch(`${backend}/user/${ct.lang}/stats/all`)
         .then(res => res.json())
         .then(json => 
         {

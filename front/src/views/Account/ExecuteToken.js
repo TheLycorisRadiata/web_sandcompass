@@ -22,7 +22,7 @@ const ExecuteToken = () =>
         const last_part = path_parts[path_parts.length - 1];
         const id_token = last_part !== '' && last_part !== 'signup' ? last_part : '';
 
-        fetch(backend + '/token/' + id_token)
+        fetch(`${backend}/token/${ct.lang}/${id_token}`)
         .then(res => res.json())
         .then(json => 
         {

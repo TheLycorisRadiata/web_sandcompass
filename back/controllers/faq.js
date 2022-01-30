@@ -2,6 +2,8 @@ const Question = require('../models/question');
 
 const retrieve_all_questions = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Question.find()
     .then(questions => res.status(200).json({ is_success: true, message: questions.length + ' questions loaded.', data: questions }))
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The questions couldn\'t be retrieved.', error: err }));
@@ -9,6 +11,8 @@ const retrieve_all_questions = (req, res) =>
 
 const add_question = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     new Question(
     {
         question: req.body.arr_question,
@@ -26,6 +30,8 @@ const add_question = (req, res) =>
 
 const edit_question = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Question.updateOne({ _id: req.body._id },
     {
         question: req.body.arr_question,
@@ -42,6 +48,8 @@ const edit_question = (req, res) =>
 
 const remove_question = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Question.deleteOne({ _id: req.body._id })
     .then(() => 
     {

@@ -34,7 +34,7 @@ const FaqEditor = (props) =>
 
         if (eng_question !== '' && eng_answer !== '' && fr_question !== '' && fr_answer !== '' && jp_question !== '' && jp_answer !== '')
         {
-            fetch(backend + '/faq/add',
+            fetch(`${backend}/faq/${ct.lang}/add`,
             {
                 method: 'POST',
                 headers:
@@ -102,7 +102,7 @@ const FaqEditor = (props) =>
 
         if (eng_edited_question !== '' && eng_edited_answer !== '' && fr_edited_question !== '' && fr_edited_answer !== '' && jp_edited_question !== '' && jp_edited_answer !== '')
         {
-            fetch(backend + '/faq/edit',
+            fetch(`${backend}/faq/${ct.lang}/edit`,
             {
                 method: 'PUT',
                 headers:
@@ -133,7 +133,7 @@ const FaqEditor = (props) =>
     {
         if (window.confirm(confirm_delete_question(ct.lang)))
         {
-            fetch(backend + '/faq/remove',
+            fetch(`${backend}/faq/${ct.lang}/remove`,
             {
                 method: 'DELETE',
                 headers:

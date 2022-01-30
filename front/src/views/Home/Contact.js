@@ -38,7 +38,7 @@ const Contact = () =>
 
         if (name !== '' && email_address !== '' && subject !== 'default' && message !== '')
         {
-            fetch(backend + '/mailing/contact',
+            fetch(`${backend}/mailing/${ct.lang}/contact`,
             {
                 method: 'POST',
                 headers:

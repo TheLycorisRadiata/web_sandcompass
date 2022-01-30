@@ -48,7 +48,7 @@ const SignUp = () =>
             else
                 username = obj_parse_username.parsed_username;
 
-            fetch(backend + '/user/create',
+            fetch(`${backend}/user/${ct.lang}/create`,
             {
                 method: 'POST',
                 headers:
@@ -81,10 +81,10 @@ const SignUp = () =>
 
                 // The account already existed and the user simply subscribed to the newsletter
                 if (json.send_newsletter_email)
-                    send_newsletter_email(json.user_id, email_address);
+                    send_newsletter_email(ct.lang, json.user_id, email_address);
                 // The account has just been created
                 else if (json.is_success)
-                    send_registration_email(email_address);
+                    send_registration_email(ct.lang, email_address);
 
                 if (json.is_success)
                     history.push('/');

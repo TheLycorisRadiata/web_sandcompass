@@ -4,6 +4,8 @@ const User = require('../models/user');
 
 const retrieve_articles = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Article.find()
     .then(articles => res.status(200).json({ is_success: true, message: articles.length + ' articles loaded.', data: articles }))
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The articles can\'t be retrieved.', error: err }));
@@ -11,6 +13,8 @@ const retrieve_articles = (req, res) =>
 
 const retrieve_articles_by_author = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Article.find({ author: req.params.id_author })
     .then(articles => res.status(200).json({ is_success: true, message: articles.length + ' articles loaded.', data: articles }))
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The articles can\'t be retrieved.', error: err }));
@@ -18,6 +22,7 @@ const retrieve_articles_by_author = (req, res) =>
 
 const post_new_article = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const new_article = new Article({ ...req.body.new_article });
     const id_new_article = new_article._id;
     let arr_user_written_articles = null;
@@ -61,6 +66,8 @@ const post_new_article = (req, res) =>
 
 const modify_article = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Article.updateOne({ _id: req.body._id },
     {
         time_modification: req.body.article.time_modification,
@@ -81,6 +88,7 @@ const modify_article = (req, res) =>
 
 const delete_article = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const id_article_to_delete = req.body._id;
     const id_author = req.body.author;
     const obj_author_articles = req.body.author_list_articles;
@@ -106,6 +114,8 @@ const delete_article = (req, res) =>
 
 const retrieve_categories = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Category.find()
     .then(categories => res.status(200).json({ is_success: true, message: categories.length + ' categories loaded.', data: categories }))
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The categories can\'t be retrieved.', error: err }));
@@ -113,6 +123,8 @@ const retrieve_categories = (req, res) =>
 
 const create_new_category = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     new Category({ name: req.body.new_category })
     .save()
     .then(() => 
@@ -126,6 +138,8 @@ const create_new_category = (req, res) =>
 
 const modify_category = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Category.findOne({ _id: req.body._id })
     .then(category => 
     {
@@ -149,6 +163,8 @@ const modify_category = (req, res) =>
 
 const delete_category = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Article.findOne({ category: req.body._id })
     .then(article => 
     {
@@ -171,6 +187,7 @@ const delete_category = (req, res) =>
 
 const like_or_dislike_article = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const id_article = req.body.id_article;
     const id_user = req.body.id_user;
     const new_user_vote = req.body.user_vote;

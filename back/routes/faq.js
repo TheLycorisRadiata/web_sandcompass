@@ -3,10 +3,10 @@ const controller_faq = require('../controllers/faq');
 
 const router = express.Router();
 
-router.get('/all', controller_faq.retrieve_all_questions);
-router.post('/add', controller_faq.add_question);
-router.put('/edit', controller_faq.edit_question);
-router.delete('/remove', controller_faq.remove_question);
+router.get('/:lang/all', controller_faq.retrieve_all_questions);
+router.post('/:lang/add', controller_faq.add_question);
+router.put('/:lang/edit', controller_faq.edit_question);
+router.delete('/:lang/remove', controller_faq.remove_question);
 
 module.exports = router;
 

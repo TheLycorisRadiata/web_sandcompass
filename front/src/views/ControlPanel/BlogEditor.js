@@ -118,7 +118,7 @@ const BlogEditor = (props) =>
 
         if (parsed_category_eng !== '' && parsed_category_fr !== '' && parsed_category_jp !== '')
         {
-            fetch(backend + '/blog/categories',
+            fetch(`${backend}/blog/${ct.lang}/categories`,
             {
                 method: 'POST',
                 headers:
@@ -152,7 +152,7 @@ const BlogEditor = (props) =>
     {
         if (article.category !== '')
         {
-            fetch(backend + '/blog/categories',
+            fetch(`${backend}/blog/${ct.lang}/categories`,
             {
                 method: 'DELETE',
                 headers:
@@ -222,7 +222,7 @@ const BlogEditor = (props) =>
 
         if (updated_eng !== '' && updated_fr !== '' && updated_jp !== '')
         {
-            fetch(backend + '/blog/categories',
+            fetch(`${backend}/blog/${ct.lang}/categories`,
             {
                 method: 'PUT',
                 headers:
@@ -277,7 +277,7 @@ const BlogEditor = (props) =>
             new_article.content = article.content;
             new_article.language = selected_language;
 
-            fetch(backend + '/blog/articles',
+            fetch(`${backend}/blog/${ct.lang}/articles`,
             {
                 method: 'POST',
                 headers:
@@ -323,7 +323,7 @@ const BlogEditor = (props) =>
                     updated_article.language = selected_language;
             }
 
-            fetch(backend + '/blog/articles',
+            fetch(`${backend}/blog/${ct.lang}/articles`,
             {
                 method: 'PUT',
                 headers:
@@ -355,7 +355,7 @@ const BlogEditor = (props) =>
     {
         if (selected_article !== 'default')
         {
-            fetch(backend + '/blog/articles',
+            fetch(`${backend}/blog/${ct.lang}/articles`,
             {
                 method: 'DELETE',
                 headers:

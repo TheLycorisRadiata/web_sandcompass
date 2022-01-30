@@ -1,9 +1,9 @@
 import { confirm_resend_verification_email } from './lang';
 import { backend } from '../../../package.json';
 
-const send_registration_email = async (email_address) => 
+const send_registration_email = async (lang, email_address) => 
 {
-    await fetch(backend + '/mailing/register',
+    await fetch(`${backend}/mailing/${lang}/register`,
     {
         method: 'POST',
         headers:
@@ -24,9 +24,9 @@ const send_registration_email = async (email_address) =>
     .catch(err => console.log(err));
 };
 
-const send_newsletter_email = async (user_id, email_address) => 
+const send_newsletter_email = async (lang, user_id, email_address) => 
 {
-    await fetch(backend + '/mailing/newsletter',
+    await fetch(`${backend}/mailing/${lang}/newsletter`,
     {
         method: 'POST',
         headers:
@@ -51,9 +51,9 @@ const send_newsletter_email = async (user_id, email_address) =>
     .catch(err => console.log(err));
 };
 
-const send_verification_email = async (user_id, email_address, first_name) => 
+const send_verification_email = async (lang, user_id, email_address, first_name) => 
 {
-    await fetch(backend + '/mailing/email',
+    await fetch(`${backend}/mailing/${lang}/email`,
     {
         method: 'POST',
         headers:
@@ -81,7 +81,7 @@ const send_verification_email = async (user_id, email_address, first_name) =>
 
 const send_password_email = async (lang, email_address) => 
 {
-    await fetch(backend + '/mailing/password',
+    await fetch(`${backend}/mailing/${lang}/password`,
     {
         method: 'POST',
         headers:

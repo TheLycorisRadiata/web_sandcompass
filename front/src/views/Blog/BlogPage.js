@@ -36,7 +36,7 @@ const BlogPage = (props) =>
 
             for (const article of props.articles)
             {
-                json = await fetch_username_from_id(article.author);
+                json = await fetch_username_from_id(ct.lang, article.author);
                 console.log(json.message);
                 if (json.error)
                     console.log(json.error);

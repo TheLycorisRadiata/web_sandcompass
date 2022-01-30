@@ -30,7 +30,7 @@ const NewsletterEditor = (props) =>
 
     const fetch_newsletters = (trigger_alert) => 
     {
-        fetch(backend + '/mailing/newsletter/all')
+        fetch(`${backend}/mailing/${ct.lang}/newsletter/all`)
         .then(res => res.json())
         .then(json => 
         {
@@ -90,7 +90,7 @@ const NewsletterEditor = (props) =>
             alert(disclaimer_language(ct.lang));
         else
         {
-            fetch(backend + '/mailing/newsletter/send',
+            fetch(`${backend}/mailing/${ct.lang}/newsletter/send`,
             {
                 method: 'POST',
                 headers:

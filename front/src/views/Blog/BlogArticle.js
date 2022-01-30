@@ -58,7 +58,7 @@ const BlogArticle = (props) =>
         }
         else
         {
-            fetch(backend + '/blog/vote/article',
+            fetch(`${backend}/blog/${ct.lang}/vote/article`,
             {
                 method: 'PUT',
                 headers:
@@ -123,7 +123,7 @@ const BlogArticle = (props) =>
         }
         else
         {
-            fetch(backend + '/blog/vote/article',
+            fetch(`${backend}/blog/${ct.lang}/vote/article`,
             {
                 method: 'PUT',
                 headers:
@@ -168,7 +168,7 @@ const BlogArticle = (props) =>
     useLayoutEffect(() => 
     {
         // Display the author's username
-        fetch(backend + `/user/username/${props.article.author}`)
+        fetch(`${backend}/user/${ct.lang}/username/${props.article.author}`)
         .then(res => res.json())
         .then(json => 
         {

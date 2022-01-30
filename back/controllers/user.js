@@ -3,6 +3,7 @@ const User = require('../models/user');
 
 const connect_as_admin = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const email_address = req.params.email_address.toLowerCase();
     const password = req.params.password;
 
@@ -26,6 +27,7 @@ const connect_as_admin = (req, res) =>
 
 const connect_as_user = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const email_address = req.params.email_address.toLowerCase();
     const password = req.params.password;
 
@@ -49,6 +51,7 @@ const connect_as_user = (req, res) =>
 
 const create_password = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const find_obj = req.body._id ? { _id: req.body._id } : { email_address: req.body.email_address.toLowerCase() };
 
     const salt_rounds = 10;
@@ -98,6 +101,8 @@ const create_password = (req, res) =>
 
 const is_email_already_used_by_another_account = (req, res) =>
 {
+    const lang = parseInt(req.params.lang);
+
     User.findOne({ email_address: req.params.email_address.toLowerCase() })
     .then(user => 
     {
@@ -112,6 +117,8 @@ const is_email_already_used_by_another_account = (req, res) =>
 
 const is_username_already_used_by_another_account = (req, res) =>
 {
+    const lang = parseInt(req.params.lang);
+
     // The username's search is case insensitive
     User.findOne({ username: { $regex: '^' + req.params.username + '$', $options: 'i' }})
     .then(user => 
@@ -127,6 +134,7 @@ const is_username_already_used_by_another_account = (req, res) =>
 
 const create_account = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
     const salt_rounds = 10;
     const salt = bcrypt.genSaltSync(salt_rounds);
     const password = req.body.password !== undefined ? req.body.password : null;
@@ -192,6 +200,8 @@ const create_account = (req, res) =>
 
 const update_account = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     // Make sure the email address is in lower case
     const updated_account = req.body.updated_account;
     updated_account.email_address = updated_account.email_address.toLowerCase();
@@ -208,6 +218,8 @@ const update_account = (req, res) =>
 
 const delete_account = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     User.deleteOne({ _id: req.body.id_user_to_delete })
     .then(() => res.status(200).json({ is_success: true, message: 'The account has been deleted.' }))
     .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
@@ -215,6 +227,8 @@ const delete_account = (req, res) =>
 
 const get_stats_on_all_users = (req, res) =>
 {
+    const lang = parseInt(req.params.lang);
+
     const stats =
     {
         accounts:
@@ -253,6 +267,8 @@ const get_stats_on_all_users = (req, res) =>
 
 const get_username_from_id = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     User.findOne({ _id: req.params.id })
     .then(user => 
     {

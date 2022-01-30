@@ -3,6 +3,8 @@ const User = require('../models/user');
 
 const execute_token = (req, res) => 
 {
+    const lang = parseInt(req.params.lang);
+
     Token.findOne({ _id: req.params.id })
     .then(token => 
     {

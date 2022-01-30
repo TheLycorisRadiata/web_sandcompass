@@ -84,7 +84,7 @@ const App = () =>
         else
             set_lang(0); // English (default)
 
-        fetch(backend + '/faq/all')
+        fetch(`${backend}/faq/${lang}/all`)
         .then(res => res.json())
         .then(json =>
         {
@@ -107,15 +107,7 @@ const App = () =>
         })
         .catch(err => console.log(err));
 
-        fetch(backend + '/blog/categories',
-        {
-            method: 'GET',
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
+        fetch(`${backend}/blog/${lang}/categories`)
         .then(res => res.json())
         .then(json => 
         {
@@ -126,15 +118,7 @@ const App = () =>
                 set_all_categories(json.data);
         });
 
-        fetch(backend + '/blog/articles',
-        {
-            method: 'GET',
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
+        fetch(`${backend}/blog/${lang}/articles`)
         .then(res => res.json())
         .then(json => 
         {
@@ -158,6 +142,8 @@ const App = () =>
                 set_last_article(arr_last_article);
             }
         });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

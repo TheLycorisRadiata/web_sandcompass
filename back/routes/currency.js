@@ -3,7 +3,7 @@ const controller_currency = require('../controllers/currency');
 
 const router = express.Router();
 
-router.get('/all', controller_currency.retrieve_all_currencies);
+router.get('/:lang/all', controller_currency.retrieve_all_currencies);
 
 module.exports = router;
 

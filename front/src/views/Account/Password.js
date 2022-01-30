@@ -32,7 +32,7 @@ const Password = () =>
 
         if (id_token)
         {
-            fetch(backend + '/token' + id_token)
+            fetch(`${backend}/token/${ct.lang}/${id_token}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -60,7 +60,7 @@ const Password = () =>
 
     const set_password = async (password) => 
     {
-        const res = await fetch(backend + '/user/password',
+        const res = await fetch(`${backend}/user/${ct.lang}/password`,
         {
             method: 'POST',
             headers:

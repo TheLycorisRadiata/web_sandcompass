@@ -25,7 +25,7 @@ const ArticlesByAuthor = (props) =>
     {
         e.preventDefault();
 
-        fetch(backend + '/blog/articles/' + props.author)
+        fetch(`${backend}/blog/${ct.lang}/articles/${props.author}`)
         .then(res => res.json())
         .then(json => 
         {

@@ -34,7 +34,7 @@ const AccountEditor = (props) =>
 
     useLayoutEffect(() => 
     {
-        fetch(backend + `/rank/${props.account_data?.rank}`)
+        fetch(`${backend}/rank/${ct.lang}/${props.account_data?.rank}`)
         .then(res => res.json())
         .then(json => 
         {
@@ -62,21 +62,21 @@ const AccountEditor = (props) =>
 
     const is_username_already_used_by_another_account = async (username) => 
     {
-        const res = await fetch(backend + `/user/check/username/${props.account_data._id}/${username}`);
+        const res = await fetch(`${backend}/user/${ct.lang}/check/username/${props.account_data._id}/${username}`);
         const json = await res.json();
         return json;
     };
 
     const is_email_already_used_by_another_account = async (email) => 
     {
-        const res = await fetch(backend + `/user/check/email/${props.account_data._id}/${email}`);
+        const res = await fetch(`${backend}/user/${ct.lang}/check/email/${props.account_data._id}/${email}`);
         const json = await res.json();
         return json;
     };
 
     const hash_password = async (password) => 
     {
-        const res = await fetch(backend + '/user/password',
+        const res = await fetch(`${backend}/user/${ct.lang}/password`,
         {
             method: 'POST',
             headers:
@@ -203,7 +203,7 @@ const AccountEditor = (props) =>
                 has_newsletter_changed = true;
             }
 
-            await fetch(backend + '/user/update',
+            await fetch(`${backend}/user/${ct.lang}/update`,
             {
                 method: 'PUT',
                 headers:
@@ -231,7 +231,7 @@ const AccountEditor = (props) =>
 
                 // The user changed the status of their newsletter subscription, and they're now subscribed
                 if (has_newsletter_changed && json.data.newsletter)
-                    send_newsletter_email(json.data._id, json.data.email_address, json.data.first_name);
+                    send_newsletter_email(ct.lang, json.data._id, json.data.email_address);
             })
             .catch(err => console.log(err));
         }
@@ -241,7 +241,7 @@ const AccountEditor = (props) =>
 
         // If the email address has been updated, verify it just like we did at account registration
         if (updated_account.verified_user === false)
-            send_verification_email(props.account_data._id, field_email, updated_account.first_name);
+            send_verification_email(ct.lang, props.account_data._id, field_email, updated_account.first_name);
     };
 
     const delete_account = () => 
@@ -250,7 +250,7 @@ const AccountEditor = (props) =>
         {
             set_is_edit_open(false);
 
-            fetch(backend + '/user/delete',
+            fetch(`${backend}/user/${ct.lang}/delete`,
             {
                 method: 'DELETE',
                 headers:

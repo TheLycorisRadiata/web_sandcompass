@@ -26,6 +26,21 @@ const long_lang = (index) =>
     }
 };
 
+/* DEFAULT ERROR MESSAGE ------------------------------------------------------------------------ */
+
+const failure_see_log = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Une erreur est survenue. Voir le log.';
+        case 2:
+            return 'Error: An error occured. See the log.';
+        default:
+            return 'Error: An error occured. See the log.';
+    }
+};
+
 /* MAILING -------------------------------------------------------------------------------------- */
 
 const failure_try_again = (lang) => 
@@ -80,7 +95,7 @@ const welcome_to_sandcompass_user = (lang, username) =>
     }
 };
 
-const click_email_validation_link = (lang, link) => 
+const click_email_verification_link = (lang, link) => 
 {
     switch (lang)
     {
@@ -145,6 +160,19 @@ const help_by_leaving_message = (lang) =>
     }
 };
 
+const failure_no_account_matches_this_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Cette adresse email ne correspond à aucun compte.';
+        case 2:
+            return 'Error: No account matches this email address.';
+        default:
+            return 'Error: No account matches this email address.';
+    }
+};
+
 const failure_account_validation_email = (lang) => 
 {
     switch (lang)
@@ -171,6 +199,32 @@ const success_account_validation_email = (lang) =>
     }
 };
 
+const title_newsletter_subscription_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Vous êtes maintenant abonné(e) à la newsletter';
+        case 2:
+            return 'You\'re now subscribed to the newsletter';
+        default:
+            return 'You\'re now subscribed to the newsletter';
+    }
+};
+
+const hello_user = (lang, username) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Bonjour, ${username} !`;
+        case 2:
+            return `こんにちは、${username}さん！`;
+        default:
+            return `Hello, ${username}!`;
+    }
+};
+
 const failure_newsletter_subscription_email = (lang) => 
 {
     switch (lang)
@@ -184,21 +238,165 @@ const failure_newsletter_subscription_email = (lang) =>
     }
 };
 
+const success_newsletter_subscription_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Vous venez de recevoir un mail.';
+        case 2:
+            return 'You\'ve just been sent an email.';
+        default:
+            return 'You\'ve just been sent an email.';
+    }
+};
+
+const title_email_address_update_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Validez votre adresse email';
+        case 2:
+            return 'Verify your email address';
+        default:
+            return 'Verify your email address';
+    }
+};
+
+const click_new_email_verification_link = (lang, email, link) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Vous venez de communiquer "${email}" comme votre nouvelle adresse email. <a href="${link}">Cliquez ici</a> pour la valider.`;
+        case 2:
+            return `You've just communicated "${email}" as your new email address. <a href="${link}">Click here</a> to verify it.`;
+        default:
+            return `You've just communicated "${email}" as your new email address. <a href="${link}">Click here</a> to verify it.`;
+    }
+};
+
+const failure_email_address_update_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le mail de validation pour votre adresse email n\'a pas pu être envoyé.';
+        case 2:
+            return 'Error: The verification email for your email address couldn\'t be sent.';
+        default:
+            return 'Error: The verification email for your email address couldn\'t be sent.';
+    }
+};
+
+const success_email_address_update_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Vous venez de recevoir un mail sur votre nouvelle adresse email ! Il contient un lien cliquable pour valider votre adresse email.';
+        case 2:
+            return 'You\'ve just been sent an email on your new email address! It contains a clickable link to verify your email address.';
+        default:
+            return 'You\'ve just been sent an email on your new email address! It contains a clickable link to verify your email address.';
+    }
+};
+
+const title_password_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Création du mot de passe';
+        case 2:
+            return 'Password creation';
+        default:
+            return 'Password creation';
+    }
+};
+
+const click_password_link = (lang, link) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `<a href="${link}">Cliquez ici</a> pour créer votre mot de passe.`;
+        case 2:
+            return `<a href="${link}">Click here</a> to create your password.`;
+        default:
+            return `<a href="${link}">Click here</a> to create your password.`;
+    }
+};
+
+const email_has_to_be_verified = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'L\'adresse email doit d\'abord être validée.';
+        case 2:
+            return 'The email address has to be verified first.';
+        default:
+            return 'The email address has to be verified first.';
+    }
+};
+
+const success_password_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Vous venez de recevoir un mail ! Il contient un lien cliquable pour créer votre mot de passe.';
+        case 2:
+            return 'You\'ve just been sent an email! It contains a clickable link to set your password.';
+        default:
+            return 'You\'ve just been sent an email! It contains a clickable link to set your password.';
+    }
+};
+
+const nbr_loaded_newsletters = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + ' newsletters chargées.';
+        case 2:
+            return number + ' newsletters loaded.';
+        default:
+            return number + ' newsletters loaded.';
+    }
+};
+
 module.exports = 
 {
     short_lang, 
     long_lang, 
+    failure_see_log,
     failure_try_again, 
     success_message_sent, 
     welcome_to_sandcompass,
     welcome_to_sandcompass_user,
-    click_email_validation_link,
+    click_email_verification_link,
     user_is_subscribed_to_newsletter,
     suggest_subscription_to_newsletter,
     help_by_speaking_about_sc,
     help_by_leaving_message,
+    failure_no_account_matches_this_email,
     failure_account_validation_email, 
     success_account_validation_email, 
+    title_newsletter_subscription_email,
+    hello_user,
     failure_newsletter_subscription_email,
+    success_newsletter_subscription_email,
+    title_email_address_update_email,
+    click_new_email_verification_link,
+    failure_email_address_update_email,
+    success_email_address_update_email,
+    title_password_email,
+    click_password_link,
+    email_has_to_be_verified,
+    success_password_email,
+    nbr_loaded_newsletters,
 };
 

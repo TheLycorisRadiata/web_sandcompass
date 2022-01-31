@@ -5,8 +5,11 @@ const Newsletter = require('../models/newsletter');
 const { homepage } = require('../package.json');
 const {
     short_lang, long_lang, failure_try_again, success_message_sent, 
-    welcome_to_sandcompass, welcome_to_sandcompass_user, click_email_validation_link, user_is_subscribed_to_newsletter, suggest_subscription_to_newsletter, help_by_speaking_about_sc, help_by_leaving_message, failure_account_validation_email, success_account_validation_email, 
-    failure_newsletter_subscription_email, 
+    welcome_to_sandcompass, welcome_to_sandcompass_user, click_email_verification_link, user_is_subscribed_to_newsletter, suggest_subscription_to_newsletter, help_by_speaking_about_sc, help_by_leaving_message, failure_no_account_matches_this_email, failure_account_validation_email, success_account_validation_email, 
+    title_newsletter_subscription_email, hello_user, failure_newsletter_subscription_email, success_newsletter_subscription_email, 
+    title_email_address_update_email, click_new_email_verification_link, failure_email_address_update_email, success_email_address_update_email, 
+    title_password_email, click_password_link, email_has_to_be_verified, success_password_email, 
+    nbr_loaded_newsletters, failure_see_log, 
 } = require('../lang');
 
 const send_visitor_mail_to_admin = (req, res) => 
@@ -110,7 +113,7 @@ const send_mail_at_account_registration = (req, res) =>
     {
         if (!user)
         {
-            res.status(400).json({ is_success: false, message: failure_account_validation_email(lang) });
+            res.status(404).json({ is_success: false, message: failure_no_account_matches_this_email(lang) });
             return;
         }
 
@@ -156,7 +159,7 @@ const send_mail_at_account_registration = (req, res) =>
                             `<h1 style="text-align: center;">${welcome_to_sandcompass_user(lang, user.username)}</h1>` + 
                             '<hr />' + 
 
-                            `<p>${click_email_validation_link(lang, link_verify_email)}</p>` + 
+                            `<p>${click_email_verification_link(lang, link_verify_email)}</p>` + 
 
                             (user.newsletter ? `<p>${user_is_subscribed_to_newsletter(lang)}</p>` : `<p>${suggest_subscription_to_newsletter(lang)}</p>`) + 
 
@@ -195,7 +198,7 @@ const send_mail_at_newsletter_subscription = (req, res) =>
     {
         if (!user)
         {
-            res.status(404).json({ is_success: false, message: failure_newsletter_subscription_email(lang) });
+            res.status(404).json({ is_success: false, message: failure_no_account_matches_this_email(lang) });
             return;
         }
 
@@ -217,18 +220,17 @@ const send_mail_at_newsletter_subscription = (req, res) =>
         {
             from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
             to: email_address,
-            subject: 'You\'re now subscribed to the newsletter',
+            subject: title_newsletter_subscription_email(lang),
             html: '' + 
             '<html>' + 
                 '<body>' + 
                     '<hr />' + 
-                    `<h1 style="text-align: center;">Hello, ${user.username}!</h1>` + 
+                    `<h1 style="text-align: center;">${hello_user(lang, user.username)}</h1>` + 
                     '<hr />' + 
 
-                    `<p>You're subscribed to the newsletter, which allows you to be updated on the projects' progress.` + 
-
-                    '<p>Thank you for the attention you express towards Sand Compass! If you wish to help projects get along, speak about Sand Compass around you and on social media.</p>' + 
-                    '<p>You can also help by letting a message on the website with a remark, question or suggestion.</p>' +
+                    `<p>${user_is_subscribed_to_newsletter(lang)}</p>` + 
+                    `<p>${help_by_speaking_about_sc(lang)}</p>` + 
+                    `<p>${help_by_leaving_message(lang)}</p>` + 
                 '</body>' + 
             '</html>'
         };
@@ -238,7 +240,7 @@ const send_mail_at_newsletter_subscription = (req, res) =>
             if (err)
                 res.status(400).json({ is_success: false, message: failure_newsletter_subscription_email(lang), error: err });
             else
-                res.status(200).json({ is_success: true, message: 'You\'ve just been sent an email.' });
+                res.status(200).json({ is_success: true, message: success_newsletter_subscription_email(lang) });
         });
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_subscription_email(lang), error: err }));
@@ -259,7 +261,7 @@ const send_mail_at_email_update = (req, res) =>
     .then(user => 
     {
         if (!user)
-            res.status(404).json({ is_success: false, message: 'Error: The verification email for your email address couldn\'t be sent.' });
+            res.status(404).json({ is_success: false, message: failure_no_account_matches_this_email(lang) });
 
         // Create the token for email verification
         new Token(
@@ -293,15 +295,15 @@ const send_mail_at_email_update = (req, res) =>
                 {
                     from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
                     to: email_address,
-                    subject: 'Verify your email address',
+                    subject: title_email_address_update_email(lang),
                     html: '' + 
                     '<html>' + 
                         '<body>' + 
                             '<hr />' + 
-                            `<h1 style="text-align: center;">Hello, ${req.body.username}!</h1>` + 
+                            `<h1 style="text-align: center;">${hello_user(req.body.username)}</h1>` + 
                             '<hr />' + 
 
-                            `<p>You've just communicated "${email_address}" as your new email address. <a href="${link_verify_email}">Click here</a> to verify it.</p>` +
+                            `<p>${click_new_email_verification_link(lang, email_address, link_verify_email)}</p>` +
                         '</body>' + 
                     '</html>'
                 };
@@ -309,16 +311,16 @@ const send_mail_at_email_update = (req, res) =>
                 smtp_trans.sendMail(mail_options, (err, response) => 
                 {
                     if (err)
-                        res.status(400).json({ is_success: false, message: 'Error: The verification email for your email address couldn\'t be sent.', error: err });
+                        res.status(400).json({ is_success: false, message: failure_email_address_update_email(lang), error: err });
                     else
-                        res.status(200).json({ is_success: true, message: 'You\'ve just been sent an email on your new email address! It contains a clickable link to verify your email address.' });
+                        res.status(200).json({ is_success: true, message: success_email_address_update_email(lang) });
                 });
             })
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The verification email for your email address couldn\'t be sent.', error: err }));
+            .catch(err => res.status(400).json({ is_success: false, message: failure_email_address_update_email(lang), error: err }));
         })
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The verification email for your email address couldn\'t be sent.', error: err }));
+        .catch(err => res.status(400).json({ is_success: false, message: failure_email_address_update_email(lang), error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The verification email for your email address couldn\'t be sent.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_email_address_update_email(lang), error: err }));
 };
 
 const send_mail_for_new_password = (req, res) => 
@@ -335,9 +337,9 @@ const send_mail_for_new_password = (req, res) =>
     .then(user => 
     {
         if (!user)
-            res.status(404).json({ is_success: false, message: 'Error: No account matches this email address.' });
+            res.status(404).json({ is_success: false, message: failure_no_account_matches_this_email(lang) });
         else if (!user.verified_user)
-            res.status(401).json({ is_success: false, message: 'The email address has to be verified first.', send_verif_email: true});
+            res.status(401).json({ is_success: false, message: email_has_to_be_verified(lang), send_verif_email: true});
         else
         {
             // Create the token for password creation
@@ -372,15 +374,15 @@ const send_mail_for_new_password = (req, res) =>
                     {
                         from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
                         to: email_address,
-                        subject: user.hashed_password ? 'Password modification' : 'Pasword creation',
+                        subject: title_password_email(lang),
                         html: '' + 
                         '<html>' + 
                             '<body>' + 
                                 '<hr />' + 
-                                `<h1 style="text-align: center;">Hello, ${user.username}!</h1>` + 
+                                `<h1 style="text-align: center;">${hello_user(lang, user.username)}</h1>` + 
                                 '<hr />' + 
 
-                                `<p style="text-align: center;"><a href="${link_create_password}">Click here</a> to ${user.hashed_password ? 'modify' : 'create'} your password.</p>` +
+                                `<p style="text-align: center;">${click_password_link(lang, link_create_password)}</p>` +
                             '</body>' + 
                         '</html>'
                     };
@@ -390,7 +392,7 @@ const send_mail_for_new_password = (req, res) =>
                         if (err)
                             res.status(400).json({ is_success: false, message: failure_try_again(lang), error: err });
                         else
-                            res.status(200).json({ is_success: true, message: 'You\'ve just been sent an email! It contains a clickable link to set your password.' });
+                            res.status(200).json({ is_success: true, message: success_password_email(lang) });
                     });
                 })
                 .catch(err => res.status(400).json({ is_sucess: false, message: failure_try_again(lang), error: err }));
@@ -406,8 +408,8 @@ const retrieve_all_newsletters = (req, res) =>
     const lang = parseInt(req.params.lang);
 
     Newsletter.find()
-    .then(newsletters => res.status(200).json({ is_success: true, data: newsletters, message: newsletters.length + ' newsletters loaded.' }))
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
+    .then(newsletters => res.status(200).json({ is_success: true, data: newsletters, message: nbr_loaded_newsletters(lang, newsletters.length) }))
+    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
 };
 
 const send_newsletter = (req, res) => 

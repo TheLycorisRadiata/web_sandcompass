@@ -1,5 +1,7 @@
 const Token = require('../models/token');
 const User = require('../models/user');
+const {
+} = require('../lang');
 
 const execute_token = (req, res) => 
 {

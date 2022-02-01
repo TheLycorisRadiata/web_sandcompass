@@ -1,4 +1,6 @@
 const Rank = require('../models/rank');
+const {
+} = require('../lang');
 
 const retrieve_all_ranks = (req, res) => 
 {

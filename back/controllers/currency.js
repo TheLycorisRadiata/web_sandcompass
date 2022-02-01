@@ -1,4 +1,6 @@
 const Currency = require('../models/currency');
+const {
+} = require('../lang');
 
 const retrieve_all_currencies = (req, res) => 
 {

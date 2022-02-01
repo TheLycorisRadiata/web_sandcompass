@@ -28,6 +28,19 @@ const long_lang = (index) =>
 
 /* DEFAULT ERROR MESSAGE ------------------------------------------------------------------------ */
 
+const failure = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Une erreur est survenue.';
+        case 2:
+            return 'Error: An error occured.';
+        default:
+            return 'Error: An error occured.';
+    }
+};
+
 const failure_see_log = (lang) => 
 {
     switch (lang)
@@ -368,10 +381,116 @@ const nbr_loaded_newsletters = (lang, number) =>
     }
 };
 
+const success_newsletter_saved_and_not_sent = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'La newsletter est sauvegardée, mais pas encore envoyée.';
+        case 2:
+            return 'The newsletter is saved, but not sent yet.';
+        default:
+            return 'The newsletter is saved, but not sent yet.';
+    }
+};
+
+const failure_newsletter_saved_but_no_lang_subscriber = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La newsletter est sauvegardée, mais n\'a pas pu être envoyée car aucun compte qui utilise cette langue n\'est abonné à la newsletter.';
+        case 2:
+            return 'Error: The newsletter is saved, but couldn\'t be sent because no account using this language is subscribed to the newsletter.';
+        default:
+            return 'Error: The newsletter is saved, but couldn\'t be sent because no account using this language is subscribed to the newsletter.';
+    }
+};
+
+const failure_newsletter_saved_but_not_sent = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La newsletter est sauvegardée, mais n\'a pas pu être envoyée. Re-essayez.';
+        case 2:
+            return 'Error: The newsletter is saved, but couldn\'t be sent. Try again.';
+        default:
+            return 'Error: The newsletter is saved, but couldn\'t be sent. Try again.';
+    }
+};
+
+const failure_newsletter_sent_but_none_found = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La newsletter a été envoyée, mais étrangement aucune newsletter n\'a pu être trouvée dans la base de données.';
+        case 2:
+            return 'Error: The newsletter has been sent, but strangely no newsletter could be found in database.';
+        default:
+            return 'Error: The newsletter has been sent, but strangely no newsletter could be found in database.';
+    }
+};
+
+const success_newsletter_sent = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'La newsletter a été envoyée.';
+        case 2:
+            return 'The newsletter has been sent.';
+        default:
+            return 'The newsletter has been sent.';
+    }
+};
+
+const failure_newsletter_sent_but_not_declared_as_sent = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La newsletter est envoyée, mais n\'a pas pu être déclarée comme "envoyée" dans la base de données.';
+        case 2:
+            return 'Error: The newsletter is sent, but couldn\'t be declared as "sent" in database.';
+        default:
+            return 'Error: The newsletter is sent, but couldn\'t be declared as "sent" in database.';
+    }
+};
+
+/* USER ----------------------------------------------------------------------------------------- */
+
+return 'Error: The admin cannot be found.';
+return 'Error: The email address is not verified.';
+return 'Error: The account has no password.';
+return 'Your email address or your password is incorrect.';
+return 'The email address is not verified.';
+return 'This account doesn\'t have a password yet. You\'re invited to click on "Password forgotten?".';
+return 'No account exists with this email address.';
+return 'The email address has to be verified first.';
+return 'The password must not be empty.';
+return 'Error: The password creation didn\'t work.';
+return 'The password has been created.';
+return 'This email address is already used by another account.';
+return 'This email address can be used.';
+return 'This username is already used by another account.';
+return 'This username can be used.';
+return 'Error: The account couldn\'t be created.';
+return 'The account has been created.';
+return 'The account has been updated.';
+return 'Error: The account update failed.';
+return 'The account has been deleted.';
+return 'No non-admin account found.';
+return 'Statistics transmitted.';
+return 'User retrieved.';
+return 'Error: The user couldn\'t be retrieved.';
+
 module.exports = 
 {
     short_lang, 
     long_lang, 
+    failure,
     failure_see_log,
     failure_try_again, 
     success_message_sent, 
@@ -398,5 +517,11 @@ module.exports =
     email_has_to_be_verified,
     success_password_email,
     nbr_loaded_newsletters,
+    success_newsletter_saved_and_not_sent,
+    failure_newsletter_saved_but_no_lang_subscriber,
+    failure_newsletter_saved_but_not_sent,
+    failure_newsletter_sent_but_none_found,
+    success_newsletter_sent,
+    failure_newsletter_sent_but_not_declared_as_sent,
 };
 

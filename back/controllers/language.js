@@ -1,4 +1,6 @@
 const Language = require('../models/language');
+const {
+} = require('../lang');
 
 const retrieve_all_languages = (req, res) => 
 {

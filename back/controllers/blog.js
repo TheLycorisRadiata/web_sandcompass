@@ -1,6 +1,9 @@
 const Article = require('../models/article');
 const Category = require('../models/category');
 const User = require('../models/user');
+const {
+    failure, failure_see_log 
+} = require('../lang');
 
 const retrieve_articles = (req, res) => 
 {
@@ -310,23 +313,23 @@ const like_or_dislike_article = (req, res) =>
                             .then(updated_user => 
                             {
                                 if (!updated_user)
-                                    res.status(404).json({ is_success: false, message: 'Error: An error occured.' });
+                                    res.status(404).json({ is_success: false, message: failure(lang) });
                                 else
                                 {
                                     Article.findOne({ _id: article._id })
                                     .then(updated_article => 
                                     {
                                         if (!updated_article)
-                                            res.status(404).json({ is_success: false, message: 'Error: An error occured.' });
+                                            res.status(404).json({ is_success: false, message: failure(lang) });
                                         else
                                             res.status(200).json({ is_success: true, message: 'Vote counted.', user_vote: final_user_vote, user: updated_user, article: updated_article });
                                     })
-                                    .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
+                                    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
                                 }
                             })
-                            .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
+                            .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
                         })
-                        .catch(err => res.status(400).json({ is_success: false, message: 'Error: An error occured. See the log.', error: err }));
+                        .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
                     })
                     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The vote couldn\'t be counted. You may try again.', error: err }));
                 }

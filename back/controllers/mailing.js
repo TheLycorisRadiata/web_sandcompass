@@ -10,6 +10,7 @@ const {
     title_email_address_update_email, click_new_email_verification_link, failure_email_address_update_email, success_email_address_update_email, 
     title_password_email, click_password_link, email_has_to_be_verified, success_password_email, 
     nbr_loaded_newsletters, failure_see_log, 
+    success_newsletter_saved_and_not_sent, failure_newsletter_saved_but_no_lang_subscriber, failure_newsletter_saved_but_not_sent, failure_newsletter_sent_but_none_found, success_newsletter_sent, failure_newsletter_sent_but_not_declared_as_sent 
 } = require('../lang');
 
 const send_visitor_mail_to_admin = (req, res) => 
@@ -458,7 +459,7 @@ const send_newsletter = (req, res) =>
         }
         else if (!newsletter.do_send)
         {
-            res.status(200).json({ is_success: true, message: 'The newsletter is saved, but not sent yet.' });
+            res.status(200).json({ is_success: true, message: success_newsletter_saved_and_not_sent(lang) });
         }
         // Send the newsletter, and upon success update its date and its "is_sent" attribute to true
         else
@@ -467,7 +468,7 @@ const send_newsletter = (req, res) =>
             .then(users => 
             {
                 if (!users.length)
-                    res.status(404).json({ is_success: false, message: 'Error: The newsletter is saved, but couldn\'t be sent because no account using this language is subscribed to the newsletter.' });
+                    res.status(404).json({ is_success: false, message: failure_newsletter_saved_but_no_lang_subscriber(lang) });
                 else
                 {
                     smtp_trans = nodemailer.createTransport(
@@ -496,7 +497,7 @@ const send_newsletter = (req, res) =>
                     smtp_trans.sendMail(mail_options, (error, response) => 
                     {
                         if (error)
-                            res.status(400).json({ is_success: false, message: 'Error: The newsletter is saved, but couldn\'t be sent.', error: error });
+                            res.status(400).json({ is_success: false, message: failure_newsletter_saved_but_not_sent(lang), error: error });
                         else
                         {
                             // The newsletter has been sent
@@ -506,7 +507,7 @@ const send_newsletter = (req, res) =>
                             .then(newsletters => 
                             {
                                 if (!newsletters.length)
-                                    res.status(404).json({ is_success: false, message: 'Error: The newsletter has been sent, but strangely no newsletter could be found in database.' });
+                                    res.status(404).json({ is_success: false, message: failure_newsletter_sent_but_none_found(lang) });
                                 else
                                 {
                                     Newsletter.updateOne(element ? { _id: element._id } : { _id: newsletters[newsletters.length - 1]._id }, 
@@ -514,16 +515,16 @@ const send_newsletter = (req, res) =>
                                         is_sent: true,
                                         date: Date.now()
                                     })
-                                    .then(() => res.status(200).json({ is_success: true, message: 'The newsletter has been sent.' }))
-                                    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The newsletter is sent, but couldn\'t be declared as "sent" in database.', error: err }));
+                                    .then(() => res.status(200).json({ is_success: true, message: success_newsletter_sent(lang) }))
+                                    .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_sent_but_not_declared_as_sent(lang), error: err }));
                                 }
                             })
-                            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The newsletter is sent, but couldn\'t be declared as "sent" in database.', error: err }));
+                            .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_sent_but_not_declared_as_sent(lang), error: err }));
                         }
                     });
                 }
             })
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The newsletter is saved, but couldn\'t be sent. Try again.', error: error }));
+            .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_saved_but_not_sent(lang), error: error }));
         }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_try_again(lang), error: err }));

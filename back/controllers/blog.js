@@ -2,7 +2,9 @@ const Article = require('../models/article');
 const Category = require('../models/category');
 const User = require('../models/user');
 const {
-    failure, failure_see_log 
+    success_articles_retrieval, failure_articles_retrieval, 
+    failure_article_posted_but_not_in_authors_list, success_article_posted, failure_article_posted_but_no_retrieval, failure_article_posted, 
+    failure 
 } = require('../lang');
 
 const retrieve_articles = (req, res) => 
@@ -10,8 +12,8 @@ const retrieve_articles = (req, res) =>
     const lang = parseInt(req.params.lang);
 
     Article.find()
-    .then(articles => res.status(200).json({ is_success: true, message: articles.length + ' articles loaded.', data: articles }))
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The articles can\'t be retrieved.', error: err }));
+    .then(articles => res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, articles.length), data: articles }))
+    .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
 };
 
 const retrieve_articles_by_author = (req, res) => 
@@ -19,8 +21,8 @@ const retrieve_articles_by_author = (req, res) =>
     const lang = parseInt(req.params.lang);
 
     Article.find({ author: req.params.id_author })
-    .then(articles => res.status(200).json({ is_success: true, message: articles.length + ' articles loaded.', data: articles }))
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The articles can\'t be retrieved.', error: err }));
+    .then(articles => res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, articles.length), data: articles }))
+    .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
 };
 
 const post_new_article = (req, res) => 
@@ -38,7 +40,7 @@ const post_new_article = (req, res) =>
         {
             if (!author)
             {
-                res.status(404).json({ is_success: false, message: 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.' });
+                res.status(404).json({ is_success: false, message: failure_article_posted_but_not_in_authors_list(lang) });
                 return;
             }
 
@@ -57,14 +59,14 @@ const post_new_article = (req, res) =>
             .then(() => 
             {
                 Article.find()
-                .then(articles => res.status(201).json({ is_success: true, message: 'New article posted, and ' + articles.length + ' articles loaded.', data: articles }))
-                .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but the articles couldn\'t be loaded.', error: err }));
+                .then(articles => res.status(201).json({ is_success: true, message: success_article_posted(lang, articles.length), data: articles }))
+                .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted_but_no_retrieval(lang), error: err }));
             })
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.', error: err }));
+            .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted_but_not_in_authors_list(lang), error: err }));
         })
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.' }));
+        .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted_but_not_in_authors_list(lang) }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article can\'t be posted.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted(lang), error: err }));
 };
 
 const modify_article = (req, res) => 
@@ -324,12 +326,12 @@ const like_or_dislike_article = (req, res) =>
                                         else
                                             res.status(200).json({ is_success: true, message: 'Vote counted.', user_vote: final_user_vote, user: updated_user, article: updated_article });
                                     })
-                                    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+                                    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
                                 }
                             })
-                            .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+                            .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
                         })
-                        .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+                        .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
                     })
                     .catch(err => res.status(400).json({ is_success: false, message: 'Error: The vote couldn\'t be counted. You may try again.', error: err }));
                 }

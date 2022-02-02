@@ -1,6 +1,6 @@
 const Question = require('../models/question');
 const {
-    failure_see_log 
+    failure 
 } = require('../lang');
 
 const retrieve_all_questions = (req, res) => 
@@ -28,7 +28,7 @@ const add_question = (req, res) =>
         .then(questions => res.status(201).json({ is_success: true, message: 'Question created', data: questions }))
         .catch(err => res.status(400).json({ is_success: false, message: 'Error: The question couldn\'t be created.', error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const edit_question = (req, res) => 
@@ -46,7 +46,7 @@ const edit_question = (req, res) =>
         .then(questions => res.status(200).json({ is_success: true, message: 'Question edited.', data: questions }))
         .catch(err => res.status(400).json({ is_success: false, message: 'Error: The question couldn\'t be edited.', error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const remove_question = (req, res) => 
@@ -60,7 +60,7 @@ const remove_question = (req, res) =>
         .then(questions => res.status(200).json({ is_success: true, message: 'Question removed.', data: questions }))
         .catch(err => res.status(400).json({ is_success: false, message: 'Error: The question couldn\'t be removed.', error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 module.exports = 

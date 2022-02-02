@@ -41,19 +41,6 @@ const failure = (lang) =>
     }
 };
 
-const failure_see_log = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Erreur : Une erreur est survenue. Voir le log.';
-        case 2:
-            return 'Error: An error occured. See the log.';
-        default:
-            return 'Error: An error occured. See the log.';
-    }
-};
-
 /* MAILING -------------------------------------------------------------------------------------- */
 
 const failure_try_again = (lang) => 
@@ -342,7 +329,7 @@ const click_password_link = (lang, link) =>
     }
 };
 
-const email_has_to_be_verified = (lang) => 
+const failure_email_has_to_be_verified = (lang) => 
 {
     switch (lang)
     {
@@ -461,39 +448,449 @@ const failure_newsletter_sent_but_not_declared_as_sent = (lang) =>
 
 /* USER ----------------------------------------------------------------------------------------- */
 
-return 'Error: The admin cannot be found.';
-return 'Error: The email address is not verified.';
-return 'Error: The account has no password.';
-return 'Your email address or your password is incorrect.';
-return 'The email address is not verified.';
-return 'This account doesn\'t have a password yet. You\'re invited to click on "Password forgotten?".';
-return 'No account exists with this email address.';
-return 'The email address has to be verified first.';
-return 'The password must not be empty.';
-return 'Error: The password creation didn\'t work.';
-return 'The password has been created.';
-return 'This email address is already used by another account.';
-return 'This email address can be used.';
-return 'This username is already used by another account.';
-return 'This username can be used.';
-return 'Error: The account couldn\'t be created.';
-return 'The account has been created.';
-return 'The account has been updated.';
-return 'Error: The account update failed.';
-return 'The account has been deleted.';
-return 'No non-admin account found.';
-return 'Statistics transmitted.';
-return 'User retrieved.';
-return 'Error: The user couldn\'t be retrieved.';
+const failure_admin_not_found = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'admin est introuvable.';
+        case 2:
+            return 'Error: The admin cannot be found.';
+        default:
+            return 'Error: The admin cannot be found.';
+    }
+};
+
+const failure_admin_email_not_verified = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'adresse email n\'est pas validée.';
+        case 2:
+            return 'Error: The email address is not verified.';
+        default:
+            return 'Error: The email address is not verified.';
+    }
+};
+
+const failure_admin_no_password = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le compte n\'a pas de mot de passe.';
+        case 2:
+            return 'Error: The account has no password.';
+        default:
+            return 'Error: The account has no password.';
+    }
+};
+
+const failure_wrong_email_or_password = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Votre adresse email ou votre mot de passe est incorrect.';
+        case 2:
+            return 'Your email address or your password is incorrect.';
+        default:
+            return 'Your email address or your password is incorrect.';
+    }
+};
+
+const failure_no_password = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Ce compte n\'a pas encore de mot de passe. Je vous invite à cliquer sur "Mot de passe oublié ?".';
+        case 2:
+            return 'This account doesn\'t have a password yet. You\'re invited to click on "Password forgotten?".';
+        default:
+            return 'This account doesn\'t have a password yet. You\'re invited to click on "Password forgotten?".';
+    }
+};
+
+const failure_no_account_with_this_email = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Aucun compte avec cette adresse email n\'existe.';
+        case 2:
+            return 'No account exists with this email address.';
+        default:
+            return 'No account exists with this email address.';
+    }
+};
+
+const failure_empty_password = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le mot de passe ne doit pas être vide.';
+        case 2:
+            return 'The password must not be empty.';
+        default:
+            return 'The password must not be empty.';
+    }
+};
+
+const failure_password_creation = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La création du mot de passe a échoué.';
+        case 2:
+            return 'Error: The password creation failed.';
+        default:
+            return 'Error: The password creation failed.';
+    }
+};
+
+const success_password_creation = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le mot de passe a été créé.';
+        case 2:
+            return 'The password has been created.';
+        default:
+            return 'The password has been created.';
+    }
+};
+
+const failure_email_already_in_use = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Cette adresse email est déjà utilisée par un autre compte.';
+        case 2:
+            return 'This email address is already used by another account.';
+        default:
+            return 'This email address is already used by another account.';
+    }
+};
+
+const success_email_available = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Cette adresse email peut être utilisée.';
+        case 2:
+            return 'This email address can be used.';
+        default:
+            return 'This email address can be used.';
+    }
+};
+
+const failure_username_already_in_use = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Ce pseudo est déjà utilisé par un autre compte.';
+        case 2:
+            return 'This username is already used by another account.';
+        default:
+            return 'This username is already used by another account.';
+    }
+};
+
+const success_username_available = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Ce pseudo peut être utilisé.';
+        case 2:
+            return 'This username can be used.';
+        default:
+            return 'This username can be used.';
+    }
+};
+
+const failure_account_creation = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le compte n\'a pas pu être créé.';
+        case 2:
+            return 'Error: The account couldn\'t be created.';
+        default:
+            return 'Error: The account couldn\'t be created.';
+    }
+};
+
+const success_account_creation = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le compte a été créé.';
+        case 2:
+            return 'The account has been created.';
+        default:
+            return 'The account has been created.';
+    }
+};
+
+const success_account_update = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le compte a été mis à jour.';
+        case 2:
+            return 'The account has been updated.';
+        default:
+            return 'The account has been updated.';
+    }
+};
+
+const failure_account_update = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La mise à jour du compte a échoué.';
+        case 2:
+            return 'Error: The account update failed.';
+        default:
+            return 'Error: The account update failed.';
+    }
+};
+
+const success_account_deletion = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le compte a été supprimé.';
+        case 2:
+            return 'The account has been deleted.';
+        default:
+            return 'The account has been deleted.';
+    }
+};
+
+const failure_no_non_admin_user_found = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Aucun compte non admin trouvé.';
+        case 2:
+            return 'No non-admin account found.';
+        default:
+            return 'No non-admin account found.';
+    }
+};
+
+const success_stats = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Statistiques transmises.';
+        case 2:
+            return 'Statistics transmitted.';
+        default:
+            return 'Statistics transmitted.';
+    }
+};
+
+const success_user_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Utilisateur retrouvé.';
+        case 2:
+            return 'User retrieved.';
+        default:
+            return 'User retrieved.';
+    }
+};
+
+const failure_user_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'utilisateur n\'a pas pu être retrouvé.';
+        case 2:
+            return 'Error: The user couldn\'t be retrieved.';
+        default:
+            return 'Error: The user couldn\'t be retrieved.';
+    }
+};
+
+/* BLOG ----------------------------------------------------------------------------------------- */
+
+const success_articles_retrieval = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + ' articles chargés.';
+        case 2:
+            return number + ' articles loaded.';
+        default:
+            return number + ' articles loaded.';
+    }
+};
+
+const failure_articles_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Les articles ne peuvent pas être retrouvés.';
+        case 2:
+            return 'Error: The articles can\'t be retrieved.';
+        default:
+            return 'Error: The articles can\'t be retrieved.';
+    }
+};
+
+const failure_article_posted_but_not_in_authors_list = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le nouvel article a été posté, mais il n\'a pas pu être ajouté à la liste de l\'auteur.';
+        case 2:
+            return 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.';
+        default:
+            return 'Error: The new article has been posted, but it couldn\'t be added to the author\'s list.';
+    }
+};
+
+const success_article_posted = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Nouvel article posté, et ' + number + ' articles chargés.';
+        case 2:
+            return 'New article posted, and ' + number + ' articles loaded.';
+        default:
+            return 'New article posted, and ' + number + ' articles loaded.';
+    }
+};
+
+const failure_article_posted_but_no_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le nouvel article a été posté, mais les articles n\'ont pu être chargés.';
+        case 2:
+            return 'Error: The new article has been posted, but the articles couldn\'t be loaded.';
+        default:
+            return 'Error: The new article has been posted, but the articles couldn\'t be loaded.';
+    }
+};
+
+const failure_article_posted = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'article ne peut être posté.';
+        case 2:
+            return 'Error: The article can\'t be posted.';
+        default:
+            return 'Error: The article can\'t be posted.';
+    }
+};
+
+const = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+        case 2:
+        default:
+    }
+};
+
+return 'Article modified, and ' + articles.length + ' articles loaded.';
+return 'Error: The article has been modified, but the articles couldn\'t be loaded.';
+return 'Error: The article can\'t be modified.';
+return 'Article deleted, and ' + articles.length + ' articles loaded.';
+return 'Error: The article has been deleted, but the articles couldn\'t be loaded.';
+return 'Error: The article has been deleted, but it couldn\'t be removed from the author\'s list.';
+return 'Error: The article can\'t be deleted.';
+return categories.length + ' categories loaded.';
+return 'Error: The categories can\'t be retrieved.';
+return 'Category created, and ' + categories.length + ' categories loaded.';
+return 'Error: The category has been created, but the categories couldn\'t be loaded.';
+return 'Error: The category can\'t be created.';
+return 'Error: The category can\'t be modified.';
+return 'Category modified, and ' + categories.length + ' categories loaded.';
+return 'Error: The category has been modified, but the categories couldn\'t be loaded.';
+return 'Error: The category must be void of articles before it can be deleted.';
+return 'Category deleted, and ' + categories.length + ' categories loaded.';
+return 'Error: The category has been deleted, but the categories couldn\'t be loaded.';
+return 'Error: The category can\'t be deleted.';
+return 'Error: It seems like the article doesn\'t exist anymore.';
+return 'Error: Your account cannot be found.';
+return 'Vote counted.';
+return 'Error: The vote couldn\'t be counted. You may try again.';
+
+/* FAQ ------------------------------------------------------------------------------------------ */
+
+return questions.length + ' questions loaded.';
+return 'Error: The questions couldn\'t be retrieved.';
+return 'Question created';
+return 'Error: The question couldn\'t be created.';
+return 'Question edited.';
+return 'Error: The question couldn\'t be edited.';
+return 'Question removed.';
+return 'Error: The question couldn\'t be removed.';
+
+/* TOKEN ---------------------------------------------------------------------------------------- */
+
+return 'The email address is verified.';
+return 'The link has expired.';
+return 'The link is valid.';
+
+/* CURRENCY ------------------------------------------------------------------------------------- */
+
+return currencies.length + ' currencies loaded.';
+return 'Error: The currencies can\'t be retrieved.';
+
+/* LANGUAGE ------------------------------------------------------------------------------------- */
+
+return languages.length + ' languages loaded.';
+return 'Error: The languages can\'t be retrieved.';
+return 'Error: The language cannot be retrieved.';
+return 'Language loaded.';
+
+/* RANK ----------------------------------------------------------------------------------------- */
+
+return ranks.length + ' ranks loaded.';
+return 'Error: The ranks can\'t be retrieved.';
+return 'Error: The rank cannot be retrieved.';
+return 'Rank loaded.';
 
 module.exports = 
 {
-    short_lang, 
-    long_lang, 
+    short_lang,
+    long_lang,
     failure,
-    failure_see_log,
-    failure_try_again, 
-    success_message_sent, 
+    failure_try_again,
+    success_message_sent,
     welcome_to_sandcompass,
     welcome_to_sandcompass_user,
     click_email_verification_link,
@@ -502,8 +899,8 @@ module.exports =
     help_by_speaking_about_sc,
     help_by_leaving_message,
     failure_no_account_matches_this_email,
-    failure_account_validation_email, 
-    success_account_validation_email, 
+    failure_account_validation_email,
+    success_account_validation_email,
     title_newsletter_subscription_email,
     hello_user,
     failure_newsletter_subscription_email,
@@ -514,7 +911,7 @@ module.exports =
     success_email_address_update_email,
     title_password_email,
     click_password_link,
-    email_has_to_be_verified,
+    failure_email_has_to_be_verified,
     success_password_email,
     nbr_loaded_newsletters,
     success_newsletter_saved_and_not_sent,
@@ -523,5 +920,28 @@ module.exports =
     failure_newsletter_sent_but_none_found,
     success_newsletter_sent,
     failure_newsletter_sent_but_not_declared_as_sent,
+    failure_admin_not_found,
+    failure_admin_email_not_verified,
+    failure_admin_no_password,
+    failure_wrong_email_or_password,
+    failure_email_has_to_be_verified,
+    failure_no_password,
+    failure_no_account_with_this_email,
+    failure_empty_password,
+    failure_password_creation,
+    success_password_creation,
+    failure_email_already_in_use,
+    success_email_available,
+    failure_username_already_in_use,
+    success_username_available,
+    failure_account_creation,
+    success_account_creation,
+    success_account_update,
+    failure_account_update,
+    success_account_deletion,
+    failure_no_non_admin_user_found,
+    success_stats,
+    success_user_retrieval,
+    failure_user_retrieval,
 };
 

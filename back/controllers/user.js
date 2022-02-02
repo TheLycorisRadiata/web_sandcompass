@@ -1,7 +1,16 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const {
-    failure_see_log 
+    failure_admin_not_found, failure_admin_email_not_verified, failure_admin_no_password, failure_wrong_email_or_password, 
+    failure_email_has_to_be_verified, failure_no_password, failure, 
+    failure_no_account_with_this_email, failure_empty_password, failure_password_creation, success_password_creation, 
+    failure_email_already_in_use, success_email_available, 
+    failure_username_already_in_use, success_username_available, 
+    failure_account_creation, success_account_creation, 
+    success_account_update, failure_account_update, 
+    success_account_deletion, 
+    failure_no_non_admin_user_found, success_stats, 
+    success_user_retrieval, failure_user_retrieval 
 } = require('../lang');
 
 const connect_as_admin = (req, res) => 
@@ -14,18 +23,18 @@ const connect_as_admin = (req, res) =>
     .then(admin => 
     {
         if (!admin)
-            res.status(500).json({ is_success: false, account_data: null, message: 'Error: The admin cannot be found.' });
+            res.status(500).json({ is_success: false, account_data: null, message: failure_admin_not_found(lang) });
         else if (!admin.verified_user)
-            res.status(500).json({ is_success: false, account_data: null, message: 'Error: The email address is not verified.' });
+            res.status(500).json({ is_success: false, account_data: null, message: failure_admin_email_not_verified(lang) });
         else if (!admin.hashed_password)
-            res.status(500).json({ is_success: false, account_data: null, message: 'Error: The account has no password.' });
+            res.status(500).json({ is_success: false, account_data: null, message: failure_admin_no_password(lang) });
         else if (email_address === admin.email_address && bcrypt.compareSync(password, admin.hashed_password))
             res.status(200).json({ is_success: true, account_data: admin, message: '' });
         // The email and/or the password don't match
         else
-            res.status(403).json({ is_success: false, account_data: null, message: 'Your email address or your password is incorrect.' });
+            res.status(403).json({ is_success: false, account_data: null, message: failure_wrong_email_or_password(lang) });
     })
-    .catch(err => res.status(400).json({ is_success: false, account_data: null, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, account_data: null, message: failure(lang), error: err }));
 };
 
 const connect_as_user = (req, res) => 
@@ -38,18 +47,18 @@ const connect_as_user = (req, res) =>
     .then(user => 
     {
         if (!user)
-            res.status(404).json({ is_success: false, account_data: null, message: 'Your email address or your password is incorrect.' });
+            res.status(404).json({ is_success: false, account_data: null, message: failure_wrong_email_or_password(lang) });
         else if (!user.verified_user)
-            res.status(401).json({ is_success: false, account_data: null, message: 'The email address is not verified.', send_verif_email: true });
+            res.status(401).json({ is_success: false, account_data: null, message: failure_email_has_to_be_verified(lang), send_verif_email: true });
         else if (!user.hashed_password)
-            res.status(401).json({ is_success: false, account_data: null, message: 'This account doesn\'t have a password yet. You\'re invited to click on "Password forgotten?".' });
+            res.status(401).json({ is_success: false, account_data: null, message: failure_no_password(lang) });
         else if (bcrypt.compareSync(password, user.hashed_password))
             res.status(200).json({ is_success: true, account_data: user, message: '' });
         // The password is incorrect
         else
-            res.status(404).json({ is_success: false, account_data: null, message: 'Your email address or your password is incorrect.' });
+            res.status(404).json({ is_success: false, account_data: null, message: failure_wrong_email_or_password(lang) });
     })
-    .catch(err => res.status(400).json({ is_success: false, account_data: null, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, account_data: null, message: failure(lang), error: err }));
 };
 
 const create_password = (req, res) => 
@@ -67,33 +76,33 @@ const create_password = (req, res) =>
     .then(user => 
     {
         if (!user)
-            res.status(404).json({ is_success: false, message: 'No account exists with this email address.' });
+            res.status(404).json({ is_success: false, message: failure_no_account_with_this_email(lang) });
         else if (!user.verified_user)
-            res.status(401).json({ is_success: false, message: 'The email address has to be verified first.', send_verif_email: true });
+            res.status(401).json({ is_success: false, message: failure_email_has_to_be_verified(lang), send_verif_email: true });
         else
         {
             // If the password is undefined/null or an empty string
             if (!password || password === '')
-                res.status(400).json({ is_success: false, message: 'The password must not be empty.' });
+                res.status(400).json({ is_success: false, message: failure_empty_password(lang) });
             else
             {
                 hashed_password = bcrypt.hashSync(password, salt);
                 
                 // The hash didn't work
                 if (!hashed_password)
-                    res.status(400).json({ is_success: false, message: 'Error: The password creation didn\'t work.' });
+                    res.status(400).json({ is_success: false, message: failure_password_creation(lang) });
 
                 // Store hashed_password in the DB
                 User.updateOne({ _id: user._id },
                 {
                     hashed_password: hashed_password
                 })
-                .then(() => res.status(200).json({ is_success: true, message: 'The password has been created.' }))
-                .catch(err => res.status(400).json({ is_success: false, message: 'Error: The password creation didn\'t work.', error: err }));
+                .then(() => res.status(200).json({ is_success: true, message: success_password_creation(lang) }))
+                .catch(err => res.status(400).json({ is_success: false, message: failure_password_creation(lang), error: err }));
             }
         }
     })
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const is_email_already_used_by_another_account = (req, res) =>
@@ -104,12 +113,12 @@ const is_email_already_used_by_another_account = (req, res) =>
     .then(user => 
     {
         if (user && user._id.toString() !== req.params.id)
-            res.status(400).json({ is_success: false, message: 'This email address is already used by another account.' });
+            res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
         // Either no account has this email address, or the account is ours, so all is good
         else
-            res.status(200).json({ is_success: true, message: 'This email address can be used.' });
+            res.status(200).json({ is_success: true, message: success_email_available(lang) });
     })
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const is_username_already_used_by_another_account = (req, res) =>
@@ -121,12 +130,12 @@ const is_username_already_used_by_another_account = (req, res) =>
     .then(user => 
     {
         if (user && user._id.toString() !== req.params.id)
-            res.status(400).json({ is_success: false, message: 'This username is already used by another account.' });
+            res.status(400).json({ is_success: false, message: failure_username_already_in_use(lang) });
         // Either no account has this username, or the account is ours, so all is good
         else
-            res.status(200).json({ is_success: true, message: 'This username can be used.' });
+            res.status(200).json({ is_success: true, message: success_username_available(lang) });
     })
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const create_account = (req, res) => 
@@ -143,7 +152,7 @@ const create_account = (req, res) =>
     {
         if (email_user)
         {
-            res.status(400).json({ is_success: false, message: 'This email address is already used by another account.' });
+            res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
             return;
         }
 
@@ -153,7 +162,7 @@ const create_account = (req, res) =>
         {
             if (username_user)
             {
-                res.status(400).json({ is_success: false, message: 'This username is already used by another account.' });
+                res.status(400).json({ is_success: false, message: failure_username_already_in_use(lang) });
                 return;
             }
 
@@ -164,7 +173,7 @@ const create_account = (req, res) =>
                 // The hash didn't work
                 if (!hashed_password)
                 {
-                    res.status(400).json({ is_success: false, message: 'Error: The account couldn\'t be created.' });
+                    res.status(400).json({ is_success: false, message: failure_account_creation(lang) });
                     return;
                 }
             }
@@ -179,12 +188,12 @@ const create_account = (req, res) =>
                 language: req.body.language
             })
             .save()
-            .then(() => res.status(201).json({ is_success: true, message: 'The account has been created.' }))
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The account couldn\'t be created.', error: err }));
+            .then(() => res.status(201).json({ is_success: true, message: success_account_creation(lang) }))
+            .catch(err => res.status(400).json({ is_success: false, message: failure_account_creation(lang), error: err }));
         })
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The account couldn\'t be created.', error: err }));
+        .catch(err => res.status(400).json({ is_success: false, message: failure_account_creation(lang), error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The account couldn\'t be created.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_account_creation(lang), error: err }));
 };
 
 const update_account = (req, res) => 
@@ -199,10 +208,10 @@ const update_account = (req, res) =>
     .then(() => 
     {
         User.findOne({ _id: req.body._id })
-        .then(account => res.status(200).json({ is_success: true, data: account, message: 'The account has been updated.' }))
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The account update failed.', error: err }));
+        .then(account => res.status(200).json({ is_success: true, data: account, message: success_account_update(lang) }))
+        .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The account update failed.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
 };
 
 const delete_account = (req, res) => 
@@ -210,8 +219,8 @@ const delete_account = (req, res) =>
     const lang = parseInt(req.params.lang);
 
     User.deleteOne({ _id: req.body.id_user_to_delete })
-    .then(() => res.status(200).json({ is_success: true, message: 'The account has been deleted.' }))
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .then(() => res.status(200).json({ is_success: true, message: success_account_deletion(lang) }))
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const get_stats_on_all_users = (req, res) =>
@@ -238,7 +247,7 @@ const get_stats_on_all_users = (req, res) =>
     .then(users =>
     {
         if (!users.length)
-            res.status(404).json({ is_success: false, message: 'No non-admin account found.' });
+            res.status(404).json({ is_success: false, message: failure_no_non_admin_user_found(lang) });
         else
         {
             stats.accounts.total = users.length;
@@ -248,10 +257,10 @@ const get_stats_on_all_users = (req, res) =>
             stats.accounts.language.french = users.filter(e => e.language === 1).length;
             stats.accounts.language.japanese = users.filter(e => e.language === 2).length;
 
-            res.status(200).json({ is_success: true, message: 'Statistics transmitted.', data: stats });
+            res.status(200).json({ is_success: true, message: success_stats(lang), data: stats });
         }
     })
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const get_username_from_id = (req, res) => 
@@ -262,11 +271,11 @@ const get_username_from_id = (req, res) =>
     .then(user => 
     {
         if (user)
-            res.status(200).json({ is_success: true, message: 'User retrieved.', data: user.username });
+            res.status(200).json({ is_success: true, message: success_user_retrieval(lang), data: user.username });
         else
-            res.status(404).json({ is_success: false, message: 'Error: The user couldn\'t be retrieved.', data: null });
+            res.status(404).json({ is_success: false, message: failure_user_retrieval(lang), data: null });
     })
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 module.exports = 

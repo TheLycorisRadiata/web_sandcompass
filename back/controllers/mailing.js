@@ -8,8 +8,8 @@ const {
     welcome_to_sandcompass, welcome_to_sandcompass_user, click_email_verification_link, user_is_subscribed_to_newsletter, suggest_subscription_to_newsletter, help_by_speaking_about_sc, help_by_leaving_message, failure_no_account_matches_this_email, failure_account_validation_email, success_account_validation_email, 
     title_newsletter_subscription_email, hello_user, failure_newsletter_subscription_email, success_newsletter_subscription_email, 
     title_email_address_update_email, click_new_email_verification_link, failure_email_address_update_email, success_email_address_update_email, 
-    title_password_email, click_password_link, email_has_to_be_verified, success_password_email, 
-    nbr_loaded_newsletters, failure_see_log, 
+    title_password_email, click_password_link, failure_email_has_to_be_verified, success_password_email, 
+    nbr_loaded_newsletters, failure, 
     success_newsletter_saved_and_not_sent, failure_newsletter_saved_but_no_lang_subscriber, failure_newsletter_saved_but_not_sent, failure_newsletter_sent_but_none_found, success_newsletter_sent, failure_newsletter_sent_but_not_declared_as_sent 
 } = require('../lang');
 
@@ -340,7 +340,7 @@ const send_mail_for_new_password = (req, res) =>
         if (!user)
             res.status(404).json({ is_success: false, message: failure_no_account_matches_this_email(lang) });
         else if (!user.verified_user)
-            res.status(401).json({ is_success: false, message: email_has_to_be_verified(lang), send_verif_email: true});
+            res.status(401).json({ is_success: false, message: failure_email_has_to_be_verified(lang), send_verif_email: true});
         else
         {
             // Create the token for password creation
@@ -410,7 +410,7 @@ const retrieve_all_newsletters = (req, res) =>
 
     Newsletter.find()
     .then(newsletters => res.status(200).json({ is_success: true, data: newsletters, message: nbr_loaded_newsletters(lang, newsletters.length) }))
-    .catch(err => res.status(400).json({ is_success: false, message: failure_see_log(lang), error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const send_newsletter = (req, res) => 

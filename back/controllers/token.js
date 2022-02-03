@@ -1,6 +1,7 @@
 const Token = require('../models/token');
 const User = require('../models/user');
 const {
+    success_email_verified, failure_expired_link, success_valid_link 
 } = require('../lang');
 
 const execute_token = (req, res) => 
@@ -17,8 +18,8 @@ const execute_token = (req, res) =>
             {
                 // Update user: verified_user becomes true
                 User.updateOne({ _id: token.account }, { verified_user: true })
-                .then(() => res.status(200).json({ is_success: true, message: 'The email address is verified.' }))
-                .catch(err => res.status(400).json({ is_success: false, message: 'The link has expired.', error: err }))
+                .then(() => res.status(200).json({ is_success: true, message: success_email_verified(lang) }))
+                .catch(err => res.status(400).json({ is_success: false, message: failure_expired_link(lang), error: err }))
                 return;
             }
             else if (token.action === 'pass')
@@ -27,19 +28,19 @@ const execute_token = (req, res) =>
                 .then(user => 
                 {
                     if (user)
-                        res.status(200).json({ is_success: true, message: 'The link is valid.', email_address: user.email_address });
+                        res.status(200).json({ is_success: true, message: success_valid_link(lang), email_address: user.email_address });
                     else
-                        res.status(404).json({ is_success: false, message: 'The link has expired.' });
+                        res.status(404).json({ is_success: false, message: failure_expired_link(lang) });
                 })
-                .catch(err => res.status(400).json({ is_success: false, message: 'The link has expired.', error: err }));
+                .catch(err => res.status(400).json({ is_success: false, message: failure_expired_link(lang), error: err }));
                 return;
             }
         }
 
         // Token is expired or the action is invalid
-        res.status(400).json({ is_success: false, message: 'The link has expired.' });
+        res.status(400).json({ is_success: false, message: failure_expired_link(lang) });
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'The link has expired.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_expired_link(lang), error: err }));
 };
 
 module.exports = 

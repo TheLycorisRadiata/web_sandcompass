@@ -4,7 +4,13 @@ const User = require('../models/user');
 const {
     success_articles_retrieval, failure_articles_retrieval, 
     failure_article_posted_but_not_in_authors_list, success_article_posted, failure_article_posted_but_no_retrieval, failure_article_posted, 
-    failure 
+    success_article_modified, failure_article_modified_but_no_retrieval, failure_article_modified, 
+    success_article_deleted, failure_article_deleted_but_no_retrieval, failure_article_deleted_but_still_in_authors_list, failure_article_deleted, 
+    success_categories_retrieval, failure_categories_retrieval, 
+    success_category_created, failure_category_created_but_no_retrieval, failure_category_created, 
+    failure_category_modified, success_category_modified, failure_category_modified_but_no_retrieval, 
+    failure_category_deletion_not_empty, success_category_deleted, failure_category_deleted_but_no_retrieval, failure_category_deleted, 
+    failure_article_not_found, failure_account_not_found, failure, success_vote_counted, failure_vote_counted 
 } = require('../lang');
 
 const retrieve_articles = (req, res) => 
@@ -85,10 +91,10 @@ const modify_article = (req, res) =>
     .then(() => 
     {
         Article.find()
-        .then(articles => res.status(200).json({ is_success: true, message: 'Article modified, and ' + articles.length + ' articles loaded.', data: articles }))
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article has been modified, but the articles couldn\'t be loaded.', error: err }));
+        .then(articles => res.status(200).json({ is_success: true, message: success_article_modified(lang, articles.length), data: articles }))
+        .catch(err => res.status(400).json({ is_success: false, message: failure_article_modified_but_no_retrieval(lang), error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article can\'t be modified.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_article_modified(lang), error: err }));
 };
 
 const delete_article = (req, res) => 
@@ -109,12 +115,12 @@ const delete_article = (req, res) =>
         .then(() => 
         {
             Article.find()
-            .then(articles => res.status(200).json({ is_success: true, message: 'Article deleted, and ' + articles.length + ' articles loaded.', data: articles }))
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article has been deleted, but the articles couldn\'t be loaded.', error: err }))
+            .then(articles => res.status(200).json({ is_success: true, message: success_article_deleted(lang, articles.length), data: articles }))
+            .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted_but_no_retrieval(lang), error: err }))
         })
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article has been deleted, but it couldn\'t be removed from the author\'s list.', error: err }));
+        .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted_but_still_in_authors_list(lang), error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The article can\'t be deleted.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted(lang), error: err }));
 };
 
 const retrieve_categories = (req, res) => 
@@ -122,8 +128,8 @@ const retrieve_categories = (req, res) =>
     const lang = parseInt(req.params.lang);
 
     Category.find()
-    .then(categories => res.status(200).json({ is_success: true, message: categories.length + ' categories loaded.', data: categories }))
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The categories can\'t be retrieved.', error: err }));
+    .then(categories => res.status(200).json({ is_success: true, message: success_categories_retrieval(lang, categories.length), data: categories }))
+    .catch(err => res.status(400).json({ is_success: false, message: failure_categories_retrieval(lang), error: err }));
 };
 
 const create_new_category = (req, res) => 
@@ -135,10 +141,10 @@ const create_new_category = (req, res) =>
     .then(() => 
     {
         Category.find()
-        .then(categories => res.status(201).json({ is_success: true, message: 'Category created, and ' + categories.length + ' categories loaded.', data: categories }))
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been created, but the categories couldn\'t be loaded.', error: err }));
+        .then(categories => res.status(201).json({ is_success: true, message: success_category_created(lang, categories.length), data: categories }))
+        .catch(err => res.status(400).json({ is_success: false, message: failure_category_created_but_no_retrieval(lang), error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be created.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_category_created(lang), error: err }));
 };
 
 const modify_category = (req, res) => 
@@ -150,7 +156,7 @@ const modify_category = (req, res) =>
     {
         if (!category)
         {
-            res.status(404).json({ is_success: false, message: 'Error: The category can\'t be modified.' });
+            res.status(404).json({ is_success: false, message: failure_category_modified(lang) });
             return;
         }
 
@@ -158,12 +164,12 @@ const modify_category = (req, res) =>
         .then(() => 
         {
             Category.find()
-            .then(categories => res.status(201).json({ is_success: true, message: 'Category modified, and ' + categories.length + ' categories loaded.', data: categories }))
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been modified, but the categories couldn\'t be loaded.', error: err }));
+            .then(categories => res.status(201).json({ is_success: true, message: success_category_modified(lang, categories.length), data: categories }))
+            .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified_but_no_retrieval(lang), error: err }));
         })
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be modified.', error: err }));
+        .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified(lang), error: err }));
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be modified.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified(lang), error: err }));
 };
 
 const delete_category = (req, res) => 
@@ -174,20 +180,20 @@ const delete_category = (req, res) =>
     .then(article => 
     {
         if (article)
-            res.status(400).json({ is_success: false, message: 'Error: The category must be void of articles before it can be deleted.' });
+            res.status(400).json({ is_success: false, message: failure_category_deletion_not_empty(lang) });
         else
         {
             Category.deleteOne({ _id: req.body._id })
             .then(() => 
             {
                 Category.find()
-                .then(categories => res.status(200).json({ is_success: true, message: 'Category deleted, and ' + categories.length + ' categories loaded.', data: categories }))
-                .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category has been deleted, but the categories couldn\'t be loaded.' }));
+                .then(categories => res.status(200).json({ is_success: true, message: success_category_deleted(lang, categories.length), data: categories }))
+                .catch(err => res.status(400).json({ is_success: false, message: failure_category_deleted_but_no_retrieval(lang) }));
             })
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be deleted.', error: err }));
+            .catch(err => res.status(400).json({ is_success: false, message: failure_category_deleted(lang), error: err }));
         }	
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The category can\'t be deleted.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_category_deleted(lang), error: err }));
 };
 
 const like_or_dislike_article = (req, res) => 
@@ -205,14 +211,14 @@ const like_or_dislike_article = (req, res) =>
     .then(article => 
     {
         if (!article)
-            res.status(404).json({ is_success: false, message: 'Error: It seems like the article doesn\'t exist anymore.' });
+            res.status(404).json({ is_success: false, message: failure_article_not_found(lang) });
         else
         {
             User.findOne({ _id: id_user })
             .then(user => 
             {
                 if (!user)
-                    res.status(404).json({ is_success: false, message: 'Error: Your account cannot be found.' });
+                    res.status(404).json({ is_success: false, message: failure_account_not_found(lang) });
                 else
                 {
                     if (user.articles.liked.includes(id_article))
@@ -324,7 +330,7 @@ const like_or_dislike_article = (req, res) =>
                                         if (!updated_article)
                                             res.status(404).json({ is_success: false, message: failure(lang) });
                                         else
-                                            res.status(200).json({ is_success: true, message: 'Vote counted.', user_vote: final_user_vote, user: updated_user, article: updated_article });
+                                            res.status(200).json({ is_success: true, message: success_vote_counted(lang), user_vote: final_user_vote, user: updated_user, article: updated_article });
                                     })
                                     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
                                 }
@@ -333,13 +339,13 @@ const like_or_dislike_article = (req, res) =>
                         })
                         .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
                     })
-                    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The vote couldn\'t be counted. You may try again.', error: err }));
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_vote_counted(lang), error: err }));
                 }
             })
-            .catch(err => res.status(400).json({ is_success: false, message: 'Error: The vote couldn\'t be counted. You may try again.', error: err }));
+            .catch(err => res.status(400).json({ is_success: false, message: failure_vote_counted(lang), error: err }));
         }
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The vote couldn\'t be counted. You may try again.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_vote_counted(lang), error: err }));
 };
 
 module.exports = 

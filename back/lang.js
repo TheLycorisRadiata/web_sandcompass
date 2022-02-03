@@ -814,75 +814,587 @@ const failure_article_posted = (lang) =>
     }
 };
 
-const = (lang) => 
+const success_article_modified = (lang, number) => 
 {
     switch (lang)
     {
         case 1:
+            return 'Article modifié, et ' + number + ' articles chargés.';
         case 2:
+            return 'Article modified, and ' + articles.length + ' articles loaded.';
         default:
+            return 'Article modified, and ' + articles.length + ' articles loaded.';
     }
 };
 
-return 'Article modified, and ' + articles.length + ' articles loaded.';
-return 'Error: The article has been modified, but the articles couldn\'t be loaded.';
-return 'Error: The article can\'t be modified.';
-return 'Article deleted, and ' + articles.length + ' articles loaded.';
-return 'Error: The article has been deleted, but the articles couldn\'t be loaded.';
-return 'Error: The article has been deleted, but it couldn\'t be removed from the author\'s list.';
-return 'Error: The article can\'t be deleted.';
-return categories.length + ' categories loaded.';
-return 'Error: The categories can\'t be retrieved.';
-return 'Category created, and ' + categories.length + ' categories loaded.';
-return 'Error: The category has been created, but the categories couldn\'t be loaded.';
-return 'Error: The category can\'t be created.';
-return 'Error: The category can\'t be modified.';
-return 'Category modified, and ' + categories.length + ' categories loaded.';
-return 'Error: The category has been modified, but the categories couldn\'t be loaded.';
-return 'Error: The category must be void of articles before it can be deleted.';
-return 'Category deleted, and ' + categories.length + ' categories loaded.';
-return 'Error: The category has been deleted, but the categories couldn\'t be loaded.';
-return 'Error: The category can\'t be deleted.';
-return 'Error: It seems like the article doesn\'t exist anymore.';
-return 'Error: Your account cannot be found.';
-return 'Vote counted.';
-return 'Error: The vote couldn\'t be counted. You may try again.';
+const failure_article_modified_but_no_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'article a été modifié, mais les articles n\'ont pu être chargés.';
+        case 2:
+            return 'Error: The article has been modified, but the articles couldn\'t be loaded.';
+        default:
+            return 'Error: The article has been modified, but the articles couldn\'t be loaded.';
+    }
+};
+
+const failure_article_modified = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'article ne peut être modifié.';
+        case 2:
+            return 'Error: The article can\'t be modified.';
+        default:
+            return 'Error: The article can\'t be modified.';
+    }
+};
+
+const success_article_deleted = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Article supprimé, et ' + number + ' articles chargés.';
+        case 2:
+            return 'Article deleted, and ' + articles.length + ' articles loaded.';
+        default:
+            return 'Article deleted, and ' + articles.length + ' articles loaded.';
+    }
+};
+
+const failure_article_deleted_but_no_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'article a été supprimé, mais les articles n\'ont pu être chargés.';
+        case 2:
+            return 'Error: The article has been deleted, but the articles couldn\'t be loaded.';
+        default:
+            return 'Error: The article has been deleted, but the articles couldn\'t be loaded.';
+    }
+};
+
+const failure_article_deleted_but_still_in_authors_list = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'article a été supprimé, mais il n\'a pas pu être retiré de la liste de l\'auteur.';
+        case 2:
+            return 'Error: The article has been deleted, but it couldn\'t be removed from the author\'s list.';
+        default:
+            return 'Error: The article has been deleted, but it couldn\'t be removed from the author\'s list.';
+    }
+};
+
+const failure_article_deleted = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'article ne peut être supprimé.';
+        case 2:
+            return 'Error: The article can\'t be deleted.';
+        default:
+            return 'Error: The article can\'t be deleted.';
+    }
+};
+
+const success_categories_retrieval = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + ' catégories chargées.';
+        case 2:
+            return number + ' categories loaded.';
+        default:
+            return number + ' categories loaded.';
+    }
+};
+
+const failure_categories_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Les catégories ne peuvent pas être retrouvées.';
+        case 2:
+            return 'Error: The categories can\'t be retrieved.';
+        default:
+            return 'Error: The categories can\'t be retrieved.';
+    }
+};
+
+const success_category_created = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Catégorie créée, et ' + number + ' catégories chargées.';
+        case 2:
+            return 'Category created, and ' + number + ' categories loaded.';
+        default:
+            return 'Category created, and ' + number + ' categories loaded.';
+    }
+};
+
+const failure_category_created_but_no_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La catégorie a été créée, mais les catégories n\'ont pu être chargées.';
+        case 2:
+            return 'Error: The category has been created, but the categories couldn\'t be loaded.';
+        default:
+            return 'Error: The category has been created, but the categories couldn\'t be loaded.';
+    }
+};
+
+const failure_category_created = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La catégorie ne peut être créée.';
+        case 2:
+            return 'Error: The category can\'t be created.';
+        default:
+            return 'Error: The category can\'t be created.';
+    }
+};
+
+const failure_category_modified = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La catégorie ne peut être modifiée.';
+        case 2:
+            return 'Error: The category can\'t be modified.';
+        default:
+            return 'Error: The category can\'t be modified.';
+    }
+};
+
+const success_category_modified = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Catégorie modifiée, et ' + number + ' catégories chargées.';
+        case 2:
+            return 'Category modified, and ' + number + ' categories loaded.';
+        default:
+            return 'Category modified, and ' + number + ' categories loaded.';
+    }
+};
+
+const failure_category_modified_but_no_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La catégorie a été modifiée, mais les catégories n\'ont pu être chargées.';
+        case 2:
+            return 'Error: The category has been modified, but the categories couldn\'t be loaded.';
+        default:
+            return 'Error: The category has been modified, but the categories couldn\'t be loaded.';
+    }
+};
+
+const failure_category_deletion_not_empty = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La catégorie doit être vide d\'articles avant de pouvoir être supprimée.';
+        case 2:
+            return 'Error: The category must be void of articles before it can be deleted.';
+        default:
+            return 'Error: The category must be void of articles before it can be deleted.';
+    }
+};
+
+const success_category_deleted = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Catégorie supprimée, et ' + number + ' catégories chargées.';
+        case 2:
+            return 'Category deleted, and ' + number + ' categories loaded.';
+        default:
+            return 'Category deleted, and ' + number + ' categories loaded.';
+    }
+};
+
+const failure_category_deleted_but_no_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La catégorie a été supprimée, mais les catégories n\'ont pu être chargées.';
+        case 2:
+            return 'Error: The category has been deleted, but the categories couldn\'t be loaded.';
+        default:
+            return 'Error: The category has been deleted, but the categories couldn\'t be loaded.';
+    }
+};
+
+const failure_category_deleted = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La catégorie ne peut être supprimée.';
+        case 2:
+            return 'Error: The category can\'t be deleted.';
+        default:
+            return 'Error: The category can\'t be deleted.';
+    }
+};
+
+const failure_article_not_found = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Il semblerait que l\'article n\'existe plus.';
+        case 2:
+            return 'Error: It seems like the article doesn\'t exist anymore.';
+        default:
+            return 'Error: It seems like the article doesn\'t exist anymore.';
+    }
+};
+
+const failure_account_not_found = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Votre compte est introuvable.';
+        case 2:
+            return 'Error: Your account cannot be found.';
+        default:
+            return 'Error: Your account cannot be found.';
+    }
+};
+
+const success_vote_counted = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Vote compté.';
+        case 2:
+            return 'Vote counted.';
+        default:
+            return 'Vote counted.';
+    }
+};
+
+const failure_vote_counted = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le vote n\'a pas pu être compté. Vous pouvez re-essayer.';
+        case 2:
+            return 'Error: The vote couldn\'t be counted. You may try again.';
+        default:
+            return 'Error: The vote couldn\'t be counted. You may try again.';
+    }
+};
 
 /* FAQ ------------------------------------------------------------------------------------------ */
 
-return questions.length + ' questions loaded.';
-return 'Error: The questions couldn\'t be retrieved.';
-return 'Question created';
-return 'Error: The question couldn\'t be created.';
-return 'Question edited.';
-return 'Error: The question couldn\'t be edited.';
-return 'Question removed.';
-return 'Error: The question couldn\'t be removed.';
+const success_questions_retrieval = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + ' questions chargées.';
+        case 2:
+            return number + ' questions loaded.';
+        default:
+            return number + ' questions loaded.';
+    }
+};
+
+const failure_questions_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Les questions ne peuvent pas être retrouvées.';
+        case 2:
+            return 'Error: The questions can\'t be retrieved.';
+        default:
+            return 'Error: The questions can\'t be retrieved.';
+    }
+};
+
+const success_question_created = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Question créée.';
+        case 2:
+            return 'Question created.';
+        default:
+            return 'Question created.';
+    }
+};
+
+const failure_question_created = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La question n\'a pas pu être créée.';
+        case 2:
+            return 'Error: The question couldn\'t be created.';
+        default:
+            return 'Error: The question couldn\'t be created.';
+    }
+};
+
+const success_question_edited = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Question éditée.';
+        case 2:
+            return 'Question edited.';
+        default:
+            return 'Question edited.';
+    }
+};
+
+const failure_question_edited = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La question n\'a pas pu être éditée.';
+        case 2:
+            return 'Error: The question couldn\'t be edited.';
+        default:
+            return 'Error: The question couldn\'t be edited.';
+    }
+};
+
+const success_question_removed = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Question retirée.';
+        case 2:
+            return 'Question removed.';
+        default:
+            return 'Question removed.';
+    }
+};
+
+const failure_question_removed = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La question n\'a pas pu être retirée.';
+        case 2:
+            return 'Error: The question couldn\'t be removed.';
+        default:
+            return 'Error: The question couldn\'t be removed.';
+    }
+};
 
 /* TOKEN ---------------------------------------------------------------------------------------- */
 
-return 'The email address is verified.';
-return 'The link has expired.';
-return 'The link is valid.';
+const success_email_verified = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'L\'adresse email est validée.';
+        case 2:
+            return 'The email address is verified.';
+        default:
+            return 'The email address is verified.';
+    }
+};
+
+const failure_expired_link = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le lien a expiré.';
+        case 2:
+            return 'The link has expired.';
+        default:
+            return 'The link has expired.';
+    }
+};
+
+const success_valid_link = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le lien est valide.';
+        case 2:
+            return 'The link is valid.';
+        default:
+            return 'The link is valid.';
+    }
+};
 
 /* CURRENCY ------------------------------------------------------------------------------------- */
 
-return currencies.length + ' currencies loaded.';
-return 'Error: The currencies can\'t be retrieved.';
+const success_currencies_retrieval = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + ' devises chargées.';
+        case 2:
+            return number + ' currencies loaded.';
+        default:
+            return number + ' currencies loaded.';
+    }
+};
+
+const failure_currencies_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Les devises ne peuvent pas être retrouvées.';
+        case 2:
+            return 'Error: The currencies can\'t be retrieved.';
+        default:
+            return 'Error: The currencies can\'t be retrieved.';
+    }
+};
 
 /* LANGUAGE ------------------------------------------------------------------------------------- */
 
-return languages.length + ' languages loaded.';
-return 'Error: The languages can\'t be retrieved.';
-return 'Error: The language cannot be retrieved.';
-return 'Language loaded.';
+const success_languages_retrieval = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + ' langues chargées.';
+        case 2:
+            return number + ' languages loaded.';
+        default:
+            return number + ' languages loaded.';
+    }
+};
+
+const failure_languages_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Les langues ne peuvent pas être retrouvées.';
+        case 2:
+            return 'Error: The languages can\'t be retrieved.';
+        default:
+            return 'Error: The languages can\'t be retrieved.';
+    }
+};
+
+const failure_language_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La langue ne peut pas être retrouvée.';
+        case 2:
+            return 'Error: The language can\'t be retrieved.';
+        default:
+            return 'Error: The language can\'t be retrieved.';
+    }
+};
+
+const success_language_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Langue chargée.';
+        case 2:
+            return 'Language loaded.';
+        default:
+            return 'Language loaded.';
+    }
+};
 
 /* RANK ----------------------------------------------------------------------------------------- */
 
-return ranks.length + ' ranks loaded.';
-return 'Error: The ranks can\'t be retrieved.';
-return 'Error: The rank cannot be retrieved.';
-return 'Rank loaded.';
+const success_ranks_retrieval = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + ' grades chargés.';
+        case 2:
+            return number + ' ranks loaded.';
+        default:
+            return number + ' ranks loaded.';
+    }
+};
+
+const failure_ranks_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Les grades ne peuvent pas être retrouvés.';
+        case 2:
+            return 'Error: The ranks can\'t be retrieved.';
+        default:
+            return 'Error: The ranks can\'t be retrieved.';
+    }
+};
+
+const failure_rank_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le grade ne peut pas être retrouvé.';
+        case 2:
+            return 'Error: The rank can\'t be retrieved.';
+        default:
+            return 'Error: The rank can\'t be retrieved.';
+    }
+};
+
+const success_rank_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Grade chargé.';
+        case 2:
+            return 'Rank loaded.';
+        default:
+            return 'Rank loaded.';
+    }
+};
 
 module.exports = 
 {
@@ -943,5 +1455,55 @@ module.exports =
     success_stats,
     success_user_retrieval,
     failure_user_retrieval,
+    success_articles_retrieval,
+    failure_articles_retrieval,
+    failure_article_posted_but_not_in_authors_list,
+    success_article_posted,
+    failure_article_posted_but_no_retrieval,
+    failure_article_posted,
+    success_article_modified,
+    failure_article_modified_but_no_retrieval,
+    failure_article_modified,
+    success_article_deleted,
+    failure_article_deleted_but_no_retrieval,
+    failure_article_deleted_but_still_in_authors_list,
+    failure_article_deleted,
+    success_categories_retrieval,
+    failure_categories_retrieval,
+    success_category_created,
+    failure_category_created_but_no_retrieval,
+    failure_category_created,
+    failure_category_modified,
+    success_category_modified,
+    failure_category_modified_but_no_retrieval,
+    failure_category_deletion_not_empty,
+    success_category_deleted,
+    failure_category_deleted_but_no_retrieval,
+    failure_category_deleted,
+    failure_article_not_found,
+    failure_account_not_found,
+    success_vote_counted,
+    failure_vote_counted,
+    success_questions_retrieval,
+    failure_questions_retrieval,
+    success_question_created,
+    failure_question_created,
+    success_question_edited,
+    failure_question_edited,
+    success_question_removed,
+    failure_question_removed,
+    success_email_verified,
+    failure_expired_link,
+    success_valid_link,
+    success_currencies_retrieval,
+    failure_currencies_retrieval,
+    success_languages_retrieval,
+    failure_languages_retrieval,
+    failure_language_retrieval,
+    success_language_retrieval,
+    success_ranks_retrieval,
+    failure_ranks_retrieval,
+    failure_rank_retrieval,
+    success_rank_retrieval
 };
 

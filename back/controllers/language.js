@@ -1,5 +1,7 @@
 const Language = require('../models/language');
 const {
+    success_languages_retrieval, failure_languages_retrieval, 
+    failure_language_retrieval, success_language_retrieval 
 } = require('../lang');
 
 const retrieve_all_languages = (req, res) => 
@@ -7,8 +9,8 @@ const retrieve_all_languages = (req, res) =>
     const lang = parseInt(req.params.lang);
 
     Language.find()
-    .then(languages => res.status(200).json({ is_success: true, message: languages.length + ' languages loaded.', data: languages }))
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The languages can\'t be retrieved.', error: err }));
+    .then(languages => res.status(200).json({ is_success: true, message: success_languages_retrieval(lang, languages.length), data: languages }))
+    .catch(err => res.status(400).json({ is_success: false, message: failure_languages_retrieval(lang), error: err }));
 };
 
 const retrieve_language_by_index = (req, res) => 
@@ -19,11 +21,11 @@ const retrieve_language_by_index = (req, res) =>
     .then(language => 
     {
         if (!language)
-            res.status(400).json({ is_success: false, message: 'Error: The language cannot be retrieved.' });
+            res.status(400).json({ is_success: false, message: failure_language_retrieval(lang) });
         else
-            res.status(200).json({ is_success: true, message: 'Language loaded.', data: language });
+            res.status(200).json({ is_success: true, message: success_language_retrieval(lang), data: language });
     })
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The language cannot be retrieved.', error: err }));
+    .catch(err => res.status(400).json({ is_success: false, message: failure_language_retrieval(lang), error: err }));
 };
 
 module.exports = 

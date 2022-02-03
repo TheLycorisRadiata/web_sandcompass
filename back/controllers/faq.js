@@ -1,6 +1,9 @@
 const Question = require('../models/question');
 const {
-    failure 
+    success_questions_retrieval, failure_questions_retrieval, 
+    success_question_created, failure_question_created, failure, 
+    success_question_edited, failure_question_edited, 
+    success_question_removed, failure_question_removed 
 } = require('../lang');
 
 const retrieve_all_questions = (req, res) => 
@@ -8,8 +11,8 @@ const retrieve_all_questions = (req, res) =>
     const lang = parseInt(req.params.lang);
 
     Question.find()
-    .then(questions => res.status(200).json({ is_success: true, message: questions.length + ' questions loaded.', data: questions }))
-    .catch(err => res.status(400).json({ is_success: false, message: 'Error: The questions couldn\'t be retrieved.', error: err }));
+    .then(questions => res.status(200).json({ is_success: true, message: success_questions_retrieval(lang, questions.length), data: questions }))
+    .catch(err => res.status(400).json({ is_success: false, message: failure_questions_retrieval(lang), error: err }));
 };
 
 const add_question = (req, res) => 
@@ -25,8 +28,8 @@ const add_question = (req, res) =>
     .then(() => 
     {
         Question.find()
-        .then(questions => res.status(201).json({ is_success: true, message: 'Question created', data: questions }))
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The question couldn\'t be created.', error: err }));
+        .then(questions => res.status(201).json({ is_success: true, message: success_question_created(lang), data: questions }))
+        .catch(err => res.status(400).json({ is_success: false, message: failure_question_created(lang), error: err }));
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
@@ -43,8 +46,8 @@ const edit_question = (req, res) =>
     .then(() => 
     {
         Question.find()
-        .then(questions => res.status(200).json({ is_success: true, message: 'Question edited.', data: questions }))
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The question couldn\'t be edited.', error: err }));
+        .then(questions => res.status(200).json({ is_success: true, message: success_question_edited(lang), data: questions }))
+        .catch(err => res.status(400).json({ is_success: false, message: failure_question_edited(lang), error: err }));
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
@@ -57,8 +60,8 @@ const remove_question = (req, res) =>
     .then(() => 
     {
         Question.find()
-        .then(questions => res.status(200).json({ is_success: true, message: 'Question removed.', data: questions }))
-        .catch(err => res.status(400).json({ is_success: false, message: 'Error: The question couldn\'t be removed.', error: err }));
+        .then(questions => res.status(200).json({ is_success: true, message: success_question_removed(lang), data: questions }))
+        .catch(err => res.status(400).json({ is_success: false, message: failure_question_removed(lang), error: err }));
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };

@@ -32,8 +32,19 @@ const BlogArticle = (props) =>
     const [id_user, set_id_user] = useState(null);
     const [user_vote, set_user_vote] = useState(0);
 
-    const display_title = () => props.article.title === undefined || props.article.title === '' ? title_not_found(ct.lang) : props.article.title;
+    const display_title = () => 
+    {
+        const lang = props.preview_lang === undefined ? ct.lang : props.preview_lang;
+        return props.article.title[lang] === '' ? title_not_found(ct.lang) : props.article.title[lang];
+    };
+
     const display_category = () => props.category === undefined || props.category === null ? category_not_found(ct.lang) : props.category[ct.lang];
+
+    const display_content = () => 
+    {
+        const lang = props.preview_lang === undefined ? ct.lang : props.preview_lang;
+        return props.article.content[lang] === '' ? content_not_found(ct.lang) : props.article.content[lang];
+    };
 
     const increment_likes = () => 
     {
@@ -239,7 +250,7 @@ const BlogArticle = (props) =>
                             </li>}
                     </ul>
 
-                    <div>{Parser(props.article.content === undefined || props.article.content === '' ? content_not_found(ct.lang) : props.article.content)}</div>
+                    <div>{Parser(display_content())}</div>
                 </article>
 
                 <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>
@@ -265,7 +276,7 @@ const BlogArticle = (props) =>
                             <li>{info_modified(ct.lang, date_in_letters(ct.lang, props.article.time_modification), time(props.article.time_modification, false))}</li>}
                     </ul>
 
-                    <div>{Parser(props.article.content === undefined || props.article.content === '' ? content_not_found(ct.lang) : props.article.content)}</div>
+                    <div>{Parser(display_content())}</div>
                 </article>
 
                 <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>

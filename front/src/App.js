@@ -53,7 +53,7 @@ const App = () =>
     const [all_questions, set_all_questions] = useState([]);
     const [all_categories, set_all_categories] = useState([]);
     const [all_articles, set_all_articles] = useState([]);
-    const [last_article, set_last_article] = useState([]);
+    const [last_article, set_last_article] = useState(null);
 
     const context_value = 
     {
@@ -72,19 +72,21 @@ const App = () =>
         const lang_machine = navigator.language || navigator.userLanguage;
         const lang_localstorage = JSON.parse(localStorage.getItem('lang'));
         const arr_faq = [];
-        const arr_last_article = [];
-        let arr_reversed_articles = null;
+        let var_lang = 0;
 
         if (lang_localstorage)
-            set_lang(lang_localstorage.index);
+            var_lang = lang_localstorage.index;
         else if (lang_machine === 'fr' || lang_machine.split('-')[0] === 'fr')
-            set_lang(1); // French
+            var_lang = 1; // French
         else if (lang_machine === 'ja' || lang_machine.split('-')[0] === 'ja')
-            set_lang(2); // Japanese
+            var_lang = 2; // Japanese
         else
-            set_lang(0); // English (default)
+            var_lang = 0; // English (default)
 
-        fetch(`${backend}/faq/${lang}/all`)
+        set_lang(var_lang);
+        // var_lang exists I need to pass lang into the fetches and at this step the state isn't updated yet
+
+        fetch(`${backend}/faq/${var_lang}/all`)
         .then(res => res.json())
         .then(json =>
         {
@@ -107,7 +109,7 @@ const App = () =>
         })
         .catch(err => console.log(err));
 
-        fetch(`${backend}/blog/${lang}/categories`)
+        fetch(`${backend}/blog/${var_lang}/categories`)
         .then(res => res.json())
         .then(json => 
         {
@@ -118,7 +120,7 @@ const App = () =>
                 set_all_categories(json.data);
         });
 
-        fetch(`${backend}/blog/${lang}/articles`)
+        fetch(`${backend}/blog/${var_lang}/articles`)
         .then(res => res.json())
         .then(json => 
         {
@@ -127,19 +129,8 @@ const App = () =>
                 console.log(json.error);
             if (json.is_success && json.data.length) 
             {
-                // full list
                 set_all_articles(json.data);
-
-                // last article (in all languages)
-                arr_reversed_articles = [...json.data];
-                arr_reversed_articles.reverse();
-                arr_last_article.push(arr_reversed_articles.find(e => e.language === 0));
-                arr_last_article.push(arr_reversed_articles.find(e => e.language === 1));
-                arr_last_article.push(arr_reversed_articles.find(e => e.language === 2));
-                arr_last_article[0] = arr_last_article[0] === undefined ? null : arr_last_article[0];
-                arr_last_article[1] = arr_last_article[1] === undefined ? null : arr_last_article[1];
-                arr_last_article[2] = arr_last_article[2] === undefined ? null : arr_last_article[2];
-                set_last_article(arr_last_article);
+                set_last_article(json.data[json.data.length - 1]);
             }
         });
 

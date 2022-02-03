@@ -85,8 +85,7 @@ const modify_article = (req, res) =>
         is_modified: true,
         category: req.body.article.category,
         title: req.body.article.title,
-        content: req.body.article.content,
-        language: req.body.article.language
+        content: req.body.article.content
     })
     .then(() => 
     {

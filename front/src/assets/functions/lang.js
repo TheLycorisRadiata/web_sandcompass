@@ -2704,16 +2704,16 @@ export const delete_article = (lang) =>
     }
 };
 
-export const title = (lang) => 
+export const title = (lang, index) => 
 {
     switch (lang)
     {
         case 1:
-            return 'Titre';
+            return `Titre (${dynamic_language(lang, index)})`;
         case 2:
-            return 'タイトル';
+            return `タイトル（${dynamic_language(lang, index)}）`;
         default:
-            return 'Title';
+            return `Title (${dynamic_language(lang, index)})`;
     }
 };
 
@@ -2808,16 +2808,16 @@ export const modify_category = (lang) =>
     }
 };
 
-export const content = (lang) => 
+export const content = (lang, index) => 
 {
     switch (lang)
     {
         case 1:
-            return 'Contenu';
+            return `Contenu (${dynamic_language(lang, index)})`;
         case 2:
-            return 'コンテンツ';
+            return `コンテンツ（${dynamic_language(lang, index)}）`;
         default:
-            return 'Content';
+            return `Content (${dynamic_language(lang, index)})`;
     }
 };
 
@@ -2831,19 +2831,6 @@ export const preview = (lang) =>
             return 'プレビュー';
         default:
             return 'Preview';
-    }
-};
-
-export const disclaimer_blog_editor_language = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'L\'article a besoin d\'une langue.';
-        case 2:
-            return 'The article needs a language.';
-        default:
-            return 'The article needs a language.';
     }
 };
 
@@ -2883,19 +2870,6 @@ export const disclaimer_blog_editor_content = (lang) =>
             return 'The article needs content.';
         default:
             return 'The article needs content.';
-    }
-};
-
-export const confirm_change_article_language = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'La langue sélectionnée dans l\'éditeur de blog est différente de la langue originelle de l\'article. Voulez-vous l\'utiliser comme nouvelle langue pour l\'article ?';
-        case 2:
-            return 'The language selected in the blog editor is different from the article\'s original language. Do you want to use it as the new language for the article?';
-        default:
-            return 'The language selected in the blog editor is different from the article\'s original language. Do you want to use it as the new language for the article?';
     }
 };
 

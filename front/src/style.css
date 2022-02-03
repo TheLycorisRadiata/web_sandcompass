@@ -947,7 +947,7 @@ select[name="select_article"]
     margin-bottom: 0;
 }
 
-input[name="field_article_title"], #blog_editor textarea
+input[name="field_article_title_0"], textarea[name="field_article_content_0"]
 {
     margin-top: 20px;
 }

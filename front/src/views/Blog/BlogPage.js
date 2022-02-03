@@ -121,9 +121,9 @@ const BlogPage = (props) =>
                 <>
                     {sort === 'old' ?
                     props.articles.map((e, i) => 
-                        (category === 'all' || category === e.category) && ct.lang === e.language  && 
+                        (category === 'all' || category === e.category)  && 
                             <article className="blog_section" key={e._id}>
-                                <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title}</Link></h2>
+                                <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title[ct.lang]}</Link></h2>
                                 <ul className="article_info">
                                     <li>{info_category(ct.lang)}{props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
                                     <li>{info_author(ct.lang)}{usernames[i]}.</li>
@@ -132,13 +132,13 @@ const BlogPage = (props) =>
                                         <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
                                 </ul>
 
-                                <ArticleExcerpt content={e.content} id={e._id} />
+                                <ArticleExcerpt content={e.content[ct.lang]} id={e._id} />
                             </article>)
                     :
                     props.articles.slice(0).reverse().map((e, i) => 
-                        (category === 'all' || category === e.category) && ct.lang === e.language && 
+                        (category === 'all' || category === e.category) && 
                             <article className="blog_section" key={e._id}>
-                                <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title}</Link></h2>
+                                <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title[ct.lang]}</Link></h2>
                                 <ul className="article_info">
                                     <li>{info_category(ct.lang)}{props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
                                     <li>{info_author(ct.lang)}{usernames[i]}.</li>
@@ -147,7 +147,7 @@ const BlogPage = (props) =>
                                         <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
                                 </ul>
 
-                                <ArticleExcerpt content={e.content} id={e._id} />
+                                <ArticleExcerpt content={e.content[ct.lang]} id={e._id} />
                             </article>)}
                 </>}
             </>}

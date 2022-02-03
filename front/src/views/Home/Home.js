@@ -41,14 +41,14 @@ const Home = (props) =>
 
             <SocialMedia />
 
-            {props.last_article[ct.lang] && 
+            {props.last_article && 
             <section>
                 <div>
-                    <h2 className="sub_title"><Link to={'/blog/article' + props.last_article[ct.lang]._id}>{last_article(ct.lang)}</Link></h2>
-                    <h3 id="last_article_title" className="sub_title">{props.last_article[ct.lang].title}</h3>
+                    <h2 className="sub_title"><Link to={'/blog/article' + props.last_article._id}>{last_article(ct.lang)}</Link></h2>
+                    <h3 id="last_article_title" className="sub_title">{props.last_article.title[ct.lang]}</h3>
                 </div>
 
-                <ArticleExcerpt content={props.last_article[ct.lang].content} id={props.last_article[ct.lang]._id} />
+                <ArticleExcerpt content={props.last_article.content[ct.lang]} id={props.last_article._id} />
             </section>}
         </main>
     );

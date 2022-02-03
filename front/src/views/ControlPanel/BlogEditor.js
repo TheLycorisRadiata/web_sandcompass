@@ -2,15 +2,13 @@ import { useState, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     blog_editor, access_denied, 
-    select_language, english, french, japanese, dynamic_language_short, 
+    select_language, english, french, japanese, 
     post_new_article, select_article, no_article, modify_article, delete_article, 
     no_category, select_category, manage_categories, new_category, add_category, delete_category, modify_category, 
     title, content, preview, 
-    disclaimer_blog_editor_language, 
     disclaimer_blog_editor_title, 
     disclaimer_blog_editor_category, 
-    disclaimer_blog_editor_content, 
-    confirm_change_article_language 
+    disclaimer_blog_editor_content 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faTools, faFolderPlus, faFolderMinus, faFolderOpen, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -37,13 +35,13 @@ const BlogEditor = (props) =>
         time_modification: Date.now(),
         is_modified: false,
         category: '',
-        title: '',
+        title: ['', '', ''],
         author: props.account_data?._id,
-        content: ''
+        content: ['', '', '']
     };
 
     const [article, set_article] = useState(default_article);
-    const [selected_language, set_selected_language] = useState('default');
+    const [selected_language, set_selected_language] = useState(ct.lang);
     const [selected_article, set_selected_article] = useState('default');
     const [selected_category, set_selected_category] = useState('default');
     const [selected_category_name, set_selected_category_name] = useState(null);
@@ -68,8 +66,7 @@ const BlogEditor = (props) =>
             category: obj_article.category,
             title: obj_article.title,
             author: props.account_data._id,
-            content: obj_article.content,
-            language: obj_article.language
+            content: obj_article.content
         });
     };
 
@@ -88,16 +85,14 @@ const BlogEditor = (props) =>
             time_modification: article.time_modification,
             is_modified: article.is_modified,
             category: id,
-            title: article.title,
+            title: [article.title[0], article.title[1], article.title[2]],
             author: props.account_data._id,
-            content: article.content,
-            language: article.language
+            content: [article.content[0], article.content[1], article.content[2]]
         });
     };
 
     const reset_editor = (fetched_articles) => 
     {
-        set_selected_language('default');
         set_selected_article('default');
         set_selected_category('default');
         set_selected_category_name(null);
@@ -183,10 +178,9 @@ const BlogEditor = (props) =>
                     time_modification: article.time_modification,
                     is_modified: article.is_modified,
                     category: '',
-                    title: article.title,
+                    title: [article.title[0], article.title[1], article.title[2]],
                     author: props.account_data._id,
-                    content: article.content,
-                    language: article.language
+                    content: [article.content[0], article.content[1], article.content[2]]
                 });
             });
         }
@@ -257,13 +251,11 @@ const BlogEditor = (props) =>
     {
         const new_article = {};
 
-        if (selected_language === 'default')
-            alert(disclaimer_blog_editor_language(ct.lang));
-        else if (article.title === '')
+        if (article.title[0] === '' || article.title[1] === '' || article.title[2] === '')
             alert(disclaimer_blog_editor_title(ct.lang));
         else if (article.category === '')
             alert(disclaimer_blog_editor_category(ct.lang));
-        else if (article.content === '')
+        else if (article.content[0] === '' || article.content[1] === '' || article.content[2] === '')
             alert(disclaimer_blog_editor_content(ct.lang));
         else
         {
@@ -272,10 +264,9 @@ const BlogEditor = (props) =>
             new_article.time_modification = Date.now();
             new_article.is_modified = false;
             new_article.category = article.category;
-            new_article.title = article.title;
+            new_article.title = [article.title[0], article.title[1], article.title[2]];
             new_article.author = props.account_data._id;
-            new_article.content = article.content;
-            new_article.language = selected_language;
+            new_article.content = [article.content[0], article.content[1], article.content[2]];
 
             fetch(`${backend}/blog/${ct.lang}/articles`,
             {
@@ -312,16 +303,9 @@ const BlogEditor = (props) =>
             updated_article.time_modification = Date.now();
             updated_article.is_modified = true;
             updated_article.category = article.category;
-            updated_article.title = article.title;
+            updated_article.title = [article.title[0], article.title[1], article.title[2]];
             updated_article.author = props.account_data._id;
-            updated_article.content = article.content;
-            updated_article.language = article.language;
-
-            if (selected_language !== 'default' && selected_language !== article.language)
-            {
-                if (window.confirm(confirm_change_article_language(ct.lang)))
-                    updated_article.language = selected_language;
-            }
+            updated_article.content = [article.content[0], article.content[1], article.content[2]];
 
             fetch(`${backend}/blog/${ct.lang}/articles`,
             {
@@ -384,7 +368,7 @@ const BlogEditor = (props) =>
         }
     };
 
-    const update_title = e => 
+    const update_title_0 = e => 
     {
         set_article(
         {
@@ -393,14 +377,13 @@ const BlogEditor = (props) =>
             time_modification: article.time_modification,
             is_modified: article.is_modified,
             category: article.category,
-            title: e.target.value,
+            title: [e.target.value, article.title[1], article.title[2]],
             author: props.account_data._id,
-            content: article.content,
-            language: article.language
+            content: [article.content[0], article.content[1], article.content[2]]
         });
     };
 
-    const update_content = e => 
+    const update_title_1 = e => 
     {
         set_article(
         {
@@ -409,10 +392,69 @@ const BlogEditor = (props) =>
             time_modification: article.time_modification,
             is_modified: article.is_modified,
             category: article.category,
-            title: article.title,
+            title: [article.title[0], e.target.value, article.title[2]],
             author: props.account_data._id,
-            content: e.target.value,
-            language: article.language
+            content: [article.content[0], article.content[1], article.content[2]]
+        });
+    };
+
+    const update_title_2 = e => 
+    {
+        set_article(
+        {
+            likes: article.likes,
+            time_creation: article.time_creation,
+            time_modification: article.time_modification,
+            is_modified: article.is_modified,
+            category: article.category,
+            title: [article.title[0], article.title[1], e.target.value],
+            author: props.account_data._id,
+            content: [article.content[0], article.content[1], article.content[2]]
+        });
+    };
+
+    const update_content_0 = e => 
+    {
+        set_article(
+        {
+            likes: article.likes,
+            time_creation: article.time_creation,
+            time_modification: article.time_modification,
+            is_modified: article.is_modified,
+            category: article.category,
+            title: [article.title[0], article.title[1], article.title[2]],
+            author: props.account_data._id,
+            content: [e.target.value, article.content[1], article.content[2]]
+        });
+    };
+
+    const update_content_1 = e => 
+    {
+        set_article(
+        {
+            likes: article.likes,
+            time_creation: article.time_creation,
+            time_modification: article.time_modification,
+            is_modified: article.is_modified,
+            category: article.category,
+            title: [article.title[0], article.title[1], article.title[2]],
+            author: props.account_data._id,
+            content: [article.content[0], e.target.value, article.content[2]]
+        });
+    };
+
+    const update_content_2 = e => 
+    {
+        set_article(
+        {
+            likes: article.likes,
+            time_creation: article.time_creation,
+            time_modification: article.time_modification,
+            is_modified: article.is_modified,
+            category: article.category,
+            title: [article.title[0], article.title[1], article.title[2]],
+            author: props.account_data._id,
+            content: [article.content[0], article.content[1], e.target.value]
         });
     };
 
@@ -441,8 +483,7 @@ const BlogEditor = (props) =>
                                 {props.categories.map(category => 
                                     <optgroup label={category.name[ct.lang]} key={category._id}>
                                         {!props.articles.filter(e => e.category === category._id).length ? <option disabled>{no_article(ct.lang)}</option> 
-                                        : props.articles.filter(e => e.category === category._id).map(e => 
-                                            <option key={e._id} value={e._id}>[{dynamic_language_short(ct.lang, e.language)}] {e.title}</option>)}
+                                        : props.articles.filter(e => e.category === category._id).map(e => <option key={e._id} value={e._id}>{e.title[ct.lang]}</option>)}
                                     </optgroup>)}
                             </select>
 
@@ -453,7 +494,9 @@ const BlogEditor = (props) =>
                         </>}
                     </div>
 
-                    <input type="text" name="field_article_title" value={article.title} onChange={update_title} placeholder={title(ct.lang)} />
+                    <input type="text" name="field_article_title_0" value={article.title[0]} onChange={update_title_0} placeholder={title(ct.lang, 0)} title={english(ct.lang)} />
+                    <input type="text" name="field_article_title_1" value={article.title[1]} onChange={update_title_1} placeholder={title(ct.lang, 1)} title={french(ct.lang)} />
+                    <input type="text" name="field_article_title_2" value={article.title[2]} onChange={update_title_2} placeholder={title(ct.lang, 2)} title={japanese(ct.lang)} />
 
                     <div id="categories">
                         <div>
@@ -502,14 +545,17 @@ const BlogEditor = (props) =>
                         </>}
                     </div>
 
-                    <textarea name="field_article_content" value={article.content} onChange={update_content} placeholder={content(ct.lang)}></textarea>
+                    <textarea name="field_article_content_0" value={article.content[0]} onChange={update_content_0} placeholder={content(ct.lang, 0)} title={english(ct.lang)}></textarea>
+                    <textarea name="field_article_content_1" value={article.content[1]} onChange={update_content_1} placeholder={content(ct.lang, 1)} title={french(ct.lang)}></textarea>
+                    <textarea name="field_article_content_2" value={article.content[2]} onChange={update_content_2} placeholder={content(ct.lang, 2)} title={japanese(ct.lang)}></textarea>
 
                     <button className="button" name="btn_preview_article" onClick={() => set_is_preview_shown(!is_preview_shown)}>
                         <span className="icon">{is_preview_shown ? icon_eye_slash : icon_eye}</span>{' '}{preview(ct.lang)}
                     </button>
                 </div>
 
-                {is_preview_shown && <BlogArticle is_preview={true} selected_article={selected_article} article={article} category={selected_category_name} />}
+                {is_preview_shown && 
+                    <BlogArticle is_preview={true} preview_lang={selected_language} selected_article={selected_article} article={article} category={selected_category_name} />}
             </>}
         </main>
     );

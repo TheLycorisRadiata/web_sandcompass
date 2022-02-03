@@ -3,14 +3,10 @@ import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
     title_articles, refresh_list, articles_by_author_instruction, 
-    english, french, japanese, 
     nbr_articles, empty 
 } from '../functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
-import Flag_Eng from '../images/flags/usa.png';
-import Flag_Fr from '../images/flags/france.png';
-import Flag_Jp from '../images/flags/japan.png';
 import { backend } from '../../../package.json';
 
 const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
@@ -57,17 +53,7 @@ const ArticlesByAuthor = (props) =>
                             <ol key={category._id}>
                                 {articles.find(e => e.category === category._id) === undefined ? <p key={category._id + '_empty'}>{empty(ct.lang)}</p>
                                 : 
-                                articles.filter(e => e.category === category._id).map(e => 
-                                    <li key={e._id}>
-                                        {e.language === 1 ? 
-                                            <img src={Flag_Fr} alt={french(ct.lang)} title={french(ct.lang)} className="icon mini_flag" /> 
-                                            : e.language === 2 ? 
-                                            <img src={Flag_Jp} alt={japanese(ct.lang)} title={japanese(ct.lang)} className="icon mini_flag" /> 
-                                            : 
-                                            <img src={Flag_Eng} alt={english(ct.lang)} title={english(ct.lang)} className="icon mini_flag" /> 
-                                        }
-                                        <Link to={'/blog/article' + e._id}>{e.title}</Link>
-                                    </li>)}
+                                articles.filter(e => e.category === category._id).map(e => <li key={e._id}><Link to={'/blog/article' + e._id}>{e.title[ct.lang]}</Link></li>)}
                             </ol>
                         </span>)}
                     </>}

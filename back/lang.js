@@ -762,6 +762,32 @@ const failure_articles_retrieval = (lang) =>
     }
 };
 
+const failure_article_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : L\'article n\'a pas pu être retrouvé.';
+        case 2:
+            return 'Error: Article couldn\'t be retrieved.';
+        default:
+            return 'Error: Article couldn\'t be retrieved.';
+    }
+};
+
+const success_article_retrieval = (lang, id) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Article ${id} chargé.`;
+        case 2:
+            return `Article ${id} loaded.`;
+        default:
+            return `Article ${id} loaded.`;
+    }
+};
+
 const failure_article_posted_but_not_in_authors_list = (lang) => 
 {
     switch (lang)
@@ -1457,6 +1483,8 @@ module.exports =
     failure_user_retrieval,
     success_articles_retrieval,
     failure_articles_retrieval,
+    failure_article_retrieval,
+    success_article_retrieval,
     failure_article_posted_but_not_in_authors_list,
     success_article_posted,
     failure_article_posted_but_no_retrieval,

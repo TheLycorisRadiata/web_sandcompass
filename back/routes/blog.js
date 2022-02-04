@@ -5,6 +5,9 @@ const router = express.Router();
 
 router.get('/:lang/articles', controller_blog.retrieve_articles);
 router.get('/:lang/articles/:id_author', controller_blog.retrieve_articles_by_author);
+router.get('/:lang/article/last', controller_blog.retrieve_last_article);
+router.get('/:lang/article/:id_article', controller_blog.retrieve_article_by_id);
+
 router.post('/:lang/articles', controller_blog.post_new_article);
 router.put('/:lang/articles', controller_blog.modify_article);
 router.delete('/:lang/articles', controller_blog.delete_article);

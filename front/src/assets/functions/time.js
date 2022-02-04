@@ -46,7 +46,7 @@ const time = (raw_time, add_seconds) =>
     const minutes = date.getUTCMinutes();
     const seconds = date.getUTCSeconds();
 
-    return hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + (!add_seconds ? '' : ':' + (seconds < 10 ? '0' + seconds : seconds));
+    return (hours === 24 ? '00' : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes) + (!add_seconds ? '' : ':' + (seconds < 10 ? '0' + seconds : seconds));
 };
 
 export { date_in_letters, time };

@@ -94,7 +94,7 @@ const ControlPanel = (props) =>
                 </div>
 
                 <span className="divider"></span>
-                <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} />
+                <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} admin_rank={props.admin_rank} set_admin_rank={props.set_admin_rank} />
                 <span className="divider"></span>
                 <ArticlesByAuthor author={props.account_data._id} categories={props.categories} />
             </>}

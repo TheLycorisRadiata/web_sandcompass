@@ -30,21 +30,44 @@ const AccountEditor = (props) =>
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [checked_lang, set_checked_lang] = useState(props.account_data?.language);
     const [checkbox_newsletter, set_checkbox_newsletter] = useState(false);
-    const [rank, set_rank] = useState(null);
 
     useLayoutEffect(() => 
     {
-        fetch(`${backend}/rank/${ct.lang}/${props.account_data?.rank}`)
-        .then(res => res.json())
-        .then(json => 
+        if (props.account_data?.is_admin)
         {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
-            if (json.is_success)
-                set_rank(json.data);
-        })
-        .catch(err => console.log(err));
+            if (!props.admin_rank)
+            {
+                fetch(`${backend}/rank/${ct.lang}/${props.account_data?.rank}`)
+                .then(res => res.json())
+                .then(json => 
+                {
+                    console.log(json.message);
+                    if (json.error)
+                        console.log(json.error);
+                    if (json.is_success)
+                        props.set_admin_rank(json.data);
+                })
+                .catch(err => console.log(err));
+            }
+        }
+        else
+        {
+            if (!props.user_rank)
+            {
+                fetch(`${backend}/rank/${ct.lang}/${props.account_data?.rank}`)
+                .then(res => res.json())
+                .then(json => 
+                {
+                    console.log(json.message);
+                    if (json.error)
+                        console.log(json.error);
+                    if (json.is_success)
+                        props.set_user_rank(json.data);
+                })
+                .catch(err => console.log(err));
+            }
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -283,7 +306,7 @@ const AccountEditor = (props) =>
                 <div>
                     <ul>
                         <li>{props.account_data?.username}</li>
-                        <li>{info_rank(ct.lang, rank?.name[ct.lang])}</li>
+                        <li>{info_rank(ct.lang, (props.account_data?.is_admin ? props.admin_rank?.name[ct.lang] : props.user_rank?.name[ct.lang]))}</li>
                         <li>{info_registered_on(ct.lang)}{date_in_letters(ct.lang, props.account_data?.registered_on)}</li>
                         <li>{info_preferred_language(ct.lang)}{dynamic_language(ct.lang, props.account_data?.language)}</li>
                         <li>{info_email_address(ct.lang)}{props.account_data?.email_address}</li>
@@ -324,15 +347,15 @@ const AccountEditor = (props) =>
                     <label>{change_language(ct.lang)}</label>
                     <div>
                         <div className="div_pointer">
-                            <input type="radio" name="language" value="0" id="eng" checked={checked_lang === 0} onClick={() => set_checked_lang(0)} />
+                            <input type="radio" name="language" value="0" id="eng" checked={checked_lang === 0} onChange={() => set_checked_lang(0)} />
                             <label htmlFor="eng">{english(ct.lang)}</label>
                         </div>
                         <div className="div_pointer">
-                            <input type="radio" name="language" value="1" id="fr" checked={checked_lang === 1} onClick={() => set_checked_lang(1)} />
+                            <input type="radio" name="language" value="1" id="fr" checked={checked_lang === 1} onChange={() => set_checked_lang(1)} />
                             <label htmlFor="fr">{french(ct.lang)}</label>
                         </div>
                         <div className="div_pointer">
-                            <input type="radio" name="language" value="2" id="jp" checked={checked_lang === 2} onClick={() => set_checked_lang(2)} />
+                            <input type="radio" name="language" value="2" id="jp" checked={checked_lang === 2} onChange={() => set_checked_lang(2)} />
                             <label htmlFor="jp">{japanese(ct.lang)}</label>
                         </div>
                     </div>

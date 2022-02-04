@@ -25,31 +25,89 @@ const BlogArticle = (props) =>
 {
     const ct = useContext(AppContext);
     const history = useHistory();
-    const current_time = Date.now();
 
-    const [username, set_username] = useState(user_not_found(ct.lang));
-    const [likes, set_likes] = useState(props.article.likes);
+    const [article, set_article] = useState(null);
+    const [likes, set_likes] = useState(0);
     const [id_user, set_id_user] = useState(null);
     const [user_vote, set_user_vote] = useState(0);
 
-    const display_title = () => 
+    const display_title = () =>  article?.title[ct.lang] === '' ? title_not_found(ct.lang) : article?.title[ct.lang];
+
+    const display_category = () => 
     {
-        const lang = props.preview_lang === undefined ? ct.lang : props.preview_lang;
-        return props.article.title[lang] === '' ? title_not_found(ct.lang) : props.article.title[lang];
+        if (props.categories)
+            return props.categories.map(e => e._id === article?.category).name[ct.lang];
+        else
+            return category_not_found(ct.lang);
     };
 
-    const display_category = () => props.category === undefined || props.category === null ? category_not_found(ct.lang) : props.category[ct.lang];
+    const display_author = () => article?.txt_author === '' ? user_not_found(ct.lang) : article?.txt_author;
 
-    const display_content = () => 
+    const display_content = () =>  article?.content[ct.lang] === '' ? content_not_found(ct.lang) : article?.content[ct.lang];
+
+    useLayoutEffect(() => 
     {
-        const lang = props.preview_lang === undefined ? ct.lang : props.preview_lang;
-        return props.article.content[lang] === '' ? content_not_found(ct.lang) : props.article.content[lang];
-    };
+        // Fetch the article from url
+        const path_parts = window.location.pathname.split('/');     
+        let last_part = path_parts[path_parts.length - 1];
+        console.log(path_parts);
+        console.log(last_part);
+
+        if (last_part === '' && path_parts.length - 2 >= 0)
+            last_part = path_parts[path_parts.length - 2];
+        console.log(last_part);
+        last_part.replace('article', '');
+        console.log(last_part);
+
+        fetch(`${backend}/blog/${ct.lang}/article/${last_part}`)
+        .then(res => res.json())
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+
+            if (json.is_success)
+                set_article(json.data);
+        })
+        .catch(err => console.log(err));
+
+        // Display the number of likes
+        set_likes(article?.users.likes.length - article?.users.dislikes.length);
+
+        // If logged in, interact as user
+        if (props.admin_account_data)
+        {
+            set_id_user(props.admin_account_data._id);
+
+            // Set the user's vote to know how to display the like/dislike buttons
+            if (props.admin_account_data.articles.liked.includes(article?._id))
+                set_user_vote(1);
+            else if (props.admin_account_data.articles.disliked.includes(article?._id))
+                set_user_vote(-1);
+            else
+                set_user_vote(0);
+        }
+        else if (props.user_account_data)
+        {
+            set_id_user(props.user_account_data._id);
+
+            // Set the user's vote to know how to display the like/dislike buttons
+            if (props.user_account_data.articles.liked.includes(article?._id))
+                set_user_vote(1);
+            else if (props.user_account_data.articles.disliked.includes(article?._id))
+                set_user_vote(-1);
+            else
+                set_user_vote(0);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const increment_likes = () => 
     {
         const articles = [...props.articles];
-        const index_current_article = articles.findIndex(e => e._id === props.article._id);
+        const index_current_article = articles.findIndex(e => e._id === article?._id);
 
         // Block the feature
         alert(wip(ct.lang));
@@ -63,7 +121,7 @@ const BlogArticle = (props) =>
             return;
         }
 
-        if (id_user === props.article.author)
+        if (id_user === article?.author)
         {
             alert(like_own_article(ct.lang));
         }
@@ -79,7 +137,7 @@ const BlogArticle = (props) =>
                 },
                 body: JSON.stringify(
                 {
-                    id_article: props.article._id,
+                    id_article: article?._id,
                     id_user: id_user,
                     user_vote: 1
                 })
@@ -114,7 +172,7 @@ const BlogArticle = (props) =>
     const decrement_likes = () => 
     {
         const articles = [...props.articles];
-        const index_current_article = articles.findIndex(e => e._id === props.article._id);
+        const index_current_article = articles.findIndex(e => e._id === article?._id);
 
         // Block the feature
         alert(wip(ct.lang));
@@ -128,7 +186,7 @@ const BlogArticle = (props) =>
             return;
         }
 
-        if (id_user === props.article.author)
+        if (id_user === article?.author)
         {
             alert(dislike_own_article(ct.lang));
         }
@@ -144,7 +202,7 @@ const BlogArticle = (props) =>
                 },
                 body: JSON.stringify(
                 {
-                    id_article: props.article._id,
+                    id_article: article?._id,
                     id_user: id_user,
                     user_vote: -1
                 })
@@ -176,125 +234,39 @@ const BlogArticle = (props) =>
         }
     };
 
-    useLayoutEffect(() => 
-    {
-        // Display the author's username
-        fetch(`${backend}/user/${ct.lang}/username/${props.article.author}`)
-        .then(res => res.json())
-        .then(json => 
-        {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
-
-            if (json.is_success)
-                set_username(json.data);
-        })
-        .catch(err => console.log(err));
-
-        // Display the number of likes
-        if (!props.is_preview)
-            set_likes(props.article.users.likes.length - props.article.users.dislikes.length);
-
-        // If logged in, interact as user
-        if (props.admin_account_data)
-        {
-            set_id_user(props.admin_account_data._id);
-
-            // Set the user's vote to know how to display the like/dislike buttons
-            if (props.admin_account_data.articles.liked.includes(props.article._id))
-                set_user_vote(1);
-            else if (props.admin_account_data.articles.disliked.includes(props.article._id))
-                set_user_vote(-1);
-            else
-                set_user_vote(0);
-        }
-        else if (props.user_account_data)
-        {
-            set_id_user(props.user_account_data._id);
-
-            // Set the user's vote to know how to display the like/dislike buttons
-            if (props.user_account_data.articles.liked.includes(props.article._id))
-                set_user_vote(1);
-            else if (props.user_account_data.articles.disliked.includes(props.article._id))
-                set_user_vote(-1);
-            else
-                set_user_vote(0);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
-        <>
-            {props.is_preview ? 
-            <div id="main" className="preview_article">
-                <h3 className="title">{blog(ct.lang)}</h3>
-                <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>
+        <main>
+            <h1 className="title">{blog(ct.lang)}</h1>
+            <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>
 
-                <article>
-                    <h4 className="sub_title">{display_title()}</h4>
-                    <ul className="article_info">
-                        <li>{info_category(ct.lang)}{display_category()}.</li>
-                        <li>{info_author(ct.lang)}{username}.</li>
-                        <li>
-                            {info_created(ct.lang, 
-                                date_in_letters(ct.lang, props.id_selected_article !== '' ? props.article.time_creation : current_time), 
-                                time(props.id_selected_article !== '' ? props.article.time_creation : current_time, false))}
-                        </li>
-                        {props.article.is_modified && 
-                            <li>
-                                {info_modified(ct.lang, 
-                                    date_in_letters(ct.lang, props.id_selected_article !== '' ? props.article.time_modification : current_time), 
-                                    time(props.id_selected_article !== '' ? props.article.time_modification : current_time, false))}
-                            </li>}
-                    </ul>
+            <article>
+                <h2 className="sub_title">{display_title()}</h2>
+                <ul className="article_info">
+                    <li>{info_category(ct.lang)}{display_category()}.</li>
+                    <li>{info_author(ct.lang)}{display_author()}.</li>
+                    <li>{info_created(ct.lang, date_in_letters(ct.lang, article?.time_creation), time(article?.time_creation, false))}</li>
+                    {article?.is_modified && 
+                        <li>{info_modified(ct.lang, date_in_letters(ct.lang, article?.time_modification), time(article?.time_modification, false))}</li>}
+                </ul>
 
-                    <div>{Parser(display_content())}</div>
-                </article>
+                <div>{Parser(display_content())}</div>
+            </article>
 
-                <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>
+            <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>
 
-                <div id="likes_dislikes">
-                    <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
-                    <button className="a button" name="btn_like"><span className="icon">{icon_empty_like}</span> {like(ct.lang)}</button>
-                    <button className="a button" name="btn_dislike"><span className="icon">{icon_empty_dislike}</span> {dislike(ct.lang)}</button>
-                </div>
+            <div id="likes_dislikes">
+                <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
+                {!props.admin_account_data && !props.user_account_data ? 
+                    <button className="button" name="btn_login" onClick={() => history.push('/user')}>{vote_instruction(ct.lang)}</button>
+                :
+                    <>
+                        <button className="button" name="btn_like" onClick={increment_likes}>
+                            <span className="icon">{user_vote === 1 ? icon_filled_like : icon_empty_like}</span> {like(ct.lang)}</button>
+                        <button className="button" name="btn_dislike" onClick={decrement_likes}>
+                            <span className="icon">{user_vote === -1 ? icon_filled_dislike : icon_empty_dislike}</span> {dislike(ct.lang)}</button>
+                    </>}
             </div>
-            :
-            <main>
-                <h1 className="title">{blog(ct.lang)}</h1>
-                <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>
-
-                <article>
-                    <h2 className="sub_title">{display_title()}</h2>
-                    <ul className="article_info">
-                        <li>{info_category(ct.lang)}{display_category()}.</li>
-                        <li>{info_author(ct.lang)}{username}.</li>
-                        <li>{info_created(ct.lang, date_in_letters(ct.lang, props.article.time_creation), time(props.article.time_creation, false))}</li>
-                        {props.article.is_modified && 
-                            <li>{info_modified(ct.lang, date_in_letters(ct.lang, props.article.time_modification), time(props.article.time_modification, false))}</li>}
-                    </ul>
-
-                    <div>{Parser(display_content())}</div>
-                </article>
-
-                <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>
-
-                <div id="likes_dislikes">
-                    <span id="txt_likes">{likes < 0 ? icon_heart_broken : icon_heart} {likes}</span>
-                    {!props.admin_account_data && !props.user_account_data ? 
-                        <button className="button" name="btn_login" onClick={() => history.push('/user')}>{vote_instruction(ct.lang)}</button>
-                    :
-                        <>
-                            <button className="button" name="btn_like" onClick={increment_likes}>
-                                <span className="icon">{user_vote === 1 ? icon_filled_like : icon_empty_like}</span> {like(ct.lang)}</button>
-                            <button className="button" name="btn_dislike" onClick={decrement_likes}>
-                                <span className="icon">{user_vote === -1 ? icon_filled_dislike : icon_empty_dislike}</span> {dislike(ct.lang)}</button>
-                        </>}
-                </div>
-            </main>}
-        </>
+        </main>
     );
 };
 

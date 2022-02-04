@@ -3,6 +3,7 @@ const Category = require('../models/category');
 const User = require('../models/user');
 const {
     success_articles_retrieval, failure_articles_retrieval, 
+    failure_article_retrieval, success_article_retrieval, 
     failure_article_posted_but_not_in_authors_list, success_article_posted, failure_article_posted_but_no_retrieval, failure_article_posted, 
     success_article_modified, failure_article_modified_but_no_retrieval, failure_article_modified, 
     success_article_deleted, failure_article_deleted_but_no_retrieval, failure_article_deleted_but_still_in_authors_list, failure_article_deleted, 
@@ -29,6 +30,63 @@ const retrieve_articles_by_author = (req, res) =>
     Article.find({ author: req.params.id_author })
     .then(articles => res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, articles.length), data: articles }))
     .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
+};
+
+const retrieve_last_article = (req, res) => 
+{
+    const lang = parseInt(req.params.lang);
+
+    // Browse starting from the end
+    Article.findOne({}, null, { sort: { _id: -1 }})
+    .then(article => 
+    {
+        if (!article)
+            res.status(404).json({ is_success: false, message: failure_article_retrieval(lang) });
+        else
+        {
+            // Fetch author's username
+            User.findOne({ _id: article.author })
+            .then(author => 
+            {
+                article.txt_author = author ? author.username : null;
+                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: article });
+            })
+            .catch(() => 
+            {
+                article.txt_author = null;
+                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: article });
+            });
+        }
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: failure_article_retrieval(lang), error: err }));
+};
+
+const retrieve_article_by_id = (req, res) => 
+{
+    const lang = parseInt(req.params.lang);
+
+    Article.findOne({ _id: req.params.id_article })
+    .then(article => 
+    {
+        if (!article)
+            res.status(404).json({ is_success: false, message: failure_article_retrieval(lang) });
+        else
+        {
+            // Fetch author's username
+            User.findOne({ _id: article.author })
+            .then(author => 
+            {
+                article.txt_author = author ? author.username : null;
+                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: article });
+            })
+            .catch(() => 
+            {
+                article.txt_author = null;
+                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: article });
+            });
+        }
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: failure_article_retrieval(lang), error: err }));
 };
 
 const post_new_article = (req, res) => 
@@ -351,6 +409,8 @@ module.exports =
 {
     retrieve_articles,
     retrieve_articles_by_author,
+    retrieve_last_article,
+    retrieve_article_by_id,
     post_new_article,
     modify_article,
     delete_article,

@@ -1432,7 +1432,7 @@ export const home_cosmic_dust = (lang) =>
     }
 };
 
-export const last_article = (lang) => 
+export const title_last_article = (lang) => 
 {
     switch (lang)
     {

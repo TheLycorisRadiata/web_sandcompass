@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useLayoutEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     access_denied, 
@@ -154,6 +154,39 @@ const FaqEditor = (props) =>
             .catch(err => console.log(err));
         }
     };
+
+    useLayoutEffect(() => 
+    {
+        const arr_faq = [];
+
+        if (!props.questions)
+        {
+            fetch(`${backend}/faq/${ct.lang}/all`)
+            .then(res => res.json())
+            .then(json =>
+            {
+                console.log(json.message);
+                if (json.error)
+                    console.log(json.error);
+
+                if (json.is_success)
+                {
+                    json.data.forEach(e => arr_faq.push(
+                    {
+                        _id: e._id,
+                        question: e.question,
+                        answer: e.answer,
+                        is_deployed: false
+                    }));
+                }
+
+                props.set_questions(arr_faq);
+            })
+            .catch(err => console.log(err));
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <main>

@@ -12,7 +12,7 @@ import {
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faTools, faFolderPlus, faFolderMinus, faFolderOpen, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import BlogArticle from '../Blog/BlogArticle';
+import BlogArticlePreview from '../../assets/components/BlogArticlePreview';
 import { parse_category } from '../../assets/functions/parsing';
 import { backend } from '../../../package.json';
 
@@ -555,7 +555,12 @@ const BlogEditor = (props) =>
                 </div>
 
                 {is_preview_shown && 
-                    <BlogArticle is_preview={true} preview_lang={selected_language} selected_article={selected_article} article={article} category={selected_category_name} />}
+                    <BlogArticlePreview 
+                        preview_lang={selected_language} 
+                        id_selected_article={selected_article} 
+                        article={article} 
+                        category={selected_category_name} 
+                        txt_author={props.account_data?.username} />}
             </>}
         </main>
     );

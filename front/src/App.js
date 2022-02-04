@@ -47,13 +47,14 @@ const App = () =>
 
     const [admin_account_data, set_admin_account_data] = useState(null);
     const [is_admin_access_granted, set_is_admin_access_granted] = useState(false);
+    const [admin_rank, set_admin_rank] = useState(null);
     const [user_account_data, set_user_account_data] = useState(null);
     const [is_user_access_granted, set_is_user_access_granted] = useState(false);
+    const [user_rank, set_user_rank] = useState(null);
 
-    const [all_questions, set_all_questions] = useState([]);
+    const [all_questions, set_all_questions] = useState(null);
     const [all_categories, set_all_categories] = useState([]);
     const [all_articles, set_all_articles] = useState([]);
-    const [last_article, set_last_article] = useState(null);
 
     const context_value = 
     {
@@ -71,7 +72,6 @@ const App = () =>
     {
         const lang_machine = navigator.language || navigator.userLanguage;
         const lang_localstorage = JSON.parse(localStorage.getItem('lang'));
-        const arr_faq = [];
         let var_lang = 0;
 
         if (lang_localstorage)
@@ -85,29 +85,6 @@ const App = () =>
 
         set_lang(var_lang);
         // var_lang exists I need to pass lang into the fetches and at this step the state isn't updated yet
-
-        fetch(`${backend}/faq/${var_lang}/all`)
-        .then(res => res.json())
-        .then(json =>
-        {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
-
-            if (json.is_success)
-            {
-                json.data.forEach(e => arr_faq.push(
-                {
-                    _id: e._id,
-                    question: e.question,
-                    answer: e.answer,
-                    is_deployed: false
-                }));
-            }
-
-            set_all_questions(arr_faq);
-        })
-        .catch(err => console.log(err));
 
         fetch(`${backend}/blog/${var_lang}/categories`)
         .then(res => res.json())
@@ -128,10 +105,7 @@ const App = () =>
             if (json.error)
                 console.log(json.error);
             if (json.is_success && json.data.length) 
-            {
                 set_all_articles(json.data);
-                set_last_article(json.data[json.data.length - 1]);
-            }
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -175,21 +149,18 @@ const App = () =>
                     </header>
 
                     <Switch>
-                        <Route exact path="/"><Home last_article={last_article} /></Route>
-                        <Route exact path="/home"><Home last_article={last_article} /></Route>
+                        <Route exact path="/"><Home /></Route>
+                        <Route exact path="/home"><Home /></Route>
                         <Route exact path="/faq"><Faq questions={all_questions} set_questions={set_all_questions} /></Route>
                         <Route exact path="/works"><Works /></Route>
                         <Route exact path="/blog"><BlogPage articles={all_articles} categories={all_categories} /></Route>
 
-                        {all_articles.map(article => 
-                            <Route exact path={'/blog/article' + article._id} key={article._id}>
-                                <BlogArticle 
-                                    is_preview={false} article={article} category={all_categories.find(e => e._id === article.category)?.name} 
-                                    articles={all_articles} set_articles={set_all_articles} 
-                                    admin_account_data={admin_account_data} user_account_data={user_account_data} 
-                                    set_admin_account_data={set_admin_account_data} set_user_account_data={set_user_account_data} />
-                            </Route>)
-                        }
+                        <Route path={'/blog'}>
+                            <BlogArticle 
+                                is_preview={false} categories={all_categories} 
+                                admin_account_data={admin_account_data} user_account_data={user_account_data} 
+                                set_admin_account_data={set_admin_account_data} set_user_account_data={set_user_account_data} />
+                        </Route>
 
                         <Route exact path="/contact"><Contact /></Route>
                         <Route exact path="/licenses"><Licenses /></Route>
@@ -207,6 +178,7 @@ const App = () =>
                             <ControlPanel 
                                 account_data={admin_account_data} set_account_data={set_admin_account_data} 
                                 is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} 
+                                admin_rank={admin_rank} set_admin_rank={set_admin_rank} 
                                 categories={all_categories} />
                         </Route>
 
@@ -215,6 +187,7 @@ const App = () =>
                             <UserPanel 
                                 account_data={user_account_data} set_account_data={set_user_account_data} 
                                 is_access_granted={is_user_access_granted} set_is_access_granted={set_is_user_access_granted} 
+                                user_rank={user_rank} set_user_rank={set_user_rank} 
                                 categories={all_categories} />
                         </Route>
                         <Route path="/password"><Password /></Route>

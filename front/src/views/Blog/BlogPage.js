@@ -5,13 +5,13 @@ import {
     blog, blog_is_empty, sort_from_oldest, sort_from_most_recent,
     all_categories, category_is_empty, 
     info_category, info_author, info_created, info_modified, 
-    user_not_found 
+    category_not_found, user_not_found 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglassEnd, faHourglassStart } from '@fortawesome/free-solid-svg-icons';
 import { date_in_letters, time } from '../../assets/functions/time';
-import { fetch_username_from_id } from '../../assets/functions/blog';
 import ArticleExcerpt from '../../assets/components/ArticleExcerpt';
+import { backend } from '../../../package.json';
 
 const icon_sorted_old = <FontAwesomeIcon icon={faHourglassEnd} />;
 const icon_sorted_recent = <FontAwesomeIcon icon={faHourglassStart} />;
@@ -20,68 +20,64 @@ const BlogPage = (props) =>
 {
     const ct = useContext(AppContext);
 
-    const [sort, set_sort] = useState('old');
     const [category, set_category] = useState('all');
-    const [usernames, set_usernames] = useState([]);
+    const [sort, set_sort] = useState('old');
+    const [page, set_page] = useState(1);
+    const [articles, set_articles] = useState([]);
+    const [is_blog_empty, set_is_blog_empty] = useState(false);
 
     useLayoutEffect(() => 
     {
         const filter = JSON.parse(localStorage.getItem('blog'));
 
-        const populate_usernames = async () => 
-        {
-            const arr = [];
-            let json = null;
-            let username = '';
-
-            for (const article of props.articles)
-            {
-                json = await fetch_username_from_id(ct.lang, article.author);
-                console.log(json.message);
-                if (json.error)
-                    console.log(json.error);
-                if (json.is_success)
-                    username = json.data;
-
-                arr.push(username !== '' ? username : user_not_found(ct.lang));
-            }
-
-            set_usernames(arr);
-        };
-
-        populate_usernames();
-
         if (filter)
         {
-            set_sort(filter.sort);
-
-            /*
-                ISSUE: This piece of code doesn't work, help am baby.
-                Whether the category exists or not, it's always undefined in the if-statement, yet a console.log() shows it exists.
-
-                // If the saved category no longer exists, replace its ID by 'all' in the local storage
-                if (filter.category !== 'all' && props.categories.find(e => e._id === filter.category) === undefined)
-                {
-                    filter.category = 'all';
-                    localStorage.setItem('blog', JSON.stringify(filter));
-                }
-            */
-
             set_category(filter.category);
+            set_sort(filter.sort);
         }
+
+        set_page(1);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useLayoutEffect(() => 
+    {
+        fetch(`${backend}/blog/${ct.lang}/articles/${category}/${sort}/${page}`)
+        .then(res => res.json())
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+
+            if (json.is_success)
+            {
+                set_is_blog_empty(json.is_blog_empty);
+                set_articles(json.data);
+            }
+
+            // If the saved category no longer exists, replace its ID by 'all'
+            if (json.category_not_found)
+            {
+                localStorage.setItem('blog', JSON.stringify({ category: 'all', sort: sort }));
+                set_category('all');
+            }
+        });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [category, sort, page]);
+
     const sort_old = () => 
     {
-        const filter = { sort: 'old', category: category };
+        const filter = { category: category, sort: 'old' };
         localStorage.setItem('blog', JSON.stringify(filter));
         set_sort('old');
     };
 
     const sort_recent = () => 
     {
-        const filter = { sort: 'recent', category: category };
+        const filter = { category: category, sort: 'recent' };
         localStorage.setItem('blog', JSON.stringify(filter));
         set_sort('recent');
     };
@@ -89,7 +85,7 @@ const BlogPage = (props) =>
     const filter_category = e => 
     {
         const selected_category = e.target.value;
-        const filter = { sort: sort, category: selected_category };
+        const filter = { category: selected_category, sort: sort };
         localStorage.setItem('blog', JSON.stringify(filter));
         set_category(selected_category);
     };
@@ -97,7 +93,7 @@ const BlogPage = (props) =>
     return (
         <main>
             <h1 className="title">{blog(ct.lang)}</h1>
-            {!props.articles.length ? 
+            {is_blog_empty ? 
                 <p className="txt_centered">{blog_is_empty(ct.lang)}</p>
             :
             <>
@@ -116,40 +112,23 @@ const BlogPage = (props) =>
                     </div>
                 </div>
 
-                {category !== 'all' && !props.articles.filter(e => e.category === category).length ? <p className="txt_centered">{category_is_empty(ct.lang)}</p>
+                {!articles.length ? <p className="txt_centered">{category_is_empty(ct.lang)}</p>
                 :
-                <>
-                    {sort === 'old' ?
-                    props.articles.map((e, i) => 
-                        (category === 'all' || category === e.category)  && 
-                            <article className="blog_section" key={e._id}>
-                                <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title[ct.lang]}</Link></h2>
-                                <ul className="article_info">
-                                    <li>{info_category(ct.lang)}{props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
-                                    <li>{info_author(ct.lang)}{usernames[i]}.</li>
-                                    <li>{info_created(ct.lang, date_in_letters(ct.lang, e.time_creation), time(e.time_creation, false))}</li>
-                                    {e.is_modified && 
-                                        <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
-                                </ul>
+                articles.map(e => 
+                    <article className="blog_section" key={e._id}>
+                        <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title[ct.lang]}</Link></h2>
+                        <ul className="article_info">
+                            <li>{info_category(ct.lang)}
+                                {props.categories.find(cat => cat._id === e.category).name[ct.lang] /*!e.txt_category ? category_not_found(ct.lang) : e.txt_category[ct.lang]*/}.</li>
+                            <li>{info_author(ct.lang)}{'Lycoris' /*!e.txt_author ? user_not_found(ct.lang) : e.txt_author*/}.</li>
+                            <li>{info_created(ct.lang, date_in_letters(ct.lang, e.time_creation), time(e.time_creation, false))}</li>
+                            {e.is_modified && 
+                                <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
+                        </ul>
 
-                                <ArticleExcerpt content={e.content[ct.lang]} id={e._id} />
-                            </article>)
-                    :
-                    props.articles.slice(0).reverse().map((e, i) => 
-                        (category === 'all' || category === e.category) && 
-                            <article className="blog_section" key={e._id}>
-                                <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title[ct.lang]}</Link></h2>
-                                <ul className="article_info">
-                                    <li>{info_category(ct.lang)}{props.categories.find(category => category._id === e.category).name[ct.lang]}.</li>
-                                    <li>{info_author(ct.lang)}{usernames[i]}.</li>
-                                    <li>{info_created(ct.lang, date_in_letters(ct.lang, e.time_creation), time(e.time_creation, false))}</li>
-                                    {e.is_modified && 
-                                        <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
-                                </ul>
-
-                                <ArticleExcerpt content={e.content[ct.lang]} id={e._id} />
-                            </article>)}
-                </>}
+                        <ArticleExcerpt content={e.content[ct.lang]} id={e._id} />
+                    </article>)
+                }
             </>}
         </main>
     );

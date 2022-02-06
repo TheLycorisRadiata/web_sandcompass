@@ -54,7 +54,6 @@ const App = () =>
 
     const [all_questions, set_all_questions] = useState(null);
     const [all_categories, set_all_categories] = useState([]);
-    const [all_articles, set_all_articles] = useState([]);
 
     const context_value = 
     {
@@ -84,7 +83,7 @@ const App = () =>
             var_lang = 0; // English (default)
 
         set_lang(var_lang);
-        // var_lang exists I need to pass lang into the fetches and at this step the state isn't updated yet
+        // var_lang exists I need to pass lang into the fetch and at this step the state isn't updated yet
 
         fetch(`${backend}/blog/${var_lang}/categories`)
         .then(res => res.json())
@@ -95,17 +94,6 @@ const App = () =>
                 console.log(json.error);
             if (json.is_success)
                 set_all_categories(json.data);
-        });
-
-        fetch(`${backend}/blog/${var_lang}/articles`)
-        .then(res => res.json())
-        .then(json => 
-        {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
-            if (json.is_success && json.data.length)
-                set_all_articles(json.data);
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -153,7 +141,7 @@ const App = () =>
                         <Route exact path="/home"><Home /></Route>
                         <Route exact path="/faq"><Faq questions={all_questions} set_questions={set_all_questions} /></Route>
                         <Route exact path="/works"><Works /></Route>
-                        <Route exact path="/blog"><BlogPage articles={all_articles} set_articles={set_all_articles} categories={all_categories} /></Route>
+                        <Route exact path="/blog"><BlogPage categories={all_categories} /></Route>
 
                         <Route path={'/blog'}>
                             <BlogArticle 

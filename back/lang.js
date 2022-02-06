@@ -957,6 +957,32 @@ const failure_categories_retrieval = (lang) =>
     }
 };
 
+const success_category_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Catégorie retrouvée.';
+        case 2:
+            return 'Category retrieved.';
+        default:
+            return 'Category retrieved.';
+    }
+};
+
+const failure_category_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : La catégorie n\'a pas pu être retrouvée.';
+        case 2:
+            return 'Error: The category can\'t be retrieved.';
+        default:
+            return 'Error: The category can\'t be retrieved.';
+    }
+};
+
 const success_category_created = (lang, number) => 
 {
     switch (lang)

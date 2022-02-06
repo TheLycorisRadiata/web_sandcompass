@@ -8,6 +8,7 @@ const {
     success_article_modified, failure_article_modified_but_no_retrieval, failure_article_modified, 
     success_article_deleted, failure_article_deleted_but_no_retrieval, failure_article_deleted_but_still_in_authors_list, failure_article_deleted, 
     success_categories_retrieval, failure_categories_retrieval, 
+    success_category_retrieval, failure_category_retrieval, 
     success_category_created, failure_category_created_but_no_retrieval, failure_category_created, 
     failure_category_modified, success_category_modified, failure_category_modified_but_no_retrieval, 
     failure_category_deletion_not_empty, success_category_deleted, failure_category_deleted_but_no_retrieval, failure_category_deleted, 
@@ -29,6 +30,68 @@ const retrieve_articles_by_author = (req, res) =>
 
     Article.find({ author: req.params.id_author })
     .then(articles => res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, articles.length), data: articles }))
+    .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
+};
+
+const retrieve_articles_by_category_sort_and_page = (req, res) => 
+{
+    const lang = parseInt(req.params.lang);
+    const id_category = req.params.category; // 'all' or ID
+    const sort = req.params.sort; // 'old' or 'recent'
+    const page = parseInt(req.params.page);
+
+    // 5 articles per page
+    const max_index = page * 5 - 1;
+    const min_index = max_index - 4;
+
+    let arr_articles = null;
+    let category_not_found = false;
+    let i;
+
+    // Does the category even exist?
+    Category.findOne(id_category === 'all' ? {} : { _id: id_category })
+    .then(category => 
+    {
+        if (!category)
+            category_not_found = true;
+
+        // Does the blog even have a single article?
+        Article.find({})
+        .then(articles => 
+        {
+            if (!articles.length)
+                res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, 0), data: [], 
+                    is_blog_empty: true, category_not_found: category_not_found });
+            else
+            {
+                // Filter by category
+                arr_articles = id_category === 'all' || category_not_found ? articles : articles.filter(e => String(e.category) === id_category);
+
+                // Articles are in chronological order, so reverse the array if sort is 'recent'
+                if (sort === 'recent')
+                    arr_articles = arr_articles.slice(0).reverse();
+
+                // Filter by page
+                arr_articles = arr_articles.slice(min_index, max_index + 1);
+
+                for (i = 0; i < arr_articles.length; ++i)
+                {
+                    // Transform every element into a proper object so I can add properties (txt_category and txt_author)
+                    arr_articles[i] = arr_articles[i].toObject();
+
+                    // Add txt_category
+                    // TODO
+
+                    // Add txt_author
+                    // TODO
+                }
+
+                res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, arr_articles.length), data: arr_articles, 
+                    is_blog_empty: false, category_not_found: category_not_found });
+            }
+        })
+        .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
+    })
     .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
 };
 
@@ -217,6 +280,21 @@ const retrieve_categories = (req, res) =>
     Category.find()
     .then(categories => res.status(200).json({ is_success: true, message: success_categories_retrieval(lang, categories.length), data: categories }))
     .catch(err => res.status(400).json({ is_success: false, message: failure_categories_retrieval(lang), error: err }));
+};
+
+const get_category_name_from_id = (req, res) => 
+{
+    const lang = parseInt(req.params.lang);
+
+    Category.findOne({ _id: req.params.id })
+    .then(category => 
+    {
+        if (category)
+            res.status(200).json({ is_success: true, message: success_category_retrieval(lang), data: category.name });
+        else
+            res.status(404).json({ is_success: false, message: failure_category_retrieval(lang), data: null });
+    })
+    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const create_new_category = (req, res) => 
@@ -439,12 +517,14 @@ module.exports =
 {
     retrieve_articles,
     retrieve_articles_by_author,
+    retrieve_articles_by_category_sort_and_page,
     retrieve_last_article,
     retrieve_article_by_id,
     post_new_article,
     modify_article,
     delete_article,
     retrieve_categories,
+    get_category_name_from_id,
     create_new_category,
     modify_category,
     delete_category,

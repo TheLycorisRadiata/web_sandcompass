@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useLayoutEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     blog_editor, access_denied, 
@@ -40,6 +40,7 @@ const BlogEditor = (props) =>
         content: ['', '', '']
     };
 
+    const [articles, set_articles] = useState([]);
     const [article, set_article] = useState(default_article);
     const [selected_language, set_selected_language] = useState(ct.lang);
     const [selected_article, set_selected_article] = useState('default');
@@ -48,10 +49,26 @@ const BlogEditor = (props) =>
     const [is_category_management_shown, set_is_category_management_shown] = useState(false);
     const [is_preview_shown, set_is_preview_shown] = useState(false);
 
+    useLayoutEffect(() => 
+    {
+        fetch(`${backend}/blog/${ct.lang}/articles`)
+        .then(res => res.json())
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.error)
+                console.log(json.error);
+            if (json.is_success && json.data.length) 
+                set_articles(json.data);
+        });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handle_select_article = e => 
     {
         const id = e.target.value;
-        const obj_article = props.articles.find(e => e._id === id);
+        const obj_article = articles.find(e => e._id === id);
         const obj_category = props.categories.find(e => e._id === obj_article.category);
 
         set_selected_article(id);
@@ -97,7 +114,7 @@ const BlogEditor = (props) =>
         set_selected_category('default');
         set_selected_category_name(null);
         set_article(default_article);
-        props.set_articles(fetched_articles);
+        set_articles(fetched_articles);
     };
 
     const handle_create_category = e => 
@@ -476,14 +493,14 @@ const BlogEditor = (props) =>
 
                     <div id="btn_article">
                         <input type="button" className="button" name="btn_post_article" value={post_new_article(ct.lang)} onClick={handle_create_article} />
-                        {!props.articles.length ? null : 
+                        {!articles.length ? null : 
                         <>
                             <select name="select_article" value={selected_article} onChange={handle_select_article}>
                                 <option disabled value="default">{select_article(ct.lang)}</option>
                                 {props.categories.map(category => 
                                     <optgroup label={category.name[ct.lang]} key={category._id}>
-                                        {!props.articles.filter(e => e.category === category._id).length ? <option disabled>{no_article(ct.lang)}</option> 
-                                        : props.articles.filter(e => e.category === category._id).map(e => <option key={e._id} value={e._id}>{e.title[ct.lang]}</option>)}
+                                        {!articles.filter(e => e.category === category._id).length ? <option disabled>{no_article(ct.lang)}</option> 
+                                        : articles.filter(e => e.category === category._id).map(e => <option key={e._id} value={e._id}>{e.title[ct.lang]}</option>)}
                                     </optgroup>)}
                             </select>
 

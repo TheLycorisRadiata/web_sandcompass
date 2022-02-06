@@ -104,7 +104,7 @@ const App = () =>
             console.log(json.message);
             if (json.error)
                 console.log(json.error);
-            if (json.is_success && json.data.length) 
+            if (json.is_success && json.data.length)
                 set_all_articles(json.data);
         });
 
@@ -153,11 +153,10 @@ const App = () =>
                         <Route exact path="/home"><Home /></Route>
                         <Route exact path="/faq"><Faq questions={all_questions} set_questions={set_all_questions} /></Route>
                         <Route exact path="/works"><Works /></Route>
-                        <Route exact path="/blog"><BlogPage articles={all_articles} categories={all_categories} /></Route>
+                        <Route exact path="/blog"><BlogPage articles={all_articles} set_articles={set_all_articles} categories={all_categories} /></Route>
 
                         <Route path={'/blog'}>
                             <BlogArticle 
-                                is_preview={false} categories={all_categories} 
                                 admin_account_data={admin_account_data} user_account_data={user_account_data} 
                                 set_admin_account_data={set_admin_account_data} set_user_account_data={set_user_account_data} />
                         </Route>
@@ -169,7 +168,6 @@ const App = () =>
                         <Route exact path="/admin/blog">
                             <BlogEditor 
                                 account_data={admin_account_data} is_access_granted={is_admin_access_granted} 
-                                articles={all_articles} set_articles={set_all_articles} 
                                 categories={all_categories} set_categories={set_all_categories} />
                         </Route>
                         <Route exact path="/admin/newsletter"><NewsletterEditor is_access_granted={is_admin_access_granted} /></Route>

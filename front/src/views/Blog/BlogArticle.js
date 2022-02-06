@@ -31,33 +31,20 @@ const BlogArticle = (props) =>
     const [id_user, set_id_user] = useState(null);
     const [user_vote, set_user_vote] = useState(0);
 
-    const display_title = () =>  article?.title[ct.lang] === '' ? title_not_found(ct.lang) : article?.title[ct.lang];
-
-    const display_category = () => 
-    {
-        if (props.categories)
-            return props.categories.map(e => e._id === article?.category).name[ct.lang];
-        else
-            return category_not_found(ct.lang);
-    };
-
-    const display_author = () => article?.txt_author === '' ? user_not_found(ct.lang) : article?.txt_author;
-
-    const display_content = () =>  article?.content[ct.lang] === '' ? content_not_found(ct.lang) : article?.content[ct.lang];
+    const display_title = () => article?.title[ct.lang] === '' ? title_not_found(ct.lang) : article?.title[ct.lang];
+    const display_author = () => article?.txt_author === undefined || !article?.txt_author || article?.txt_author === '' ? user_not_found(ct.lang) : article?.txt_author;
+    const display_content = () => !article || article?.content[ct.lang] === '' ? content_not_found(ct.lang) : article?.content[ct.lang];
+    const display_category = () => article?.txt_category === undefined || !article?.txt_category ? category_not_found(ct.lang) : article?.txt_category[ct.lang]; 
 
     useLayoutEffect(() => 
     {
         // Fetch the article from url
         const path_parts = window.location.pathname.split('/');     
         let last_part = path_parts[path_parts.length - 1];
-        console.log(path_parts);
-        console.log(last_part);
 
         if (last_part === '' && path_parts.length - 2 >= 0)
             last_part = path_parts[path_parts.length - 2];
-        console.log(last_part);
-        last_part.replace('article', '');
-        console.log(last_part);
+        last_part = last_part.replace('article', '');
 
         fetch(`${backend}/blog/${ct.lang}/article/${last_part}`)
         .then(res => res.json())
@@ -69,40 +56,50 @@ const BlogArticle = (props) =>
 
             if (json.is_success)
                 set_article(json.data);
+            else
+                history.push('/nope');
         })
         .catch(err => console.log(err));
 
-        // Display the number of likes
-        set_likes(article?.users.likes.length - article?.users.dislikes.length);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-        // If logged in, interact as user
-        if (props.admin_account_data)
+    useLayoutEffect(() => 
+    {
+        if (article)
         {
-            set_id_user(props.admin_account_data._id);
+            // Display the number of likes
+            set_likes(article.users.likes.length - article.users.dislikes.length);
 
-            // Set the user's vote to know how to display the like/dislike buttons
-            if (props.admin_account_data.articles.liked.includes(article?._id))
-                set_user_vote(1);
-            else if (props.admin_account_data.articles.disliked.includes(article?._id))
-                set_user_vote(-1);
-            else
-                set_user_vote(0);
-        }
-        else if (props.user_account_data)
-        {
-            set_id_user(props.user_account_data._id);
+            // If logged in, interact as user
+            if (props.admin_account_data)
+            {
+                set_id_user(props.admin_account_data._id);
 
-            // Set the user's vote to know how to display the like/dislike buttons
-            if (props.user_account_data.articles.liked.includes(article?._id))
-                set_user_vote(1);
-            else if (props.user_account_data.articles.disliked.includes(article?._id))
-                set_user_vote(-1);
-            else
-                set_user_vote(0);
+                // Set the user's vote to know how to display the like/dislike buttons
+                if (props.admin_account_data.articles.liked.includes(article._id))
+                    set_user_vote(1);
+                else if (props.admin_account_data.articles.disliked.includes(article._id))
+                    set_user_vote(-1);
+                else
+                    set_user_vote(0);
+            }
+            else if (props.user_account_data)
+            {
+                set_id_user(props.user_account_data._id);
+
+                // Set the user's vote to know how to display the like/dislike buttons
+                if (props.user_account_data.articles.liked.includes(article._id))
+                    set_user_vote(1);
+                else if (props.user_account_data.articles.disliked.includes(article._id))
+                    set_user_vote(-1);
+                else
+                    set_user_vote(0);
+            }
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [article]);
 
     const increment_likes = () => 
     {

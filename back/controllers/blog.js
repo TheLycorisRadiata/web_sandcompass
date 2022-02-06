@@ -35,6 +35,7 @@ const retrieve_articles_by_author = (req, res) =>
 const retrieve_last_article = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    let obj_article = null;
 
     // Browse starting from the end
     Article.findOne({}, null, { sort: { _id: -1 }})
@@ -44,17 +45,31 @@ const retrieve_last_article = (req, res) =>
             res.status(404).json({ is_success: false, message: failure_article_retrieval(lang) });
         else
         {
+            obj_article = article.toObject();
+
             // Fetch author's username
             User.findOne({ _id: article.author })
             .then(author => 
             {
-                article.txt_author = author ? author.username : null;
-                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: article });
+                obj_article.txt_author = author ? author.username : null;
+
+                Category.findOne({ _id: article.category })
+                .then(category => 
+                {
+                    obj_article.txt_category = category ? category.name : null;
+                    res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
+                })
+                .catch(() => 
+                {
+                    obj_article.txt_category = null;
+                    res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
+                });
             })
             .catch(() => 
             {
-                article.txt_author = null;
-                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: article });
+                obj_article.txt_author = null;
+                obj_category.txt_category = null;
+                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
             });
         }
     })
@@ -64,6 +79,7 @@ const retrieve_last_article = (req, res) =>
 const retrieve_article_by_id = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    let obj_article = null;
 
     Article.findOne({ _id: req.params.id_article })
     .then(article => 
@@ -72,17 +88,31 @@ const retrieve_article_by_id = (req, res) =>
             res.status(404).json({ is_success: false, message: failure_article_retrieval(lang) });
         else
         {
+            obj_article = article.toObject();
+
             // Fetch author's username
             User.findOne({ _id: article.author })
             .then(author => 
             {
-                article.txt_author = author ? author.username : null;
-                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: article });
+                obj_article.txt_author = author ? author.username : null;
+
+                Category.findOne({ _id: article.category })
+                .then(category => 
+                {
+                    obj_article.txt_category = category ? category.name : null;
+                    res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
+                })
+                .catch(() => 
+                {
+                    obj_article.txt_category = null;
+                    res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
+                });
             })
             .catch(() => 
             {
-                article.txt_author = null;
-                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: article });
+                obj_article.txt_author = null;
+                obj_category.txt_category = null;
+                res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
             });
         }
     })

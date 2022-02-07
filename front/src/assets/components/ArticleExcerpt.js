@@ -12,7 +12,7 @@ const ArticleExcerpt = (props) =>
         <div className="article_excerpt">
             <p></p>
             {Parser(props.content.substring(0, 400) + ' ')}
-            <Link to={'/blog/article' + props.id}>{read_more(ct.lang)}</Link>
+            <Link to={'/blog/article/' + props.id}>{read_more(ct.lang)}</Link>
         </div>
     );
 };

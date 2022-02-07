@@ -54,6 +54,7 @@ const App = () =>
 
     const [all_questions, set_all_questions] = useState(null);
     const [all_categories, set_all_categories] = useState([]);
+    const [blog_page, set_blog_page] = useState(1);
 
     const context_value = 
     {
@@ -130,7 +131,7 @@ const App = () =>
                                 <Link to="/home"><li>{home(lang)}</li></Link>
                                 <Link to="/faq"><li>{faq_short(lang)}</li></Link>
                                 <Link to="/works"><li>{works(lang)}</li></Link>
-                                <Link to="/blog"><li>{blog(lang)}</li></Link>
+                                <Link to="/blog" onClick={() => set_blog_page(1)}><li>{blog(lang)}</li></Link>
                                 <Link to="/contact"><li>{contact(lang)}</li></Link>
                             </ul>
                         </nav>
@@ -141,13 +142,13 @@ const App = () =>
                         <Route exact path="/home"><Home /></Route>
                         <Route exact path="/faq"><Faq questions={all_questions} set_questions={set_all_questions} /></Route>
                         <Route exact path="/works"><Works /></Route>
-                        <Route exact path="/blog"><BlogPage categories={all_categories} /></Route>
 
-                        <Route path={'/blog'}>
+                        <Route path={'/blog/article'}>
                             <BlogArticle 
                                 admin_account_data={admin_account_data} user_account_data={user_account_data} 
                                 set_admin_account_data={set_admin_account_data} set_user_account_data={set_user_account_data} />
                         </Route>
+                        <Route path="/blog"><BlogPage blog_page={blog_page} set_blog_page={set_blog_page} categories={all_categories} /></Route>
 
                         <Route exact path="/contact"><Contact /></Route>
                         <Route exact path="/licenses"><Licenses /></Route>

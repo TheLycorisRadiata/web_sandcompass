@@ -22,7 +22,6 @@ const BlogPage = (props) =>
 
     const [category, set_category] = useState('all');
     const [sort, set_sort] = useState('old');
-    const [page, set_page] = useState(1);
     const [articles, set_articles] = useState([]);
     const [is_blog_empty, set_is_blog_empty] = useState(false);
 
@@ -30,20 +29,35 @@ const BlogPage = (props) =>
     {
         const filter = JSON.parse(localStorage.getItem('blog'));
 
+        // Read filters and page from URL (/blog/all/old/1)
+        const path_parts = window.location.pathname.split('/');
+        // path_parts[1] is 'blog'
+        const path_category = path_parts[2];
+        const path_sort = path_parts[3];
+        const path_page = parseInt(path_parts[4], 10);
+        if (path_category === 'all' || path_category?.length === 24)
+            set_category(path_category);
+        if (path_sort === 'old' || path_sort === 'recent')
+            set_sort(path_sort);
+        if (Number.isInteger(path_page) && path_page > 0)
+            props.set_blog_page(path_page); // 1 by default in App.js
+
         if (filter)
         {
-            set_category(filter.category);
-            set_sort(filter.sort);
+            if (path_category === undefined)
+                set_category(filter.category);
+            if (path_sort === undefined)
+                set_sort(filter.sort);
         }
-
-        set_page(1);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useLayoutEffect(() => 
     {
-        fetch(`${backend}/blog/${ct.lang}/articles/${category}/${sort}/${page}`)
+        window.history.replaceState(null, 'Sand Compass', `/blog/${category}/${sort}/${props.blog_page}`);
+
+        fetch(`${backend}/blog/${ct.lang}/articles/${category}/${sort}/${props.blog_page}`)
         .then(res => res.json())
         .then(json => 
         {
@@ -66,7 +80,14 @@ const BlogPage = (props) =>
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [category, sort, page]);
+    }, [category, sort, props.blog_page]);
+
+    useLayoutEffect(() => 
+    {
+        if (props.blog_page > 1 && !articles.length)
+            props.set_blog_page(1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [articles]);
 
     const sort_old = () => 
     {
@@ -107,7 +128,7 @@ const BlogPage = (props) =>
                     <div>
                         <select value={category} onChange={filter_category}>
                             <option value="all">{all_categories(ct.lang)}</option>
-                            {props.categories.map((e, i) => <option key={'cat_' + i} value={e._id}>{i + 1}. {e.name[ct.lang]}</option>)}
+                            {props.categories?.map((e, i) => <option key={'cat_' + i} value={e._id}>{i + 1}. {e.name[ct.lang]}</option>)}
                         </select>
                     </div>
                 </div>
@@ -116,11 +137,11 @@ const BlogPage = (props) =>
                 :
                 articles.map(e => 
                     <article className="blog_section" key={e._id}>
-                        <h2 className="sub_title"><Link to={'/blog/article' + e._id}>{e.title[ct.lang]}</Link></h2>
+                        <h2 className="sub_title"><Link to={'/blog/article/' + e._id}>{e.title[ct.lang]}</Link></h2>
                         <ul className="article_info">
                             <li>{info_category(ct.lang)}
-                                {props.categories.find(cat => cat._id === e.category).name[ct.lang] /*!e.txt_category ? category_not_found(ct.lang) : e.txt_category[ct.lang]*/}.</li>
-                            <li>{info_author(ct.lang)}{'Lycoris' /*!e.txt_author ? user_not_found(ct.lang) : e.txt_author*/}.</li>
+                                {props.categories?.find(cat => cat._id === e.category)?.name[ct.lang] /*!e.txt_category ? category_not_found(ct.lang) : e.txt_category[ct.lang]*/}.</li>
+                            <li>{info_author(ct.lang)}{!e.txt_author ? user_not_found(ct.lang) : e.txt_author}.</li>
                             <li>{info_created(ct.lang, date_in_letters(ct.lang, e.time_creation), time(e.time_creation, false))}</li>
                             {e.is_modified && 
                                 <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}

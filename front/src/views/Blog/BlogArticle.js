@@ -39,12 +39,13 @@ const BlogArticle = (props) =>
     useLayoutEffect(() => 
     {
         // Fetch the article from url
-        const path_parts = window.location.pathname.split('/');     
+        const path_parts = window.location.pathname.split('/');
         let last_part = path_parts[path_parts.length - 1];
 
         if (last_part === '' && path_parts.length - 2 >= 0)
             last_part = path_parts[path_parts.length - 2];
-        last_part = last_part.replace('article', '');
+        if (last_part === '')
+            last_part = 'empty';
 
         fetch(`${backend}/blog/${ct.lang}/article/${last_part}`)
         .then(res => res.json())

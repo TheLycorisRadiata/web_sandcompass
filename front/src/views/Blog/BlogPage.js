@@ -4,17 +4,23 @@ import { AppContext } from '../../App';
 import {
     blog, blog_is_empty, sort_from_oldest, sort_from_most_recent,
     all_categories, category_is_empty, 
+    go_first_page, go_last_page, go_previous_page, go_next_page, go_precise_page, 
     info_category, info_author, info_created, info_modified, 
-    category_not_found, user_not_found 
+    /*category_not_found,*/ user_not_found 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHourglassEnd, faHourglassStart } from '@fortawesome/free-solid-svg-icons';
+import { faHourglassEnd, faHourglassStart, faBackward, faForward, faFastBackward, faFastForward, faFlagCheckered } from '@fortawesome/free-solid-svg-icons';
 import { date_in_letters, time } from '../../assets/functions/time';
 import ArticleExcerpt from '../../assets/components/ArticleExcerpt';
 import { backend } from '../../../package.json';
 
 const icon_sorted_old = <FontAwesomeIcon icon={faHourglassEnd} />;
 const icon_sorted_recent = <FontAwesomeIcon icon={faHourglassStart} />;
+const icon_previous_page = <FontAwesomeIcon icon={faBackward} />;
+const icon_next_page = <FontAwesomeIcon icon={faForward} />;
+const icon_first_page = <FontAwesomeIcon icon={faFastBackward} />;
+const icon_last_page = <FontAwesomeIcon icon={faFastForward} />;
+const icon_reach_page = <FontAwesomeIcon icon={faFlagCheckered} />;
 
 const BlogPage = (props) => 
 {
@@ -24,6 +30,8 @@ const BlogPage = (props) =>
     const [sort, set_sort] = useState('old');
     const [articles, set_articles] = useState([]);
     const [is_blog_empty, set_is_blog_empty] = useState(false);
+    const [last_page_number, set_last_page_number] = useState(1);
+    const [input_blog_page, set_input_blog_page] = useState(1);
 
     useLayoutEffect(() => 
     {
@@ -61,13 +69,14 @@ const BlogPage = (props) =>
         .then(res => res.json())
         .then(json => 
         {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
+            //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
 
             if (json.is_success)
             {
                 set_is_blog_empty(json.is_blog_empty);
+                set_last_page_number(json.last_page_number);
                 set_articles(json.data);
             }
 
@@ -84,8 +93,8 @@ const BlogPage = (props) =>
 
     useLayoutEffect(() => 
     {
-        if (props.blog_page > 1 && !articles.length)
-            props.set_blog_page(1);
+        if (props.blog_page !== 1 && !articles.length)
+            props.set_blog_page(last_page_number);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [articles]);
 
@@ -111,6 +120,32 @@ const BlogPage = (props) =>
         set_category(selected_category);
     };
 
+    const go_to_page = () => 
+    {
+        const number = parseInt(input_blog_page, 10);
+
+        if (Number.isInteger(number))
+        {
+            if (number < 1)
+                props.set_blog_page(1);
+            else if (number > last_page_number)
+                props.set_blog_page(last_page_number);
+            else
+                props.set_blog_page(number);
+        }
+        else
+            props.set_blog_page(1);
+
+        set_input_blog_page(1);
+    };
+
+    const handle_key_press = e => 
+    {
+        if (e.key === 'Enter')
+            go_to_page();
+    };
+
+
     return (
         <main>
             <h1 className="title">{blog(ct.lang)}</h1>
@@ -135,7 +170,8 @@ const BlogPage = (props) =>
 
                 {!articles.length ? <p className="txt_centered">{category_is_empty(ct.lang)}</p>
                 :
-                articles.map(e => 
+                <>
+                    {articles.map(e => 
                     <article className="blog_section" key={e._id}>
                         <h2 className="sub_title"><Link to={'/blog/article/' + e._id}>{e.title[ct.lang]}</Link></h2>
                         <ul className="article_info">
@@ -148,8 +184,40 @@ const BlogPage = (props) =>
                         </ul>
 
                         <ArticleExcerpt content={e.content[ct.lang]} id={e._id} />
-                    </article>)
-                }
+                    </article>)}
+
+                    {last_page_number !== 1 && 
+                    <div id="page_buttons">
+                        <div>
+                            <button className="button" title={go_first_page(ct.lang)} 
+                                onClick={() => props.set_blog_page(1)}>
+                                <span className="icon">{icon_first_page}</span>
+                            </button>
+
+                            <button className="button" title={go_previous_page(ct.lang)} 
+                                onClick={() => props.set_blog_page(props.blog_page === 1 ? 1 : props.blog_page - 1)}>
+                                <span className="icon">{icon_previous_page}</span>
+                            </button>
+
+                            <p>{props.blog_page}/{last_page_number}</p>
+
+                            <button className="button" title={go_next_page(ct.lang)} 
+                                onClick={() => props.set_blog_page(props.blog_page === last_page_number ? props.blog_page : props.blog_page + 1)}>
+                                <span className="icon">{icon_next_page}</span>
+                            </button>
+
+                            <button className="button" title={go_last_page(ct.lang)} 
+                                onClick={() => props.set_blog_page(last_page_number)}>
+                                <span className="icon">{icon_last_page}</span>
+                            </button>
+                        </div>
+
+                        <div>
+                            <input type="number" step="1" min="1" width="auto" id="page_number" value={input_blog_page} onChange={e => set_input_blog_page(e.target.value)} onKeyPress={handle_key_press} />
+                            <button className="button" title={go_precise_page(ct.lang)} onClick={go_to_page}><span className="icon">{icon_reach_page}</span></button>
+                        </div>
+                    </div>}
+                </>}
             </>}
         </main>
     );

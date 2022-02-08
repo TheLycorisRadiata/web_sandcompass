@@ -55,9 +55,9 @@ const BlogEditor = (props) =>
         .then(res => res.json())
         .then(json => 
         {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
+            //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
             if (json.is_success && json.data.length) 
                 set_articles(json.data);
         });
@@ -143,9 +143,9 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
-                if (json.error)
-                    console.log(json.error);
+                //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
                 alert(json.message);
 
                 if (json.is_success)
@@ -177,9 +177,9 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
-                if (json.error)
-                    console.log(json.error);
+                //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
                 alert(json.message);
 
                 if (json.is_success)
@@ -250,9 +250,9 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
-                if (json.error)
-                    console.log(json.error);
+                //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
                 alert(json.message);
 
                 if (json.is_success)
@@ -298,9 +298,9 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
-                if (json.error)
-                    console.log(json.error);
+                //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
                 alert(json.message);
 
                 if (json.is_success)
@@ -341,9 +341,9 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
-                if (json.error)
-                    console.log(json.error);
+                //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
                 alert(json.message);
 
                 if (json.is_success)
@@ -374,9 +374,9 @@ const BlogEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
-                if (json.error)
-                    console.log(json.error);
+                //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
                 alert(json.message);
 
                 if (json.is_success)

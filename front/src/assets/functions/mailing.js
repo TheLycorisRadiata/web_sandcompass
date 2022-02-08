@@ -16,9 +16,9 @@ const send_registration_email = async (lang, email_address) =>
     .then(res => res.json())
     .then(json => 
     {
-        console.log(json.message);
-        if (json.error !== undefined)
-            console.log(json.error);
+        //console.log(json.message);
+        //if (json.error)
+            //console.log(json.error);
         alert(json.message);
     })
     .catch(err => console.log(err));
@@ -43,9 +43,9 @@ const send_newsletter_email = async (lang, user_id, email_address) =>
     .then(res => res.json())
     .then(json => 
     {
-        console.log(json.message);
-        if (json.error !== undefined)
-            console.log(json.error);
+        //console.log(json.message);
+        //if (json.error)
+            //console.log(json.error);
         alert(json.message);
     })
     .catch(err => console.log(err));
@@ -71,9 +71,9 @@ const send_verification_email = async (lang, user_id, email_address, first_name)
     .then(res => res.json())
     .then(json => 
     {
-        console.log(json.message);
-        if (json.error !== undefined)
-            console.log(json.error);
+        //console.log(json.message);
+        //if (json.error)
+            //console.log(json.error);
         alert(json.message);
     })
     .catch(err => console.log(err));
@@ -97,9 +97,9 @@ const send_password_email = async (lang, email_address) =>
     .then(res => res.json())
     .then(json => 
     {
-        console.log(json.message);
-        if (json.error !== undefined)
-            console.log(json.error);
+        //console.log(json.message);
+        //if (json.error)
+            //console.log(json.error);
         alert(json.message);
 
         if (json.send_verif_email && window.confirm(confirm_resend_verification_email(lang)))

@@ -24,12 +24,13 @@ const Home = (props) =>
         .then(res => res.json())
         .then(json => 
         {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
+            //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
             if (json.is_success) 
                 set_last_article(json.data);
-        });
+        })
+        .catch(err => console.log(err));
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

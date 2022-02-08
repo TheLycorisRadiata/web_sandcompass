@@ -26,9 +26,9 @@ const ExecuteToken = () =>
         .then(res => res.json())
         .then(json => 
         {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
+            //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
             set_message(json.message);
 
             if (!json.is_success)

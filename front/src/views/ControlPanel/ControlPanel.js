@@ -37,10 +37,10 @@ const ControlPanel = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                if (json.message !== '')
-                    console.log(json.message);
-                if (json.error)
-                    console.log(json.error);
+                //if (json.message !== '')
+                    //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
                 set_access_message(json.message);
                 props.set_account_data(json.account_data);
                 props.set_is_access_granted(json.is_success);

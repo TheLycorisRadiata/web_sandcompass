@@ -36,11 +36,11 @@ const Password = () =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
+                //console.log(json.message);
                 set_response_message(json.message);
 
-                if (json.error)
-                    console.log(json.error);
+                //if (json.error)
+                    //console.log(json.error);
 
                 if (json.email_address)
                 {
@@ -102,10 +102,10 @@ const Password = () =>
 
             res = await set_password(field_password);
 
-            console.log(res.message);
+            //(res.message);
             set_response_message(res.message);
-            if (res.error)
-                console.log(res.error);
+            //if (res.error)
+                //console.log(res.error);
 
             if (res.is_success)
                 history.push('/user');

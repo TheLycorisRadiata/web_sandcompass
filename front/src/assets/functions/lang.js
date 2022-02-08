@@ -1861,6 +1861,71 @@ export const category_is_empty = (lang) =>
     }
 };
 
+export const go_first_page = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Première page';
+        case 2:
+            return 'First page';
+        default:
+            return 'First page';
+    }
+};
+
+export const go_last_page = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Dernière page';
+        case 2:
+            return 'Last page';
+        default:
+            return 'Last page';
+    }
+};
+
+export const go_previous_page = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Page précédente';
+        case 2:
+            return 'Previous page';
+        default:
+            return 'Previous page';
+    }
+};
+
+export const go_next_page = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Page suivante';
+        case 2:
+            return 'Next page';
+        default:
+            return 'Next page';
+    }
+};
+
+export const go_precise_page = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Page précise';
+        case 2:
+            return 'Precise page';
+        default:
+            return 'Precise page';
+    }
+};
+
 export const info_category = (lang) => 
 {
     switch (lang)

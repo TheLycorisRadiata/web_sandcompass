@@ -68,7 +68,7 @@ const SignUp = () =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
+                //console.log(json.message);
                 alert(json.message);
                 if (json.is_success)
                 {

@@ -25,9 +25,9 @@ const ArticlesByAuthor = (props) =>
         .then(res => res.json())
         .then(json => 
         {
-            console.log(json.message);
-            if (json.error)
-                console.log(json.error);
+            //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
 
             if (json.is_success)
                 set_articles(json.data);

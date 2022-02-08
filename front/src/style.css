@@ -613,6 +613,25 @@ a, span[class="a"]
     margin: 0 10px;
 }
 
+#page_buttons div
+{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#page_buttons button, #page_buttons input
+{
+    margin: 15px 20px;
+}
+
+#page_buttons input
+{
+    width: 50px;
+    height: 30px;
+}
+
 .btn_other_articles
 {
     display: flex;

@@ -59,9 +59,9 @@ const Contact = () =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
-                if (json.error)
-                    console.log(json.error);
+                //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
                 alert(json.message);
 
                 /* If unsuccessful, the fields remain filled as to allow the user to try sending the message again */

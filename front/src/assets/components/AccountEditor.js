@@ -41,9 +41,9 @@ const AccountEditor = (props) =>
                 .then(res => res.json())
                 .then(json => 
                 {
-                    console.log(json.message);
-                    if (json.error)
-                        console.log(json.error);
+                    //console.log(json.message);
+                    //if (json.error)
+                        //console.log(json.error);
                     if (json.is_success)
                         props.set_admin_rank(json.data);
                 })
@@ -58,9 +58,9 @@ const AccountEditor = (props) =>
                 .then(res => res.json())
                 .then(json => 
                 {
-                    console.log(json.message);
-                    if (json.error)
-                        console.log(json.error);
+                    //console.log(json.message);
+                    //if (json.error)
+                        //console.log(json.error);
                     if (json.is_success)
                         props.set_user_rank(json.data);
                 })
@@ -150,12 +150,12 @@ const AccountEditor = (props) =>
                     field_username = obj_parse_username.parsed_username;
 
                 username_check = await is_username_already_used_by_another_account(field_username);
-                console.log(username_check.message);
+                //console.log(username_check.message);
                 if (!username_check.is_success)
                 {
                     alert(username_check.message);
-                    if (username_check.error)
-                        console.log(username_check.error);
+                    //if (username_check.error)
+                        //console.log(username_check.error);
 
                     // Return from the function because this username is already used or there's been an error
                     return;
@@ -173,12 +173,12 @@ const AccountEditor = (props) =>
             {
                 email_check = await is_email_already_used_by_another_account(field_email);
 
-                console.log(email_check.message);
+                //console.log(email_check.message);
                 if (!email_check.is_success)
                 {
                     alert(email_check.message);
-                    if (email_check.error)
-                        console.log(email_check.error);
+                    //if (email_check.error)
+                        //console.log(email_check.error);
 
                     // Return from the function because this email is already used or there's been an error
                     return;
@@ -243,7 +243,7 @@ const AccountEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
+                //console.log(json.message);
                 alert(json.message);
 
                 if (json.is_success)
@@ -286,11 +286,11 @@ const AccountEditor = (props) =>
             .then(res => res.json())
             .then(json => 
             {
-                console.log(json.message);
+                //console.log(json.message);
                 alert(json.message);
 
-                if (json.error)
-                    console.log(json.error);
+                //if (json.error)
+                    //console.log(json.error);
 
                 if (json.is_success)
                     history.push('/');

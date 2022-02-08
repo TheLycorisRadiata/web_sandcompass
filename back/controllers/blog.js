@@ -45,6 +45,7 @@ const retrieve_articles_by_category_sort_and_page = (req, res) =>
     const min_index = max_index - 4;
 
     let arr_articles = null;
+    let last_page_number = 1;
     let category_not_found = false;
     let i;
 
@@ -71,6 +72,11 @@ const retrieve_articles_by_category_sort_and_page = (req, res) =>
                     // Filter by category
                     arr_articles = id_category === 'all' || category_not_found ? articles : articles.filter(e => String(e.category) === id_category);
 
+                    // Compute the last page number
+                    last_page_number = Math.ceil(arr_articles.length / 5);
+                    if (!last_page_number)
+                        last_page_number = 1;
+
                     // Articles are in chronological order, so reverse the array if sort is 'recent'
                     if (sort === 'recent')
                         arr_articles = arr_articles.slice(0).reverse();
@@ -92,7 +98,7 @@ const retrieve_articles_by_category_sort_and_page = (req, res) =>
                     }
 
                     res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, arr_articles.length), data: arr_articles, 
-                        is_blog_empty: false, category_not_found: category_not_found });
+                        is_blog_empty: false, last_page_number: last_page_number, category_not_found: category_not_found });
                 }
             })
             .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));

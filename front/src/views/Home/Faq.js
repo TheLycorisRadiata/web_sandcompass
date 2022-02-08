@@ -3,7 +3,7 @@ import { AppContext } from '../../App';
 import { faq_long, faq_is_empty } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_close = <FontAwesomeIcon icon={faChevronUp} />;
 const icon_open = <FontAwesomeIcon icon={faChevronDown} />;
@@ -26,7 +26,7 @@ const Faq = (props) =>
 
         if (!props.questions)
         {
-            fetch(`${backend}/faq/${ct.lang}/all`)
+            fetch(`${package_info.api}/faq/${ct.lang}/all`)
             .then(res => res.json())
             .then(json =>
             {

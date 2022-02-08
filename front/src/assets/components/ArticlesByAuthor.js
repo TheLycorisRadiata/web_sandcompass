@@ -7,7 +7,7 @@ import {
 } from '../functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 
@@ -21,7 +21,7 @@ const ArticlesByAuthor = (props) =>
     {
         e.preventDefault();
 
-        fetch(`${backend}/blog/${ct.lang}/articles/${props.author}`)
+        fetch(`${package_info.api}/blog/${ct.lang}/articles/${props.author}`)
         .then(res => res.json())
         .then(json => 
         {

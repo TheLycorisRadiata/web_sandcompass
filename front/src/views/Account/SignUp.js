@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { parse_username } from '../../assets/functions/parsing';
 import { send_registration_email, send_newsletter_email } from '../../assets/functions/mailing';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
@@ -48,7 +48,7 @@ const SignUp = () =>
             else
                 username = obj_parse_username.parsed_username;
 
-            fetch(`${backend}/user/${ct.lang}/create`,
+            fetch(`${package_info.api}/user/${ct.lang}/create`,
             {
                 method: 'POST',
                 headers:

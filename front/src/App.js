@@ -30,7 +30,7 @@ import Flag_Eng from './assets/images/flags/usa.png';
 import Flag_Fr from './assets/images/flags/france.png';
 import Flag_Jp from './assets/images/flags/japan.png';
 import './style.css';
-import { backend } from '../package.json';
+import package_info from '../package.json';
 
 const icon_lang = <FontAwesomeIcon icon={faGlobe} />;
 const icon_user_new = <FontAwesomeIcon icon={faUserPlus} />;
@@ -86,7 +86,7 @@ const App = () =>
         set_lang(var_lang);
         // var_lang exists I need to pass lang into the fetch and at this step the state isn't updated yet
 
-        fetch(`${backend}/blog/${var_lang}/categories`)
+        fetch(`${package_info.api}/blog/${var_lang}/categories`)
         .then(res => res.json())
         .then(json => 
         {

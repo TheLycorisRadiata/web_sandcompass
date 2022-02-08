@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglassEnd, faHourglassStart, faBackward, faForward, faFastBackward, faFastForward, faFlagCheckered } from '@fortawesome/free-solid-svg-icons';
 import { date_in_letters, time } from '../../assets/functions/time';
 import ArticleExcerpt from '../../assets/components/ArticleExcerpt';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_sorted_old = <FontAwesomeIcon icon={faHourglassEnd} />;
 const icon_sorted_recent = <FontAwesomeIcon icon={faHourglassStart} />;
@@ -65,7 +65,7 @@ const BlogPage = (props) =>
     {
         window.history.replaceState(null, 'Sand Compass', `/blog/${category}/${sort}/${props.blog_page}`);
 
-        fetch(`${backend}/blog/${ct.lang}/articles/${category}/${sort}/${props.blog_page}`)
+        fetch(`${package_info.api}/blog/${ct.lang}/articles/${category}/${sort}/${props.blog_page}`)
         .then(res => res.json())
         .then(json => 
         {

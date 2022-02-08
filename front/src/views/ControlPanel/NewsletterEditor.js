@@ -12,7 +12,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import { date_in_letters, time } from '../../assets/functions/time';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
@@ -30,7 +30,7 @@ const NewsletterEditor = (props) =>
 
     const fetch_newsletters = (trigger_alert) => 
     {
-        fetch(`${backend}/mailing/${ct.lang}/newsletter/all`)
+        fetch(`${package_info.api}/mailing/${ct.lang}/newsletter/all`)
         .then(res => res.json())
         .then(json => 
         {
@@ -90,7 +90,7 @@ const NewsletterEditor = (props) =>
             alert(disclaimer_language(ct.lang));
         else
         {
-            fetch(`${backend}/mailing/${ct.lang}/newsletter/send`,
+            fetch(`${package_info.api}/mailing/${ct.lang}/newsletter/send`,
             {
                 method: 'POST',
                 headers:

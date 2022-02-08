@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faTools, faFolderPlus, faFolderMinus, faFolderOpen, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import BlogArticlePreview from '../../assets/components/BlogArticlePreview';
 import { parse_category } from '../../assets/functions/parsing';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_tools = <FontAwesomeIcon icon={faTools} />;
@@ -51,7 +51,7 @@ const BlogEditor = (props) =>
 
     useLayoutEffect(() => 
     {
-        fetch(`${backend}/blog/${ct.lang}/articles`)
+        fetch(`${package_info.api}/blog/${ct.lang}/articles`)
         .then(res => res.json())
         .then(json => 
         {
@@ -130,7 +130,7 @@ const BlogEditor = (props) =>
 
         if (parsed_category_eng !== '' && parsed_category_fr !== '' && parsed_category_jp !== '')
         {
-            fetch(`${backend}/blog/${ct.lang}/categories`,
+            fetch(`${package_info.api}/blog/${ct.lang}/categories`,
             {
                 method: 'POST',
                 headers:
@@ -164,7 +164,7 @@ const BlogEditor = (props) =>
     {
         if (article.category !== '')
         {
-            fetch(`${backend}/blog/${ct.lang}/categories`,
+            fetch(`${package_info.api}/blog/${ct.lang}/categories`,
             {
                 method: 'DELETE',
                 headers:
@@ -233,7 +233,7 @@ const BlogEditor = (props) =>
 
         if (updated_eng !== '' && updated_fr !== '' && updated_jp !== '')
         {
-            fetch(`${backend}/blog/${ct.lang}/categories`,
+            fetch(`${package_info.api}/blog/${ct.lang}/categories`,
             {
                 method: 'PUT',
                 headers:
@@ -285,7 +285,7 @@ const BlogEditor = (props) =>
             new_article.author = props.account_data._id;
             new_article.content = [article.content[0], article.content[1], article.content[2]];
 
-            fetch(`${backend}/blog/${ct.lang}/articles`,
+            fetch(`${package_info.api}/blog/${ct.lang}/articles`,
             {
                 method: 'POST',
                 headers:
@@ -324,7 +324,7 @@ const BlogEditor = (props) =>
             updated_article.author = props.account_data._id;
             updated_article.content = [article.content[0], article.content[1], article.content[2]];
 
-            fetch(`${backend}/blog/${ct.lang}/articles`,
+            fetch(`${package_info.api}/blog/${ct.lang}/articles`,
             {
                 method: 'PUT',
                 headers:
@@ -356,7 +356,7 @@ const BlogEditor = (props) =>
     {
         if (selected_article !== 'default')
         {
-            fetch(`${backend}/blog/${ct.lang}/articles`,
+            fetch(`${package_info.api}/blog/${ct.lang}/articles`,
             {
                 method: 'DELETE',
                 headers:

@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faHeartBroken, faThumbsUp as faThumbsUpSolid, faThumbsDown as faThumbsDownSolid } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import { date_in_letters, time } from '../../assets/functions/time';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_heart = <FontAwesomeIcon icon={faHeart} />;
 const icon_heart_broken = <FontAwesomeIcon icon={faHeartBroken} />;
@@ -47,7 +47,7 @@ const BlogArticle = (props) =>
         if (last_part === '')
             last_part = 'empty';
 
-        fetch(`${backend}/blog/${ct.lang}/article/${last_part}`)
+        fetch(`${package_info.api}/blog/${ct.lang}/article/${last_part}`)
         .then(res => res.json())
         .then(json => 
         {
@@ -125,7 +125,7 @@ const BlogArticle = (props) =>
         }
         else
         {
-            fetch(`${backend}/blog/${ct.lang}/vote/article`,
+            fetch(`${package_info.api}/blog/${ct.lang}/vote/article`,
             {
                 method: 'PUT',
                 headers:
@@ -190,7 +190,7 @@ const BlogArticle = (props) =>
         }
         else
         {
-            fetch(`${backend}/blog/${ct.lang}/vote/article`,
+            fetch(`${package_info.api}/blog/${ct.lang}/vote/article`,
             {
                 method: 'PUT',
                 headers:

@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_password_email } from '../../assets/functions/mailing';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
@@ -32,7 +32,7 @@ const Password = () =>
 
         if (id_token)
         {
-            fetch(`${backend}/token/${ct.lang}/${id_token}`)
+            fetch(`${package_info.api}/token/${ct.lang}/${id_token}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -60,7 +60,7 @@ const Password = () =>
 
     const set_password = async (password) => 
     {
-        const res = await fetch(`${backend}/user/${ct.lang}/password`,
+        const res = await fetch(`${package_info.api}/user/${ct.lang}/password`,
         {
             method: 'POST',
             headers:

@@ -9,7 +9,7 @@ import {
     cancel, send 
 } from '../../assets/functions/lang';
 import SocialMedia from '../../assets/components/SocialMedia';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const Contact = () => 
 {
@@ -38,7 +38,7 @@ const Contact = () =>
 
         if (name !== '' && email_address !== '' && subject !== 'default' && message !== '')
         {
-            fetch(`${backend}/mailing/${ct.lang}/contact`,
+            fetch(`${package_info.api}/mailing/${ct.lang}/contact`,
             {
                 method: 'POST',
                 headers:

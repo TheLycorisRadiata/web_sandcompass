@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faFileAlt, faComment, faQuoteRight, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import AccountEditor from '../../assets/components/AccountEditor';
 import ArticlesByAuthor from '../../assets/components/ArticlesByAuthor';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
@@ -33,7 +33,7 @@ const ControlPanel = (props) =>
             set_access_message(disclaimer_email_and_password(ct.lang));
         else
         {
-            fetch(`${backend}/user/${ct.lang}/admin/login/${field_email_address}/${field_password}`)
+            fetch(`${package_info.api}/user/${ct.lang}/admin/login/${field_email_address}/${field_password}`)
             .then(res => res.json())
             .then(json => 
             {

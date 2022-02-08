@@ -10,7 +10,7 @@ import {
 import DisplayCover from '../../assets/components/DisplayCover';
 import SocialMedia from '../../assets/components/SocialMedia';
 import ArticleExcerpt from '../../assets/components/ArticleExcerpt';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const Home = (props) => 
 {
@@ -20,7 +20,7 @@ const Home = (props) =>
 
     useLayoutEffect(() => 
     {
-        fetch(`${backend}/blog/${ct.lang}/article/last`)
+        fetch(`${package_info.api}/blog/${ct.lang}/article/last`)
         .then(res => res.json())
         .then(json => 
         {

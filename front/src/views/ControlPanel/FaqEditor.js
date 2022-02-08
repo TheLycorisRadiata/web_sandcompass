@@ -10,7 +10,7 @@ import {
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_add = <FontAwesomeIcon icon={faPlus} />;
@@ -34,7 +34,7 @@ const FaqEditor = (props) =>
 
         if (eng_question !== '' && eng_answer !== '' && fr_question !== '' && fr_answer !== '' && jp_question !== '' && jp_answer !== '')
         {
-            fetch(`${backend}/faq/${ct.lang}/add`,
+            fetch(`${package_info.api}/faq/${ct.lang}/add`,
             {
                 method: 'POST',
                 headers:
@@ -102,7 +102,7 @@ const FaqEditor = (props) =>
 
         if (eng_edited_question !== '' && eng_edited_answer !== '' && fr_edited_question !== '' && fr_edited_answer !== '' && jp_edited_question !== '' && jp_edited_answer !== '')
         {
-            fetch(`${backend}/faq/${ct.lang}/edit`,
+            fetch(`${package_info.api}/faq/${ct.lang}/edit`,
             {
                 method: 'PUT',
                 headers:
@@ -133,7 +133,7 @@ const FaqEditor = (props) =>
     {
         if (window.confirm(confirm_delete_question(ct.lang)))
         {
-            fetch(`${backend}/faq/${ct.lang}/remove`,
+            fetch(`${package_info.api}/faq/${ct.lang}/remove`,
             {
                 method: 'DELETE',
                 headers:
@@ -161,7 +161,7 @@ const FaqEditor = (props) =>
 
         if (!props.questions)
         {
-            fetch(`${backend}/faq/${ct.lang}/all`)
+            fetch(`${package_info.api}/faq/${ct.lang}/all`)
             .then(res => res.json())
             .then(json =>
             {

@@ -14,7 +14,7 @@ import { faUserEdit, faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-sol
 import { date_in_letters } from '../functions/time';
 import { parse_username } from '../functions/parsing';
 import { send_newsletter_email, send_verification_email } from '../functions/mailing';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_edit = <FontAwesomeIcon icon={faUserEdit} />;
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
@@ -37,7 +37,7 @@ const AccountEditor = (props) =>
         {
             if (!props.admin_rank)
             {
-                fetch(`${backend}/rank/${ct.lang}/${props.account_data?.rank}`)
+                fetch(`${package_info.api}/rank/${ct.lang}/${props.account_data?.rank}`)
                 .then(res => res.json())
                 .then(json => 
                 {
@@ -54,7 +54,7 @@ const AccountEditor = (props) =>
         {
             if (!props.user_rank)
             {
-                fetch(`${backend}/rank/${ct.lang}/${props.account_data?.rank}`)
+                fetch(`${package_info.api}/rank/${ct.lang}/${props.account_data?.rank}`)
                 .then(res => res.json())
                 .then(json => 
                 {
@@ -85,21 +85,21 @@ const AccountEditor = (props) =>
 
     const is_username_already_used_by_another_account = async (username) => 
     {
-        const res = await fetch(`${backend}/user/${ct.lang}/check/username/${props.account_data._id}/${username}`);
+        const res = await fetch(`${package_info.api}/user/${ct.lang}/check/username/${props.account_data._id}/${username}`);
         const json = await res.json();
         return json;
     };
 
     const is_email_already_used_by_another_account = async (email) => 
     {
-        const res = await fetch(`${backend}/user/${ct.lang}/check/email/${props.account_data._id}/${email}`);
+        const res = await fetch(`${package_info.api}/user/${ct.lang}/check/email/${props.account_data._id}/${email}`);
         const json = await res.json();
         return json;
     };
 
     const hash_password = async (password) => 
     {
-        const res = await fetch(`${backend}/user/${ct.lang}/password`,
+        const res = await fetch(`${package_info.api}/user/${ct.lang}/password`,
         {
             method: 'POST',
             headers:
@@ -226,7 +226,7 @@ const AccountEditor = (props) =>
                 has_newsletter_changed = true;
             }
 
-            await fetch(`${backend}/user/${ct.lang}/update`,
+            await fetch(`${package_info.api}/user/${ct.lang}/update`,
             {
                 method: 'PUT',
                 headers:
@@ -273,7 +273,7 @@ const AccountEditor = (props) =>
         {
             set_is_edit_open(false);
 
-            fetch(`${backend}/user/${ct.lang}/delete`,
+            fetch(`${package_info.api}/user/${ct.lang}/delete`,
             {
                 method: 'DELETE',
                 headers:

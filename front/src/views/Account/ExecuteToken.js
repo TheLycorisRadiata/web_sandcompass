@@ -6,7 +6,7 @@ import {
     oops, success, error_occured 
 } from '../../assets/functions/lang';
 import { useState, useLayoutEffect } from 'react';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const ExecuteToken = () => 
 {
@@ -22,7 +22,7 @@ const ExecuteToken = () =>
         const last_part = path_parts[path_parts.length - 1];
         const id_token = last_part !== '' && last_part !== 'signup' ? last_part : '';
 
-        fetch(`${backend}/token/${ct.lang}/${id_token}`)
+        fetch(`${package_info.api}/token/${ct.lang}/${id_token}`)
         .then(res => res.json())
         .then(json => 
         {

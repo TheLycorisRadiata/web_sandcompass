@@ -8,7 +8,7 @@ import {
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
@@ -23,7 +23,7 @@ const Stats = (props) =>
     {
         e.preventDefault();
 
-        fetch(`${backend}/user/${ct.lang}/stats/all`)
+        fetch(`${package_info.api}/user/${ct.lang}/stats/all`)
         .then(res => res.json())
         .then(json => 
         {

@@ -1,9 +1,9 @@
 import { confirm_resend_verification_email } from './lang';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const send_registration_email = async (lang, email_address) => 
 {
-    await fetch(`${backend}/mailing/${lang}/register`,
+    await fetch(`${package_info.api}/mailing/${lang}/register`,
     {
         method: 'POST',
         headers:
@@ -26,7 +26,7 @@ const send_registration_email = async (lang, email_address) =>
 
 const send_newsletter_email = async (lang, user_id, email_address) => 
 {
-    await fetch(`${backend}/mailing/${lang}/newsletter`,
+    await fetch(`${package_info.api}/mailing/${lang}/newsletter`,
     {
         method: 'POST',
         headers:
@@ -53,7 +53,7 @@ const send_newsletter_email = async (lang, user_id, email_address) =>
 
 const send_verification_email = async (lang, user_id, email_address, first_name) => 
 {
-    await fetch(`${backend}/mailing/${lang}/email`,
+    await fetch(`${package_info.api}/mailing/${lang}/email`,
     {
         method: 'POST',
         headers:
@@ -81,7 +81,7 @@ const send_verification_email = async (lang, user_id, email_address, first_name)
 
 const send_password_email = async (lang, email_address) => 
 {
-    await fetch(`${backend}/mailing/${lang}/password`,
+    await fetch(`${package_info.api}/mailing/${lang}/password`,
     {
         method: 'POST',
         headers:

@@ -10,7 +10,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_registration_email } from '../../assets/functions/mailing';
 import AccountEditor from '../../assets/components/AccountEditor';
 import ArticlesByAuthor from '../../assets/components/ArticlesByAuthor';
-import { backend } from '../../../package.json';
+import package_info from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
@@ -32,7 +32,7 @@ const UserPanel = (props) =>
             set_access_message(disclaimer_email_and_password(ct.lang));
         else
         {
-            await fetch(`${backend}/user/${ct.lang}/login/${field_email_address}/${field_password}`)
+            await fetch(`${package_info.api}/user/${ct.lang}/login/${field_email_address}/${field_password}`)
             .then(res => res.json())
             .then(json => 
             {

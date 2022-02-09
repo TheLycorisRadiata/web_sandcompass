@@ -16,6 +16,9 @@ import BlogArticlePreview from '../../assets/components/BlogArticlePreview';
 import { parse_category } from '../../assets/functions/parsing';
 import package_info from '../../../package.json';
 
+// Markdown editor
+import Yamde from 'yamde';
+
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_tools = <FontAwesomeIcon icon={faTools} />;
 const icon_folder_plus = <FontAwesomeIcon icon={faFolderPlus} />
@@ -42,6 +45,9 @@ const BlogEditor = (props) =>
 
     const [articles, set_articles] = useState([]);
     const [article, set_article] = useState(default_article);
+    const [content_0, set_content_0] = useState('');
+    const [content_1, set_content_1] = useState('');
+    const [content_2, set_content_2] = useState('');
     const [selected_language, set_selected_language] = useState(ct.lang);
     const [selected_article, set_selected_article] = useState('default');
     const [selected_category, set_selected_category] = useState('default');
@@ -85,6 +91,10 @@ const BlogEditor = (props) =>
             author: props.account_data._id,
             content: obj_article.content
         });
+
+        set_content_0(obj_article.content[0]);
+        set_content_1(obj_article.content[1]);
+        set_content_2(obj_article.content[2]);
     };
 
     const handle_select_category = e => 
@@ -104,7 +114,7 @@ const BlogEditor = (props) =>
             category: id,
             title: [article.title[0], article.title[1], article.title[2]],
             author: props.account_data._id,
-            content: [article.content[0], article.content[1], article.content[2]]
+            content: [content_0, content_1, content_2]
         });
     };
 
@@ -114,6 +124,9 @@ const BlogEditor = (props) =>
         set_selected_category('default');
         set_selected_category_name(null);
         set_article(default_article);
+        set_content_0('');
+        set_content_1('');
+        set_content_2('');
         set_articles(fetched_articles);
     };
 
@@ -197,7 +210,7 @@ const BlogEditor = (props) =>
                     category: '',
                     title: [article.title[0], article.title[1], article.title[2]],
                     author: props.account_data._id,
-                    content: [article.content[0], article.content[1], article.content[2]]
+                    content: [content_0, content_1, content_2]
                 });
             });
         }
@@ -283,7 +296,7 @@ const BlogEditor = (props) =>
             new_article.category = article.category;
             new_article.title = [article.title[0], article.title[1], article.title[2]];
             new_article.author = props.account_data._id;
-            new_article.content = [article.content[0], article.content[1], article.content[2]];
+            new_article.content = [content_0, content_1, content_2];
 
             fetch(`${package_info.api}/blog/${ct.lang}/articles`,
             {
@@ -322,7 +335,7 @@ const BlogEditor = (props) =>
             updated_article.category = article.category;
             updated_article.title = [article.title[0], article.title[1], article.title[2]];
             updated_article.author = props.account_data._id;
-            updated_article.content = [article.content[0], article.content[1], article.content[2]];
+            updated_article.content = [content_0, content_1, content_2];
 
             fetch(`${package_info.api}/blog/${ct.lang}/articles`,
             {
@@ -396,7 +409,7 @@ const BlogEditor = (props) =>
             category: article.category,
             title: [e.target.value, article.title[1], article.title[2]],
             author: props.account_data._id,
-            content: [article.content[0], article.content[1], article.content[2]]
+            content: [content_0, content_1, content_2]
         });
     };
 
@@ -411,7 +424,7 @@ const BlogEditor = (props) =>
             category: article.category,
             title: [article.title[0], e.target.value, article.title[2]],
             author: props.account_data._id,
-            content: [article.content[0], article.content[1], article.content[2]]
+            content: [content_0, content_1, content_2]
         });
     };
 
@@ -426,52 +439,7 @@ const BlogEditor = (props) =>
             category: article.category,
             title: [article.title[0], article.title[1], e.target.value],
             author: props.account_data._id,
-            content: [article.content[0], article.content[1], article.content[2]]
-        });
-    };
-
-    const update_content_0 = e => 
-    {
-        set_article(
-        {
-            likes: article.likes,
-            time_creation: article.time_creation,
-            time_modification: article.time_modification,
-            is_modified: article.is_modified,
-            category: article.category,
-            title: [article.title[0], article.title[1], article.title[2]],
-            author: props.account_data._id,
-            content: [e.target.value, article.content[1], article.content[2]]
-        });
-    };
-
-    const update_content_1 = e => 
-    {
-        set_article(
-        {
-            likes: article.likes,
-            time_creation: article.time_creation,
-            time_modification: article.time_modification,
-            is_modified: article.is_modified,
-            category: article.category,
-            title: [article.title[0], article.title[1], article.title[2]],
-            author: props.account_data._id,
-            content: [article.content[0], e.target.value, article.content[2]]
-        });
-    };
-
-    const update_content_2 = e => 
-    {
-        set_article(
-        {
-            likes: article.likes,
-            time_creation: article.time_creation,
-            time_modification: article.time_modification,
-            is_modified: article.is_modified,
-            category: article.category,
-            title: [article.title[0], article.title[1], article.title[2]],
-            author: props.account_data._id,
-            content: [article.content[0], article.content[1], e.target.value]
+            content: [content_0, content_1, content_2]
         });
     };
 
@@ -562,9 +530,17 @@ const BlogEditor = (props) =>
                         </>}
                     </div>
 
-                    <textarea name="field_article_content_0" value={article.content[0]} onChange={update_content_0} placeholder={content(ct.lang, 0)} title={english(ct.lang)}></textarea>
-                    <textarea name="field_article_content_1" value={article.content[1]} onChange={update_content_1} placeholder={content(ct.lang, 1)} title={french(ct.lang)}></textarea>
-                    <textarea name="field_article_content_2" value={article.content[2]} onChange={update_content_2} placeholder={content(ct.lang, 2)} title={japanese(ct.lang)}></textarea>
+                    <div className="markdown_editor">
+                        <Yamde value={content_0} handler={set_content_0} theme="light" title={content(ct.lang, 0)} />
+                    </div>
+
+                    <div className="markdown_editor">
+                        <Yamde value={content_1} handler={set_content_1} theme="light" title={content(ct.lang, 1)} />
+                    </div>
+
+                    <div className="markdown_editor">
+                        <Yamde value={content_2} handler={set_content_2} theme="light" title={content(ct.lang, 2)} />
+                    </div>
 
                     <button className="button" name="btn_preview_article" onClick={() => set_is_preview_shown(!is_preview_shown)}>
                         <span className="icon">{is_preview_shown ? icon_eye_slash : icon_eye}</span>{' '}{preview(ct.lang)}

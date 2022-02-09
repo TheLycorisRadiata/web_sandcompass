@@ -3,18 +3,27 @@ import { AppContext } from '../../App';
 import {
     contact, something_to_say, 
     personal, professional, optional_business_name, 
-    name, email_address, message, select_subject, 
+    name, email_address, write_message_with_markdown, markdown_cheat_sheet_link, message, select_subject, 
     opt_projects, opt_cosmic_dust, opt_persistence, opt_another_project, 
     opt_misc, opt_this_website, opt_legal_stuff, opt_other, 
     cancel, send 
 } from '../../assets/functions/lang';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import SocialMedia from '../../assets/components/SocialMedia';
 import package_info from '../../../package.json';
+
+// Markdown editor
+import Yamde from 'yamde';
+
+const icon_info = <FontAwesomeIcon icon={faInfoCircle} />;
 
 const Contact = () => 
 {
     const ct = useContext(AppContext);
     const [is_visitor_pro, set_is_visitor_pro] = useState(false);
+    const [use_markdown, set_use_markdown] = useState(false);
+    const [message_content, set_message_content] = useState('');
 
     const handle_contact = (e) => 
     {
@@ -23,7 +32,6 @@ const Contact = () =>
         let name = e.target[3].value;
         let email_address = e.target[4].value;
         let subject = e.target[5].value;
-        let message = e.target[6].value;
 
         if (!is_visitor_pro)
         {
@@ -31,12 +39,11 @@ const Contact = () =>
             name = e.target[2].value;
             email_address = e.target[3].value;
             subject = e.target[4].value;
-            message = e.target[5].value;
         }
 
         e.preventDefault();
 
-        if (name !== '' && email_address !== '' && subject !== 'default' && message !== '')
+        if (name !== '' && email_address !== '' && subject !== 'default' && message_content !== '')
         {
             fetch(`${package_info.api}/mailing/${ct.lang}/contact`,
             {
@@ -53,7 +60,7 @@ const Contact = () =>
                     name: name,
                     email_address: email_address,
                     subject: subject,
-                    message: message
+                    message: message_content
                 })
             })
             .then(res => res.json())
@@ -73,7 +80,10 @@ const Contact = () =>
                     e.target[2].value = '';
                     e.target[3].value = '';
                     e.target[4].value = 'default';
-                    e.target[5].value = '';
+                    e.target[5].checked = false;
+                    e.target[6].value = '';
+                    set_use_markdown(false);
+                    set_message_content('');
                 }
             })
             .catch(err => console.log(err));
@@ -115,7 +125,19 @@ const Contact = () =>
                         </optgroup>
                     </select>
 
-                    <textarea name="message" placeholder={message(ct.lang)} autoComplete="new-password" required></textarea>
+                    <div className="div_pointer">
+                        <input type="checkbox" name="use_markdown" id="use_markdown" value={use_markdown} onChange={() => set_use_markdown(!use_markdown)} />
+                        <label htmlFor="use_markdown">{write_message_with_markdown(ct.lang)}</label>
+                        <a href={markdown_cheat_sheet_link(ct.lang)} rel="nofollow noreferrer" target="_blank"><span className="icon">{icon_info}</span></a>
+                    </div>
+
+                    {use_markdown ? 
+                        <div className="markdown_editor">
+                            <Yamde value={message_content} handler={set_message_content} theme="light" />
+                        </div>
+                    :
+                        <textarea name="message" placeholder={message(ct.lang)} autoComplete="new-password" required 
+                            value={message_content} onChange={e => set_message_content(e.target.value)}></textarea>}
 
                     <div>
                         <input type="reset" className="button" value={cancel(ct.lang)} onClick={() => set_is_visitor_pro(false)} />

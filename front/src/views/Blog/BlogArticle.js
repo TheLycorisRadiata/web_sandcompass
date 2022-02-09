@@ -1,6 +1,5 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
     blog, other_articles, like, dislike, vote_instruction, 
@@ -13,6 +12,10 @@ import { faHeart, faHeartBroken, faThumbsUp as faThumbsUpSolid, faThumbsDown as 
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import { date_in_letters, time } from '../../assets/functions/time';
 import package_info from '../../../package.json';
+
+// Markdown display
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const icon_heart = <FontAwesomeIcon icon={faHeart} />;
 const icon_heart_broken = <FontAwesomeIcon icon={faHeartBroken} />;
@@ -247,7 +250,7 @@ const BlogArticle = (props) =>
                         <li>{info_modified(ct.lang, date_in_letters(ct.lang, article?.time_modification), time(article?.time_modification, false))}</li>}
                 </ul>
 
-                <div>{Parser(display_content())}</div>
+                <ReactMarkdown children={display_content(ct.lang)} remarkPlugins={[remarkGfm]} />
             </article>
 
             <div className="btn_other_articles"><Link to="/blog" className="button">{other_articles(ct.lang)}</Link></div>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
     log_in, user_account, disclaimer_email_and_password, confirm_resend_verification_email, 
-    email_address, password, password_forgotten, not_yet_registered 
+    email_address, password, stay_logged_in_for_30_days, password_forgotten, not_yet_registered 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -22,6 +22,7 @@ const UserPanel = (props) =>
     const [field_email_address, set_field_email_address] = useState('');
     const [field_password, set_field_password] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
+    const [stay_logged_in, set_stay_logged_in] = useState(false);
     const [access_message, set_access_message] = useState('');
 
     const handle_submit = async () => 
@@ -32,7 +33,7 @@ const UserPanel = (props) =>
             set_access_message(disclaimer_email_and_password(ct.lang));
         else
         {
-            await fetch(`${package_info.api}/user/${ct.lang}/login/${field_email_address}/${field_password}`)
+            await fetch(`${package_info.api}/user/${ct.lang}/login/${field_email_address}/${field_password}/${stay_logged_in}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -47,6 +48,9 @@ const UserPanel = (props) =>
                 props.set_is_access_granted(json.is_success);
                 if (send_verif_email)
                     alert(json.message);
+
+                if (json.token_stay_logged_in)
+                    document.cookie = `token=${json.token_stay_logged_in}; path=/; domain=${package_info.domain}; samesite=lax; secure; max-age=2592000`;
             })
             .catch(err => console.log(err));
 
@@ -78,12 +82,20 @@ const UserPanel = (props) =>
                 <form>
                     <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoComplete="on" autoFocus  
                         value={field_email_address} onChange={e => set_field_email_address(e.target.value)} onKeyPress={handle_key_press} />
+
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={password(ct.lang)} autoComplete="on"
                             value={field_password} onChange={e => set_field_password(e.target.value)} onKeyPress={handle_key_press} />
                         <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
+
+                    <div className="div_pointer">
+                        <input type="checkbox" name="stay_logged_in" id="stay_logged_in" value={stay_logged_in} onChange={() => set_stay_logged_in(!stay_logged_in)} />
+                        <label htmlFor="stay_logged_in">{stay_logged_in_for_30_days(ct.lang)}</label>
+                    </div>
+
                     <input type="button" className="button" value={log_in(ct.lang)} onClick={handle_submit} />
+
                     {access_message !== '' && <p>{access_message}</p>}
                     <p><Link to="/password">{password_forgotten(ct.lang)}</Link></p>
                     <p><Link to="/user/signup">{not_yet_registered(ct.lang)}</Link></p>

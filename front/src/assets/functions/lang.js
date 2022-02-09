@@ -1770,6 +1770,32 @@ export const opt_other = (lang) =>
     }
 };
 
+export const write_message_with_markdown = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Écrire le message avec Markdown ';
+        case 2:
+            return 'マークダウンでメッセージを書く';
+        default:
+            return 'Write the message with Markdown ';
+    }
+};
+
+export const markdown_cheat_sheet_link = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'https://blog.shevarezo.fr/post/2015/02/18/syntaxe-markdown';
+        case 2:
+            return 'https://notepm.jp/help/how-to-markdown';
+        default:
+            return 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet';
+    }
+};
+
 export const message = (lang) => 
 {
     switch (lang)
@@ -2009,11 +2035,11 @@ export const content_not_found = (lang) =>
     switch (lang)
     {
         case 1:
-            return '<p>[Contenu non trouvé]</p>';
+            return '[Contenu non trouvé]';
         case 2:
-            return '<p>[コンテンツが見つかりません]</p>';
+            return '[コンテンツが見つかりません]';
         default:
-            return '<p>[Content not found]</p>';
+            return '[Content not found]';
     }
 };
 
@@ -2142,6 +2168,19 @@ export const password = (lang) =>
             return 'パスワード';
         default:
             return 'Password';
+    }
+};
+
+export const stay_logged_in_for_30_days = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Rester connecté(e) 30 jours';
+        case 2:
+            return 'Stay logged in for 30 days';
+        default:
+            return 'Stay logged in for 30 days';
     }
 };
 

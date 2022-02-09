@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const markdown = require( "markdown" ).markdown;
 const User = require('../models/user');
 const Token = require('../models/token');
 const Newsletter = require('../models/newsletter');
@@ -72,7 +73,7 @@ const send_visitor_mail_to_admin = (req, res) =>
                 `<p style="font-weight: bold;">${is_pro}${name} (${email_address})${business_name} says in ${long_lang(lang)}:</p>` +
                 '<hr />' +
 
-                `<p>${message}</p>` +
+                `<div>${markdown.toHTML(message)}</div>` +
             '</body>' +
         '</html>'
     };
@@ -487,7 +488,7 @@ const send_newsletter = (req, res) =>
                     {
                         from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
                         subject: newsletter.object,
-                        html: '<html><body>' + newsletter.html_message + '</body></html>'
+                        html: '<html><body>' + markdown.toHTML(newsletter.html_message) + '</body></html>'
                     };
 
                     for (const user of users)

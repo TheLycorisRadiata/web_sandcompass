@@ -971,12 +971,6 @@ input[name="field_article_title_0"], textarea[name="field_article_content_0"]
     margin-top: 20px;
 }
 
-#blog_editor textarea
-{
-    width: 80%;
-    height: 300px;
-}
-
 /* VIEW: NEWSLETTER EDITOR ---------------------------------------------------------------------- */
 
 #preview_newsletter

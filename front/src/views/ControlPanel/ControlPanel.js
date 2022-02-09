@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    control_panel, email_address, password, log_in, password_forgotten, disclaimer_email_and_password, 
+    control_panel, email_address, password, stay_logged_in_for_30_days, log_in, password_forgotten, disclaimer_email_and_password, 
     statistics, faq_editor, blog_editor, newsletter_editor 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,6 +25,7 @@ const ControlPanel = (props) =>
     const [field_email_address, set_field_email_address] = useState('');
     const [field_password, set_field_password] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
+    const [stay_logged_in, set_stay_logged_in] = useState(false);
     const [access_message, set_access_message] = useState('');
 
     const handle_submit = () => 
@@ -33,7 +34,7 @@ const ControlPanel = (props) =>
             set_access_message(disclaimer_email_and_password(ct.lang));
         else
         {
-            fetch(`${package_info.api}/user/${ct.lang}/admin/login/${field_email_address}/${field_password}`)
+            fetch(`${package_info.api}/user/${ct.lang}/admin/login/${field_email_address}/${field_password}/${stay_logged_in}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -44,6 +45,9 @@ const ControlPanel = (props) =>
                 set_access_message(json.message);
                 props.set_account_data(json.account_data);
                 props.set_is_access_granted(json.is_success);
+
+                if (json.token_stay_logged_in)
+                    document.cookie = `token=${json.token_stay_logged_in}; path=/; domain=${package_info.domain}; samesite=lax; secure; max-age=2592000`;
             });
         }
     };
@@ -77,6 +81,11 @@ const ControlPanel = (props) =>
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={password(ct.lang)} value={field_password} onChange={e => set_field_password(e.target.value)} 
                             onKeyPress={handle_key_press} autoComplete="on" required />
                         <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                    </div>
+
+                    <div className="div_pointer">
+                        <input type="checkbox" name="stay_logged_in" id="stay_logged_in" value={stay_logged_in} onChange={() => set_stay_logged_in(!stay_logged_in)} />
+                        <label htmlFor="stay_logged_in">{stay_logged_in_for_30_days(ct.lang)}</label>
                     </div>
 
                     <input type="button" className="button" name="btn_login" value={log_in(ct.lang)} onClick={handle_submit} />

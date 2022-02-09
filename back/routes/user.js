@@ -3,8 +3,8 @@ const controller_user = require('../controllers/user');
 
 const router = express.Router();
 
-router.get('/:lang/admin/login/:email_address/:password', controller_user.connect_as_admin);
-router.get('/:lang/login/:email_address/:password', controller_user.connect_as_user);
+router.get('/:lang/admin/login/:email_address/:password/:stay_logged_in', controller_user.connect_as_admin);
+router.get('/:lang/login/:email_address/:password/:stay_logged_in', controller_user.connect_as_user);
 router.post('/:lang/password', controller_user.create_password);
 router.get('/:lang/check/email/:id/:email_address', controller_user.is_email_already_used_by_another_account);
 router.get('/:lang/check/username/:id/:username', controller_user.is_username_already_used_by_another_account);

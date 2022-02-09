@@ -1,10 +1,9 @@
 import { useState, useContext } from 'react';
-import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
     newsletter_editor, access_denied, refresh_newsletters, 
     select_newsletter, write_new_newsletter, sent, not_sent, 
-    confirm, send_newsletter, object, message, 
+    confirm, send_newsletter, object, 
     select_language, dynamic_language, english, french, japanese, 
     info_language, info_object, info_date, info_message, 
     disclaimer_obj_and_msg, disclaimer_language 
@@ -13,6 +12,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import { date_in_letters, time } from '../../assets/functions/time';
 import package_info from '../../../package.json';
+
+// Markdown editor
+import Yamde from 'yamde';
+
+// Markdown display
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
@@ -24,7 +30,7 @@ const NewsletterEditor = (props) =>
     const [newsletters, set_newsletters] = useState([]);
     const [selected_newsletter, set_selected_newsletter] = useState('default');
     const [field_object, set_field_object] = useState('');
-    const [html_message, set_html_message] = useState('<hr /><h1 style="text-align: center;">Hello world!</h1><hr /><p>Lorem ipsum</p>');
+    const [html_message, set_html_message] = useState('');
     const [language, set_language] = useState('default');
     const [checkbox, set_checkbox] = useState(false);
 
@@ -48,7 +54,7 @@ const NewsletterEditor = (props) =>
     {
         set_selected_newsletter('default');
         set_field_object('');
-        set_html_message('<hr /><h1 style="text-align: center;">Hello world!</h1><hr /><p>Lorem ipsum</p>');
+        set_html_message('');
         set_language('default');
         set_checkbox(false);
     };
@@ -140,9 +146,10 @@ const NewsletterEditor = (props) =>
                     : selected_newsletter === 'new' || !newsletters[selected_newsletter].is_sent ?
                         <>
                             <input type="text" name="object" placeholder={object(ct.lang)} title={object(ct.lang)} value={field_object} onChange={e => set_field_object(e.target.value)} />
-                            <textarea placeholder={message(ct.lang)} title={message(ct.lang)} value={html_message} onChange={e => set_html_message(e.target.value)}></textarea>
 
-                            <div id="preview_newsletter">{Parser(html_message)}</div>
+                            <div className="markdown_editor">
+                                <Yamde value={html_message} handler={set_html_message} theme="light" />
+                            </div>
 
                             <select value={language} onChange={e => set_language(e.target.value)}>
                                 <option value="default" disabled>{select_language(ct.lang)}</option>
@@ -152,7 +159,7 @@ const NewsletterEditor = (props) =>
                             </select>
 
                             <div className="div_pointer">
-                                <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(checkbox ? false : true)} />
+                                <input type="checkbox" name="send" id="send" checked={checkbox} onChange={() => set_checkbox(!checkbox)} />
                                 <label htmlFor="send">{send_newsletter(ct.lang)}</label>
                             </div>
 
@@ -164,7 +171,9 @@ const NewsletterEditor = (props) =>
                             <p><strong>{info_object(ct.lang)}</strong>{newsletters[selected_newsletter].object}</p>
                             <p><strong>{info_date(ct.lang)}</strong>{date_in_letters(ct.lang, newsletters[selected_newsletter].date)} at {time(newsletters[selected_newsletter].date, true)}</p>
                             <p><strong>{info_message(ct.lang)}</strong></p>
-                            <div id="preview_newsletter">{Parser(newsletters[selected_newsletter].html_message)}</div>
+                            <div id="preview_newsletter">
+                                <ReactMarkdown children={newsletters[selected_newsletter].html_message} remarkPlugins={[remarkGfm]} />
+                            </div>
                         </div>}
                 </form>
             </div>}

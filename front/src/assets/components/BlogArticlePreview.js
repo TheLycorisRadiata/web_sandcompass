@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { AppContext } from '../../App';
-import Parser from 'html-react-parser';
 import {
     blog, other_articles, like, dislike, 
     info_category, info_author, info_created, info_modified, 
@@ -10,6 +9,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import { date_in_letters, time } from '../functions/time';
+
+// Markdown display
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const icon_heart = <FontAwesomeIcon icon={faHeart} />;
 const icon_empty_like = <FontAwesomeIcon icon={faThumbsUp} />;
@@ -48,7 +51,7 @@ const BlogArticlePreview = (props) =>
                         </li>}
                 </ul>
 
-                <div>{Parser(display_content())}</div>
+                <ReactMarkdown children={display_content(ct.lang)} remarkPlugins={[remarkGfm]} />
             </article>
 
             <div className="btn_other_articles"><span className="a button">{other_articles(ct.lang)}</span></div>

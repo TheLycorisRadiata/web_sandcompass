@@ -1,8 +1,11 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import { read_more } from '../functions/lang';
+
+// Markdown display
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const ArticleExcerpt = (props) => 
 {
@@ -11,8 +14,8 @@ const ArticleExcerpt = (props) =>
     return (
         <div className="article_excerpt">
             <p></p>
-            {Parser(props.content.substring(0, 400) + ' ')}
-            <Link to={'/blog/article/' + props.id}>{read_more(ct.lang)}</Link>
+            <ReactMarkdown children={props.content.substring(0, 400)} remarkPlugins={[remarkGfm]} />
+            {' '}<Link to={'/blog/article/' + props.id}>{read_more(ct.lang)}</Link>
         </div>
     );
 };

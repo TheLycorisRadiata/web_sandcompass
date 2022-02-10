@@ -77,6 +77,7 @@ main, div#main
     margin: 20px 0px;
     padding: 25px;
     background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
+    position: relative;
 
     opacity: 1;
     animation-name: fade_in_opacity;
@@ -329,15 +330,19 @@ nav ul a
     filter: drop-shadow(1px 1px 1px var(--brown));
 }
 
-/* BUTTON: UP & DOWN BUTTONS -------------------------------------------------------------------- */
+/* BUTTON: UP, DOWN AND LOGOUT BUTTONS ---------------------------------------------------------- */
+
+#btn_top, #btn_bottom, #btn_logout
+{
+    padding: 12px;
+    font-size: 2rem;
+    filter: drop-shadow(1px 1px 1px var(--brown));
+}
 
 #btn_top, #btn_bottom
 {
-    padding: 12px;
     position: fixed;
     bottom: 0;
-    font-size: 2rem;
-    filter: drop-shadow(1px 1px 1px var(--brown));
 }
 
 #btn_top
@@ -345,9 +350,15 @@ nav ul a
     left: 0;
 }
 
-#btn_bottom
+#btn_bottom, #btn_logout
 {
     right: 0;
+}
+
+#btn_logout
+{
+    position: absolute;
+    top: 0;
 }
 
 /* BUTTONS: SOCIAL MEDIA ------------------------------------------------------------------------ */

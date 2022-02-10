@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 const User = require('../models/user');
+const Token = require('../models/token');
 const {
     failure_admin_not_found, failure_admin_email_not_verified, failure_admin_no_password, failure_wrong_email_or_password, 
     failure_email_has_to_be_verified, failure_no_password, failure, 
@@ -18,6 +20,13 @@ const connect_as_admin = (req, res) =>
     const lang = parseInt(req.params.lang);
     const email_address = req.params.email_address.toLowerCase();
     const password = req.params.password;
+    const stay_logged_in = req.params.stay_logged_in;
+
+    // Stay logged in token
+    const rng = uuidv4().replace('-', '');
+    const salt_rounds = 10;
+    const salt = bcrypt.genSaltSync(salt_rounds);
+    let hashed_id = null;
 
     User.findOne({ is_admin: true })
     .then(admin => 
@@ -29,7 +38,27 @@ const connect_as_admin = (req, res) =>
         else if (!admin.hashed_password)
             res.status(500).json({ is_success: false, account_data: null, message: failure_admin_no_password(lang) });
         else if (email_address === admin.email_address && bcrypt.compareSync(password, admin.hashed_password))
-            res.status(200).json({ is_success: true, account_data: admin, message: '' });
+        {
+            if (stay_logged_in)
+            {
+                hashed_id = bcrypt.hashSync(admin._id.toString(), salt);
+
+                if (hashed_id)
+                {
+                    new Token(
+                    {
+                        code: rng,
+                        account: admin._id,
+                        action: 'login'
+                    })
+                    .save()
+                    .then(() => res.status(200).json({ is_success: true, account_data: admin, message: '', token_stay_logged_in: rng, id: hashed_id }))
+                    .catch(() => res.status(200).json({ is_success: true, account_data: admin, message: '' }))
+                }
+            }
+            else
+                res.status(200).json({ is_success: true, account_data: admin, message: '' });
+        }
         // The email and/or the password don't match
         else
             res.status(403).json({ is_success: false, account_data: null, message: failure_wrong_email_or_password(lang) });
@@ -43,6 +72,12 @@ const connect_as_user = (req, res) =>
     const email_address = req.params.email_address.toLowerCase();
     const password = req.params.password;
 
+    // Stay logged in token
+    const rng = uuidv4().replace('-', '');
+    const salt_rounds = 10;
+    const salt = bcrypt.genSaltSync(salt_rounds);
+    let hashed_id = null;
+
     User.findOne({ email_address: email_address, is_admin: false })
     .then(user => 
     {
@@ -53,12 +88,58 @@ const connect_as_user = (req, res) =>
         else if (!user.hashed_password)
             res.status(401).json({ is_success: false, account_data: null, message: failure_no_password(lang) });
         else if (bcrypt.compareSync(password, user.hashed_password))
-            res.status(200).json({ is_success: true, account_data: user, message: '' });
+        {
+            if (stay_logged_in)
+            {
+                hashed_id = bcrypt.hashSync(user._id.toString(), salt);
+
+                if (hashed_id)
+                {
+                    new Token(
+                    {
+                        code: rng,
+                        account: user._id,
+                        action: 'login'
+                    })
+                    .save()
+                    .then(() => res.status(200).json({ is_success: true, account_data: user, message: '', token_stay_logged_in: rng, id: hashed_id }))
+                    .catch(() => res.status(200).json({ is_success: true, account_data: user, message: '' }))
+                }
+            }
+            else
+                res.status(200).json({ is_success: true, account_data: user, message: '' });
+        }
         // The password is incorrect
         else
             res.status(404).json({ is_success: false, account_data: null, message: failure_wrong_email_or_password(lang) });
     })
     .catch(err => res.status(400).json({ is_success: false, account_data: null, message: failure(lang), error: err }));
+};
+
+const disconnect = (req, res) => 
+{
+    const lang = parseInt(req.params.lang);
+    const id = req.params.id;
+    const password = req.params.password;
+
+    User.findOne({ _id: id })
+    .then(user => 
+    {
+        if (!user || !bcrypt.compareSync(password, user.hashed_password))
+            res.status(404).json({ is_success: false });
+        else
+        {
+            // Delete login tokens related to this account
+            Token.find({ account: id, action: 'login' })
+            .then(tokens => 
+            {
+                // TODO Delete login tokens related to this account
+                res.status(200).json({ is_success: true });
+            })
+            .catch(() => res.status(200).json({ is_success: true }));
+        }
+    })
+    .catch(err => res.status(400).json({ is_success: false, error: err }));
 };
 
 const create_password = (req, res) => 
@@ -217,9 +298,20 @@ const update_account = (req, res) =>
 const delete_account = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    const id = req.body.id_user_to_delete;
 
-    User.deleteOne({ _id: req.body.id_user_to_delete })
-    .then(() => res.status(200).json({ is_success: true, message: success_account_deletion(lang) }))
+    User.deleteOne({ _id: id })
+    .then(() => 
+    {
+        // Delete tokens related to this account
+        Token.find({ account: id })
+        .then(tokens => 
+        {
+            // TODO Delete tokens related to this account
+            res.status(200).json({ is_success: true, message: success_account_deletion(lang) });
+        })
+        .catch(() => res.status(200).json({ is_success: true, message: success_account_deletion(lang) }));
+    })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
@@ -282,6 +374,7 @@ module.exports =
 {
     connect_as_admin,
     connect_as_user,
+    disconnect,
     create_password,
     is_email_already_used_by_another_account,
     is_username_already_used_by_another_account,

@@ -6,12 +6,13 @@ import {
     email_address, password, stay_logged_in_for_30_days, password_forgotten, not_yet_registered 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faSquareXmark, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { send_registration_email } from '../../assets/functions/mailing';
 import AccountEditor from '../../assets/components/AccountEditor';
 import ArticlesByAuthor from '../../assets/components/ArticlesByAuthor';
 import package_info from '../../../package.json';
 
+const icon_logout = <FontAwesomeIcon icon={faSquareXmark} />;
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 
@@ -50,7 +51,7 @@ const UserPanel = (props) =>
                     alert(json.message);
 
                 if (json.token_stay_logged_in)
-                    document.cookie = `token=${json.token_stay_logged_in}; path=/; domain=${package_info.domain}; samesite=lax; secure; max-age=2592000`;
+                    document.cookie = `token=${json.token_stay_logged_in}; id=${json.id}; path=/; domain=${package_info.domain}; samesite=lax; secure; max-age=3600`;
             })
             .catch(err => console.log(err));
 
@@ -74,6 +75,23 @@ const UserPanel = (props) =>
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.is_access_granted]);
+
+    const logout = () => 
+    {
+        // Make a request so login tokens can be deleted
+        fetch(`${package_info.api}/user/${ct.lang}/logout/${props.account_data?._id}/${field_password}`)
+        .then(res => res.json())
+        .then(json => 
+        {
+            //if (json.message !== '')
+                //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
+
+            props.set_is_access_granted(false);
+            props.set_account_data(null);
+        });
+    };
 
     return (
         <main>
@@ -102,6 +120,8 @@ const UserPanel = (props) =>
                 </form>
             :
                 <>
+                    <span id="btn_logout" className="a" onClick={logout}>{icon_logout}</span>
+
                     <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} user_rank={props.user_rank} set_user_rank={props.set_user_rank} />
                     <span className="divider"></span>
                     <ArticlesByAuthor author={props.account_data._id} categories={props.categories} />

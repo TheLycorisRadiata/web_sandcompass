@@ -264,7 +264,7 @@ const AccountEditor = (props) =>
 
         // If the email address has been updated, verify it just like we did at account registration
         if (updated_account.verified_user === false)
-            send_verification_email(ct.lang, props.account_data._id, field_email, updated_account.first_name);
+            send_verification_email(ct.lang, props.account_data._id, field_email, updated_account.username);
     };
 
     const delete_account = () => 

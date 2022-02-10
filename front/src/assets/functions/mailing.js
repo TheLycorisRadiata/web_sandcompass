@@ -51,7 +51,7 @@ const send_newsletter_email = async (lang, user_id, email_address) =>
     .catch(err => console.log(err));
 };
 
-const send_verification_email = async (lang, user_id, email_address, first_name) => 
+const send_verification_email = async (lang, user_id, email_address, username) => 
 {
     await fetch(`${package_info.api}/mailing/${lang}/email`,
     {
@@ -65,7 +65,7 @@ const send_verification_email = async (lang, user_id, email_address, first_name)
         {
             user_id: user_id,
             email_address: email_address,
-            first_name: first_name
+            username: username
         })
     })
     .then(res => res.json())
@@ -89,10 +89,7 @@ const send_password_email = async (lang, email_address) =>
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(
-        {
-            email_address: email_address
-        })
+        body: JSON.stringify({ email_address: email_address })
     })
     .then(res => res.json())
     .then(json => 
@@ -103,7 +100,7 @@ const send_password_email = async (lang, email_address) =>
         alert(json.message);
 
         if (json.send_verif_email && window.confirm(confirm_resend_verification_email(lang)))
-            send_registration_email(email_address);
+            send_registration_email(lang, email_address);
     })
     .catch(err => console.log(err));
 };

@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const markdown = require( "markdown" ).markdown;
+const { v4: uuidv4 } = require('uuid');
 const User = require('../models/user');
 const Token = require('../models/token');
 const Newsletter = require('../models/newsletter');
@@ -103,6 +104,7 @@ const send_mail_at_account_registration = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
     const email_address = req.body.email_address.toLowerCase();
+    const rng = uuidv4().replace('-', '');
 
     let smtp_trans = null;
     let mail_options = null;
@@ -124,6 +126,7 @@ const send_mail_at_account_registration = (req, res) =>
         // Create the token for email verification
         new Token(
         {
+            code: rng,
             account: user._id,
             action: 'email'
         })
@@ -135,7 +138,7 @@ const send_mail_at_account_registration = (req, res) =>
             Token.find({ account: user._id, action: 'email' })
             .then(tokens => 
             {
-                link_verify_email = homepage + '/token/' + tokens[tokens.length - 1]._id;
+                link_verify_email = homepage + '/token/' + tokens[tokens.length - 1].code;
 
                 smtp_trans = nodemailer.createTransport(
                 {
@@ -253,6 +256,7 @@ const send_mail_at_email_update = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
     const email_address = req.body.email_address.toLowerCase();
+    const rng = uuidv4().replace('-', '');
     
     let smtp_trans = null;
     let mail_options = null;
@@ -268,6 +272,7 @@ const send_mail_at_email_update = (req, res) =>
         // Create the token for email verification
         new Token(
         {
+            code: rng,
             account: user._id,
             action: 'email',
         })
@@ -279,7 +284,7 @@ const send_mail_at_email_update = (req, res) =>
             Token.find({ account: user._id, action: 'email' })
             .then(tokens => 
             {
-                link_verify_email = homepage + '/token/' + tokens[tokens.length - 1]._id;
+                link_verify_email = homepage + '/token/' + tokens[tokens.length - 1].code;
 
                 smtp_trans = nodemailer.createTransport(
                 {
@@ -302,7 +307,7 @@ const send_mail_at_email_update = (req, res) =>
                     '<html>' + 
                         '<body>' + 
                             '<hr />' + 
-                            `<h1 style="text-align: center;">${hello_user(req.body.username)}</h1>` + 
+                            `<h1 style="text-align: center;">${hello_user(lang, req.body.username)}</h1>` + 
                             '<hr />' + 
 
                             `<p>${click_new_email_verification_link(lang, email_address, link_verify_email)}</p>` +
@@ -329,6 +334,7 @@ const send_mail_for_new_password = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
     const email_address = req.body.email_address.toLowerCase();
+    const rng = uuidv4().replace('-', '');
 
     let smtp_trans = null;
     let mail_options = null;
@@ -347,6 +353,7 @@ const send_mail_for_new_password = (req, res) =>
             // Create the token for password creation
             new Token(
             {
+                code: rng,
                 account: user._id,
                 action: 'pass'
             })
@@ -358,7 +365,7 @@ const send_mail_for_new_password = (req, res) =>
                 Token.find({ account: user._id, action: 'pass' })
                 .then(tokens => 
                 {
-                    link_create_password = homepage + '/password/' + tokens[tokens.length - 1]._id;
+                    link_create_password = homepage + '/password/' + tokens[tokens.length - 1].code;
 
                     smtp_trans = nodemailer.createTransport(
                     {

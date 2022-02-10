@@ -70,6 +70,8 @@ const App = () =>
 
     useLayoutEffect(() => 
     {
+        const login_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
+        const login_id = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
         const lang_machine = navigator.language || navigator.userLanguage;
         const lang_localstorage = JSON.parse(localStorage.getItem('lang'));
         let var_lang = 0;
@@ -97,6 +99,30 @@ const App = () =>
                 set_all_categories(json.data);
         })
         .catch(err => console.log(err));
+
+        // If cookie to log in automatically
+        if (login_token !== '' && login_id !== '')
+        {
+            fetch(`${package_info.api}/token/0/${login_token}/${login_id}`)
+            .then(res => res.json())
+            .then(json => 
+            {
+                if (json.is_success)
+                {
+                    if (json.is_admin)
+                    {
+                        set_admin_account_data(json.account_data);
+                        set_is_admin_access_granted(true);
+                    }
+                    else
+                    {
+                        set_user_account_data(json.account_data);
+                        set_is_user_access_granted(true);
+                    }
+                }
+            })
+            .catch(err => console.log(err));
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

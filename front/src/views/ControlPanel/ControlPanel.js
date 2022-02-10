@@ -6,11 +6,12 @@ import {
     statistics, faq_editor, blog_editor, newsletter_editor 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash, faFileAlt, faComment, faQuoteRight, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faSquareXmark, faEye, faEyeSlash, faFileAlt, faComment, faQuoteRight, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import AccountEditor from '../../assets/components/AccountEditor';
 import ArticlesByAuthor from '../../assets/components/ArticlesByAuthor';
 import package_info from '../../../package.json';
 
+const icon_logout = <FontAwesomeIcon icon={faSquareXmark} />;
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 const icon_stats = <FontAwesomeIcon icon={faFileAlt} />;
@@ -47,7 +48,7 @@ const ControlPanel = (props) =>
                 props.set_is_access_granted(json.is_success);
 
                 if (json.token_stay_logged_in)
-                    document.cookie = `token=${json.token_stay_logged_in}; path=/; domain=${package_info.domain}; samesite=lax; secure; max-age=2592000`;
+                    document.cookie = `token=${json.token_stay_logged_in}; id=${json.id}; path=/; domain=${package_info.domain}; samesite=lax; secure; max-age=3600`;
             });
         }
     };
@@ -67,6 +68,23 @@ const ControlPanel = (props) =>
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.is_access_granted]);
+
+    const logout = () => 
+    {
+        // Make a request so login tokens can be deleted
+        fetch(`${package_info.api}/user/${ct.lang}/logout/${props.account_data?._id}/${field_password}`)
+        .then(res => res.json())
+        .then(json => 
+        {
+            //if (json.message !== '')
+                //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
+
+            props.set_is_access_granted(false);
+            props.set_account_data(null);
+        });
+    };
 
     return (
         <main>
@@ -95,6 +113,8 @@ const ControlPanel = (props) =>
             </>
             :
             <>
+                <span id="btn_logout" className="a" onClick={logout}>{icon_logout}</span>
+
                 <div id="control_panel_buttons">
                     <button className="button"><Link to="/admin/stats"><span className="icon">{icon_stats}</span> {statistics(ct.lang)}</Link></button>
                     <button className="button"><Link to="/admin/faq"><span className="icon">{icon_faq}</span> {faq_editor(ct.lang)}</Link></button>

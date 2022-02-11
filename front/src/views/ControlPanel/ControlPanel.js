@@ -48,9 +48,13 @@ const ControlPanel = (props) =>
                 props.set_is_access_granted(json.is_success);
 
                 if (json.token_stay_logged_in)
-                    document.cookie = `token=${json.token_stay_logged_in}; id=${json.id}; path=/; domain=${package_info.domain}; samesite=lax; secure; max-age=3600`;
+                {
+                    document.cookie = 'token=' + encodeURIComponent(json.token_stay_logged_in) + '; path=/; domain=' + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=3600';
+                    document.cookie = 'id=' + encodeURIComponent(json.id) + '; path=/; domain=' + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=3600';
+                }
             });
         }
+
     };
 
     const handle_key_press = e => 
@@ -72,7 +76,7 @@ const ControlPanel = (props) =>
     const logout = () => 
     {
         // Make a request so login tokens can be deleted
-        fetch(`${package_info.api}/user/${ct.lang}/logout/${props.account_data?._id}/${field_password}`)
+        fetch(`${package_info.api}/token/${ct.lang}/login/${props.account_data?._id}`, { method: 'DELETE' })
         .then(res => res.json())
         .then(json => 
         {
@@ -80,10 +84,11 @@ const ControlPanel = (props) =>
                 //console.log(json.message);
             //if (json.error)
                 //console.log(json.error);
-
-            props.set_is_access_granted(false);
-            props.set_account_data(null);
         });
+
+        // Reset user data
+        props.set_is_access_granted(false);
+        props.set_account_data(null);
     };
 
     return (

@@ -9,7 +9,7 @@ const execute_token = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
     const id = req.params.id;
-    const account = req.params.account;
+    const hashed_account_id = req.params.account;
 
     Token.findOne({ code: id })
     .then(token => 
@@ -54,10 +54,12 @@ const execute_token = (req, res) =>
                 User.findOne({ _id: token.account, verified_user: true })
                 .then(user => 
                 {
-                    if (!user || !bcrypt.compareSync(user._id, account))
+                    if (!user)
                         res.status(404).json({ is_success: false });
+                    else if (bcrypt.compareSync(user._id.toString(), hashed_account_id))
+                        res.status(200).json({ is_success: true, account_data: user });
                     else
-                        res.status(200).json({ is_success: true, account_data: user, is_admin: user.is_admin });
+                        res.status(400).json({ is_success: false });
                 })
                 .catch(() => res.status(400).json({ is_success: false }));
                 return;
@@ -70,8 +72,16 @@ const execute_token = (req, res) =>
     .catch(err => res.status(400).json({ is_success: false, message: failure_expired_link(lang), error: err }));
 };
 
+const delete_login_tokens = (req, res) => 
+{
+    Token.deleteMany({ account: req.params.id, action: 'login' })
+    .then(() => res.status(200).json({ is_success: true }))
+    .catch(() => res.status(400).json({ is_success: false }));
+};
+
 module.exports = 
 {
-    execute_token
+    execute_token,
+    delete_login_tokens
 };
 

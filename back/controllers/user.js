@@ -20,7 +20,7 @@ const connect_as_admin = (req, res) =>
     const lang = parseInt(req.params.lang);
     const email_address = req.params.email_address.toLowerCase();
     const password = req.params.password;
-    const stay_logged_in = req.params.stay_logged_in;
+    const stay_logged_in = (req.params.stay_logged_in === 'true');
 
     // Stay logged in token
     const rng = uuidv4().replace('-', '');
@@ -71,6 +71,7 @@ const connect_as_user = (req, res) =>
     const lang = parseInt(req.params.lang);
     const email_address = req.params.email_address.toLowerCase();
     const password = req.params.password;
+    const stay_logged_in = req.params.stay_logged_in;
 
     // Stay logged in token
     const rng = uuidv4().replace('-', '');
@@ -114,32 +115,6 @@ const connect_as_user = (req, res) =>
             res.status(404).json({ is_success: false, account_data: null, message: failure_wrong_email_or_password(lang) });
     })
     .catch(err => res.status(400).json({ is_success: false, account_data: null, message: failure(lang), error: err }));
-};
-
-const disconnect = (req, res) => 
-{
-    const lang = parseInt(req.params.lang);
-    const id = req.params.id;
-    const password = req.params.password;
-
-    User.findOne({ _id: id })
-    .then(user => 
-    {
-        if (!user || !bcrypt.compareSync(password, user.hashed_password))
-            res.status(404).json({ is_success: false });
-        else
-        {
-            // Delete login tokens related to this account
-            Token.find({ account: id, action: 'login' })
-            .then(tokens => 
-            {
-                // TODO Delete login tokens related to this account
-                res.status(200).json({ is_success: true });
-            })
-            .catch(() => res.status(200).json({ is_success: true }));
-        }
-    })
-    .catch(err => res.status(400).json({ is_success: false, error: err }));
 };
 
 const create_password = (req, res) => 
@@ -304,12 +279,8 @@ const delete_account = (req, res) =>
     .then(() => 
     {
         // Delete tokens related to this account
-        Token.find({ account: id })
-        .then(tokens => 
-        {
-            // TODO Delete tokens related to this account
-            res.status(200).json({ is_success: true, message: success_account_deletion(lang) });
-        })
+        Token.deleteMany({ account: id })
+        .then(() => res.status(200).json({ is_success: true, message: success_account_deletion(lang) }))
         .catch(() => res.status(200).json({ is_success: true, message: success_account_deletion(lang) }));
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
@@ -374,7 +345,6 @@ module.exports =
 {
     connect_as_admin,
     connect_as_user,
-    disconnect,
     create_password,
     is_email_already_used_by_another_account,
     is_username_already_used_by_another_account,

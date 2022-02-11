@@ -1,8 +1,8 @@
 {
 	"name": "front",
-	"homepage": "http://127.0.0.1:3000",
-	"api": "http://127.0.0.1:3001/api",
-	"domain": "127.0.0.1:3000",
+	"homepage": "http://localhost:3000",
+	"api": "http://localhost:3001/api",
+	"domain": "localhost:3000",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {

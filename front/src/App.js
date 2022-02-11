@@ -72,6 +72,7 @@ const App = () =>
     {
         const login_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
         const login_id = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
+
         const lang_machine = navigator.language || navigator.userLanguage;
         const lang_localstorage = JSON.parse(localStorage.getItem('lang'));
         let var_lang = 0;
@@ -109,7 +110,7 @@ const App = () =>
             {
                 if (json.is_success)
                 {
-                    if (json.is_admin)
+                    if (json.account_data.is_admin)
                     {
                         set_admin_account_data(json.account_data);
                         set_is_admin_access_granted(true);

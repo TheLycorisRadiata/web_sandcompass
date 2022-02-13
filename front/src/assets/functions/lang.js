@@ -211,6 +211,19 @@ export const copyright = (lang) =>
 
 /* FAQ & FAQ EDITOR ----------------------------------------------------------------------------- */
 
+export const ask_question = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Poser une question';
+        case 2:
+            return '質問を聞く';
+        default:
+            return 'Ask a question';
+    }
+};
+
 export const faq_is_empty = (lang) => 
 {
     switch (lang)
@@ -1411,11 +1424,11 @@ export const msg_about_website = (lang) =>
     switch (lang)
     {
         case 1:
-            return '<p>"Sand Compass" est le nom d\'une future société française. Sand Compass a pour ambition d\'aller chatouiller les frontières du monde connu, mais va pour l\'instant se contenter de son domaine favori : la fiction ! Ce site présente donc les œuvres fictives de Lycoris Radiata, CEO autoproclamée (parce que ça fait toujours <span class="txt_italic">plus mieux</span> en Anglais), et... Petite madame dont les compétences en code peuvent encore s\'améliorer.</p>\n\n<p>Si ce n\'est pas votre première visite, bon retour ! Je vous remercie de votre patience et de votre fidélité, elles seront récompensées.<p>';
+            return '<p>"Sand Compass" est le nom d\'une future société française. Sand Compass a pour ambition d\'aller chatouiller les frontières du monde connu, mais va pour l\'instant se contenter de son domaine favori : la fiction ! Ce site présente donc les œuvres fictives de Lycoris Radiata, CEO autoproclamée (parce que ça fait toujours <span class="txt_italic">plus mieux</span> en Anglais), et... Petite madame dont les compétences en code peuvent encore s\'améliorer.</p>\n\n<p>Si ce n\'est pas votre première visite, bon retour ! Je vous remercie de votre patience et de votre fidélité, elles seront récompensées.<p><p></p>';
         case 2:
-            return '<p>"Sand Compass" is the name of a future French company. Sand Compass has for ambition to go tickle the known world\'s frontiers, but will for now settle for its favorite domain: storytelling! This website therefore presents the fictitious works of Lycoris Radiata, self-proclaimed CEO, and... Lil\' lady whose coding skills surely need some refining.</p>\n\n<p>If this is not your first visit, welcome back! I thank you for your patience and loyalty, they will be rewarded.</p>';
+            return '<p>"Sand Compass" is the name of a future French company. Sand Compass has for ambition to go tickle the known world\'s frontiers, but will for now settle for its favorite domain: storytelling! This website therefore presents the fictitious works of Lycoris Radiata, self-proclaimed CEO, and... Lil\' lady whose coding skills surely need some refining.</p>\n\n<p>If this is not your first visit, welcome back! I thank you for your patience and loyalty, they will be rewarded.</p><p></p>';
         default:
-            return '<p>"Sand Compass" is the name of a future French company. Sand Compass has for ambition to go tickle the known world\'s frontiers, but will for now settle for its favorite domain: storytelling! This website therefore presents the fictitious works of Lycoris Radiata, self-proclaimed CEO, and... Lil\' lady whose coding skills surely need some refining.</p>\n\n<p>If this is not your first visit, welcome back! I thank you for your patience and loyalty, they will be rewarded.</p>';
+            return '<p>"Sand Compass" is the name of a future French company. Sand Compass has for ambition to go tickle the known world\'s frontiers, but will for now settle for its favorite domain: storytelling! This website therefore presents the fictitious works of Lycoris Radiata, self-proclaimed CEO, and... Lil\' lady whose coding skills surely need some refining.</p>\n\n<p>If this is not your first visit, welcome back! I thank you for your patience and loyalty, they will be rewarded.</p><p></p>';
     }
 };
 

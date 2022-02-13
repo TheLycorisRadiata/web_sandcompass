@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom';
 import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
-    home, title_about_website, msg_about_website, 
+    home, title_about_website, msg_about_website, sub_newsletter, 
     home_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, 
     title_last_article 
 } from '../../assets/functions/lang';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import DisplayCover from '../../assets/components/DisplayCover';
 import SocialMedia from '../../assets/components/SocialMedia';
 import ArticleExcerpt from '../../assets/components/ArticleExcerpt';
 import package_info from '../../../package.json';
+
+const icon_newsletter = <FontAwesomeIcon icon={faEnvelope} />;
 
 const Home = (props) => 
 {
@@ -42,6 +46,14 @@ const Home = (props) =>
             <article>
                 <h2 className="sub_title">{title_about_website(ct.lang)}</h2>
                 <div>{Parser(msg_about_website(ct.lang))}</div>
+
+                <div id="subscribe_newsletter">
+                    <Link to="/user/signup" className="button">
+                        <span className="icon">{icon_newsletter}</span>
+                        <span>{sub_newsletter(ct.lang)}</span>
+                        <span className="icon">{icon_newsletter}</span>
+                    </Link>
+                </div>
             </article>
 
             <section>

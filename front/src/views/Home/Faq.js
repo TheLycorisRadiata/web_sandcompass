@@ -1,10 +1,12 @@
 import { useLayoutEffect, useContext } from 'react';
+import { HashLink as Link } from 'react-router-hash-link';
 import { AppContext } from '../../App';
-import { faq_long, faq_is_empty } from '../../assets/functions/lang';
+import { faq_long, ask_question, faq_is_empty } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import package_info from '../../../package.json';
 
+const icon_faq = <FontAwesomeIcon icon={faComment} />;
 const icon_close = <FontAwesomeIcon icon={faChevronUp} />;
 const icon_open = <FontAwesomeIcon icon={faChevronDown} />;
 
@@ -56,6 +58,11 @@ const Faq = (props) =>
     return (
         <main id="faq">
             <h1 className="title">{faq_long(ct.lang)}</h1>
+
+            <div id="ask_question">
+                <Link to="contact#form" className="button"><span>{ask_question(ct.lang)}</span><span className="icon">{icon_faq}</span></Link>
+            </div>
+
             {!props.questions?.length ?
                 <p className="txt_centered">{faq_is_empty(ct.lang)}</p>
             :

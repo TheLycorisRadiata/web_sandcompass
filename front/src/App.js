@@ -178,7 +178,7 @@ const App = () =>
                         </Route>
                         <Route path="/blog"><BlogPage blog_page={blog_page} set_blog_page={set_blog_page} categories={all_categories} /></Route>
 
-                        <Route exact path="/contact"><Contact /></Route>
+                        <Route exact path="/contact"><Contact username={user_account_data?.username} email={user_account_data?.email_address} /></Route>
                         <Route exact path="/licenses"><Licenses /></Route>
 
                         <Route exact path="/admin/stats"><Stats is_access_granted={is_admin_access_granted} /></Route>

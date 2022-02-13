@@ -18,9 +18,10 @@ import Yamde from 'yamde';
 
 const icon_info = <FontAwesomeIcon icon={faInfoCircle} />;
 
-const Contact = () => 
+const Contact = (props) => 
 {
     const ct = useContext(AppContext);
+
     const [is_visitor_pro, set_is_visitor_pro] = useState(false);
     const [use_markdown, set_use_markdown] = useState(false);
     const [message_content, set_message_content] = useState('');
@@ -97,7 +98,7 @@ const Contact = () =>
             <SocialMedia />
 
             <section>
-                <h2 className="sub_title">{something_to_say(ct.lang)}</h2>
+                <h2 className="sub_title" id="form">{something_to_say(ct.lang)}</h2>
                 <form onSubmit={handle_contact}>
                     <div className="div_pointer">
                         <input type="radio" name="visitor_type" value="personal" id="btn_pers" defaultChecked onClick={() => set_is_visitor_pro(false)} />
@@ -108,8 +109,8 @@ const Contact = () =>
                         <label htmlFor="btn_pro">{professional(ct.lang)}</label>
                     </div>
                     {is_visitor_pro && <input type="text" name="business_name" placeholder={optional_business_name(ct.lang)} autoComplete="on" />}
-                    <input type="text" name="name" placeholder={name(ct.lang)} autoComplete="on" required autoFocus />
-                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoComplete="on" required />
+                    <input type="text" name="name" placeholder={name(ct.lang)} defaultValue={props.username} autoComplete="on" required autoFocus />
+                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} defaultValue={props.email} autoComplete="on" required />
 
                     <select name="subject" defaultValue="default" autoComplete="new-password" required>
                         <option disabled value="default">{select_subject(ct.lang)}</option>

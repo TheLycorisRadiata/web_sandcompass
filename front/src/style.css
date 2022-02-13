@@ -567,6 +567,24 @@ a, span[class="a"]
     margin-bottom: 20px;
 }
 
+/* VIEW: HOME ----------------------------------------------------------------------------------- */
+
+#subscribe_newsletter
+{
+    display: flex;
+    justify-content: center;
+}
+
+#subscribe_newsletter .icon:first-child
+{
+    padding-right: 10px;
+}
+
+#subscribe_newsletter .icon:last-child
+{
+    padding-left: 12px;
+}
+
 /* VIEW: LICENSES ------------------------------------------------------------------------------- */
 
 #licenses ul
@@ -803,6 +821,24 @@ a, span[class="a"]
 }
 
 /* VIEW: FAQ ------------------------------------------------------------------------------------ */
+
+#ask_question
+{
+    display: flex;
+    justify-content: center;
+}
+
+#ask_question a
+{
+    display: flex;
+    align-items: center;
+}
+
+#ask_question .icon
+{
+    padding-left: 10px;
+    font-size: 1.3rem;
+}
 
 #faq div
 {

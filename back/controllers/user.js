@@ -39,7 +39,28 @@ const connect_as_admin = (req, res) =>
             res.status(500).json({ is_success: false, account_data: null, message: failure_admin_no_password(lang) });
         else if (email_address === admin.email_address && bcrypt.compareSync(password, admin.hashed_password))
         {
+            // Stay logged in for 30 days
             if (stay_logged_in)
+            {
+                hashed_id = bcrypt.hashSync(admin._id.toString(), salt);
+
+                if (hashed_id)
+                {
+                    new Token(
+                    {
+                        code: rng,
+                        account: admin._id,
+                        action: 'login',
+                        created: Date.now() + 2588400000 // 30 days minus 2 hours from now
+                    })
+                    .save()
+                    .then(() => res.status(200).json({ is_success: true, account_data: admin, message: '', token_stay_logged_in_30_days: rng, id: hashed_id }))
+                    .catch(() => res.status(200).json({ is_success: true, account_data: admin, message: '' }))
+                    return;
+                }
+            }
+            // Stay logged in for 2 hours
+            else
             {
                 hashed_id = bcrypt.hashSync(admin._id.toString(), salt);
 
@@ -52,12 +73,14 @@ const connect_as_admin = (req, res) =>
                         action: 'login'
                     })
                     .save()
-                    .then(() => res.status(200).json({ is_success: true, account_data: admin, message: '', token_stay_logged_in: rng, id: hashed_id }))
+                    .then(() => res.status(200).json({ is_success: true, account_data: admin, message: '', token_stay_logged_in_2h: rng, id: hashed_id }))
                     .catch(() => res.status(200).json({ is_success: true, account_data: admin, message: '' }))
+                    return;
                 }
             }
-            else
-                res.status(200).json({ is_success: true, account_data: admin, message: '' });
+
+            // No token if the account ID encryption failed
+            res.status(200).json({ is_success: true, account_data: admin, message: '' });
         }
         // The email and/or the password don't match
         else
@@ -90,7 +113,28 @@ const connect_as_user = (req, res) =>
             res.status(401).json({ is_success: false, account_data: null, message: failure_no_password(lang) });
         else if (bcrypt.compareSync(password, user.hashed_password))
         {
+            // Stay logged in for 30 days
             if (stay_logged_in)
+            {
+                hashed_id = bcrypt.hashSync(user._id.toString(), salt);
+
+                if (hashed_id)
+                {
+                    new Token(
+                    {
+                        code: rng,
+                        account: user._id,
+                        action: 'login',
+                        created: Date.now() + 2588400000 // 30 days minus 2 hours from now
+                    })
+                    .save()
+                    .then(() => res.status(200).json({ is_success: true, account_data: user, message: '', token_stay_logged_in_30_days: rng, id: hashed_id }))
+                    .catch(() => res.status(200).json({ is_success: true, account_data: user, message: '' }))
+                    return;
+                }
+            }
+            // Stay logged in for 2 hours
+            else
             {
                 hashed_id = bcrypt.hashSync(user._id.toString(), salt);
 
@@ -103,12 +147,14 @@ const connect_as_user = (req, res) =>
                         action: 'login'
                     })
                     .save()
-                    .then(() => res.status(200).json({ is_success: true, account_data: user, message: '', token_stay_logged_in: rng, id: hashed_id }))
+                    .then(() => res.status(200).json({ is_success: true, account_data: user, message: '', token_stay_logged_in_2h: rng, id: hashed_id }))
                     .catch(() => res.status(200).json({ is_success: true, account_data: user, message: '' }))
+                    return;
                 }
             }
-            else
-                res.status(200).json({ is_success: true, account_data: user, message: '' });
+
+            // No token if the account ID encryption failed
+            res.status(200).json({ is_success: true, account_data: user, message: '' });
         }
         // The password is incorrect
         else

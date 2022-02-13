@@ -50,10 +50,21 @@ const UserPanel = (props) =>
                 if (send_verif_email)
                     alert(json.message);
 
-                if (json.token_stay_logged_in)
+                if (json.token_stay_logged_in_30_days)
                 {
-                    document.cookie = 'token=' + encodeURIComponent(json.token_stay_logged_in) + '; path=/; domain=' + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=3600';
-                    document.cookie = 'id=' + encodeURIComponent(json.id) + '; path=/; domain=' + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=3600';
+                    document.cookie = 'token=' + encodeURIComponent(json.token_stay_logged_in_30_days) + '; path=/; domain=' 
+                        + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=2592000';
+
+                    document.cookie = 'id=' + encodeURIComponent(json.id) + '; path=/; domain=' 
+                        + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=2592000';
+                }
+                else if (json.token_stay_logged_in_2h)
+                {
+                    document.cookie = 'token=' + encodeURIComponent(json.token_stay_logged_in_2h) + '; path=/; domain=' 
+                        + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=3600';
+
+                    document.cookie = 'id=' + encodeURIComponent(json.id) + '; path=/; domain=' 
+                        + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=3600';
                 }
             });
             //.catch(err => console.log(err));

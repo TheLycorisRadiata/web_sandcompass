@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import {
     english, french, japanese, 
-    sign_up, log_in, 
+    sign_up, log_in, user_account, 
     home, faq_short, works, blog, contact, 
     licenses, control_panel, copyright
 } from './assets/functions/lang';
@@ -150,7 +150,7 @@ const App = () =>
                         <div id="user_buttons">
                             <ul>
                                 <li><Link to="/user/signup"><span>{icon_user_new}</span> {sign_up(lang)}</Link></li>
-                                <li><Link to="/user"><span>{icon_user}</span> {log_in(lang)}</Link></li>
+                                <li><Link to="/user"><span>{icon_user}</span> {is_user_access_granted ? user_account(lang) : log_in(lang)}</Link></li>
                             </ul>
                         </div>
 

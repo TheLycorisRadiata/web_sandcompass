@@ -46,8 +46,8 @@ const AccountEditor = (props) =>
                         //console.log(json.error);
                     if (json.is_success)
                         props.set_admin_rank(json.data);
-                })
-                .catch(err => console.log(err));
+                });
+                //.catch(err => console.log(err));
             }
         }
         else
@@ -63,8 +63,8 @@ const AccountEditor = (props) =>
                         //console.log(json.error);
                     if (json.is_success)
                         props.set_user_rank(json.data);
-                })
-                .catch(err => console.log(err));
+                });
+                //.catch(err => console.log(err));
             }
         }
 
@@ -255,8 +255,8 @@ const AccountEditor = (props) =>
                 // The user changed the status of their newsletter subscription, and they're now subscribed
                 if (has_newsletter_changed && json.data.newsletter)
                     send_newsletter_email(ct.lang, json.data._id, json.data.email_address);
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
 
         set_is_edit_open(false);
@@ -294,8 +294,8 @@ const AccountEditor = (props) =>
 
                 if (json.is_success)
                     history.push('/');
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
     };
 

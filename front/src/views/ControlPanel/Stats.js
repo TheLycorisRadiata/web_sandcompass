@@ -34,8 +34,8 @@ const Stats = (props) =>
 
             if (json.is_success)
                 set_stats(json.data);
-        })
-        .catch(err => console.log(err));
+        });
+        //.catch(err => console.log(err));
     };
 
     return (

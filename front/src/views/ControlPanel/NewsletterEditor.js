@@ -46,8 +46,8 @@ const NewsletterEditor = (props) =>
             if (trigger_alert)
                 alert(json.message);
             set_newsletters(json.data);
-        })
-        .catch(err => console.log(err));
+        });
+        //.catch(err => console.log(err));
     };
     
     const clear_form = () => 
@@ -119,8 +119,8 @@ const NewsletterEditor = (props) =>
                     clear_form();
                     fetch_newsletters(false);
                 }
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
     };
 

@@ -88,8 +88,8 @@ const SignUp = () =>
 
                 if (json.is_success)
                     history.push('/');
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
     };
 

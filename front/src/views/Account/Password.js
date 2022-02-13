@@ -50,7 +50,7 @@ const Password = () =>
             })
             .catch(err => 
             {
-                console.log(err);
+                //console.log(err);
                 set_response_message(oops(ct.lang) + ' ' + error_occured(ct.lang));
             });
         }

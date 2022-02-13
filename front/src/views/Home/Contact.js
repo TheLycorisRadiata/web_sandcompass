@@ -85,8 +85,8 @@ const Contact = () =>
                     set_use_markdown(false);
                     set_message_content('');
                 }
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
     };
 

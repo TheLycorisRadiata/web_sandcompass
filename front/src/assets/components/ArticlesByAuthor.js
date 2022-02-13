@@ -31,8 +31,8 @@ const ArticlesByAuthor = (props) =>
 
             if (json.is_success)
                 set_articles(json.data);
-        })
-        .catch(err => console.log(err));
+        });
+        //.catch(err => console.log(err));
     };
 
     return (

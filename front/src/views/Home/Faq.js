@@ -46,8 +46,8 @@ const Faq = (props) =>
                 }
 
                 props.set_questions(arr_faq);
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

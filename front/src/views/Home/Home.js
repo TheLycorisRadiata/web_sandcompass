@@ -29,8 +29,8 @@ const Home = (props) =>
                 //console.log(json.error);
             if (json.is_success) 
                 set_last_article(json.data);
-        })
-        .catch(err => console.log(err));
+        });
+        //.catch(err => console.log(err));
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

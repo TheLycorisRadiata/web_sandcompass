@@ -62,8 +62,8 @@ const BlogArticle = (props) =>
                 set_article(json.data);
             else
                 history.push('/nope');
-        })
-        .catch(err => console.log(err));
+        });
+        //.catch(err => console.log(err));
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -165,8 +165,8 @@ const BlogArticle = (props) =>
                 }
                 else
                     alert(json.message);
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
     };
 
@@ -230,8 +230,8 @@ const BlogArticle = (props) =>
                 }
                 else
                     alert(json.message);
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
     };
 

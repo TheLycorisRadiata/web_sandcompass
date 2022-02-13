@@ -62,8 +62,8 @@ const FaqEditor = (props) =>
                 e.target[3].value = '';
                 e.target[4].value = '';
                 e.target[5].value = '';
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
     };
 
@@ -124,8 +124,8 @@ const FaqEditor = (props) =>
                 //if (json.error)
                     //console.log(json.error);
                 props.set_questions(json.is_success ? json.data : []);
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
     };
 
@@ -150,8 +150,8 @@ const FaqEditor = (props) =>
                 //if (json.error)
                     //console.log(json.error);
                 props.set_questions(json.is_success ? json.data : []);
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
     };
 
@@ -181,8 +181,8 @@ const FaqEditor = (props) =>
                 }
 
                 props.set_questions(arr_faq);
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

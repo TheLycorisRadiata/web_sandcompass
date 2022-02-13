@@ -55,8 +55,8 @@ const UserPanel = (props) =>
                     document.cookie = 'token=' + encodeURIComponent(json.token_stay_logged_in) + '; path=/; domain=' + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=3600';
                     document.cookie = 'id=' + encodeURIComponent(json.id) + '; path=/; domain=' + encodeURIComponent(package_info.domain) + '; samesite=lax; secure; max-age=3600';
                 }
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
 
             if (send_verif_email && window.confirm(confirm_resend_verification_email(ct.lang)))
                 send_registration_email(ct.lang, field_email_address);

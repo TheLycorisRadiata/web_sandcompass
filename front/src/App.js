@@ -98,8 +98,8 @@ const App = () =>
                 //console.log(json.error);
             if (json.is_success)
                 set_all_categories(json.data);
-        })
-        .catch(err => console.log(err));
+        });
+        //.catch(err => console.log(err));
 
         // If cookie to log in automatically
         if (login_token !== '' && login_id !== '')
@@ -121,8 +121,8 @@ const App = () =>
                         set_is_user_access_granted(true);
                     }
                 }
-            })
-            .catch(err => console.log(err));
+            });
+            //.catch(err => console.log(err));
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

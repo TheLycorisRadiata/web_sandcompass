@@ -41,7 +41,7 @@ const ExecuteToken = () =>
         })
         .catch(err => 
         {
-            console.log(err);
+            //console.log(err);
             set_title(error_occured(ct.lang));
             set_is_token_expired(true);
         });

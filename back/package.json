@@ -8,6 +8,7 @@
 	},
 	"author": "",
 	"homepage": "http://localhost:3000",
+	"whitelist": ["http://localhost:3000"],
 	"license": "ISC",
 	"dependencies": {
 		"bcrypt": "^5.0.1",

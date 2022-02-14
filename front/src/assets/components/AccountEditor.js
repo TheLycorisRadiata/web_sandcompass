@@ -33,39 +33,19 @@ const AccountEditor = (props) =>
 
     useLayoutEffect(() => 
     {
-        if (props.account_data?.is_admin)
+        if (!props.rank)
         {
-            if (!props.admin_rank)
+            fetch(`${package_info.api}/rank/${ct.lang}/${props.account_data?.rank}`)
+            .then(res => res.json())
+            .then(json => 
             {
-                fetch(`${package_info.api}/rank/${ct.lang}/${props.account_data?.rank}`)
-                .then(res => res.json())
-                .then(json => 
-                {
-                    //console.log(json.message);
-                    //if (json.error)
-                        //console.log(json.error);
-                    if (json.is_success)
-                        props.set_admin_rank(json.data);
-                });
-                //.catch(err => console.log(err));
-            }
-        }
-        else
-        {
-            if (!props.user_rank)
-            {
-                fetch(`${package_info.api}/rank/${ct.lang}/${props.account_data?.rank}`)
-                .then(res => res.json())
-                .then(json => 
-                {
-                    //console.log(json.message);
-                    //if (json.error)
-                        //console.log(json.error);
-                    if (json.is_success)
-                        props.set_user_rank(json.data);
-                });
-                //.catch(err => console.log(err));
-            }
+                //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
+                if (json.is_success)
+                    props.set_rank(json.data);
+            });
+            //.catch(err => console.log(err));
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -306,7 +286,7 @@ const AccountEditor = (props) =>
                 <div>
                     <ul>
                         <li>{props.account_data?.username}</li>
-                        <li>{info_rank(ct.lang, (props.account_data?.is_admin ? props.admin_rank?.name[ct.lang] : props.user_rank?.name[ct.lang]))}</li>
+                        <li>{info_rank(ct.lang, props.rank?.name[ct.lang] ?? '')}</li>
                         <li>{info_registered_on(ct.lang)}{date_in_letters(ct.lang, props.account_data?.registered_on)}</li>
                         <li>{info_preferred_language(ct.lang)}{dynamic_language(ct.lang, props.account_data?.language)}</li>
                         <li>{info_email_address(ct.lang)}{props.account_data?.email_address}</li>

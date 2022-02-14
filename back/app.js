@@ -1,4 +1,5 @@
 const express = require('express');
+const { whitelist } = require('./package.json');
 const router_language = require('./routes/language');
 const router_blog = require('./routes/blog');
 const router_faq = require('./routes/faq');
@@ -12,9 +13,15 @@ const app = express();
 
 const cors = (req, res, next) =>
 {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    const current_origin = req.protocol + '://' + req.hostname + (req.hostname !== 'localhost' ? '' : ':3000');
+
+    if (whitelist.includes(current_origin))
+    {
+        res.setHeader('Access-Control-Allow-Origin', current_origin);
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    }
+
     next();
 };
 

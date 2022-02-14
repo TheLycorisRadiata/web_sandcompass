@@ -137,7 +137,7 @@ const UserPanel = (props) =>
                 <>
                     <span id="btn_logout" className="a" onClick={logout}>{icon_logout}</span>
 
-                    <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} user_rank={props.user_rank} set_user_rank={props.set_user_rank} />
+                    <AccountEditor account_data={props.account_data} set_account_data={props.set_account_data} rank={props.user_rank} set_rank={props.set_user_rank} />
                     <span className="divider"></span>
                     <ArticlesByAuthor author={props.account_data._id} categories={props.categories} />
                 </>}

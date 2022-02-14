@@ -75,7 +75,7 @@ const App = () =>
 
         const lang_machine = navigator.language || navigator.userLanguage;
         const lang_localstorage = JSON.parse(localStorage.getItem('lang'));
-        let var_lang = 0;
+        let var_lang = 0; // English (default)
 
         if (lang_localstorage)
             var_lang = lang_localstorage.index;
@@ -83,8 +83,6 @@ const App = () =>
             var_lang = 1; // French
         else if (lang_machine === 'ja' || lang_machine.split('-')[0] === 'ja')
             var_lang = 2; // Japanese
-        else
-            var_lang = 0; // English (default)
 
         set_lang(var_lang);
         // var_lang exists I need to pass lang into the fetch and at this step the state isn't updated yet

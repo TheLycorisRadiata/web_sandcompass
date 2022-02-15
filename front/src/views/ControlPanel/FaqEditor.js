@@ -222,8 +222,8 @@ const FaqEditor = (props) =>
                     <p className="txt_centered">{faq_is_empty(ct.lang)}</p>
                 :
                     <ol>
-                        {props.questions?.map(e => 
-                            <li key={e._id}>
+                        {props.questions?.map((e, i) => 
+                            <li key={'qa_edit_' + i}>
                                 <div>
                                     <div className="display_question">
                                         <div title={english(ct.lang)}><p><strong>{e.question[0]}</strong>{e.answer[0]}</p></div>

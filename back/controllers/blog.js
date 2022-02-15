@@ -36,7 +36,7 @@ const retrieve_articles_by_author = (req, res) =>
 const retrieve_articles_by_category_sort_and_page = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
-    const id_category = req.params.category; // 'all' or ID
+    const code_category = req.params.category; // 'all' or code
     const sort = req.params.sort; // 'old' or 'recent'
     const page = parseInt(req.params.page);
 
@@ -54,7 +54,7 @@ const retrieve_articles_by_category_sort_and_page = (req, res) =>
     .then(author => 
     {
         // Does the category even exist?
-        Category.findOne(id_category === 'all' ? {} : { _id: id_category })
+        Category.findOne(code_category === 'all' ? {} : { code: code_category })
         .then(category => 
         {
             if (!category)
@@ -65,12 +65,24 @@ const retrieve_articles_by_category_sort_and_page = (req, res) =>
             .then(articles => 
             {
                 if (!articles.length)
+                {
                     res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, 0), data: [], 
                         is_blog_empty: true, category_not_found: category_not_found });
-                else
+                    return;
+                }
+
+                // Retrieve all categories in order to set txt_categories for each article
+                Category.find({})
+                .then(categories => 
                 {
+                    if (!categories.length)
+                    {
+                        res.status(404).json({ is_success: false, message: failure_articles_retrieval(lang) });
+                        return;
+                    }
+
                     // Filter by category
-                    arr_articles = id_category === 'all' || category_not_found ? articles : articles.filter(e => String(e.category) === id_category);
+                    arr_articles = code_category === 'all' || category_not_found ? articles : articles.filter(e => e.categories.includes(category._id));
 
                     // Compute the last page number
                     last_page_number = Math.ceil(arr_articles.length / 5);
@@ -86,11 +98,12 @@ const retrieve_articles_by_category_sort_and_page = (req, res) =>
 
                     for (i = 0; i < arr_articles.length; ++i)
                     {
-                        // Transform every element into a proper object so I can add properties (txt_category and txt_author)
+                        // Transform every element into a proper object so properties can be added (txt_categories and txt_author)
                         arr_articles[i] = arr_articles[i].toObject();
 
-                        // Add txt_category
-                        // TODO
+                        // Add txt_categories
+                        arr_articles[i].txt_categories = [];
+                        arr_articles[i].categories.map(cat_id => arr_articles[i].txt_categories.push(categories.find(cat => String(cat._id) === String(cat_id)).name));
 
                         // Add txt_author
                         // TODO
@@ -99,7 +112,8 @@ const retrieve_articles_by_category_sort_and_page = (req, res) =>
 
                     res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, arr_articles.length), data: arr_articles, 
                         is_blog_empty: false, last_page_number: last_page_number, category_not_found: category_not_found });
-                }
+                })
+                .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
             })
             .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
         })
@@ -129,22 +143,24 @@ const retrieve_last_article = (req, res) =>
             {
                 obj_article.txt_author = author ? author.username : null;
 
-                Category.findOne({ _id: article.category })
-                .then(category => 
+                Category.find({ })
+                .then(categories => 
                 {
-                    obj_article.txt_category = category ? category.name : null;
+                    obj_article.txt_categories = [];
+                    if (categories.length)
+                        obj_article.categories.map(cat_id => obj_article.txt_categories.push(categories.find(cat => String(cat._id) === String(cat_id)).name));
                     res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
                 })
                 .catch(() => 
                 {
-                    obj_article.txt_category = null;
+                    obj_article.txt_categories = [];
                     res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
                 });
             })
             .catch(() => 
             {
                 obj_article.txt_author = null;
-                obj_category.txt_category = null;
+                obj_category.txt_categories = [];
                 res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
             });
         }
@@ -152,12 +168,14 @@ const retrieve_last_article = (req, res) =>
     .catch(err => res.status(400).json({ is_success: false, message: failure_article_retrieval(lang), error: err }));
 };
 
-const retrieve_article_by_id = (req, res) => 
+const retrieve_article_by_id_or_code = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    const find_by_id = req.params.id_or_code === 'id';
+    const value = req.params.value;
     let obj_article = null;
 
-    Article.findOne({ _id: req.params.id_article })
+    Article.findOne(find_by_id ? { _id: value } : { code: value })
     .then(article => 
     {
         if (!article)
@@ -172,22 +190,24 @@ const retrieve_article_by_id = (req, res) =>
             {
                 obj_article.txt_author = author ? author.username : null;
 
-                Category.findOne({ _id: article.category })
-                .then(category => 
+                Category.find({ })
+                .then(categories => 
                 {
-                    obj_article.txt_category = category ? category.name : null;
+                    obj_article.txt_categories = [];
+                    if (categories.length)
+                        obj_article.categories.map(cat_id => obj_article.txt_categories.push(categories.find(cat => String(cat._id) === String(cat_id)).name));
                     res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
                 })
                 .catch(() => 
                 {
-                    obj_article.txt_category = null;
+                    obj_article.txt_categories = [];
                     res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
                 });
             })
             .catch(() => 
             {
                 obj_article.txt_author = null;
-                obj_category.txt_category = null;
+                obj_category.txt_categories = [];
                 res.status(200).json({ is_success: true, message: success_article_retrieval(lang, article._id), data: obj_article });
             });
         }
@@ -200,7 +220,10 @@ const post_new_article = (req, res) =>
     const lang = parseInt(req.params.lang);
     const new_article = new Article({ ...req.body.new_article });
     const id_new_article = new_article._id;
+    const rng = uuidv4().split('-')[0];
     let arr_user_written_articles = null;
+
+    new_article.code = rng;
 
     new_article.save()
     .then(() => 
@@ -313,8 +336,9 @@ const get_category_name_from_id = (req, res) =>
 const create_new_category = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    const rng = uuidv4().substring(0, 4);
 
-    new Category({ name: req.body.new_category })
+    new Category({ code: rng, name: req.body.new_category })
     .save()
     .then(() => 
     {
@@ -354,7 +378,7 @@ const delete_category = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
 
-    Article.findOne({ category: req.body._id })
+    Article.findOne({ categories: { $in: [req.body._id] }})
     .then(article => 
     {
         if (article)
@@ -532,7 +556,7 @@ module.exports =
     retrieve_articles_by_author,
     retrieve_articles_by_category_sort_and_page,
     retrieve_last_article,
-    retrieve_article_by_id,
+    retrieve_article_by_id_or_code,
     post_new_article,
     modify_article,
     delete_article,

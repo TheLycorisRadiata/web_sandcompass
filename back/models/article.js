@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const model_article = new mongoose.Schema(
 {
-    category: mongoose.Schema.Types.ObjectId,
+    code: { type: String, unique: true, lowercase: true },
+    categories: [mongoose.Schema.Types.ObjectId],
     title: [String],
     author: { type: mongoose.Schema.Types.ObjectId, default: null },
     content: [String],

@@ -47,13 +47,13 @@ const ArticlesByAuthor = (props) =>
                     <>
                         <li className="txt_centered" id="nbr_articles">{nbr_articles(ct.lang, articles.length)}</li>
 
-                        {props.categories.map(category => 
-                        <span key={'span' + category._id}>
-                            <li key={category.name[ct.lang]} className="txt_bold txt_centered">{category.name[ct.lang]}</li>
-                            <ol key={category._id}>
-                                {articles.find(e => e.category === category._id) === undefined ? <p key={category._id + '_empty'}>{empty(ct.lang)}</p>
+                        {props.categories.map((category, index) => 
+                        <span key={'category_' + index}>
+                            <li className="txt_bold txt_centered">{category.name[ct.lang]}</li>
+                            <ol>
+                                {articles.find(e => e.categories.includes(category._id)) === undefined ? <p>{empty(ct.lang)}</p>
                                 : 
-                                articles.filter(e => e.category === category._id).map(e => <li key={e._id}><Link to={'/blog/article' + e._id}>{e.title[ct.lang]}</Link></li>)}
+                                articles.filter(e => e.categories.includes(category._id)).map((e, i) => <li key={'category_' + index + '_' + i}><Link to={'/blog/article' + e.code}>{e.title[ct.lang]}</Link></li>)}
                             </ol>
                         </span>)}
                     </>}

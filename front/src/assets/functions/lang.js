@@ -78,6 +78,30 @@ export const japanese = (lang) =>
     }
 };
 
+/* PUNCTUATION ---------------------------------------------------------------------------------- */
+
+export const dot = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return '。';
+        default:
+            return '.';
+    }
+};
+
+export const comma_and_space = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return '、';
+        default:
+            return ', ';
+    }
+};
+
 /* APP.JS AND DERIVED TITLES -------------------------------------------------------------------- */
 
 export const sign_up = (lang) => 
@@ -1965,16 +1989,16 @@ export const go_precise_page = (lang) =>
     }
 };
 
-export const info_category = (lang) => 
+export const info_categories = (lang) => 
 {
     switch (lang)
     {
         case 1:
-            return 'Catégorie : ';
+            return 'Catégories : ';
         case 2:
             return '範疇：';
         default:
-            return 'Category: ';
+            return 'Categories: ';
     }
 };
 

@@ -3,8 +3,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
     blog, other_articles, like, dislike, vote_instruction, 
-    info_category, info_author, info_created, info_modified, 
+    info_categories, info_author, info_created, info_modified, 
     title_not_found, category_not_found, user_not_found, content_not_found, 
+    dot, comma_and_space, 
     wip, error_article_doesnt_exist, like_own_article, dislike_own_article 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -35,9 +36,32 @@ const BlogArticle = (props) =>
     const [user_vote, set_user_vote] = useState(0);
 
     const display_title = () => article?.title[ct.lang] === '' ? title_not_found(ct.lang) : article?.title[ct.lang];
-    const display_author = () => article?.txt_author === undefined || !article?.txt_author || article?.txt_author === '' ? user_not_found(ct.lang) : article?.txt_author;
+    const display_author = () => (article?.txt_author === undefined || !article?.txt_author || article?.txt_author === '' ? user_not_found(ct.lang) : article?.txt_author) + dot(ct.lang);
     const display_content = () => !article || article?.content[ct.lang] === '' ? content_not_found(ct.lang) : article?.content[ct.lang];
-    const display_category = () => article?.txt_category === undefined || !article?.txt_category ? category_not_found(ct.lang) : article?.txt_category[ct.lang]; 
+
+    const display_categories = () => 
+    {
+        let string = category_not_found(ct.lang) + dot(ct.lang);
+        let i;
+
+        if (article?.txt_categories?.length)
+        {
+            string = '';
+
+            for (i = 0; i < article.txt_categories.length; ++i)
+            {
+                if (i === article.txt_categories.length - 1)
+                {
+                    string += article.txt_categories[i][ct.lang] + dot(ct.lang);
+                    break;
+                }
+
+                string += article.txt_categories[i][ct.lang] + comma_and_space(ct.lang);
+            }
+        }
+
+        return string;
+    };
 
     useLayoutEffect(() => 
     {
@@ -50,7 +74,7 @@ const BlogArticle = (props) =>
         if (last_part === '')
             last_part = 'empty';
 
-        fetch(`${package_info.api}/blog/${ct.lang}/article/${last_part}`)
+        fetch(`${package_info.api}/blog/${ct.lang}/article/code/${last_part}`)
         .then(res => res.json())
         .then(json => 
         {
@@ -243,8 +267,8 @@ const BlogArticle = (props) =>
             <article>
                 <h2 className="sub_title">{display_title()}</h2>
                 <ul className="article_info">
-                    <li>{info_category(ct.lang)}{display_category()}.</li>
-                    <li>{info_author(ct.lang)}{display_author()}.</li>
+                    <li>{info_categories(ct.lang)}{display_categories()}</li>
+                    <li>{info_author(ct.lang)}{display_author()}</li>
                     <li>{info_created(ct.lang, date_in_letters(ct.lang, article?.time_creation), time(article?.time_creation, false))}</li>
                     {article?.is_modified && 
                         <li>{info_modified(ct.lang, date_in_letters(ct.lang, article?.time_modification), time(article?.time_modification, false))}</li>}

@@ -15,7 +15,7 @@ const ArticleExcerpt = (props) =>
         <div className="article_excerpt">
             <p></p>
             <ReactMarkdown children={props.content.substring(0, 400)} remarkPlugins={[remarkGfm]} />
-            {' '}<Link to={'/blog/article/' + props.id}>{read_more(ct.lang)}</Link>
+            {' '}<Link to={'/blog/article/' + props.code}>{read_more(ct.lang)}</Link>
         </div>
     );
 };

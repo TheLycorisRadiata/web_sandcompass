@@ -465,10 +465,10 @@ const BlogEditor = (props) =>
                         <>
                             <select name="select_article" value={selected_article} onChange={handle_select_article}>
                                 <option disabled value="default">{select_article(ct.lang)}</option>
-                                {props.categories.map(category => 
-                                    <optgroup label={category.name[ct.lang]} key={category._id}>
-                                        {!articles.filter(e => e.category === category._id).length ? <option disabled>{no_article(ct.lang)}</option> 
-                                        : articles.filter(e => e.category === category._id).map(e => <option key={e._id} value={e._id}>{e.title[ct.lang]}</option>)}
+                                {props.categories.map((category, index) => 
+                                    <optgroup label={category.name[ct.lang]} key={'category_' + index}>
+                                        {!articles.filter(e => e.categories.includes(category._id)).length ? <option disabled>{no_article(ct.lang)}</option> 
+                                        : articles.filter(e => e.categories.includes(category._id)).map(e => <option key={e.code} value={e.code}>{e.title[ct.lang]}</option>)}
                                     </optgroup>)}
                             </select>
 
@@ -491,7 +491,7 @@ const BlogEditor = (props) =>
                                 :
                                 <>
                                     <option disabled value="default">{select_category(ct.lang)}</option>
-                                    {props.categories.map(category => <option key={category._id} value={category._id}>{category.name[ct.lang]}</option>)}
+                                    {props.categories.map(category => <option key={category.code} value={category.code}>{category.name[ct.lang]}</option>)}
                                 </>}
                             </select>
 
@@ -517,7 +517,7 @@ const BlogEditor = (props) =>
                                     :
                                     <>
                                         <option disabled value="default">{select_category(ct.lang)}</option>
-                                        {props.categories.map(category => <option key={category._id} value={category._id}>{category.name[ct.lang]}</option>)}
+                                        {props.categories.map(category => <option key={category.code} value={category.code}>{category.name[ct.lang]}</option>)}
                                     </>}
                                 </select>
 

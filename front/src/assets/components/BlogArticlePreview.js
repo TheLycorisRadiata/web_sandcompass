@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     blog, other_articles, like, dislike, 
-    info_category, info_author, info_created, info_modified, 
+    info_categories, info_author, info_created, info_modified, 
     title_not_found, category_not_found, user_not_found, content_not_found 
 } from '../functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,7 +36,7 @@ const BlogArticlePreview = (props) =>
             <article>
                 <h4 className="sub_title">{display_title()}</h4>
                 <ul className="article_info">
-                    <li>{info_category(ct.lang)}{display_category()}.</li>
+                    <li>{info_categories(ct.lang)}{display_category()}.</li>
                     <li>{info_author(ct.lang)}{display_author()}.</li>
                     <li>
                         {info_created(ct.lang, 

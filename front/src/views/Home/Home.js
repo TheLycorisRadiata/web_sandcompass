@@ -76,11 +76,11 @@ const Home = (props) =>
             {last_article && 
             <section>
                 <div>
-                    <h2 className="sub_title"><Link to={'/blog/article/' + last_article._id}>{title_last_article(ct.lang)}</Link></h2>
+                    <h2 className="sub_title"><Link to={'/blog/article/' + last_article.code}>{title_last_article(ct.lang)}</Link></h2>
                     <h3 id="last_article_title" className="sub_title">{last_article.title[ct.lang]}</h3>
                 </div>
 
-                <ArticleExcerpt content={last_article.content[ct.lang]} id={last_article._id} />
+                <ArticleExcerpt content={last_article.content[ct.lang]} code={last_article.code} />
             </section>}
         </main>
     );

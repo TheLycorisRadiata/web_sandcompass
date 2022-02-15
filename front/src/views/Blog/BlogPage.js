@@ -5,8 +5,9 @@ import {
     blog, blog_is_empty, sort_from_oldest, sort_from_most_recent,
     all_categories, category_is_empty, 
     go_first_page, go_last_page, go_previous_page, go_next_page, go_precise_page, 
-    info_category, info_author, info_created, info_modified, 
-    /*category_not_found,*/ user_not_found 
+    info_categories, info_author, info_created, info_modified, 
+    dot, comma_and_space, 
+    category_not_found, user_not_found 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglassEnd, faHourglassStart, faBackward, faForward, faFastBackward, faFastForward, faFlagCheckered } from '@fortawesome/free-solid-svg-icons';
@@ -43,7 +44,7 @@ const BlogPage = (props) =>
         const path_category = path_parts[2];
         const path_sort = path_parts[3];
         const path_page = parseInt(path_parts[4], 10);
-        if (path_category === 'all' || path_category?.length === 24)
+        if (path_category === 'all' || path_category?.length === 4)
             set_category(path_category);
         if (path_sort === 'old' || path_sort === 'recent')
             set_sort(path_sort);
@@ -145,6 +146,29 @@ const BlogPage = (props) =>
             go_to_page();
     };
 
+    const display_categories = txt_categories => 
+    {
+        let string = category_not_found(ct.lang) + dot(ct.lang);
+        let i;
+
+        if (txt_categories?.length)
+        {
+            string = '';
+
+            for (i = 0; i < txt_categories.length; ++i)
+            {
+                if (i === txt_categories.length - 1)
+                {
+                    string += txt_categories[i][ct.lang] + dot(ct.lang);
+                    break;
+                }
+
+                string += txt_categories[i][ct.lang] + comma_and_space(ct.lang);
+            }
+        }
+
+        return string;
+    };
 
     return (
         <main>
@@ -163,7 +187,7 @@ const BlogPage = (props) =>
                     <div>
                         <select value={category} onChange={filter_category}>
                             <option value="all">{all_categories(ct.lang)}</option>
-                            {props.categories?.map((e, i) => <option key={'cat_' + i} value={e._id}>{i + 1}. {e.name[ct.lang]}</option>)}
+                            {props.categories?.map((e, i) => <option key={'cat_' + i} value={e.code}>{i + 1}. {e.name[ct.lang]}</option>)}
                         </select>
                     </div>
                 </div>
@@ -171,19 +195,19 @@ const BlogPage = (props) =>
                 {!articles.length ? <p className="txt_centered">{category_is_empty(ct.lang)}</p>
                 :
                 <>
-                    {articles.map(e => 
-                    <article className="blog_section" key={e._id}>
-                        <h2 className="sub_title"><Link to={'/blog/article/' + e._id}>{e.title[ct.lang]}</Link></h2>
+                    {articles.map((e, i) => 
+                    <article className="blog_section" key={'article_' + i}>
+                        <h2 className="sub_title"><Link to={'/blog/article/' + e.code}>{e.title[ct.lang]}</Link></h2>
                         <ul className="article_info">
-                            <li>{info_category(ct.lang)}
-                                {props.categories?.find(cat => cat._id === e.category)?.name[ct.lang] /*!e.txt_category ? category_not_found(ct.lang) : e.txt_category[ct.lang]*/}.</li>
-                            <li>{info_author(ct.lang)}{!e.txt_author ? user_not_found(ct.lang) : e.txt_author}.</li>
+                            <li>{info_categories(ct.lang)}
+                                {display_categories(e.txt_categories)}</li>
+                            <li>{info_author(ct.lang)}{(!e.txt_author ? user_not_found(ct.lang) : e.txt_author) + dot(ct.lang)}</li>
                             <li>{info_created(ct.lang, date_in_letters(ct.lang, e.time_creation), time(e.time_creation, false))}</li>
                             {e.is_modified && 
                                 <li>{info_modified(ct.lang, date_in_letters(ct.lang, e.time_modification), time(e.time_modification, false))}</li>}
                         </ul>
 
-                        <ArticleExcerpt content={e.content[ct.lang]} id={e._id} />
+                        <ArticleExcerpt content={e.content[ct.lang]} code={e.code} />
                     </article>)}
 
                     {last_page_number !== 1 && 

@@ -60,7 +60,7 @@ const Faq = (props) =>
             <h1 className="title">{faq_long(ct.lang)}</h1>
 
             <div id="ask_question">
-                <Link to="contact#form" className="button"><span>{ask_question(ct.lang)}</span><span className="icon">{icon_faq}</span></Link>
+                <Link to="/contact#form" className="button"><span>{ask_question(ct.lang)}</span><span className="icon">{icon_faq}</span></Link>
             </div>
 
             {!props.questions?.length ?
@@ -68,7 +68,7 @@ const Faq = (props) =>
             :
                 <>
                     {props.questions.map((e, i) =>
-                        <div key={"qa" + i}>
+                        <div key={'qa_' + i}>
                             <p className="question" onClick={() => handle_chevrons(e, i)}>
                                 <span className="icon">{e.is_deployed ? icon_close : icon_open}</span>
                                 <strong>{e.question[ct.lang]}</strong>

@@ -26,6 +26,13 @@ const Contact = (props) =>
     const [use_markdown, set_use_markdown] = useState(false);
     const [message_content, set_message_content] = useState('');
 
+    const reset_state = () => 
+    {
+        set_is_visitor_pro(false);
+        set_use_markdown(false);
+        set_message_content('');
+    };
+
     const handle_contact = (e) => 
     {
         // Radio buttons: e.target[0].checked + e.target[1].checked
@@ -75,7 +82,7 @@ const Contact = (props) =>
                 /* If unsuccessful, the fields remain filled as to allow the user to try sending the message again */
                 if (json.is_success)
                 {
-                    set_is_visitor_pro(false);
+                    reset_state();
                     e.target[0].checked = true;
                     e.target[1].checked = false;
                     e.target[2].value = '';
@@ -83,8 +90,6 @@ const Contact = (props) =>
                     e.target[4].value = 'default';
                     e.target[5].checked = false;
                     e.target[6].value = '';
-                    set_use_markdown(false);
-                    set_message_content('');
                 }
             });
             //.catch(err => console.log(err));
@@ -141,7 +146,7 @@ const Contact = (props) =>
                             value={message_content} onChange={e => set_message_content(e.target.value)}></textarea>}
 
                     <div>
-                        <input type="reset" className="button" value={cancel(ct.lang)} onClick={() => set_is_visitor_pro(false)} />
+                        <input type="reset" className="button" value={cancel(ct.lang)} onClick={reset_state} />
                         <input type="submit" className="button" value={send(ct.lang)} />
                     </div>
                 </form>

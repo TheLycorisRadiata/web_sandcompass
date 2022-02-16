@@ -32,7 +32,7 @@
 /front/yarn-error.log*
 
 # ----------------------
-# BACK-END (EXPRESS)
+# BACK-END (NODE/EXPRESS)
 # ----------------------
 
 /back/node_modules

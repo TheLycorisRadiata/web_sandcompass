@@ -50,8 +50,12 @@ const EbookFormatPicker = (props) =>
         set_option1(0);
         set_option2(1);
         set_option3(2);
-        set_answer('');
+        set_user_choice('');
+        set_is_option1_checked(false);
+        set_is_option2_checked(false);
+        set_is_option3_checked(false);
         set_is_questionnaire_finished(false);
+        set_answer('');
     };
 
     const handle_click_next = () => 
@@ -166,7 +170,11 @@ const EbookFormatPicker = (props) =>
                         <label htmlFor="option_3">{arr_ebook_format_picker_options(ct.lang)[option3]}</label>
                     </div>}
                 </div>
-                <input type="button" className="button" name="btn_next_ebook_format" value={next_question(ct.lang)} onClick={handle_click_next} />
+
+                <div>
+                    <input type="button" className="button" name="btn_redo_ebook_format" value={redo(ct.lang)} onClick={handle_click_redo} />
+                    <input type="button" className="button" name="btn_next_ebook_format" value={next_question(ct.lang)} onClick={handle_click_next} />
+                </div>
             </>}
         </div>
     );

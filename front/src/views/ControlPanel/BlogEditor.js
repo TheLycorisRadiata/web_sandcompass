@@ -37,7 +37,7 @@ const BlogEditor = (props) =>
         time_creation: Date.now(),
         time_modification: Date.now(),
         is_modified: false,
-        category: '',
+        categories: [],
         title: ['', '', ''],
         author: props.account_data?._id,
         content: ['', '', '']
@@ -51,7 +51,7 @@ const BlogEditor = (props) =>
     const [selected_language, set_selected_language] = useState(ct.lang);
     const [selected_article, set_selected_article] = useState('default');
     const [selected_category, set_selected_category] = useState('default');
-    const [selected_category_name, set_selected_category_name] = useState(null);
+    const [selected_categories_names, set_selected_categories_names] = useState([]);
     const [is_category_management_shown, set_is_category_management_shown] = useState(false);
     const [is_preview_shown, set_is_preview_shown] = useState(false);
 
@@ -75,10 +75,11 @@ const BlogEditor = (props) =>
     {
         const id = e.target.value;
         const obj_article = articles.find(e => e._id === id);
-        const obj_category = props.categories.find(e => e._id === obj_article.category);
+        const arr_categories_names = [];
+        obj_article.categories.map(cat_id => arr_categories_names.push(props.categories.find(cat => String(cat._id) === String(cat_id))?.name));
 
         set_selected_article(id);
-        set_selected_category_name(obj_category.name);
+        set_selected_categories_names(arr_categories_names);
 
         set_article(
         {
@@ -86,7 +87,7 @@ const BlogEditor = (props) =>
             time_creation: obj_article.time_creation,
             time_modification: obj_article.time_modification,
             is_modified: obj_article.is_modified,
-            category: obj_article.category,
+            categories: obj_article.categories,
             title: obj_article.title,
             author: props.account_data._id,
             content: obj_article.content
@@ -103,7 +104,7 @@ const BlogEditor = (props) =>
         const obj = props.categories.find(e => e._id === id);
 
         set_selected_category(id);
-        set_selected_category_name(obj.name);
+        set_selected_categories_names([obj.name]);
 
         set_article(
         {
@@ -111,7 +112,7 @@ const BlogEditor = (props) =>
             time_creation: article.time_creation,
             time_modification: article.time_modification,
             is_modified: article.is_modified,
-            category: id,
+            categories: [id],
             title: [article.title[0], article.title[1], article.title[2]],
             author: props.account_data._id,
             content: [content_0, content_1, content_2]
@@ -122,7 +123,7 @@ const BlogEditor = (props) =>
     {
         set_selected_article('default');
         set_selected_category('default');
-        set_selected_category_name(null);
+        set_selected_categories_names([]);
         set_article(default_article);
         set_content_0('');
         set_content_1('');
@@ -199,7 +200,7 @@ const BlogEditor = (props) =>
                     props.set_categories(json.data);
 
                 set_selected_category('default');
-                set_selected_category_name(null);
+                set_selected_categories_names([]);
 
                 set_article(
                 {
@@ -207,7 +208,7 @@ const BlogEditor = (props) =>
                     time_creation: article.time_creation,
                     time_modification: article.time_modification,
                     is_modified: article.is_modified,
-                    category: '',
+                    categories: [],
                     title: [article.title[0], article.title[1], article.title[2]],
                     author: props.account_data._id,
                     content: [content_0, content_1, content_2]
@@ -293,7 +294,7 @@ const BlogEditor = (props) =>
             new_article.time_creation = Date.now();
             new_article.time_modification = Date.now();
             new_article.is_modified = false;
-            new_article.category = article.category;
+            new_article.categories = article.categories;
             new_article.title = [article.title[0], article.title[1], article.title[2]];
             new_article.author = props.account_data._id;
             new_article.content = [content_0, content_1, content_2];
@@ -332,7 +333,7 @@ const BlogEditor = (props) =>
             updated_article.time_creation = article.time_creation;
             updated_article.time_modification = Date.now();
             updated_article.is_modified = true;
-            updated_article.category = article.category;
+            updated_article.categories = article.categories;
             updated_article.title = [article.title[0], article.title[1], article.title[2]];
             updated_article.author = props.account_data._id;
             updated_article.content = [content_0, content_1, content_2];
@@ -406,7 +407,7 @@ const BlogEditor = (props) =>
             time_creation: article.time_creation,
             time_modification: article.time_modification,
             is_modified: article.is_modified,
-            category: article.category,
+            categories: article.categories,
             title: [e.target.value, article.title[1], article.title[2]],
             author: props.account_data._id,
             content: [content_0, content_1, content_2]
@@ -421,7 +422,7 @@ const BlogEditor = (props) =>
             time_creation: article.time_creation,
             time_modification: article.time_modification,
             is_modified: article.is_modified,
-            category: article.category,
+            categories: article.categories,
             title: [article.title[0], e.target.value, article.title[2]],
             author: props.account_data._id,
             content: [content_0, content_1, content_2]
@@ -436,7 +437,7 @@ const BlogEditor = (props) =>
             time_creation: article.time_creation,
             time_modification: article.time_modification,
             is_modified: article.is_modified,
-            category: article.category,
+            categories: article.categories,
             title: [article.title[0], article.title[1], e.target.value],
             author: props.account_data._id,
             content: [content_0, content_1, content_2]
@@ -552,7 +553,7 @@ const BlogEditor = (props) =>
                         preview_lang={selected_language} 
                         id_selected_article={selected_article} 
                         article={article} 
-                        category={selected_category_name} 
+                        categories={selected_categories_names} 
                         txt_author={props.account_data?.username} />}
             </>}
         </main>

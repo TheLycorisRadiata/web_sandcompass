@@ -273,7 +273,12 @@ const AccountEditor = (props) =>
                     //console.log(json.error);
 
                 if (json.is_success)
+                {
+                    props.set_is_access_granted(false);
+                    props.set_account_data(null);
+                    props.set_rank(null);
                     history.push('/');
+                }
             });
             //.catch(err => console.log(err));
         }

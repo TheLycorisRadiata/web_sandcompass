@@ -15,7 +15,7 @@ const model_article = new mongoose.Schema(
         likes: [mongoose.Schema.Types.ObjectId],
         dislikes: [mongoose.Schema.Types.ObjectId]
     }
-}, { collection: 'Articles' });
+}, { collection: 'Articles', versionKey: false });
 
 module.exports = mongoose.model('Article', model_article);
 

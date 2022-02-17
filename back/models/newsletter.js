@@ -7,7 +7,7 @@ const model_newsletter = new mongoose.Schema(
     date: { type: Date, default: Date.now },
     is_sent: { type: Boolean, default: false },
     language: { type: Number, default: 0 }
-}, { collection: 'Newsletters' });
+}, { collection: 'Newsletters', versionKey: false });
 
 module.exports = mongoose.model('Newsletter', model_newsletter);
 

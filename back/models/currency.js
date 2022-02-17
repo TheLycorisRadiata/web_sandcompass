@@ -9,7 +9,7 @@ const model_currency = new mongoose.Schema(
     code: { type: String, unique: true },
     symbol: String,
     symbol_before_amount: { type: Boolean, default: true }
-}, { collection: 'Currencies' });
+}, { collection: 'Currencies', versionKey: false });
 
 module.exports = mongoose.model('Currency', model_currency);
 

@@ -6,7 +6,7 @@ const model_token = new mongoose.Schema(
     account: { type: mongoose.Schema.Types.ObjectId },
     action: String,
     created: { type: Date, expires: 7200, default: Date.now } // 2H
-}, { collection: 'Tokens' });
+}, { collection: 'Tokens', versionKey: false });
 
 module.exports = mongoose.model('Token', model_token);
 

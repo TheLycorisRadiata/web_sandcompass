@@ -4,7 +4,7 @@ const model_category = new mongoose.Schema(
 {
     code: { type: String, unique: true, lowercase: true },
     name: [String]
-}, { collection: 'Categories' });
+}, { collection: 'Categories', versionKey: false });
 
 module.exports = mongoose.model('Category', model_category);
 

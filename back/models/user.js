@@ -17,7 +17,7 @@ const model_user = new mongoose.Schema(
         liked: [mongoose.Schema.Types.ObjectId],
         disliked: [mongoose.Schema.Types.ObjectId]
     }
-}, { collection: 'Users' });
+}, { collection: 'Users', versionKey: false });
 
 module.exports = mongoose.model('User', model_user);
 

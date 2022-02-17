@@ -756,6 +756,19 @@ export const nbr_articles = (lang, nbr) =>
     }
 };
 
+export const show_empty_categories = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Afficher les catégories vides';
+        case 2:
+            return 'Show empty categories';
+        default:
+            return 'Show empty categories';
+    }
+};
+
 export const empty = (lang) => 
 {
     switch (lang)

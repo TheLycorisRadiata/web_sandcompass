@@ -560,6 +560,26 @@ a, span[class="a"]
     cursor: not-allowed;
 }
 
+/* MARKDOWN EDITOR ------------------------------------------------------------------------------ */
+
+.markdown_editor
+{
+    margin-bottom: 20px;
+}
+
+.markdown_editor .yamde-0-2-1
+{
+    margin-top: 0;
+    margin-bottom: 0;
+    filter: drop-shadow(1px 1px 1px var(--brown));
+}
+
+.markdown_editor textarea
+{
+    margin-bottom: 0;
+    filter: none;
+}
+
 /* VIEW: PASSWORD ------------------------------------------------------------------------------- */
 
 #p_password
@@ -572,17 +592,29 @@ a, span[class="a"]
 #subscribe_newsletter
 {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (min-width: 1200px)
+{
+    #subscribe_newsletter
+    {
+        flex-direction: row;
+        justify-content: center;
+    }
 }
 
 #subscribe_newsletter .icon:first-child
 {
     padding-right: 10px;
+    padding-bottom: 10px;
 }
 
 #subscribe_newsletter .icon:last-child
 {
-    padding-left: 12px;
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
 /* VIEW: LICENSES ------------------------------------------------------------------------------- */
@@ -717,14 +749,9 @@ a, span[class="a"]
     margin-top: 20px;
 }
 
-#articles_by_author #nbr_articles, #articles_by_author ol p, #articles_by_author ol li:last-child
+#articles_by_author #nbr_articles, #articles_by_author .div_pointer, #articles_by_author ol p, #articles_by_author ol li:last-child
 {
     margin-bottom: 20px;
-}
-
-.mini_flag
-{
-    max-width: 20px;
 }
 
 #articles_by_author ol li a
@@ -815,7 +842,7 @@ a, span[class="a"]
     margin-bottom: 20px;
 }
 
-#ebook_format_picker #answer
+#ebook_format_picker #answer, #ebook_format_picker .div_pointer
 {
     margin-bottom: 10px;
 }
@@ -873,6 +900,16 @@ a, span[class="a"]
 {
     color: var(--light_yellow);
     background-color: var(--blue);
+}
+
+.question span:first-child
+{
+    padding-right: 25px;
+}
+
+.question span:last-child
+{
+    padding-left: 25px;
 }
 
 #faq_editor #languages
@@ -1025,6 +1062,13 @@ input[name="field_article_title_0"], textarea[name="field_article_content_0"]
     all: unset;
     margin-top: 5px;
     margin-bottom: 20px;
+}
+
+/* VIEW: CONTACT PAGE --------------------------------------------------------------------------- */
+
+#contact #checkbox_markdown
+{
+    margin-bottom: 8px;
 }
 
 /* VECTOR IMAGES -------------------------------------------------------------------------------- */

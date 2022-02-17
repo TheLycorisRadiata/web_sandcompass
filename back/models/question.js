@@ -4,7 +4,7 @@ const model_question = new mongoose.Schema(
 {
     question: [String],
     answer: [String]
-}, { collection: 'Questions' });
+}, { collection: 'Questions', versionKey: false });
 
 module.exports = mongoose.model('Question', model_question);
 

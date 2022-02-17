@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const User = require('../models/user');
 const Token = require('../models/token');
+const { gmail_user } = require('../package.json');
 const {
     failure_admin_not_found, failure_admin_email_not_verified, failure_admin_no_password, failure_wrong_email_or_password, 
     failure_email_has_to_be_verified, failure_no_password, failure, 
@@ -210,11 +211,13 @@ const create_password = (req, res) =>
 const is_email_already_used_by_another_account = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
+    const id = req.params.id;
+    const email_address = req.params.email_address.toLowerCase();
 
-    User.findOne({ email_address: req.params.email_address.toLowerCase() })
+    User.findOne({ email_address: email_address })
     .then(user => 
     {
-        if (user && user._id.toString() !== req.params.id)
+        if (user && user._id.toString() !== id || email_address === gmail_user.toLowerCase())
             res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
         // Either no account has this email address, or the account is ours, so all is good
         else
@@ -252,7 +255,7 @@ const create_account = (req, res) =>
     User.findOne({ email_address: req.body.email_address.toLowerCase() })
     .then(email_user => 
     {
-        if (email_user)
+        if (email_user || req.body.email_address.toLowerCase() === gmail_user)
         {
             res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
             return;

@@ -4,7 +4,8 @@ const { v4: uuidv4 } = require('uuid');
 const User = require('../models/user');
 const Token = require('../models/token');
 const Newsletter = require('../models/newsletter');
-const { homepage } = require('../package.json');
+const { homepage, gmail_user } = require('../package.json');
+const key = require('../.nodemailer.json');
 const {
     short_lang, long_lang, failure_try_again, success_message_sent, 
     welcome_to_sandcompass, welcome_to_sandcompass_user, click_email_verification_link, user_is_subscribed_to_newsletter, suggest_subscription_to_newsletter, help_by_speaking_about_sc, help_by_leaving_message, failure_no_account_matches_this_email, failure_account_validation_email, success_account_validation_email, 
@@ -56,8 +57,10 @@ const send_visitor_mail_to_admin = (req, res) =>
         secure: true,
         auth:
         {
-            user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_PASS
+            type: 'OAuth2',
+            user: gmail_user,
+            serviceClient: key.client_id,
+            privateKey: key.private_key
         }
     });
 
@@ -65,7 +68,7 @@ const send_visitor_mail_to_admin = (req, res) =>
     const mail_options = 
     {
         from: `"${name}" <${email_address}>`,
-        to: process.env.GMAIL_USER,
+        to: `"Sand Compass" <${gmail_user}>`,
         subject: `[${short_lang(lang)}] Contact form | ${subject}`,
         html: '' +
         '<html>' +
@@ -83,7 +86,7 @@ const send_visitor_mail_to_admin = (req, res) =>
     User.findOne({ is_admin: true })
     .then(admin =>
     {
-        if ((admin && email_address === admin.email_address.toLowerCase()) || email_address === process.env.GMAIL_USER.toLowerCase())
+        if ((admin && email_address === admin.email_address.toLowerCase()) || email_address === gmail_user.toLowerCase())
             res.status(400).json({ is_success: false, message: failure_try_again(lang) });
         else
         {
@@ -147,15 +150,17 @@ const send_mail_at_account_registration = (req, res) =>
                     secure: true,
                     auth:
                     {
-                        user: process.env.GMAIL_USER,
-                        pass: process.env.GMAIL_PASS
+                        type: 'OAuth2',
+                        user: gmail_user,
+                        serviceClient: key.client_id,
+                        privateKey: key.private_key
                     }
                 });
 
                 mail_options = 
                 {
-                    from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
-                    to: email_address,
+                    from: `"Sand Compass" <${gmail_user}>`,
+                    to: `"${user.username}" <${email_address}>`,
                     subject: welcome_to_sandcompass(lang),
                     html: '' + 
                     '<html>' + 
@@ -216,15 +221,17 @@ const send_mail_at_newsletter_subscription = (req, res) =>
             secure: true,
             auth:
             {
-                user: process.env.GMAIL_USER,
-                pass: process.env.GMAIL_PASS
+                type: 'OAuth2',
+                user: gmail_user,
+                serviceClient: key.client_id,
+                privateKey: key.private_key
             }
         });
 
         mail_options = 
         {
-            from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
-            to: email_address,
+            from: `"Sand Compass" <${gmail_user}>`,
+            to: `"${user.username}" <${email_address}>`,
             subject: title_newsletter_subscription_email(lang),
             html: '' + 
             '<html>' + 
@@ -293,15 +300,17 @@ const send_mail_at_email_update = (req, res) =>
                     secure: true,
                     auth:
                     {
-                        user: process.env.GMAIL_USER,
-                        pass: process.env.GMAIL_PASS
+                        type: 'OAuth2',
+                        user: gmail_user,
+                        serviceClient: key.client_id,
+                        privateKey: key.private_key
                     }
                 });
 
                 mail_options = 
                 {
-                    from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
-                    to: email_address,
+                    from: `"Sand Compass" <${gmail_user}>`,
+                    to: `"${user.username}" <${email_address}>`,
                     subject: title_email_address_update_email(lang),
                     html: '' + 
                     '<html>' + 
@@ -374,15 +383,17 @@ const send_mail_for_new_password = (req, res) =>
                         secure: true,
                         auth:
                         {
-                            user: process.env.GMAIL_USER,
-                            pass: process.env.GMAIL_PASS
+                            type: 'OAuth2',
+                            user: gmail_user,
+                            serviceClient: key.client_id,
+                            privateKey: key.private_key
                         }
                     });
 
                     mail_options = 
                     {
-                        from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
-                        to: email_address,
+                        from: `"Sand Compass" <${gmail_user}>`,
+                        to: `"${user.username}" <${email_address}>`,
                         subject: title_password_email(lang),
                         html: '' + 
                         '<html>' + 
@@ -486,21 +497,24 @@ const send_newsletter = (req, res) =>
                         secure: true,
                         auth:
                         {
-                            user: process.env.GMAIL_USER,
-                            pass: process.env.GMAIL_PASS
+                            type: 'OAuth2',
+                            user: gmail_user,
+                            serviceClient: key.client_id,
+                            privateKey: key.private_key
                         }
                     });
 
                     mail_options = 
                     {
-                        from: `"Sand Compass" <${process.env.GMAIL_USER}>`,
+                        from: `"Sand Compass" <${gmail_user}>`,
+                        to: [],
                         subject: newsletter.object,
                         html: '<html><body>' + markdown.toHTML(newsletter.html_message) + '</body></html>'
                     };
 
                     for (const user of users)
-                        email_addresses.push(user.email_address);
-                    mail_options.to = email_addresses;
+                        email_addresses.push(`"${user.username}" <${user.email_address}>`);
+                    mail_options.bcc = email_addresses;
 
                     smtp_trans.sendMail(mail_options, (error, response) => 
                     {

@@ -97,7 +97,7 @@ const Contact = (props) =>
     };
 
     return (
-        <main>
+        <main id="contact">
             <h1 className="title">{contact(ct.lang)}</h1>
 
             <SocialMedia />
@@ -131,7 +131,7 @@ const Contact = (props) =>
                         </optgroup>
                     </select>
 
-                    <div className="div_pointer">
+                    <div className="div_pointer" id="checkbox_markdown">
                         <input type="checkbox" name="use_markdown" id="use_markdown" value={use_markdown} onChange={() => set_use_markdown(!use_markdown)} />
                         <label htmlFor="use_markdown">{write_message_with_markdown(ct.lang)}</label>
                         <a href={markdown_cheat_sheet_link(ct.lang)} rel="nofollow noreferrer" target="_blank"><span className="icon">{icon_info}</span></a>

@@ -212,28 +212,32 @@ const BlogPage = (props) =>
 
                     {last_page_number !== 1 && 
                     <div id="page_buttons">
-                        <div>
-                            <button className="button" title={go_first_page(ct.lang)} 
-                                onClick={() => props.set_blog_page(1)}>
-                                <span className="icon">{icon_first_page}</span>
-                            </button>
+                        <div id="arrows">
+                            <div>
+                                <button className="button" title={go_first_page(ct.lang)} 
+                                    onClick={() => props.set_blog_page(1)}>
+                                    <span className="icon">{icon_first_page}</span>
+                                </button>
 
-                            <button className="button" title={go_previous_page(ct.lang)} 
-                                onClick={() => props.set_blog_page(props.blog_page === 1 ? 1 : props.blog_page - 1)}>
-                                <span className="icon">{icon_previous_page}</span>
-                            </button>
+                                <button className="button" title={go_previous_page(ct.lang)} 
+                                    onClick={() => props.set_blog_page(props.blog_page === 1 ? 1 : props.blog_page - 1)}>
+                                    <span className="icon">{icon_previous_page}</span>
+                                </button>
+                            </div>
 
                             <p>{props.blog_page}/{last_page_number}</p>
 
-                            <button className="button" title={go_next_page(ct.lang)} 
-                                onClick={() => props.set_blog_page(props.blog_page === last_page_number ? props.blog_page : props.blog_page + 1)}>
-                                <span className="icon">{icon_next_page}</span>
-                            </button>
+                            <div>
+                                <button className="button" title={go_next_page(ct.lang)} 
+                                    onClick={() => props.set_blog_page(props.blog_page === last_page_number ? props.blog_page : props.blog_page + 1)}>
+                                    <span className="icon">{icon_next_page}</span>
+                                </button>
 
-                            <button className="button" title={go_last_page(ct.lang)} 
-                                onClick={() => props.set_blog_page(last_page_number)}>
-                                <span className="icon">{icon_last_page}</span>
-                            </button>
+                                <button className="button" title={go_last_page(ct.lang)} 
+                                    onClick={() => props.set_blog_page(last_page_number)}>
+                                    <span className="icon">{icon_last_page}</span>
+                                </button>
+                            </div>
                         </div>
 
                         <div>

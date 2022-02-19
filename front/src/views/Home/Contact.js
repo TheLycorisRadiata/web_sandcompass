@@ -103,7 +103,7 @@ const Contact = (props) =>
             <SocialMedia />
 
             <section>
-                <h2 className="sub_title" id="form">{something_to_say(ct.lang)}</h2>
+                <h2 className="sub_title">{something_to_say(ct.lang)}</h2>
                 <form onSubmit={handle_contact}>
                     <div className="div_pointer">
                         <input type="radio" name="visitor_type" value="personal" id="btn_pers" defaultChecked onClick={() => set_is_visitor_pro(false)} />

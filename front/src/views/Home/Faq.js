@@ -60,7 +60,7 @@ const Faq = (props) =>
             <h1 className="title">{faq_long(ct.lang)}</h1>
 
             <div id="ask_question">
-                <Link to="/contact#form" className="button"><span>{ask_question(ct.lang)}</span><span className="icon">{icon_faq}</span></Link>
+                <Link to="/contact" className="button"><span>{ask_question(ct.lang)}</span><span className="icon">{icon_faq}</span></Link>
             </div>
 
             {!props.questions?.length ?

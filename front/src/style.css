@@ -592,29 +592,26 @@ a, span[class="a"]
 #subscribe_newsletter
 {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row nowrap;
+    justify-content: center;
 }
 
-@media screen and (min-width: 1200px)
+#subscribe_newsletter a
 {
-    #subscribe_newsletter
-    {
-        flex-direction: row;
-        justify-content: center;
-    }
+    display: flex;
+    flex-direction: row nowrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #subscribe_newsletter .icon:first-child
 {
-    padding-right: 10px;
-    padding-bottom: 10px;
+    padding-right: 15px;
 }
 
 #subscribe_newsletter .icon:last-child
 {
-    padding-left: 10px;
-    padding-top: 10px;
+    padding-left: 15px;
 }
 
 /* VIEW: LICENSES ------------------------------------------------------------------------------- */
@@ -666,12 +663,40 @@ a, span[class="a"]
 #sort_buttons
 {
     display: flex;
+    flex-flow: row wrap;
     justify-content: space-between;
+    align-items: center;
+}
+
+#sort_buttons select
+{
+    margin: 0;
+    max-width: 100%;
 }
 
 #sort_buttons button
 {
-    margin: 0 10px;
+    margin: 20px;
+    margin-left: 0;
+}
+
+@media screen and (max-width: 500px) 
+{
+    #sort_buttons
+    {
+        display: initial;
+    }
+
+    #sort_buttons div
+    {
+        display: flex;
+        justify-content: center;
+    }
+
+    #sort_buttons div:first-child
+    {
+        margin-left: 20px;
+    }
 }
 
 #page_buttons div
@@ -680,6 +705,11 @@ a, span[class="a"]
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
+}
+
+#page_buttons p
+{
+    margin: 20px;
 }
 
 #page_buttons button, #page_buttons input
@@ -691,6 +721,14 @@ a, span[class="a"]
 {
     width: 50px;
     height: 30px;
+}
+
+@media screen and (max-width: 550px)
+{
+    #page_buttons #arrows
+    {
+        flex-flow: column wrap;
+    }
 }
 
 .btn_other_articles

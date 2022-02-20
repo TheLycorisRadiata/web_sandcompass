@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const Article = require('../models/article');
 const Category = require('../models/category');
 const User = require('../models/user');
@@ -220,10 +221,11 @@ const post_new_article = (req, res) =>
     const lang = parseInt(req.params.lang);
     const new_article = new Article({ ...req.body.new_article });
     const id_new_article = new_article._id;
-    const rng = uuidv4().split('-')[0];
+    const rng = uuidv4().split('-');
     let arr_user_written_articles = null;
 
-    new_article.code = rng;
+    // last part of the rng array (12 character long string)
+    new_article.code = rng[rng.length - 1]
 
     new_article.save()
     .then(() => 
@@ -270,7 +272,7 @@ const modify_article = (req, res) =>
     {
         time_modification: req.body.article.time_modification,
         is_modified: true,
-        category: req.body.article.category,
+        categories: req.body.article.categories,
         title: req.body.article.title,
         content: req.body.article.content
     })

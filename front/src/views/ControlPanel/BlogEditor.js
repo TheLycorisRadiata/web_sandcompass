@@ -33,7 +33,7 @@ const BlogEditor = (props) =>
 
     const default_article = 
     {
-        likes: 0,
+        _id: 'default',
         time_creation: Date.now(),
         time_modification: Date.now(),
         is_modified: false,
@@ -45,14 +45,10 @@ const BlogEditor = (props) =>
 
     const [articles, set_articles] = useState([]);
     const [article, set_article] = useState(default_article);
-    const [content_0, set_content_0] = useState('');
-    const [content_1, set_content_1] = useState('');
-    const [content_2, set_content_2] = useState('');
     const [selected_language, set_selected_language] = useState(ct.lang);
-    const [selected_article, set_selected_article] = useState('default');
-    const [selected_category, set_selected_category] = useState('default');
-    const [selected_categories_names, set_selected_categories_names] = useState([]);
+    const [selected_categories, set_selected_categories] = useState([]);
     const [is_category_management_shown, set_is_category_management_shown] = useState(false);
+    const [managed_category, set_managed_category] = useState('default');
     const [is_preview_shown, set_is_preview_shown] = useState(false);
 
     useLayoutEffect(() => 
@@ -75,15 +71,19 @@ const BlogEditor = (props) =>
     {
         const id = e.target.value;
         const obj_article = articles.find(e => e._id === id);
-        const arr_categories_names = [];
-        obj_article.categories.map(cat_id => arr_categories_names.push(props.categories.find(cat => String(cat._id) === String(cat_id))?.name));
+        const arr_categories = [];
 
-        set_selected_article(id);
-        set_selected_categories_names(arr_categories_names);
+        obj_article.categories.map(cat_id => arr_categories.push(
+        {
+            _id: cat_id, 
+            name: props.categories.find(cat => String(cat._id) === String(cat_id))?.name 
+        }));
+
+        set_selected_categories(arr_categories);
 
         set_article(
         {
-            likes: obj_article.likes,
+            _id: obj_article._id,
             time_creation: obj_article.time_creation,
             time_modification: obj_article.time_modification,
             is_modified: obj_article.is_modified,
@@ -92,43 +92,63 @@ const BlogEditor = (props) =>
             author: props.account_data._id,
             content: obj_article.content
         });
-
-        set_content_0(obj_article.content[0]);
-        set_content_1(obj_article.content[1]);
-        set_content_2(obj_article.content[2]);
     };
 
-    const handle_select_category = e => 
+    const handle_select_categories = e => 
     {
         const id = e.target.value;
-        const obj = props.categories.find(e => e._id === id);
+        let arr_categories = [...selected_categories];
 
-        set_selected_category(id);
-        set_selected_categories_names([obj.name]);
-
-        set_article(
+        // The category was not selected --> add it
+        if (!arr_categories.filter(e => e._id === id).length)
         {
-            likes: article.likes,
-            time_creation: article.time_creation,
-            time_modification: article.time_modification,
-            is_modified: article.is_modified,
-            categories: [id],
-            title: [article.title[0], article.title[1], article.title[2]],
-            author: props.account_data._id,
-            content: [content_0, content_1, content_2]
-        });
+            arr_categories.push(
+            {
+                _id: id, 
+                name: props.categories.find(e => String(e._id) === String(id))?.name 
+            });
+
+            set_selected_categories(arr_categories);
+
+            set_article(
+            {
+                _id: article._id,
+                time_creation: article.time_creation,
+                time_modification: article.time_modification,
+                is_modified: article.is_modified,
+                categories: [...article.categories, id],
+                title: article.title,
+                author: props.account_data._id,
+                content: article.content
+            });
+        }
+        // The category is already selected --> remove it
+        else
+        {
+            arr_categories = arr_categories.filter(e => e._id !== id);
+
+            set_selected_categories(arr_categories);
+
+            set_article(
+            {
+                _id: article._id,
+                time_creation: article.time_creation,
+                time_modification: article.time_modification,
+                is_modified: article.is_modified,
+                categories: [...arr_categories],
+                title: article.title,
+                author: props.account_data._id,
+                content: article.content
+            });
+        }
     };
 
     const reset_editor = (fetched_articles) => 
     {
-        set_selected_article('default');
-        set_selected_category('default');
-        set_selected_categories_names([]);
-        set_article(default_article);
-        set_content_0('');
-        set_content_1('');
-        set_content_2('');
         set_articles(fetched_articles);
+        set_article(default_article);
+        set_selected_categories([]);
+        set_managed_category('default');
     };
 
     const handle_create_category = e => 
@@ -167,7 +187,7 @@ const BlogEditor = (props) =>
                     e.target[0].value = '';
                     e.target[1].value = '';
                     e.target[2].value = '';
-                    set_selected_category('default');
+                    set_managed_category('default');
                     props.set_categories(json.data);
                 }
             });
@@ -176,7 +196,7 @@ const BlogEditor = (props) =>
 
     const handle_delete_category = () => 
     {
-        if (article.category !== '')
+        if (managed_category !== 'default')
         {
             fetch(`${package_info.api}/blog/${ct.lang}/categories`,
             {
@@ -186,7 +206,7 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ _id: selected_category })
+                body: JSON.stringify({ _id: managed_category })
             })
             .then(res => res.json())
             .then(json => 
@@ -197,22 +217,23 @@ const BlogEditor = (props) =>
                 alert(json.message);
 
                 if (json.is_success)
-                    props.set_categories(json.data);
-
-                set_selected_category('default');
-                set_selected_categories_names([]);
-
-                set_article(
                 {
-                    likes: article.likes,
-                    time_creation: article.time_creation,
-                    time_modification: article.time_modification,
-                    is_modified: article.is_modified,
-                    categories: [],
-                    title: [article.title[0], article.title[1], article.title[2]],
-                    author: props.account_data._id,
-                    content: [content_0, content_1, content_2]
-                });
+                    set_article(
+                    {
+                        _id: article._id,
+                        time_creation: article.time_creation,
+                        time_modification: article.time_modification,
+                        is_modified: article.is_modified,
+                        categories: article.categories.filter(id => id !== managed_category),
+                        title: article.title,
+                        author: props.account_data._id,
+                        content: article.content
+                    });
+
+                    set_selected_categories(selected_categories.filter(obj => obj._id !== managed_category));
+                    set_managed_category('default');
+                    props.set_categories(json.data);
+                }
             });
         }
     };
@@ -224,8 +245,7 @@ const BlogEditor = (props) =>
         let updated_fr = '';
         let updated_jp = '';
 
-        if (article.category !== '')
-            obj_category = props.categories.find(e => e._id === article.category);
+        obj_category = managed_category === 'default' ? null : props.categories.find(e => e._id === managed_category);
         if (obj_category === null || obj_category === undefined)
             return;
 
@@ -257,7 +277,7 @@ const BlogEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
-                    _id: selected_category,
+                    _id: managed_category,
                     updated_category: [updated_eng, updated_fr, updated_jp]
                 })
             })
@@ -271,7 +291,15 @@ const BlogEditor = (props) =>
 
                 if (json.is_success)
                 {
-                    set_selected_category('default');
+                    const index = selected_categories.map(e => e._id).indexOf(managed_category);
+                    if (index !== -1)
+                    {
+                        const arr = [...selected_categories];
+                        arr[index].name = [updated_eng, updated_fr, updated_jp];
+                        set_selected_categories(arr);
+                    }
+
+                    set_managed_category('default');
                     props.set_categories(json.data);
                 }
             });
@@ -284,20 +312,19 @@ const BlogEditor = (props) =>
 
         if (article.title[0] === '' || article.title[1] === '' || article.title[2] === '')
             alert(disclaimer_blog_editor_title(ct.lang));
-        else if (article.category === '')
+        else if (!article.categories.length)
             alert(disclaimer_blog_editor_category(ct.lang));
         else if (article.content[0] === '' || article.content[1] === '' || article.content[2] === '')
             alert(disclaimer_blog_editor_content(ct.lang));
         else
         {
-            new_article.likes = 0;
             new_article.time_creation = Date.now();
             new_article.time_modification = Date.now();
             new_article.is_modified = false;
             new_article.categories = article.categories;
-            new_article.title = [article.title[0], article.title[1], article.title[2]];
+            new_article.title = article.title;
             new_article.author = props.account_data._id;
-            new_article.content = [content_0, content_1, content_2];
+            new_article.content = article.content;
 
             fetch(`${package_info.api}/blog/${ct.lang}/articles`,
             {
@@ -327,16 +354,21 @@ const BlogEditor = (props) =>
     {
         const updated_article = {};
 
-        if (selected_article !== 'default')
+        if (article.title[0] === '' || article.title[1] === '' || article.title[2] === '')
+            alert(disclaimer_blog_editor_title(ct.lang));
+        else if (!article.categories.length)
+            alert(disclaimer_blog_editor_category(ct.lang));
+        else if (article.content[0] === '' || article.content[1] === '' || article.content[2] === '')
+            alert(disclaimer_blog_editor_content(ct.lang));
+        else
         {
-            updated_article.likes = article.likes;
             updated_article.time_creation = article.time_creation;
             updated_article.time_modification = Date.now();
             updated_article.is_modified = true;
             updated_article.categories = article.categories;
-            updated_article.title = [article.title[0], article.title[1], article.title[2]];
+            updated_article.title = article.title;
             updated_article.author = props.account_data._id;
-            updated_article.content = [content_0, content_1, content_2];
+            updated_article.content = article.content;
 
             fetch(`${package_info.api}/blog/${ct.lang}/articles`,
             {
@@ -348,7 +380,7 @@ const BlogEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
-                    _id: selected_article,
+                    _id: article._id,
                     article: updated_article
                 })
             })
@@ -368,7 +400,7 @@ const BlogEditor = (props) =>
 
     const handle_delete_article = () => 
     {
-        if (selected_article !== 'default')
+        if (article._id !== 'default')
         {
             fetch(`${package_info.api}/blog/${ct.lang}/articles`,
             {
@@ -380,7 +412,7 @@ const BlogEditor = (props) =>
                 },
                 body: JSON.stringify(
                 { 
-                    _id: selected_article,
+                    _id: article._id,
                     author: props.account_data._id,
                     author_list_articles: props.account_data.articles
                 })
@@ -403,14 +435,14 @@ const BlogEditor = (props) =>
     {
         set_article(
         {
-            likes: article.likes,
+            _id: article._id,
             time_creation: article.time_creation,
             time_modification: article.time_modification,
             is_modified: article.is_modified,
             categories: article.categories,
             title: [e.target.value, article.title[1], article.title[2]],
             author: props.account_data._id,
-            content: [content_0, content_1, content_2]
+            content: article.content
         });
     };
 
@@ -418,14 +450,14 @@ const BlogEditor = (props) =>
     {
         set_article(
         {
-            likes: article.likes,
+            _id: article._id,
             time_creation: article.time_creation,
             time_modification: article.time_modification,
             is_modified: article.is_modified,
             categories: article.categories,
             title: [article.title[0], e.target.value, article.title[2]],
             author: props.account_data._id,
-            content: [content_0, content_1, content_2]
+            content: article.content
         });
     };
 
@@ -433,14 +465,59 @@ const BlogEditor = (props) =>
     {
         set_article(
         {
-            likes: article.likes,
+            _id: article._id,
             time_creation: article.time_creation,
             time_modification: article.time_modification,
             is_modified: article.is_modified,
             categories: article.categories,
             title: [article.title[0], article.title[1], e.target.value],
             author: props.account_data._id,
-            content: [content_0, content_1, content_2]
+            content: article.content
+        });
+    };
+
+    const update_content_0 = value => 
+    {
+        set_article(
+        {
+            _id: article._id,
+            time_creation: article.time_creation,
+            time_modification: article.time_modification,
+            is_modified: article.is_modified,
+            categories: article.categories,
+            title: article.title,
+            author: props.account_data._id,
+            content: [value, article.content[1], article.content[2]]
+        });
+    };
+
+    const update_content_1 = value => 
+    {
+        set_article(
+        {
+            _id: article._id,
+            time_creation: article.time_creation,
+            time_modification: article.time_modification,
+            is_modified: article.is_modified,
+            categories: article.categories,
+            title: article.title,
+            author: props.account_data._id,
+            content: [article.content[0], value, article.content[2]]
+        });
+    };
+
+    const update_content_2 = value => 
+    {
+        set_article(
+        {
+            _id: article._id,
+            time_creation: article.time_creation,
+            time_modification: article.time_modification,
+            is_modified: article.is_modified,
+            categories: article.categories,
+            title: article.title,
+            author: props.account_data._id,
+            content: [article.content[0], article.content[1], value]
         });
     };
 
@@ -464,12 +541,12 @@ const BlogEditor = (props) =>
                         <input type="button" className="button" name="btn_post_article" value={post_new_article(ct.lang)} onClick={handle_create_article} />
                         {!articles.length ? null : 
                         <>
-                            <select name="select_article" value={selected_article} onChange={handle_select_article}>
+                            <select name="select_article" value={article._id} onChange={handle_select_article}>
                                 <option disabled value="default">{select_article(ct.lang)}</option>
                                 {props.categories.map((category, index) => 
                                     <optgroup label={category.name[ct.lang]} key={'category_' + index}>
                                         {!articles.filter(e => e.categories.includes(category._id)).length ? <option disabled>{no_article(ct.lang)}</option> 
-                                        : articles.filter(e => e.categories.includes(category._id)).map(e => <option key={e.code} value={e.code}>{e.title[ct.lang]}</option>)}
+                                        : articles.filter(e => e.categories.includes(category._id)).map(e => <option key={e._id} value={e._id}>{e.title[ct.lang]}</option>)}
                                     </optgroup>)}
                             </select>
 
@@ -485,19 +562,19 @@ const BlogEditor = (props) =>
                     <input type="text" name="field_article_title_2" value={article.title[2]} onChange={update_title_2} placeholder={title(ct.lang, 2)} title={japanese(ct.lang)} />
 
                     <div id="categories">
-                        <div>
-                            <select name="select_category" value={selected_category} onChange={handle_select_category}>
-                                {!props.categories.length ? 
-                                    <option disabled value="default">{no_category(ct.lang)}</option>
-                                :
-                                <>
-                                    <option disabled value="default">{select_category(ct.lang)}</option>
-                                    {props.categories.map(category => <option key={category.code} value={category.code}>{category.name[ct.lang]}</option>)}
-                                </>}
-                            </select>
+                        <div id="article_categories">
+                            {!props.categories.length ? no_category(ct.lang) 
+                            : 
+                            props.categories.map(category => 
+                                <div className="div_pointer" key={category._id} draggable>
+                                    <input type="checkbox" name={category._id} id={category._id} value={category._id} 
+                                        checked={selected_categories.filter(e => e._id === category._id).length} onChange={handle_select_categories} />
+                                    <label htmlFor={category._id}>{category.name[ct.lang]}</label>
+                                </div>)}
 
-                            <button className="button" name="btn_manage_categories" title={manage_categories(ct.lang)}
-                                onClick={() => set_is_category_management_shown(!is_category_management_shown)}><span className="icon">{icon_tools}</span></button>
+                            <button className="button" name="btn_manage_categories" onClick={() => set_is_category_management_shown(!is_category_management_shown)}>
+                                <span className="icon">{icon_tools}</span> {manage_categories(ct.lang)}
+                            </button>
                         </div>
 
                         {is_category_management_shown && 
@@ -512,13 +589,13 @@ const BlogEditor = (props) =>
                             </form>
 
                             <div>
-                                <select name="select_category" value={selected_category} onChange={handle_select_category}>
+                                <select name="select_managed_category" value={managed_category} onChange={e => set_managed_category(e.target.value)}>
                                     {!props.categories.length ? 
                                         <option disabled value="default">{no_category(ct.lang)}</option>
                                     :
                                     <>
                                         <option disabled value="default">{select_category(ct.lang)}</option>
-                                        {props.categories.map(category => <option key={category.code} value={category.code}>{category.name[ct.lang]}</option>)}
+                                        {props.categories.map(category => <option key={'man_' + category._id} value={category._id}>{category.name[ct.lang]}</option>)}
                                     </>}
                                 </select>
 
@@ -532,15 +609,15 @@ const BlogEditor = (props) =>
                     </div>
 
                     <div className="markdown_editor">
-                        <Yamde value={content_0} handler={set_content_0} theme="light" title={content(ct.lang, 0)} />
+                        <Yamde value={article.content[0]} handler={update_content_0} theme="light" title={content(ct.lang, 0)} />
                     </div>
 
                     <div className="markdown_editor">
-                        <Yamde value={content_1} handler={set_content_1} theme="light" title={content(ct.lang, 1)} />
+                        <Yamde value={article.content[1]} handler={update_content_1} theme="light" title={content(ct.lang, 1)} />
                     </div>
 
                     <div className="markdown_editor">
-                        <Yamde value={content_2} handler={set_content_2} theme="light" title={content(ct.lang, 2)} />
+                        <Yamde value={article.content[2]} handler={update_content_2} theme="light" title={content(ct.lang, 2)} />
                     </div>
 
                     <button className="button" name="btn_preview_article" onClick={() => set_is_preview_shown(!is_preview_shown)}>
@@ -550,11 +627,10 @@ const BlogEditor = (props) =>
 
                 {is_preview_shown && 
                     <BlogArticlePreview 
-                        preview_lang={selected_language} 
-                        id_selected_article={selected_article} 
+                        lang={parseInt(selected_language, 10)} 
                         article={article} 
-                        categories={selected_categories_names} 
-                        txt_author={props.account_data?.username} />}
+                        txt_author={props.account_data?.username} 
+                        selected_categories={selected_categories} />}
             </>}
         </main>
     );

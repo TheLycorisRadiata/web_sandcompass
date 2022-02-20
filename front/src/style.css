@@ -1058,6 +1058,12 @@ a, span[class="a"]
     align-items: center;
 }
 
+#categories #article_categories
+{
+    display: flex;
+    flex-direction: column;
+}
+
 #categories
 {
     margin-top: 10px;
@@ -1066,7 +1072,7 @@ a, span[class="a"]
 
 #categories select, #categories input, #categories button
 {
-    margin: 3px;
+    margin: 5px;
 }
 
 #categories form
@@ -1088,7 +1094,7 @@ select[name="select_article"]
     margin-bottom: 0;
 }
 
-input[name="field_article_title_0"], textarea[name="field_article_content_0"]
+input[name="field_article_title_0"], #blog_editor .markdown_editor
 {
     margin-top: 20px;
 }

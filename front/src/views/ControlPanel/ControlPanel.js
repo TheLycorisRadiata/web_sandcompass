@@ -132,10 +132,10 @@ const ControlPanel = (props) =>
                 <span id="btn_logout" className="a" onClick={logout}>{icon_logout}</span>
 
                 <div id="control_panel_buttons">
-                    <button className="button"><Link to="/admin/stats"><span className="icon">{icon_stats}</span> {statistics(ct.lang)}</Link></button>
-                    <button className="button"><Link to="/admin/faq"><span className="icon">{icon_faq}</span> {faq_editor(ct.lang)}</Link></button>
-                    <button className="button"><Link to="/admin/blog"><span className="icon">{icon_blog}</span> {blog_editor(ct.lang)}</Link></button>
-                    <button className="button"><Link to="/admin/newsletter"><span className="icon">{icon_newsletter}</span> {newsletter_editor(ct.lang)}</Link></button>
+                    <Link to="/admin/stats"><button className="button"><span className="icon">{icon_stats}</span> {statistics(ct.lang)}</button></Link>
+                    <Link to="/admin/faq"><button className="button"><span className="icon">{icon_faq}</span> {faq_editor(ct.lang)}</button></Link>
+                    <Link to="/admin/blog"><button className="button"><span className="icon">{icon_blog}</span> {blog_editor(ct.lang)}</button></Link>
+                    <Link to="/admin/newsletter"><button className="button"><span className="icon">{icon_newsletter}</span> {newsletter_editor(ct.lang)}</button></Link>
                 </div>
 
                 <span className="divider"></span>

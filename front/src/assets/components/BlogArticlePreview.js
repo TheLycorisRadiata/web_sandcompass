@@ -20,29 +20,30 @@ const icon_empty_dislike = <FontAwesomeIcon icon={faThumbsDown} />;
 const BlogArticlePreview = (props) => 
 {
     const current_time = Date.now();
+    const is_article_new = props.article._id === 'default';
 
-    const display_title = () => props.article.title[props.preview_lang] === '' ? title_not_found(props.preview_lang) : props.article.title[props.preview_lang];
-    const display_author = () => (props.txt_author === '' ? user_not_found(props.preview_lang) : props.txt_author) + dot(props.preview_lang);
-    const display_content = () => props.article.content[props.preview_lang] === '' ? content_not_found(props.preview_lang) : props.article.content[props.preview_lang];
+    const display_title = () => props.article.title[props.lang] === '' ? title_not_found(props.lang) : props.article.title[props.lang];
+    const display_author = () => (props.txt_author === '' ? user_not_found(props.lang) : props.txt_author) + dot(props.lang);
+    const display_content = () => props.article.content[props.lang] === '' ? content_not_found(props.lang) : props.article.content[props.lang];
 
     const display_categories = () => 
     {
-        let string = category_not_found(props.preview_lang) + dot(props.preview_lang);
+        let string = category_not_found(props.lang) + dot(props.lang);
         let i;
 
-        if (props.categories?.length)
+        if (props.selected_categories?.length)
         {
             string = '';
 
-            for (i = 0; i < props.categories.length; ++i)
+            for (i = 0; i < props.selected_categories.length; ++i)
             {
-                if (i === props.categories.length - 1)
+                if (i === props.selected_categories.length - 1)
                 {
-                    string += props.categories[i][props.preview_.lang] + dot(props.preview_lang);
+                    string += props.selected_categories[i].name[props.lang] + dot(props.lang);
                     break;
                 }
 
-                string += props.categories[i][props.preview_lang] + comma_and_space(props.preview_lang);
+                string += props.selected_categories[i].name[props.lang] + comma_and_space(props.lang);
             }
         }
 
@@ -51,36 +52,36 @@ const BlogArticlePreview = (props) =>
 
     return (
         <div id="main" className="preview_article">
-            <h3 className="title">{blog(props.preview_lang)}</h3>
-            <div className="btn_other_articles"><span className="a button">{other_articles(props.preview_lang)}</span></div>
+            <h3 className="title">{blog(props.lang)}</h3>
+            <div className="btn_other_articles"><span className="a button">{other_articles(props.lang)}</span></div>
 
             <article>
                 <h4 className="sub_title">{display_title()}</h4>
                 <ul className="article_info">
-                    <li>{info_categories(props.preview_lang)}{display_categories()}</li>
-                    <li>{info_author(props.preview_lang)}{display_author()}</li>
+                    <li>{info_categories(props.lang)}{display_categories()}</li>
+                    <li>{info_author(props.lang)}{display_author()}</li>
                     <li>
-                        {info_created(props.preview_lang, 
-                            date_in_letters(props.preview_lang, props.id_selected_article !== 'default' ? props.article.time_creation : current_time), 
-                            time(props.id_selected_article !== 'default' ? props.article.time_creation : current_time, false))}
+                        {info_created(props.lang, 
+                            date_in_letters(props.lang, is_article_new ? current_time : props.article.time_creation), 
+                            time(is_article_new ? current_time : props.article.time_creation, false))}
                     </li>
                     {props.article.is_modified && 
                         <li>
-                            {info_modified(props.preview_lang, 
-                                date_in_letters(props.preview_lang, props.id_selected_article !== 'default' ? props.article.time_modification : current_time), 
-                                time(props.id_selected_article !== 'default' ? props.article.time_modification : current_time, false))}
+                            {info_modified(props.lang, 
+                                date_in_letters(props.lang, is_article_new ? current_time : props.article.time_modification), 
+                                time(is_article_new ? current_time : props.article.time_modification, false))}
                         </li>}
                 </ul>
 
-                <ReactMarkdown children={display_content(props.preview_lang)} remarkPlugins={[remarkGfm]} />
+                <ReactMarkdown children={display_content(props.lang)} remarkPlugins={[remarkGfm]} />
             </article>
 
-            <div className="btn_other_articles"><span className="a button">{other_articles(props.preview_lang)}</span></div>
+            <div className="btn_other_articles"><span className="a button">{other_articles(props.lang)}</span></div>
 
             <div id="likes_dislikes">
                 <span id="txt_likes">{icon_heart} 0</span>
-                <button className="a button" name="btn_like"><span className="icon">{icon_empty_like}</span> {like(props.preview_lang)}</button>
-                <button className="a button" name="btn_dislike"><span className="icon">{icon_empty_dislike}</span> {dislike(props.preview_lang)}</button>
+                <button className="a button" name="btn_like"><span className="icon">{icon_empty_like}</span> {like(props.lang)}</button>
+                <button className="a button" name="btn_dislike"><span className="icon">{icon_empty_dislike}</span> {dislike(props.lang)}</button>
             </div>
         </div>
     );

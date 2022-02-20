@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    log_in, user_account, disclaimer_email_and_password, confirm_resend_verification_email, 
+    log_in, log_out, user_account, disclaimer_email_and_password, confirm_resend_verification_email, 
     email_address, password, stay_logged_in_for_30_days, password_forgotten, not_yet_registered 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,6 +19,7 @@ const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 const UserPanel = (props) => 
 {
     const ct = useContext(AppContext);
+    document.title = (!props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang)) + ' | Sand Compass';
 
     const [field_email_address, set_field_email_address] = useState('');
     const [field_password, set_field_password] = useState('');
@@ -135,7 +136,7 @@ const UserPanel = (props) =>
                 </form>
             :
                 <>
-                    <span id="btn_logout" className="a" onClick={logout}>{icon_logout}</span>
+                    <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
 
                     <AccountEditor 
                         account_data={props.account_data} set_account_data={props.set_account_data} 

@@ -26,6 +26,7 @@ const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 const NewsletterEditor = (props) => 
 {
     const ct = useContext(AppContext);
+    document.title = newsletter_editor(ct.lang) + ' | Sand Compass';
 
     const [newsletters, set_newsletters] = useState([]);
     const [selected_newsletter, set_selected_newsletter] = useState('default');

@@ -5,6 +5,7 @@ import { title_page_not_found, msg_page_not_found } from '../assets/functions/la
 const PageNotFound = () =>
 {
     const ct = useContext(AppContext);
+    document.title = title_page_not_found(ct.lang) + ' | Sand Compass';
 
     return (
         <main>

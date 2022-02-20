@@ -30,6 +30,7 @@ const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />
 const BlogEditor = (props) => 
 {
     const ct = useContext(AppContext);
+    document.title = blog_editor(ct.lang) + ' | Sand Compass';
 
     const default_article = 
     {

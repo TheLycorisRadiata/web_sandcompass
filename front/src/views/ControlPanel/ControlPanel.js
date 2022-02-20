@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    control_panel, email_address, password, stay_logged_in_for_30_days, log_in, password_forgotten, disclaimer_email_and_password, 
+    control_panel, email_address, password, stay_logged_in_for_30_days, log_in, log_out, password_forgotten, disclaimer_email_and_password, 
     statistics, faq_editor, blog_editor, newsletter_editor 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,6 +22,7 @@ const icon_newsletter = <FontAwesomeIcon icon={faEnvelope} />;
 const ControlPanel = (props) => 
 {
     const ct = useContext(AppContext);
+    document.title = control_panel(ct.lang) + ' | Sand Compass';
 
     const [field_email_address, set_field_email_address] = useState('');
     const [field_password, set_field_password] = useState('');
@@ -129,7 +130,7 @@ const ControlPanel = (props) =>
             </>
             :
             <>
-                <span id="btn_logout" className="a" onClick={logout}>{icon_logout}</span>
+                <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
 
                 <div id="control_panel_buttons">
                     <Link to="/admin/stats"><button className="button"><span className="icon">{icon_stats}</span> {statistics(ct.lang)}</button></Link>

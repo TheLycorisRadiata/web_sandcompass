@@ -19,6 +19,7 @@ const icon_newsletter = <FontAwesomeIcon icon={faEnvelope} />;
 const Home = (props) => 
 {
     const ct = useContext(AppContext);
+    document.title = home(ct.lang) + ' | Sand Compass';
 
     const [last_article, set_last_article] = useState(null);
 

@@ -10,6 +10,7 @@ import {
 const Licenses = () => 
 {
     const ct = useContext(AppContext);
+    document.title = licenses(ct.lang) + ' | Sand Compass';
 
     return (
         <main id="licenses">

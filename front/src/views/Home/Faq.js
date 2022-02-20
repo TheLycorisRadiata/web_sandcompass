@@ -13,6 +13,7 @@ const icon_open = <FontAwesomeIcon icon={faChevronDown} />;
 const Faq = (props) => 
 {
     const ct = useContext(AppContext);
+    document.title = faq_long(ct.lang) + ' | Sand Compass';
 
     const handle_chevrons = (element, index) =>
     {

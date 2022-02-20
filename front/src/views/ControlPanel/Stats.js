@@ -16,6 +16,7 @@ const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 const Stats = (props) => 
 {
     const ct = useContext(AppContext);
+    document.title = statistics(ct.lang) + ' | Sand Compass';
 
     const [stats, set_stats] = useState(null);
 

@@ -214,14 +214,25 @@ const is_email_already_used_by_another_account = (req, res) =>
     const id = req.params.id;
     const email_address = req.params.email_address.toLowerCase();
 
-    User.findOne({ email_address: email_address })
-    .then(user => 
+    // Abort if the user who asks for the check doesn't exist
+    User.findOne({ _id: id })
+    .then(origin_user => 
     {
-        if (user && user._id.toString() !== id || email_address === gmail_user.toLowerCase())
+        if (!origin_user)
             res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
-        // Either no account has this email address, or the account is ours, so all is good
         else
-            res.status(200).json({ is_success: true, message: success_email_available(lang) });
+        {
+            User.findOne({ email_address: email_address })
+            .then(user => 
+            {
+                if (user && user._id !== origin_user._id || email_address === gmail_user.toLowerCase())
+                    res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
+                // Either no account has this email address, or the account is ours, so all is good
+                else
+                    res.status(200).json({ is_success: true, message: success_email_available(lang) });
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
@@ -229,12 +240,13 @@ const is_email_already_used_by_another_account = (req, res) =>
 const is_username_already_used_by_another_account = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
+    const id = req.params.id;
 
     // The username's search is case insensitive
     User.findOne({ username: { $regex: '^' + req.params.username + '$', $options: 'i' }})
     .then(user => 
     {
-        if (user && user._id.toString() !== req.params.id)
+        if (user && user._id.toString() !== id)
             res.status(400).json({ is_success: false, message: failure_username_already_in_use(lang) });
         // Either no account has this username, or the account is ours, so all is good
         else

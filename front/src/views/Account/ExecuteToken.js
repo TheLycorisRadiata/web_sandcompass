@@ -16,6 +16,8 @@ const ExecuteToken = () =>
     const [message, set_message] = useState('');
     const [is_token_expired, set_is_token_expired] = useState(false);
 
+    document.title = title === '' ? 'Sand Compass' : (title + ' | Sand Compass');
+
     useLayoutEffect(() => 
     {
         const path_parts = window.location.pathname.split('/');     

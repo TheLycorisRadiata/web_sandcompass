@@ -2,7 +2,7 @@ import { useState, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    blog, blog_is_empty, sort_from_oldest, sort_from_most_recent,
+    blog, blog_page, blog_is_empty, sort_from_oldest, sort_from_most_recent,
     all_categories, category_is_empty, 
     go_first_page, go_last_page, go_previous_page, go_next_page, go_precise_page, 
     info_categories, info_author, info_created, info_modified, 
@@ -33,6 +33,8 @@ const BlogPage = (props) =>
     const [is_blog_empty, set_is_blog_empty] = useState(false);
     const [last_page_number, set_last_page_number] = useState(1);
     const [input_blog_page, set_input_blog_page] = useState(1);
+
+    document.title = blog_page(ct.lang, props.blog_page) + '| Sand Compass';
 
     useLayoutEffect(() => 
     {

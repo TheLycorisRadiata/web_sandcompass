@@ -20,6 +20,7 @@ const icon_delete = <FontAwesomeIcon icon={faTrash} />;
 const FaqEditor = (props) => 
 {
     const ct = useContext(AppContext);
+    document.title = faq_editor(ct.lang) + ' | Sand Compass';
 
     const handle_add = (e) => 
     {

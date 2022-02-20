@@ -130,6 +130,19 @@ export const log_in = (lang) =>
     }
 };
 
+export const log_out = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Se déconnecter';
+        case 2:
+            return 'ログアウト';
+        default:
+            return 'Log Out';
+    }
+};
+
 export const home = (lang) => 
 {
     switch (lang)
@@ -1871,6 +1884,19 @@ export const send = (lang) =>
 };
 
 /* BLOG ----------------------------------------------------------------------------------------- */
+
+export const blog_page = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `Page de blog (${number}) `;
+        case 2:
+            return `ブログページ（${number}）`;
+        default:
+            return `Blog page (${number}) `;
+    }
+};
 
 export const blog_is_empty = (lang) => 
 {

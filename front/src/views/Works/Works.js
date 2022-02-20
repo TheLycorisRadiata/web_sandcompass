@@ -21,6 +21,7 @@ const icon_download = <FontAwesomeIcon icon={faDownload} />
 const Works = () => 
 {
     const ct = useContext(AppContext);
+    document.title = works(ct.lang) + ' | Sand Compass';
 
     return (
         <main id="works">

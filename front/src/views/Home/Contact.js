@@ -21,6 +21,7 @@ const icon_info = <FontAwesomeIcon icon={faInfoCircle} />;
 const Contact = (props) => 
 {
     const ct = useContext(AppContext);
+    document.title = contact(ct.lang) + ' | Sand Compass';
 
     const [is_visitor_pro, set_is_visitor_pro] = useState(false);
     const [use_markdown, set_use_markdown] = useState(false);

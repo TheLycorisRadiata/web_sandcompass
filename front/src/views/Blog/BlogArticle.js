@@ -39,6 +39,8 @@ const BlogArticle = (props) =>
     const display_author = () => (article?.txt_author === undefined || !article?.txt_author || article?.txt_author === '' ? user_not_found(ct.lang) : article?.txt_author) + dot(ct.lang);
     const display_content = () => !article || article?.content[ct.lang] === '' ? content_not_found(ct.lang) : article?.content[ct.lang];
 
+    document.title = display_title() + ' | Sand Compass';
+
     const display_categories = () => 
     {
         let string = category_not_found(ct.lang) + dot(ct.lang);

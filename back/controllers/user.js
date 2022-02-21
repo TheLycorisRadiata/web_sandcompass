@@ -316,17 +316,31 @@ const create_account = (req, res) =>
 const update_account = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
-
-    // Make sure the email address is in lower case
+    const id = req.body._id;
     const updated_account = req.body.updated_account;
-    updated_account.email_address = updated_account.email_address.toLowerCase();
 
-    User.updateOne({ _id: req.body._id }, updated_account)
-    .then(() => 
+    User.findOne({ _id: id })
+    .then(user => 
     {
-        User.findOne({ _id: req.body._id })
-        .then(account => res.status(200).json({ is_success: true, data: account, message: success_account_update(lang) }))
-        .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
+        if (!user)
+            res.status(404).json({ is_success: false, message: failure_account_update(lang) });
+        else
+        {
+            // Prevent "is_admin" from being changed
+            updated_account.is_admin = user.is_admin;
+            // Make sure the email address is in lower case
+            updated_account.email_address = updated_account.email_address.toLowerCase();
+
+            User.updateOne({ _id: id }, updated_account)
+            .then(() => 
+            {
+                // Return the updated user to the front
+                User.findOne({ _id: id })
+                .then(account => res.status(200).json({ is_success: true, data: account, message: success_account_update(lang) }))
+                .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
 };

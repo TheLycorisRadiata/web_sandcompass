@@ -1,0 +1,95 @@
+[
+    {
+        "question": "Avez-vous une liseuse ?",
+        "choices":
+        [
+            {
+                "text": "Oui.",
+                "index_next_question": 1
+            },
+            {
+                "text": "Non.",
+                "index_next_question": 2
+            },
+            {
+                "text": "Qu'est-ce que c'est ?",
+                "index_next_question": 2
+            }
+        ]
+    },
+    {
+        "question": "Kindle ou autre ?",
+        "choices":
+        [
+            {
+                "text": "Kindle.",
+                "answer": "Téléchargez le fichier AZW, branchez la liseuse, et glissez-y le fichier. Vous êtez prêt pour la lecture !"
+            },
+            {
+                "text": "Autre.",
+                "answer": "Téléchargez le fichier ePub, branchez la liseuse, et glissez-y le fichier. Vous êtez prêt pour la lecture !"
+            }
+        ]
+    },
+    {
+        "question": "Avez-vous un ordinateur personnel ?",
+        "choices":
+        [
+            {
+                "text": "Oui.",
+                "index_next_question": 3
+            },
+            {
+                "text": "Non, et je suis sur un ordinateur qui ne m'appartient pas.",
+                "answer": "Revenez avec votre smartphone ou votre tablette, installez Adobe Acrobat, téléchargez le fichier PDF, et ouvrez-le. Vous êtes prêt pour la lecture !"
+            },
+            {
+                "text": "Non, mais je suis sur mon smartphone ou ma tablette.",
+                "answer": "Installez Adobe Acrobat, téléchargez le fichier PDF, et ouvrez-le. Vous êtes prêt pour la lecture !"
+            }
+        ]
+    },
+    {
+        "question": "Préférez-vous lire dessus ou sur un smartphone/tablette ?",
+        "choices":
+        [
+            {
+                "text": "Ordinateur.",
+                "index_next_question": 4
+            },
+            {
+                "text": "Smartphone ou tablette.",
+                "index_next_questioné": 5
+            }
+        ]
+    },
+    {
+        "question": "Êtes-vous actuellement sur votre ordinateur ?",
+        "choices":
+        [
+            {
+                "text": "Oui.",
+                "answer": "Téléchargez le fichier ePub, et ouvrez-le. Vous êtes prêt pour la lecture !"
+            },
+            {
+                "text": "Non.",
+                "answer": "Revenez avec votre ordinateur, téléchargez le fichier ePub, et ouvrez-le. Vous êtes prêt pour la lecture !"
+            }
+        ]
+    },
+    {
+        "question": "Êtes-vous sur votre smartphone ou votre tablette ?",
+        "choices":
+        [
+            {
+                "text": "Oui.",
+                "answer": "Installez Adobe Acrobat, téléchargez le fichier PDF, et ouvrez-le. Vous êtes prêt pour la lecture !"
+            },
+            {
+                "text": "Non.",
+                "answer": "Revenez avec votre smartphone ou votre tablette, installez Adobe Acrobat, téléchargez le fichier PDF, et ouvrez-le. Vous êtes prêt pour la lecture !"
+            }
+        ]
+    }
+]
+

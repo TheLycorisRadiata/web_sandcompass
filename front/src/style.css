@@ -863,24 +863,24 @@ a, span[class="a"]
     box-shadow: 2px 2px 4px inset var(--white), -2px -2px 4px inset var(--black);
 }
 
-#ebook_format_picker
+#questionnaire
 {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
 }
 
-#ebook_format_picker #question, #ebook_format_picker #answer
+#questionnaire #question, #questionnaire #answer
 {
     margin-top: 0;
 }
 
-#ebook_format_picker #question
+#questionnaire #question
 {
     margin-bottom: 20px;
 }
 
-#ebook_format_picker #answer, #ebook_format_picker .div_pointer
+#questionnaire #answer, #questionnaire .div_pointer
 {
     margin-bottom: 10px;
 }

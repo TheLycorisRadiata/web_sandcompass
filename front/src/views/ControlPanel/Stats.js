@@ -32,7 +32,6 @@ const Stats = (props) =>
             //console.log(json.message);
             //if (json.error)
                 //console.log(json.error);
-            alert(json.message);
 
             if (json.is_success)
                 set_stats(json.data);

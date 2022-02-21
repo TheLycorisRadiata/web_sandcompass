@@ -1,0 +1,95 @@
+[
+    {
+        "question": "Do you have an e-reader?",
+        "choices":
+        [
+            {
+                "text": "Yes.",
+                "index_next_question": 1
+            },
+            {
+                "text": "No.",
+                "index_next_question": 2
+            },
+            {
+                "text": "What is it?",
+                "index_next_question": 2
+            }
+        ]
+    },
+    {
+        "question": "Kindle or other?",
+        "choices":
+        [
+            {
+                "text": "Kindle.",
+                "answer": "Download the AZW file, plug in the e-reader, and slide the file in there. You can now read anytime!"
+            },
+            {
+                "text": "Other.",
+                "answer": "Download the ePub file, plug in the e-reader, and slide the file in there. You can now read anytime!"
+            }
+        ]
+    },
+    {
+        "question": "Do you have a computer of yours?",
+        "choices":
+        [
+            {
+                "text": "Yes.",
+                "index_next_question": 3
+            },
+            {
+                "text": "No, and I am on a computer that doesn't belong to me.",
+                "answer": "Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!"
+            },
+            {
+                "text": "No, but I am on my smartphone or my tablet.",
+                "answer": "Install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!"
+            }
+        ]
+    },
+    {
+        "question": "Do you prefer to read on it or on a smartphone/tablet?",
+        "choices":
+        [
+            {
+                "text": "Computer.",
+                "index_next_question": 4
+            },
+            {
+                "text": "Smartphone or tablet.",
+                "index_next_question": 5
+            }
+        ]
+    },
+    {
+        "question": "Are you currently on your computer?",
+        "choices":
+        [
+            {
+                "text": "Yes.",
+                "answer": "Download the ePub file, and open it. You can now read anytime!"
+            },
+            {
+                "text": "No.",
+                "answer": "Come back with your computer, download the ePub file, and open it. You can now read anytime!"
+            }
+        ]
+    },
+    {
+        "question": "Are you on your smartphone or tablet?",
+        "choices":
+        [
+            {
+                "text": "Yes.",
+                "answer": "Install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!"
+            },
+            {
+                "text": "No.",
+                "answer": "Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!"
+            }
+        ]
+    }
+]
+

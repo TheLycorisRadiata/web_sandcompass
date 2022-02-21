@@ -1,6 +1,7 @@
 const express = require('express');
 const { whitelist } = require('./package.json');
 const router_language = require('./routes/language');
+const router_file = require('./routes/file');
 const router_blog = require('./routes/blog');
 const router_faq = require('./routes/faq');
 const router_mailing = require('./routes/mailing');
@@ -30,6 +31,7 @@ app.use(express.json());
 
 /* API routes */
 app.use('/api/language', router_language);
+app.use('/api/file', router_file);
 app.use('/api/blog', router_blog);
 app.use('/api/faq', router_faq);
 app.use('/api/mailing', router_mailing);

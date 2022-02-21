@@ -590,7 +590,7 @@ export const my_reddit = (lang) =>
     }
 };
 
-/* EBOOK FORMAT PICKER -------------------------------------------------------------------------- */
+/* QUESTIONNAIRE -------------------------------------------------------------------------------- */
 
 export const redo = (lang) => 
 {
@@ -615,133 +615,6 @@ export const next_question = (lang) =>
             return '次の質問';
         default:
             return 'Next question';
-    }
-};
-
-export const ebook_format_picker_error = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Le questionnaire a rencontré une erreur.\nReprenons à la question 1...';
-        case 2:
-            return 'An error occurred with the questionnaire.\nRestarting at question 1...';
-        default:
-            return 'An error occurred with the questionnaire.\nRestarting at question 1...';
-    }
-};
-
-export const arr_ebook_format_picker_questions = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return [
-                'Avez-vous une liseuse ?', 
-                'Kindle ou autre ?', 
-                'Avez-vous un ordinateur personnel ?', 
-                'Préférez-vous lire dessus ou sur un smartphone/tablette ?', 
-                'Êtes-vous actuellement sur votre ordinateur ?', 
-                'Êtes-vous sur votre smartphone ou votre tablette ?'
-            ];
-        case 2:
-            return [
-                'Do you have an e-reader?', 
-                'Kindle or other?', 
-                'Do you have a computer of yours?', 
-                'Do you prefer to read on it or on a smartphone/tablet?', 
-                'Are you currently on your computer?', 
-                'Are you on your smartphone or tablet?'
-            ];
-        default:
-            return [
-                'Do you have an e-reader?', 
-                'Kindle or other?', 
-                'Do you have a computer of yours?', 
-                'Do you prefer to read on it or on a smartphone/tablet?', 
-                'Are you currently on your computer?', 
-                'Are you on your smartphone or tablet?'
-            ];
-    }
-};
-
-export const arr_ebook_format_picker_options = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return [
-                'Oui.', 
-                'Non.', 
-                'Qu\'est-ce que c\'est ?', 
-                'Kindle.', 
-                'Autre.', 
-                'Non, et je suis sur un ordinateur qui ne m\'appartient pas.', 
-                'Non, mais je suis sur mon smartphone ou ma tablette.', 
-                'Ordinateur.', 
-                'Smartphone ou tablette.'
-            ];
-        case 2:
-            return [
-                'Yes.', 
-                'No.', 
-                'What is it?', 
-                'Kindle.', 
-                'Other.', 
-                'No, and I am on a computer that doesn\'t belong to me.', 
-                'No, but I am on my smartphone or my tablet.', 
-                'Computer.', 
-                'Smartphone or tablet.'
-            ];
-        default:
-            return [
-                'Yes.', 
-                'No.', 
-                'What is it?', 
-                'Kindle.', 
-                'Other.', 
-                'No, and I am on a computer that doesn\'t belong to me.', 
-                'No, but I am on my smartphone or my tablet.', 
-                'Computer.', 
-                'Smartphone or tablet.'
-            ];
-    }
-};
-
-export const arr_ebook_format_picker_answers = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return [
-                'Téléchargez le fichier AZW, branchez la liseuse, et glissez-y le fichier. Vous êtez prêt pour la lecture !', 
-                'Téléchargez le fichier ePub, branchez la liseuse, et glissez-y le fichier. Vous êtez prêt pour la lecture !', 
-                'Revenez avec votre smartphone ou votre tablette, installez Adobe Acrobat, téléchargez le fichier PDF, et ouvrez-le. Vous êtes prêt pour la lecture !', 
-                'Installez Adobe Acrobat, téléchargez le fichier PDF, et ouvrez-le. Vous êtes prêt pour la lecture !', 
-                'Téléchargez le fichier ePub, et ouvrez-le. Vous êtes prêt pour la lecture !', 
-                'Revenez avec votre ordinateur, téléchargez le fichier ePub, et ouvrez-le. Vous êtes prêt pour la lecture !', 
-                'Revenez avec votre smartphone ou votre tablette, installez Adobe Acrobat, téléchargez le fichier PDF, et ouvrez-le. Vous êtes prêt pour la lecture !'
-            ];
-        case 2:
-            return [
-                'Download the AZW file, plug in the e-reader, and slide the file in there. You can now read anytime!', 
-                'Download the ePub file, plug in the e-reader, and slide the file in there. You can now read anytime!', 
-                'Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!', 
-                'Install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!', 
-                'Download the ePub file, and open it. You can now read anytime!', 
-                'Come back with your computer, download the ePub file, and open it. You can now read anytime!', 
-                'Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!'
-            ];
-        default:
-            return [
-                'Download the AZW file, plug in the e-reader, and slide the file in there. You can now read anytime!', 
-                'Download the ePub file, plug in the e-reader, and slide the file in there. You can now read anytime!', 
-                'Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!', 
-                'Install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!', 
-                'Download the ePub file, and open it. You can now read anytime!', 
-                'Come back with your computer, download the ePub file, and open it. You can now read anytime!', 
-                'Come back with your smartphone or tablet, install Adobe Acrobat, download the PDF file, and open it. You can now read anytime!'
-            ];
     }
 };
 

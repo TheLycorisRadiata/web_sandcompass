@@ -14,7 +14,7 @@ import File_ePub from '../../assets/files/works/cosmic_dust/test.epub';
 import File_PDF from '../../assets/files/works/cosmic_dust/test.pdf';
 import File_Zip from '../../assets/files/works/cosmic_dust/test.zip';
 import DisplayCover from '../../assets/components/DisplayCover';
-import EbookFormatPicker from '../../assets/components/EbookFormatPicker';
+import Questionnaire from '../../assets/components/Questionnaire';
 
 const icon_download = <FontAwesomeIcon icon={faDownload} />
 
@@ -77,7 +77,7 @@ const Works = () =>
 
                 <div>
                     <h3 className="sub_title">{how_to_pick_format(ct.lang)}</h3>
-                    <EbookFormatPicker />
+                    <Questionnaire />
                 </div>
             </aside>
         </main>

@@ -35,6 +35,7 @@ const BlogPage = (props) =>
     const [input_blog_page, set_input_blog_page] = useState(1);
 
     document.title = blog_page(ct.lang, props.blog_page) + '| Sand Compass';
+    document.querySelector('meta[name="description"]').setAttribute("content", articles.map(e => { return ' ' + e.title[ct.lang] }));
 
     useLayoutEffect(() => 
     {

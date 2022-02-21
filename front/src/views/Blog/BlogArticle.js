@@ -40,6 +40,7 @@ const BlogArticle = (props) =>
     const display_content = () => !article || article?.content[ct.lang] === '' ? content_not_found(ct.lang) : article?.content[ct.lang];
 
     document.title = display_title() + ' | Sand Compass';
+    document.querySelector('meta[name="description"]').setAttribute("content", display_content().substring(0, 400) + '...');
 
     const display_categories = () => 
     {

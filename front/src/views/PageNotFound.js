@@ -6,6 +6,7 @@ const PageNotFound = () =>
 {
     const ct = useContext(AppContext);
     document.title = title_page_not_found(ct.lang) + ' | Sand Compass';
+    document.querySelector('meta[name="description"]').setAttribute("content", msg_page_not_found(ct.lang));
 
     return (
         <main>

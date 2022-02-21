@@ -1,7 +1,7 @@
 import { useLayoutEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    access_denied, 
+    access_denied, control_panel, 
     faq_editor, faq_is_empty, 
     english, french, japanese, 
     question, answer, 
@@ -21,6 +21,7 @@ const FaqEditor = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = faq_editor(ct.lang) + ' | Sand Compass';
+    document.querySelector('meta[name="description"]').setAttribute("content", control_panel(ct.lang));
 
     const handle_add = (e) => 
     {

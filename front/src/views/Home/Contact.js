@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    contact, something_to_say, 
+    contact, social_media, something_to_say, 
     personal, professional, optional_business_name, 
     name, email_address, write_message_with_markdown, markdown_cheat_sheet_link, message, select_subject, 
     opt_projects, opt_cosmic_dust, opt_persistence, opt_another_project, 
@@ -22,6 +22,7 @@ const Contact = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = contact(ct.lang) + ' | Sand Compass';
+    document.querySelector('meta[name="description"]').setAttribute("content", social_media(ct.lang) + ' - ' + contact(ct.lang));
 
     const [is_visitor_pro, set_is_visitor_pro] = useState(false);
     const [use_markdown, set_use_markdown] = useState(false);

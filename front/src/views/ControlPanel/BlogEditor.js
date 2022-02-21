@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    blog_editor, access_denied, 
+    blog_editor, access_denied, control_panel, 
     select_language, english, french, japanese, 
     post_new_article, select_article, no_article, modify_article, delete_article, 
     no_category, select_category, manage_categories, new_category, add_category, delete_category, modify_category, 
@@ -31,6 +31,7 @@ const BlogEditor = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = blog_editor(ct.lang) + ' | Sand Compass';
+    document.querySelector('meta[name="description"]').setAttribute("content", control_panel(ct.lang));
 
     const default_article = 
     {

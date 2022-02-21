@@ -20,6 +20,7 @@ const Home = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = home(ct.lang) + ' | Sand Compass';
+    document.querySelector('meta[name="description"]').setAttribute("content", msg_about_website(ct.lang).substring(0, 400) + '...');
 
     const [last_article, set_last_article] = useState(null);
 

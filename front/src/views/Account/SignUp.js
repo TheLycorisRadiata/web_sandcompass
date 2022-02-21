@@ -20,6 +20,7 @@ const SignUp = () =>
     const ct = useContext(AppContext);
     const history = useHistory();
     document.title = sign_up(ct.lang) + ' | Sand Compass';
+    document.querySelector('meta[name="description"]').setAttribute("content", sub_newsletter(ct.lang));
 
     const [is_password_shown, set_is_password_shown] = useState(false);
 

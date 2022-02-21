@@ -17,6 +17,8 @@ const ExecuteToken = () =>
     const [is_token_expired, set_is_token_expired] = useState(false);
 
     document.title = title === '' ? 'Sand Compass' : (title + ' | Sand Compass');
+    if (message !== '')
+        document.querySelector('meta[name="description"]').setAttribute("content", message);
 
     useLayoutEffect(() => 
     {

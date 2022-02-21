@@ -17,7 +17,7 @@ const Stats = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = statistics(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute("content", control_panel(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', control_panel(ct.lang));
 
     const [stats, set_stats] = useState(null);
 

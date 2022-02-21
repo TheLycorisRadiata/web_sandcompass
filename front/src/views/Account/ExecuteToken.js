@@ -18,7 +18,7 @@ const ExecuteToken = () =>
 
     document.title = title === '' ? 'Sand Compass' : (title + ' | Sand Compass');
     if (message !== '')
-        document.querySelector('meta[name="description"]').setAttribute("content", message);
+        document.querySelector('meta[name="description"]').setAttribute('content', message);
 
     useLayoutEffect(() => 
     {

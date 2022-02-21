@@ -39,6 +39,32 @@ export const dynamic_language_short = (lang, index) =>
     }
 };
 
+export const index_to_language_code = (index) => 
+{
+    switch (index)
+    {
+        case 1:
+            return 'fr';
+        case 2:
+            return 'ja';
+        default:
+            return 'en';
+    }
+};
+
+export const language_code_to_index = (lang_code) => 
+{
+    switch (lang_code)
+    {
+        case 'fr':
+            return 1;
+        case 'ja':
+            return 2;
+        default:
+            return 0;
+    }
+};
+
 export const english = (lang) => 
 {
     switch (lang)

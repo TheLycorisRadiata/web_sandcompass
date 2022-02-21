@@ -22,7 +22,7 @@ const Works = () =>
 {
     const ct = useContext(AppContext);
     document.title = works(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute("content", summary_cosmic_dust(ct.lang)[0] + ' ' + summary_cosmic_dust(ct.lang)[1] + '..');
+    document.querySelector('meta[name="description"]').setAttribute('content', summary_cosmic_dust(ct.lang)[0] + ' ' + summary_cosmic_dust(ct.lang)[1] + '..');
 
     return (
         <main id="works">

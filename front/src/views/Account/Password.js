@@ -19,7 +19,7 @@ const Password = () =>
     const ct = useContext(AppContext);
     const history = useHistory();
     document.title = password_creation(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute("content", create_password(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', create_password(ct.lang));
 
     const [is_access_granted, set_is_access_granted] = useState(false);
     const [field_email_address, set_field_email_address] = useState('');

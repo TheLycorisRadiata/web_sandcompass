@@ -23,7 +23,7 @@ const ControlPanel = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = control_panel(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute("content", control_panel(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', control_panel(ct.lang));
 
     const [field_email_address, set_field_email_address] = useState('');
     const [field_password, set_field_password] = useState('');

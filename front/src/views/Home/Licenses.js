@@ -11,7 +11,7 @@ const Licenses = () =>
 {
     const ct = useContext(AppContext);
     document.title = licenses(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute("content", license_contact(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', license_contact(ct.lang));
 
     return (
         <main id="licenses">

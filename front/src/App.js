@@ -2,6 +2,7 @@ import { useState, useLayoutEffect, createContext } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import {
+    index_to_language_code, language_code_to_index, 
     english, french, japanese, 
     sign_up, log_in, user_account, 
     home, faq_short, works, blog, contact, 
@@ -45,6 +46,8 @@ const App = () =>
     const [lang, set_lang] = useState(0);
     const [is_flag_menu_displayed, set_is_flag_menu_displayed] = useState(false);
 
+    document.documentElement.setAttribute('lang', index_to_language_code(lang));
+
     const [admin_account_data, set_admin_account_data] = useState(null);
     const [is_admin_access_granted, set_is_admin_access_granted] = useState(false);
     const [admin_rank, set_admin_rank] = useState(null);
@@ -75,17 +78,10 @@ const App = () =>
 
         const lang_machine = navigator.language || navigator.userLanguage;
         const lang_localstorage = JSON.parse(localStorage.getItem('lang'));
-        let var_lang = 0; // English (default)
-
-        if (lang_localstorage)
-            var_lang = lang_localstorage.index;
-        else if (lang_machine === 'fr' || lang_machine.split('-')[0] === 'fr')
-            var_lang = 1; // French
-        else if (lang_machine === 'ja' || lang_machine.split('-')[0] === 'ja')
-            var_lang = 2; // Japanese
+        const var_lang = lang_localstorage ? lang_localstorage.index : language_code_to_index(lang_machine.split('-')[0]);
 
         set_lang(var_lang);
-        // var_lang exists I need to pass lang into the fetch and at this step the state isn't updated yet
+        // var_lang exists because I need to pass lang into the fetch and at this step the state isn't updated yet
 
         fetch(`${package_info.api}/blog/${var_lang}/categories`)
         .then(res => res.json())

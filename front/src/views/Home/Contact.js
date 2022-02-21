@@ -22,7 +22,7 @@ const Contact = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = contact(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute("content", social_media(ct.lang) + ' - ' + contact(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', social_media(ct.lang) + ' - ' + contact(ct.lang));
 
     const [is_visitor_pro, set_is_visitor_pro] = useState(false);
     const [use_markdown, set_use_markdown] = useState(false);

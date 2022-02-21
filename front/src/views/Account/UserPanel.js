@@ -20,7 +20,7 @@ const UserPanel = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = (!props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang)) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute("content", !props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', !props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang));
 
     const [field_email_address, set_field_email_address] = useState('');
     const [field_password, set_field_password] = useState('');

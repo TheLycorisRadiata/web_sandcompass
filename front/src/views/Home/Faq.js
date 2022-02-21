@@ -14,7 +14,7 @@ const Faq = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = faq_long(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute("content", props.questions.slice(0, 5).map(e => { return ' ' + e.question[ct.lang] }));
+    document.querySelector('meta[name="description"]').setAttribute('content', props.questions.slice(0, 5).map(e => { return ' ' + e.question[ct.lang] }));
 
     const handle_chevrons = (element, index) =>
     {

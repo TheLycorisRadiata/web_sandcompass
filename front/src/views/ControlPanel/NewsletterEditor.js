@@ -27,7 +27,7 @@ const NewsletterEditor = (props) =>
 {
     const ct = useContext(AppContext);
     document.title = newsletter_editor(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute("content", control_panel(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', control_panel(ct.lang));
 
     const [newsletters, set_newsletters] = useState([]);
     const [selected_newsletter, set_selected_newsletter] = useState('default');

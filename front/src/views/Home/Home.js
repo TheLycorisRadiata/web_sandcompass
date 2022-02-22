@@ -50,7 +50,7 @@ const Home = (props) =>
                 <div>{Parser(msg_about_website(ct.lang))}</div>
 
                 <div id="subscribe_newsletter">
-                    <Link to="/user/signup" className="button">
+                    <Link to={{ pathname: '/user/signup', state: { user_wants_newsletter: true } }} className="button">
                         <span className="icon">{icon_newsletter}</span>
                         <span>{sub_newsletter(ct.lang)}</span>
                         <span className="icon">{icon_newsletter}</span>

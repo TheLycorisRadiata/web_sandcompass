@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
     sign_up, 
@@ -15,13 +15,14 @@ import package_info from '../../../package.json';
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 
-const SignUp = () => 
+const SignUp = (props) => 
 {
     const ct = useContext(AppContext);
     const history = useHistory();
     document.title = sign_up(ct.lang) + ' | Sand Compass';
     document.querySelector('meta[name="description"]').setAttribute('content', sub_newsletter(ct.lang));
 
+    const [message, set_message] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
 
     const handle_registration = async (e) =>
@@ -40,7 +41,7 @@ const SignUp = () =>
         {
             if (email_address !== repeat_email_address)
             {
-                alert(disclaimer_email(ct.lang));
+                set_message(disclaimer_email(ct.lang));
                 return;
             }
 
@@ -71,7 +72,7 @@ const SignUp = () =>
             .then(json => 
             {
                 //console.log(json.message);
-                alert(json.message);
+                set_message(json.message);
                 if (json.is_success)
                 {
                     e.target[0].value = '';
@@ -96,8 +97,9 @@ const SignUp = () =>
     };
 
     return (
-        <main>
+        <main id="sign_up">
             <h1 className="title">{sign_up(ct.lang)}</h1>
+            <p className="txt_centered">{message}</p><p></p>
             <form onSubmit={handle_registration}>
                 <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoComplete="on" required autoFocus />
                 <input type="email" name="repeat_email_address" placeholder={repeat_email(ct.lang)} autoComplete="on" required />
@@ -109,7 +111,7 @@ const SignUp = () =>
 
                 <input type="text" name="username" placeholder={username(ct.lang)} autoComplete="on" required />
                 <div className="div_pointer">
-                    <input type="checkbox" id="newsletter" name="newsletter" />
+                    <input type="checkbox" id="newsletter" name="newsletter" defaultChecked={props.location.state?.user_wants_newsletter} />
                     <label htmlFor="newsletter">{sub_newsletter(ct.lang, false)}</label>
                 </div>
 
@@ -122,5 +124,9 @@ const SignUp = () =>
     );
 };
 
-export default SignUp;
+/*
+    The component is exported with "withRouter" so props.location.state can be read.
+    This props state is either sent from the newsletter button on the Home page, or not at all which would make it "undefined".
+*/
+export default withRouter(SignUp);
 

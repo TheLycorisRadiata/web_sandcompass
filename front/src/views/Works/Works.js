@@ -3,7 +3,7 @@ import { AppContext } from '../../App';
 import {
     works, info_title, info_author, info_type, info_genre, info_release_date, info_summary, 
     radiata_lycoris, standalone_novel, science_fiction, work_in_progress, 
-    title_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, 
+    title_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, link_to_cosmic_dust_cover, 
     reviews, disclaimer_reviews_1_on_2, disclaimer_reviews_2_on_2, 
     different_formats, file_name_azw, file_name_epub, file_name_pdf, file_name_all, all, how_to_pick_format 
 } from '../../assets/functions/lang';
@@ -21,8 +21,15 @@ const icon_download = <FontAwesomeIcon icon={faDownload} />
 const Works = () => 
 {
     const ct = useContext(AppContext);
+
+    // HTML standard meta tags
     document.title = works(ct.lang) + ' | Sand Compass';
     document.querySelector('meta[name="description"]').setAttribute('content', summary_cosmic_dust(ct.lang)[0] + ' ' + summary_cosmic_dust(ct.lang)[1] + '..');
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', works(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', summary_cosmic_dust(ct.lang)[0] + ' ' + summary_cosmic_dust(ct.lang)[1] + '..');
+    document.querySelector('meta[property="og:image"').setAttribute('content', link_to_cosmic_dust_cover(ct.lang));
+    document.querySelector('meta[property="og:type"').setAttribute('content', 'book');
 
     return (
         <main id="works">

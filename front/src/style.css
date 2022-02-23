@@ -391,15 +391,24 @@ nav ul a
     position: relative;
 }
 
-.btn_eye
+.btn_eye_open, .btn_eye_closed
 {
     padding-left: 7px;
     color: var(--black);
     background-color: var(--white);
     cursor: pointer;
     position: absolute;
-    top: 12px;
+    top: 10px;
+}
+
+.btn_eye_open
+{
     right: 12px;
+}
+
+.btn_eye_closed
+{
+    right: 11px;
 }
 
 /* BUTTONS: LIKE & DISLIKE ---------------------------------------------------------------------- */

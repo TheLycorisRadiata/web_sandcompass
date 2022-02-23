@@ -19,8 +19,13 @@ const SignUp = (props) =>
 {
     const ct = useContext(AppContext);
     const history = useHistory();
+
+    // HTML standard meta tags
     document.title = sign_up(ct.lang) + ' | Sand Compass';
     document.querySelector('meta[name="description"]').setAttribute('content', sub_newsletter(ct.lang));
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', sign_up(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', sub_newsletter(ct.lang));
 
     const [message, set_message] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
@@ -106,7 +111,7 @@ const SignUp = (props) =>
 
                 <div className="field_password">
                     <input type={is_password_shown ? "text" : "password"} name="password" placeholder={password(ct.lang)} autoComplete="new-password" required />
-                    <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                    <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                 </div>
 
                 <input type="text" name="username" placeholder={username(ct.lang)} autoComplete="on" required />

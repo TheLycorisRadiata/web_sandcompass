@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    newsletter_editor, access_denied, control_panel, refresh_newsletters, 
+    newsletter_editor, access_denied, refresh_newsletters, 
     select_newsletter, write_new_newsletter, sent, not_sent, 
     confirm, send_newsletter, object, 
     select_language, dynamic_language, english, french, japanese, 
@@ -26,8 +26,13 @@ const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 const NewsletterEditor = (props) => 
 {
     const ct = useContext(AppContext);
+
+    // HTML standard meta tags
     document.title = newsletter_editor(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', control_panel(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', access_denied(ct.lang));
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', newsletter_editor(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', access_denied(ct.lang));
 
     const [newsletters, set_newsletters] = useState([]);
     const [selected_newsletter, set_selected_newsletter] = useState('default');

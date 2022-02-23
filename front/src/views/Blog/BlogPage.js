@@ -34,8 +34,13 @@ const BlogPage = (props) =>
     const [last_page_number, set_last_page_number] = useState(1);
     const [input_blog_page, set_input_blog_page] = useState(1);
 
+    // HTML standard meta tags
     document.title = blog_page(ct.lang, props.blog_page) + '| Sand Compass';
     document.querySelector('meta[name="description"]').setAttribute('content', articles.map(e => { return ' ' + e.title[ct.lang] }));
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', blog_page(ct.lang, props.blog_page) + '| Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', articles.map(e => { return ' ' + e.title[ct.lang] }));
+    document.querySelector('meta[property="og:type"').setAttribute('content', 'blog');
 
     useLayoutEffect(() => 
     {

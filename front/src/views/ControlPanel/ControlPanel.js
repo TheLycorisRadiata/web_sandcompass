@@ -22,8 +22,13 @@ const icon_newsletter = <FontAwesomeIcon icon={faEnvelope} />;
 const ControlPanel = (props) => 
 {
     const ct = useContext(AppContext);
+
+    // HTML standard meta tags
     document.title = control_panel(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', control_panel(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', log_in(ct.lang));
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', control_panel(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', log_in(ct.lang));
 
     const [field_email_address, set_field_email_address] = useState('');
     const [field_password, set_field_password] = useState('');
@@ -116,7 +121,7 @@ const ControlPanel = (props) =>
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={password(ct.lang)} value={field_password} onChange={e => set_field_password(e.target.value)} 
                             onKeyPress={handle_key_press} autoComplete="on" required />
-                        <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
 
                     <div className="div_pointer">

@@ -19,8 +19,13 @@ const icon_newsletter = <FontAwesomeIcon icon={faEnvelope} />;
 const Home = (props) => 
 {
     const ct = useContext(AppContext);
+
+    // HTML standard meta tags
     document.title = home(ct.lang) + ' | Sand Compass';
     document.querySelector('meta[name="description"]').setAttribute('content', msg_about_website(ct.lang).substring(0, 400) + '...');
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', home(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', msg_about_website(ct.lang).substring(0, 400) + '...');
 
     const [last_article, set_last_article] = useState(null);
 

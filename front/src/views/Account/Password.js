@@ -18,8 +18,13 @@ const Password = () =>
 {
     const ct = useContext(AppContext);
     const history = useHistory();
+
+    // HTML standard meta tags
     document.title = password_creation(ct.lang) + ' | Sand Compass';
     document.querySelector('meta[name="description"]').setAttribute('content', create_password(ct.lang));
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', password_creation(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', create_password(ct.lang));
 
     const [is_access_granted, set_is_access_granted] = useState(false);
     const [field_email_address, set_field_email_address] = useState('');
@@ -126,11 +131,11 @@ const Password = () =>
 
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} required autoFocus />
-                        <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder={repeat_password(ct.lang)} required />
-                        <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                 </>}
 

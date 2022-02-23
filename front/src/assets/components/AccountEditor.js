@@ -320,11 +320,11 @@ const AccountEditor = (props) =>
                     <label htmlFor="change_password">{change_password(ct.lang)}</label>
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} autoComplete="new-password" id="change_password" />
-                        <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={repeat_password(ct.lang)} autoComplete="new-password" /> 
-                        <span className="btn_eye" onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                 </div>
 

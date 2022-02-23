@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    statistics, access_denied, control_panel, refresh_stats, click_for_stats, admin_not_counted, 
+    statistics, access_denied, refresh_stats, click_for_stats, admin_not_counted, 
     info_verified_users, info_newsletter_subscribers, info_english_users, info_french_users, info_japanese_users, 
     simple_stat, slash_stat, percentage_on_all_users, percentage_on_verified_users 
 } from '../../assets/functions/lang';
@@ -16,8 +16,13 @@ const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 const Stats = (props) => 
 {
     const ct = useContext(AppContext);
+
+    // HTML standard meta tags
     document.title = statistics(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', control_panel(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', access_denied(ct.lang));
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', statistics(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', access_denied(ct.lang));
 
     const [stats, set_stats] = useState(null);
 

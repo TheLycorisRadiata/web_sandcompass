@@ -16,9 +16,17 @@ const ExecuteToken = () =>
     const [message, set_message] = useState('');
     const [is_token_expired, set_is_token_expired] = useState(false);
 
-    document.title = title === '' ? 'Sand Compass' : (title + ' | Sand Compass');
+    // HTML standard meta tags + Open Graph meta tags
+    if (title !== '')
+    {
+        document.title = title + ' | Sand Compass';
+        document.querySelector('meta[property="og:title"]').setAttribute('content', title + ' | Sand Compass');
+    }
     if (message !== '')
+    {
         document.querySelector('meta[name="description"]').setAttribute('content', message);
+        document.querySelector('meta[property="og:description"]').setAttribute('content', message);
+    }
 
     useLayoutEffect(() => 
     {

@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    blog_editor, access_denied, control_panel, 
+    blog_editor, access_denied, 
     select_language, english, french, japanese, 
     post_new_article, select_article, no_article, modify_article, delete_article, 
     no_category, select_category, manage_categories, new_category, add_category, delete_category, modify_category, 
@@ -30,8 +30,13 @@ const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />
 const BlogEditor = (props) => 
 {
     const ct = useContext(AppContext);
+
+    // HTML standard meta tags
     document.title = blog_editor(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', control_panel(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', access_denied(ct.lang));
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', blog_editor(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', access_denied(ct.lang));
 
     const default_article = 
     {

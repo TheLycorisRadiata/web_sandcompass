@@ -1,3 +1,5 @@
+import package_info from '../../../package.json';
+
 /* ACCESS DENIED & LANGUAGES -------------------------------------------------------------------- */
 
 export const access_denied = (lang) => 
@@ -1037,6 +1039,19 @@ export const msg_page_not_found = (lang) =>
 };
 
 /* COSMIC DUST ---------------------------------------------------------------------------------- */
+
+export const link_to_cosmic_dust_cover = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return `${package_info.homepage}/static/media/cover_fr.a3f591679c834a0709f9.png`;
+        case 2:
+            return `${package_info.homepage}/static/media/cover_jp.01296dd65ef33472a721.png`;
+        default:
+            return `${package_info.homepage}/static/media/cover_eng.36a3c50eac5183cca9f3.png`;
+    }
+};
 
 export const title_cosmic_dust = (lang) => 
 {

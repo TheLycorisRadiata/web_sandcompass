@@ -623,13 +623,18 @@ a, span[class="a"]
     padding-left: 15px;
 }
 
-/* VIEW: LICENSES ------------------------------------------------------------------------------- */
+/* VIEW: LICENSES & PORTFOLIO  ------------------------------------------------------------------ */
 
-#licenses ul
+#licenses ul, #portfolio ul
 {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+}
+
+#portfolio ul
+{
+    margin-top: 20px;
 }
 
 /* VIEW: TOKENS --------------------------------------------------------------------------------- */

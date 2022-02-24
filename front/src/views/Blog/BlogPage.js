@@ -2,7 +2,7 @@ import { useState, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    blog, blog_page, blog_is_empty, sort_from_oldest, sort_from_most_recent,
+    blog, blog_is_empty, sort_from_oldest, sort_from_most_recent,
     all_categories, category_is_empty, 
     go_first_page, go_last_page, go_previous_page, go_next_page, go_precise_page, 
     info_categories, info_author, info_created, info_modified, 
@@ -35,10 +35,10 @@ const BlogPage = (props) =>
     const [input_blog_page, set_input_blog_page] = useState(1);
 
     // HTML standard meta tags
-    document.title = blog_page(ct.lang, props.blog_page) + '| Sand Compass';
+    document.title = blog(ct.lang) + '| Sand Compass';
     document.querySelector('meta[name="description"]').setAttribute('content', articles.map(e => { return ' ' + e.title[ct.lang] }));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', blog_page(ct.lang, props.blog_page) + '| Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', blog(ct.lang) + '| Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', articles.map(e => { return ' ' + e.title[ct.lang] }));
     document.querySelector('meta[property="og:type"').setAttribute('content', 'blog');
 

@@ -1799,19 +1799,6 @@ export const send = (lang) =>
 
 /* BLOG ----------------------------------------------------------------------------------------- */
 
-export const blog_page = (lang, number) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return `Page de blog (${number}) `;
-        case 2:
-            return `ブログページ（${number}）`;
-        default:
-            return `Blog page (${number}) `;
-    }
-};
-
 export const blog_is_empty = (lang) => 
 {
     switch (lang)
@@ -2964,6 +2951,58 @@ export const disclaimer_blog_editor_content = (lang) =>
             return 'The article needs content.';
         default:
             return 'The article needs content.';
+    }
+};
+
+/* PORTFOLIO ------------------------------------------------------------------------------------ */
+
+export const portfolio = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'ポートフォリオ';
+        default:
+            return 'Portfolio';
+    }
+};
+
+export const portfolio_desc = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Mes projets web et mobile.';
+        case 2:
+            return 'My web and mobile projects.';
+        default:
+            return 'My web and mobile projects.';
+    }
+};
+
+export const real_websites = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Vrais site webs';
+        case 2:
+            return '本物のウエブサイト';
+        default:
+            return 'Real websites';
+    }
+};
+
+export const web_projects = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Projets web';
+        case 2:
+            return 'ウエブのプロジェクト';
+        default:
+            return 'Web projects';
     }
 };
 

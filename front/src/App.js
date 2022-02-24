@@ -26,6 +26,7 @@ import Password from './views/Account/Password';
 import ExecuteToken from './views/Account/ExecuteToken';
 import BlogPage from './views/Blog/BlogPage';
 import BlogArticle from './views/Blog/BlogArticle';
+import Portfolio from './views/Portfolio/Portfolio';
 import PageNotFound from './views/PageNotFound';
 import Flag_Eng from './assets/images/flags/usa.png';
 import Flag_Fr from './assets/images/flags/france.png';
@@ -201,6 +202,9 @@ const App = () =>
                         </Route>
                         <Route path="/password"><Password /></Route>
                         <Route path="/token"><ExecuteToken /></Route>
+
+                        <Route exact path="/portfolio"><Portfolio /></Route>
+
                         <Route path="/"><PageNotFound /></Route>
                     </Switch>
                 </div>

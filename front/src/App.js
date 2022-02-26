@@ -27,12 +27,13 @@ import ExecuteToken from './views/Account/ExecuteToken';
 import BlogPage from './views/Blog/BlogPage';
 import BlogArticle from './views/Blog/BlogArticle';
 import Portfolio from './views/Portfolio/Portfolio';
+import Persistence from './views/Portfolio/Persistence';
 import PageNotFound from './views/PageNotFound';
 import Flag_Eng from './assets/images/flags/usa.png';
 import Flag_Fr from './assets/images/flags/france.png';
 import Flag_Jp from './assets/images/flags/japan.png';
-import './style.css';
 import package_info from '../package.json';
+import './style.css';
 
 const icon_lang = <FontAwesomeIcon icon={faGlobe} />;
 const icon_user_new = <FontAwesomeIcon icon={faUserPlus} />;
@@ -218,6 +219,8 @@ const App = () =>
                         <Route path="/token"><ExecuteToken /></Route>
 
                         <Route exact path="/portfolio"><Portfolio /></Route>
+                        <Route exact path="/portfolio/persistence"><Persistence /></Route>
+                        <Route path="/portfolio"><PageNotFound is_portfolio={true} /></Route>
 
                         <Route path="/"><PageNotFound /></Route>
                     </Switch>

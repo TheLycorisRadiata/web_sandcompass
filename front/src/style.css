@@ -625,7 +625,7 @@ a, span[class="a"]
 
 /* VIEW: LICENSES & PORTFOLIO  ------------------------------------------------------------------ */
 
-#licenses ul, #portfolio ul
+#licenses ul, #portfolio ul, #go_back_portfolio
 {
     display: flex;
     flex-flow: column nowrap;
@@ -635,6 +635,28 @@ a, span[class="a"]
 #portfolio ul
 {
     margin-top: 20px;
+}
+
+#portfolio .link_code, #portfolio .no_link_code
+{
+    margin-left: 15px;
+    font-size: 1.3rem;
+}
+
+#portfolio .no_link_code
+{
+    cursor: not-allowed;
+    color: var(--brown);
+}
+
+#go_back_portfolio, #go_back_portfolio button
+{
+    margin: 0;
+}
+
+#go_back_portfolio
+{
+    margin-top: 25px;
 }
 
 /* VIEW: TOKENS --------------------------------------------------------------------------------- */

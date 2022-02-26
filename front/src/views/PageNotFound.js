@@ -1,8 +1,12 @@
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AppContext } from '../App';
-import { title_page_not_found, msg_page_not_found } from '../assets/functions/lang';
+import {
+    title_page_not_found, msg_page_not_found, 
+    go_back_portfolio 
+} from '../assets/functions/lang';
 
-const PageNotFound = () =>
+const PageNotFound = (props) =>
 {
     const ct = useContext(AppContext);
 
@@ -17,6 +21,11 @@ const PageNotFound = () =>
         <main>
             <h1 className="title">{title_page_not_found(ct.lang)}</h1>
             <p className="txt_centered">{msg_page_not_found(ct.lang)}</p>
+
+            {props.is_portfolio && 
+                <div id="go_back_portfolio">
+                    <button className="button"><Link to="/portfolio">{go_back_portfolio(ct.lang)}</Link></button>
+                </div>}
         </main>
     );
 }

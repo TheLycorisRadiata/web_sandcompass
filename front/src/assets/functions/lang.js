@@ -2972,11 +2972,35 @@ export const portfolio_desc = (lang) =>
     switch (lang)
     {
         case 1:
-            return 'Mes projets web et mobile.';
+            return 'Mes projets web, mobile et logiciel.';
         case 2:
-            return 'My web and mobile projects.';
+            return '私のウエブと携帯とソフトのプロジェクト。';
         default:
-            return 'My web and mobile projects.';
+            return 'My web, mobile and software projects.';
+    }
+};
+
+export const code = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'コード';
+        default:
+            return 'Code';
+    }
+};
+
+export const disclaimer_link_code = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le porteur de projet n\'a pas autorisé la publication du code.';
+        case 2:
+            return 'The project owner hasn\'t allowed the publication of the code.';
+        default:
+            return 'The project owner hasn\'t allowed the publication of the code.';
     }
 };
 
@@ -3003,6 +3027,58 @@ export const web_projects = (lang) =>
             return 'ウエブのプロジェクト';
         default:
             return 'Web projects';
+    }
+};
+
+export const mobile_projects = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Projets mobiles';
+        case 2:
+            return '携帯のプロジェクト';
+        default:
+            return 'Mobile projects';
+    }
+};
+
+export const software_projects = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Projets de logiciel';
+        case 2:
+            return 'ソフトのプロジェクト';
+        default:
+            return 'Software projects';
+    }
+};
+
+export const vrmmorpg_project = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Projet de VRMMORPG';
+        case 2:
+            return 'VRMMORPGのプロジェクト';
+        default:
+            return 'VRMMORPG project';
+    }
+};
+
+export const go_back_portfolio = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Retourner au portfolio';
+        case 2:
+            return 'ポートフォリオに戻る';
+        default:
+            return 'Go back to the portfolio';
     }
 };
 

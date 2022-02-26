@@ -1,16 +1,17 @@
 import { useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    statistics, access_denied, refresh_stats, click_for_stats, admin_not_counted, 
+    statistics, access_denied, log_out, refresh_stats, click_for_stats, admin_not_counted, 
     info_verified_users, info_newsletter_subscribers, info_english_users, info_french_users, info_japanese_users, 
     simple_stat, slash_stat, percentage_on_all_users, percentage_on_verified_users 
 } from '../../assets/functions/lang';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUserLock, faSquareXmark, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import package_info from '../../../package.json';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
+const icon_logout = <FontAwesomeIcon icon={faSquareXmark} />;
 const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 
 const Stats = (props) => 
@@ -25,6 +26,24 @@ const Stats = (props) =>
     document.querySelector('meta[property="og:description"]').setAttribute('content', access_denied(ct.lang));
 
     const [stats, set_stats] = useState(null);
+
+    const logout = () => 
+    {
+        // Make a request so login tokens can be deleted
+        fetch(`${package_info.api}/token/${ct.lang}/login/${props.account_data?._id}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(json => 
+        {
+            //if (json.message !== '')
+                //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
+        });
+
+        // Reset user data
+        props.set_is_access_granted(false);
+        props.set_account_data(null);
+    };
 
     const handle_click = e => 
     {
@@ -51,6 +70,8 @@ const Stats = (props) =>
                 <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> {access_denied(ct.lang)}</p>
             :
             <div id="stats">
+                <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
+
                 <button className="button" title={refresh_stats(ct.lang)} onClick={handle_click}><span className="icon">{icon_fetch}</span></button>
 
                 <ul>

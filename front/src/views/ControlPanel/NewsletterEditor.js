@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    newsletter_editor, access_denied, refresh_newsletters, 
+    newsletter_editor, access_denied, log_out, refresh_newsletters, 
     select_newsletter, write_new_newsletter, sent, not_sent, 
     confirm, send_newsletter, object, 
     select_language, dynamic_language, english, french, japanese, 
@@ -9,7 +9,7 @@ import {
     disclaimer_obj_and_msg, disclaimer_language 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserLock, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUserLock, faSquareXmark, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import { date_in_letters, time } from '../../assets/functions/time';
 import package_info from '../../../package.json';
 
@@ -21,6 +21,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
+const icon_logout = <FontAwesomeIcon icon={faSquareXmark} />;
 const icon_fetch = <FontAwesomeIcon icon={faRedoAlt} />;
 
 const NewsletterEditor = (props) => 
@@ -40,6 +41,24 @@ const NewsletterEditor = (props) =>
     const [html_message, set_html_message] = useState('');
     const [language, set_language] = useState('default');
     const [checkbox, set_checkbox] = useState(false);
+
+    const logout = () => 
+    {
+        // Make a request so login tokens can be deleted
+        fetch(`${package_info.api}/token/${ct.lang}/login/${props.account_data?._id}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(json => 
+        {
+            //if (json.message !== '')
+                //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
+        });
+
+        // Reset user data
+        props.set_is_access_granted(false);
+        props.set_account_data(null);
+    };
 
     const fetch_newsletters = (trigger_alert) => 
     {
@@ -138,6 +157,8 @@ const NewsletterEditor = (props) =>
                 <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> {access_denied(ct.lang)}</p>
             :
             <div id="newsletter_editor">
+                <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
+
                 <button className="button" title={refresh_newsletters(ct.lang)} onClick={() => fetch_newsletters(true)}><span className="icon">{icon_fetch}</span></button>
     
                 <form onSubmit={handle_submit}>

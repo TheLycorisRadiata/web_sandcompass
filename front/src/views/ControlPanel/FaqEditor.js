@@ -1,7 +1,7 @@
 import { useLayoutEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    access_denied, 
+    access_denied, log_out, 
     faq_editor, faq_is_empty, 
     english, french, japanese, 
     question, answer, 
@@ -9,10 +9,11 @@ import {
     add_question, edit_question, delete_question, confirm_delete_question 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserLock, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUserLock, faSquareXmark, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import package_info from '../../../package.json';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
+const icon_logout = <FontAwesomeIcon icon={faSquareXmark} />;
 const icon_add = <FontAwesomeIcon icon={faPlus} />;
 const icon_edit = <FontAwesomeIcon icon={faEdit} />;
 const icon_delete = <FontAwesomeIcon icon={faTrash} />;
@@ -27,6 +28,24 @@ const FaqEditor = (props) =>
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', faq_editor(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', access_denied(ct.lang));
+
+    const logout = () => 
+    {
+        // Make a request so login tokens can be deleted
+        fetch(`${package_info.api}/token/${ct.lang}/login/${props.account_data?._id}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(json => 
+        {
+            //if (json.message !== '')
+                //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
+        });
+
+        // Reset user data
+        props.set_is_access_granted(false);
+        props.set_account_data(null);
+    };
 
     const handle_add = (e) => 
     {
@@ -203,6 +222,8 @@ const FaqEditor = (props) =>
                 <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> {access_denied(ct.lang)}</p>
             :
             <div id="faq_editor">
+                <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
+
                 <form onSubmit={handle_add}>
                     <div id="languages">
                         <div>

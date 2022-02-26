@@ -176,14 +176,28 @@ const App = () =>
                         <Route exact path="/contact"><Contact username={user_account_data?.username} email={user_account_data?.email_address} /></Route>
                         <Route exact path="/licenses"><Licenses /></Route>
 
-                        <Route exact path="/admin/stats"><Stats is_access_granted={is_admin_access_granted} /></Route>
+                        <Route exact path="/admin/stats">
+                            <Stats 
+                                account_data={admin_account_data} set_account_data={set_admin_account_data} 
+                                is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} />
+                        </Route>
                         <Route exact path="/admin/blog">
                             <BlogEditor 
-                                account_data={admin_account_data} is_access_granted={is_admin_access_granted} 
+                                account_data={admin_account_data} set_account_data={set_admin_account_data} 
+                                is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} 
                                 categories={all_categories} set_categories={set_all_categories} />
                         </Route>
-                        <Route exact path="/admin/newsletter"><NewsletterEditor is_access_granted={is_admin_access_granted} /></Route>
-                        <Route exact path="/admin/faq"><FaqEditor is_access_granted={is_admin_access_granted} questions={all_questions} set_questions={set_all_questions} /></Route>
+                        <Route exact path="/admin/newsletter">
+                            <NewsletterEditor 
+                                account_data={admin_account_data} set_account_data={set_admin_account_data} 
+                                is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} />
+                        </Route>
+                        <Route exact path="/admin/faq">
+                            <FaqEditor 
+                                account_data={admin_account_data} set_account_data={set_admin_account_data} 
+                                is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} 
+                                questions={all_questions} set_questions={set_all_questions} />
+                        </Route>
                         <Route exact path="/admin">
                             <ControlPanel 
                                 account_data={admin_account_data} set_account_data={set_admin_account_data} 

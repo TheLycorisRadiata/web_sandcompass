@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    blog_editor, access_denied, 
+    blog_editor, access_denied, log_out, 
     select_language, english, french, japanese, 
     post_new_article, select_article, no_article, modify_article, delete_article, 
     no_category, select_category, manage_categories, new_category, add_category, delete_category, modify_category, 
@@ -11,7 +11,7 @@ import {
     disclaimer_blog_editor_content 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserLock, faTools, faFolderPlus, faFolderMinus, faFolderOpen, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faUserLock, faSquareXmark, faTools, faFolderPlus, faFolderMinus, faFolderOpen, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import BlogArticlePreview from '../../assets/components/BlogArticlePreview';
 import { parse_category } from '../../assets/functions/parsing';
 import package_info from '../../../package.json';
@@ -20,6 +20,7 @@ import package_info from '../../../package.json';
 import Yamde from 'yamde';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
+const icon_logout = <FontAwesomeIcon icon={faSquareXmark} />;
 const icon_tools = <FontAwesomeIcon icon={faTools} />;
 const icon_folder_plus = <FontAwesomeIcon icon={faFolderPlus} />
 const icon_folder_minus = <FontAwesomeIcon icon={faFolderMinus} />
@@ -73,6 +74,24 @@ const BlogEditor = (props) =>
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const logout = () => 
+    {
+        // Make a request so login tokens can be deleted
+        fetch(`${package_info.api}/token/${ct.lang}/login/${props.account_data?._id}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(json => 
+        {
+            //if (json.message !== '')
+                //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
+        });
+
+        // Reset user data
+        props.set_is_access_granted(false);
+        props.set_account_data(null);
+    };
 
     const handle_select_article = e => 
     {
@@ -536,6 +555,8 @@ const BlogEditor = (props) =>
                 <p className="txt_access_denied"><span className="icon lock">{icon_lock}</span> {access_denied(ct.lang)}</p>
             :
             <>
+                <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
+
                 <div id="blog_editor">
                     <select name="select_language" value={selected_language} onChange={e => set_selected_language(e.target.value)}>
                         <option disabled value="default">{select_language(ct.lang)}</option>

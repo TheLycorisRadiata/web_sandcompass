@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
     portfolio, portfolio_desc, 
@@ -8,7 +9,6 @@ import {
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCode } from '@fortawesome/free-solid-svg-icons';
-import package_info from '../../../package.json';
 
 const icon_code = <FontAwesomeIcon icon={faFileCode} />;
 
@@ -83,7 +83,7 @@ const Portfolio = () =>
             <h3 className="sub_title">{software_projects(ct.lang)}</h3>
             <ul>
                 <li>
-                    <a href={`${package_info.homepage}/portfolio/persistence`}>Persistence</a>
+                    <Link to="portfolio/persistence">Persistence</Link>
                     <a href="https://github.com/thelycorisradiata/game_persistence" rel="noreferrer" target="_blank" title={code(ct.lang)} className="link_code">
                         <span className="icon">{icon_code}</span>
                     </a>

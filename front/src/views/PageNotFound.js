@@ -24,7 +24,7 @@ const PageNotFound = (props) =>
 
             {props.is_portfolio && 
                 <div id="go_back_portfolio">
-                    <button className="button"><Link to="/portfolio">{go_back_portfolio(ct.lang)}</Link></button>
+                    <Link to="/portfolio"><button className="button">{go_back_portfolio(ct.lang)}</button></Link>
                 </div>}
         </main>
     );

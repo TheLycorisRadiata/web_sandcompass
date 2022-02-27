@@ -594,6 +594,32 @@ export const my_reddit = (lang) =>
 
 /* QUESTIONNAIRE -------------------------------------------------------------------------------- */
 
+export const error_questionnaire = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le questionnaire a rencontré une erreur.';
+        case 2:
+            return 'An error occured with the questionnaire.';
+        default:
+            return 'An error occured with the questionnaire.';
+    }
+};
+
+export const try_again = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Re-essayer';
+        case 2:
+            return 'もう一回';
+        default:
+            return 'Try again';
+    }
+};
+
 export const redo = (lang) => 
 {
     switch (lang)
@@ -1293,52 +1319,6 @@ export const different_formats = (lang) =>
             return 'The different formats';
         default:
             return 'The different formats';
-    }
-};
-
-export const file_name_azw = (lang) => 
-{
-    switch (lang)
-    {
-        case 2:
-            return 'AZWの試し';
-        default:
-            return 'Test AZW';
-    }
-};
-
-export const file_name_epub = (lang) => 
-{
-    switch (lang)
-    {
-        case 2:
-            return 'ePubの試し';
-        default:
-            return 'Test ePub';
-    }
-};
-
-export const file_name_pdf = (lang) => 
-{
-    switch (lang)
-    {
-        case 2:
-            return 'PDFの試し';
-        default:
-            return 'Test PDF';
-    }
-};
-
-export const file_name_all = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Test Tout';
-        case 2:
-            return '全ての試し';
-        default:
-            return 'Test All';
     }
 };
 
@@ -3066,6 +3046,32 @@ export const vrmmorpg_project = (lang) =>
             return 'VRMMORPGのプロジェクト';
         default:
             return 'VRMMORPG project';
+    }
+};
+
+export const game = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Jeu';
+        case 2:
+            return 'ゲーム';
+        default:
+            return 'Game';
+    }
+};
+
+export const disclaimer_os = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le jeu n\'est disponible que sur PC.';
+        case 2:
+            return 'The game is only available on PC.';
+        default:
+            return 'The game is only available on PC.';
     }
 };
 

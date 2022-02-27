@@ -453,6 +453,18 @@ nav ul a
     margin-right: 10px;
 }
 
+/* FAKE BUTTONS --------------------------------------------------------------------------------- */
+
+.download_buttons li.a, .preview_article .a, #portfolio .no_link_code
+{
+    cursor: not-allowed;
+}
+
+.download_buttons li.a, #portfolio .no_link_code
+{
+    color: var(--brown);
+}
+
 /* FORM ----------------------------------------------------------------------------------------- */
 
 form
@@ -564,11 +576,6 @@ a, span[class="a"]
     text-decoration: none;
 }
 
-.preview_article .a
-{
-    cursor: not-allowed;
-}
-
 /* MARKDOWN EDITOR ------------------------------------------------------------------------------ */
 
 .markdown_editor
@@ -641,12 +648,6 @@ a, span[class="a"]
 {
     margin-left: 15px;
     font-size: 1.3rem;
-}
-
-#portfolio .no_link_code
-{
-    cursor: not-allowed;
-    color: var(--brown);
 }
 
 #go_back_portfolio, #go_back_portfolio button
@@ -883,14 +884,15 @@ a, span[class="a"]
 
 /* VIEW: WORKS (EBOOK FORMATS) ------------------------------------------------------------------ */
 
-#works aside ul
+.download_buttons
 {
+    margin-top: 20px;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
 }
 
-#works aside li
+.download_buttons li
 {
     margin: 5px;
     padding: 20px;

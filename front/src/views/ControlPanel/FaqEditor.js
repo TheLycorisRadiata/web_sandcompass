@@ -70,6 +70,8 @@ const FaqEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
+                    id_token: document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '',
+                    id_account: document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '',
                     arr_question: [eng_question, fr_question, jp_question],
                     arr_answer: [eng_answer, fr_answer, jp_answer]
                 })

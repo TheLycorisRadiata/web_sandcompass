@@ -1,7 +1,9 @@
+const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const Article = require('../models/article');
 const Category = require('../models/category');
 const User = require('../models/user');
+const Token = require('../models/token');
 const {
     success_articles_retrieval, failure_articles_retrieval, 
     failure_article_retrieval, success_article_retrieval, 
@@ -219,47 +221,69 @@ const retrieve_article_by_id_or_code = (req, res) =>
 const post_new_article = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
+
     const new_article = new Article({ ...req.body.new_article });
     const id_new_article = new_article._id;
     const rng = uuidv4().split('-');
     let arr_user_written_articles = null;
+    let is_input_valid = true;
 
     // last part of the rng array (12 character long string)
     new_article.code = rng[rng.length - 1]
 
-    new_article.save()
-    .then(() => 
+    // Input is invalid
+    if (!is_input_valid)
     {
-        User.findOne({ _id: new_article.author })
-        .then(author => 
+        res.status(400).json({ is_success: false, message: failure_article_posted(lang) });
+        return;
+    }
+
+    // Protect the access with an admin token
+    Token.findOne({ code: id_token })
+    .then(token => 
+    {
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure_article_posted(lang) });
+        else
         {
-            if (!author)
+            User.findOne({ _id: token.account, is_admin: true })
+            .then(admin => 
             {
-                res.status(404).json({ is_success: false, message: failure_article_posted_but_not_in_authors_list(lang) });
-                return;
-            }
-
-            arr_user_written_articles = [...author.articles.written];
-            arr_user_written_articles.push(id_new_article);
-
-            User.updateOne({ _id: author._id }, 
-            {
-                articles: 
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account) && String(admin._id) === String(new_article.author))
                 {
-                    written: arr_user_written_articles,
-                    liked: [...author.articles.liked],
-                    disliked: [...author.articles.disliked]
+                    // Access granted
+                    new_article.save()
+                    .then(() => 
+                    {
+                        arr_user_written_articles = [...admin.articles.written];
+                        arr_user_written_articles.push(id_new_article);
+
+                        User.updateOne({ _id: admin._id }, 
+                        {
+                            articles: 
+                            {
+                                written: arr_user_written_articles,
+                                liked: [...author.articles.liked],
+                                disliked: [...author.articles.disliked]
+                            }
+                        })
+                        .then(() => 
+                        {
+                            Article.find()
+                            .then(articles => res.status(201).json({ is_success: true, message: success_article_posted(lang, articles.length), data: articles }))
+                            .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted_but_no_retrieval(lang), error: err }));
+                        })
+                        .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted_but_not_in_authors_list(lang), error: err }));
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted(lang), error: err }));
                 }
+                else
+                    res.status(400).json({ is_success: false, message: failure_article_posted(lang) });
             })
-            .then(() => 
-            {
-                Article.find()
-                .then(articles => res.status(201).json({ is_success: true, message: success_article_posted(lang, articles.length), data: articles }))
-                .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted_but_no_retrieval(lang), error: err }));
-            })
-            .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted_but_not_in_authors_list(lang), error: err }));
-        })
-        .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted_but_not_in_authors_list(lang) }));
+            .catch(err => res.status(400).json({ is_success: false, message: failure_articled_posted(lang), error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_article_posted(lang), error: err }));
 };
@@ -267,20 +291,53 @@ const post_new_article = (req, res) =>
 const modify_article = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
 
-    Article.updateOne({ _id: req.body._id },
+    let is_input_valid = true;
+
+    // Input is invalid
+    if (!is_input_valid)
     {
-        time_modification: req.body.article.time_modification,
-        is_modified: true,
-        categories: req.body.article.categories,
-        title: req.body.article.title,
-        content: req.body.article.content
-    })
-    .then(() => 
+        res.status(400).json({ is_success: false, message: failure_article_modified(lang) });
+        return;
+    }
+
+    // Protect the access with an admin token
+    Token.findOne({ code: id_token })
+    .then(token => 
     {
-        Article.find()
-        .then(articles => res.status(200).json({ is_success: true, message: success_article_modified(lang, articles.length), data: articles }))
-        .catch(err => res.status(400).json({ is_success: false, message: failure_article_modified_but_no_retrieval(lang), error: err }));
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure_article_modified(lang) });
+        else
+        {
+            User.findOne({ _id: token.account, is_admin: true })
+            .then(admin => 
+            {
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
+                {
+                    // Access granted
+                    Article.updateOne({ _id: req.body._id },
+                    {
+                        time_modification: req.body.article.time_modification,
+                        is_modified: true,
+                        categories: req.body.article.categories,
+                        title: req.body.article.title,
+                        content: req.body.article.content
+                    })
+                    .then(() => 
+                    {
+                        Article.find()
+                        .then(articles => res.status(200).json({ is_success: true, message: success_article_modified(lang, articles.length), data: articles }))
+                        .catch(err => res.status(400).json({ is_success: false, message: failure_article_modified_but_no_retrieval(lang), error: err }));
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_article_modified(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure_article_modified(lang) });
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure_article_modified(lang), error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_article_modified(lang), error: err }));
 };
@@ -288,25 +345,51 @@ const modify_article = (req, res) =>
 const delete_article = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
+
     const id_article_to_delete = req.body._id;
     const id_author = req.body.author;
     const obj_author_articles = req.body.author_list_articles;
 
-    // Remove the article from the Articles collection
-    Article.deleteOne({ _id: id_article_to_delete })
-    .then(() => 
+    // Protect the access with an admin token
+    Token.findOne({ code: id_token })
+    .then(token => 
     {
-        // Remove the article from the author's written articles
-        obj_author_articles.written = obj_author_articles.written.filter(id => id !== id_article_to_delete);
-
-        User.updateOne({ _id: id_author }, { articles: obj_author_articles })
-        .then(() => 
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure_article_deleted(lang) });
+        else
         {
-            Article.find()
-            .then(articles => res.status(200).json({ is_success: true, message: success_article_deleted(lang, articles.length), data: articles }))
-            .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted_but_no_retrieval(lang), error: err }))
-        })
-        .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted_but_still_in_authors_list(lang), error: err }));
+            User.findOne({ _id: token.account, is_admin: true })
+            .then(admin => 
+            {
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
+                {
+                    // Access granted
+
+                    // Remove the article from the Articles collection
+                    Article.deleteOne({ _id: id_article_to_delete })
+                    .then(() => 
+                    {
+                        // Remove the article from the author's written articles
+                        obj_author_articles.written = obj_author_articles.written.filter(id => id !== id_article_to_delete);
+
+                        User.updateOne({ _id: id_author }, { articles: obj_author_articles })
+                        .then(() => 
+                        {
+                            Article.find()
+                            .then(articles => res.status(200).json({ is_success: true, message: success_article_deleted(lang, articles.length), data: articles }))
+                            .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted_but_no_retrieval(lang), error: err }))
+                        })
+                        .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted_but_still_in_authors_list(lang), error: err }));
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure_article_deleted(lang) });
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted(lang), error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_article_deleted(lang), error: err }));
 };
@@ -338,15 +421,49 @@ const get_category_name_from_id = (req, res) =>
 const create_new_category = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
-    const rng = uuidv4().substring(0, 4);
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
 
-    new Category({ code: rng, name: req.body.new_category })
-    .save()
-    .then(() => 
+    const rng = uuidv4().substring(0, 4);
+    const new_category = req.body.new_category;
+    let is_input_valid = true;
+
+    // Input is invalid
+    if (!is_input_valid)
     {
-        Category.find()
-        .then(categories => res.status(201).json({ is_success: true, message: success_category_created(lang, categories.length), data: categories }))
-        .catch(err => res.status(400).json({ is_success: false, message: failure_category_created_but_no_retrieval(lang), error: err }));
+        res.status(400).json({ is_success: false, message: failure_category_created(lang) });
+        return;
+    }
+
+    // Protect the access with an admin token
+    Token.findOne({ code: id_token })
+    .then(token => 
+    {
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure_category_created(lang) });
+        else
+        {
+            User.findOne({ _id: token.account, is_admin: true })
+            .then(admin => 
+            {
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
+                {
+                    // Access granted
+                    new Category({ code: rng, name: new_category })
+                    .save()
+                    .then(() => 
+                    {
+                        Category.find()
+                        .then(categories => res.status(201).json({ is_success: true, message: success_category_created(lang, categories.length), data: categories }))
+                        .catch(err => res.status(400).json({ is_success: false, message: failure_category_created_but_no_retrieval(lang), error: err }));
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_category_created(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure_category_created(lang) });
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure_category_created(lang), error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_category_created(lang), error: err }));
 };
@@ -354,24 +471,59 @@ const create_new_category = (req, res) =>
 const modify_category = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
 
-    Category.findOne({ _id: req.body._id })
-    .then(category => 
+    const id_category = req.body._id;
+    const updated_category = req.body.updated_category;
+    let is_input_valid = true;
+
+    // Input is invalid
+    if (!is_input_valid)
     {
-        if (!category)
-        {
-            res.status(404).json({ is_success: false, message: failure_category_modified(lang) });
-            return;
-        }
+        res.status(400).json({ is_success: false, message: failure_category_modified(lang) });
+        return;
+    }
 
-        Category.updateOne({ _id: req.body._id }, { name: req.body.updated_category })
-        .then(() => 
+    // Protect the access with an admin token
+    Token.findOne({ code: id_token })
+    .then(token => 
+    {
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure_category_modified(lang) });
+        else
         {
-            Category.find()
-            .then(categories => res.status(201).json({ is_success: true, message: success_category_modified(lang, categories.length), data: categories }))
-            .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified_but_no_retrieval(lang), error: err }));
-        })
-        .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified(lang), error: err }));
+            User.findOne({ _id: token.account, is_admin: true })
+            .then(admin => 
+            {
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
+                {
+                    // Access granted
+                    Category.findOne({ _id: id_category })
+                    .then(category => 
+                    {
+                        if (!category)
+                        {
+                            res.status(404).json({ is_success: false, message: failure_category_modified(lang) });
+                            return;
+                        }
+
+                        Category.updateOne({ _id: id_catgegory }, { name: updated_category })
+                        .then(() => 
+                        {
+                            Category.find()
+                            .then(categories => res.status(201).json({ is_success: true, message: success_category_modified(lang, categories.length), data: categories }))
+                            .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified_but_no_retrieval(lang), error: err }));
+                        })
+                        .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified(lang), error: err }));
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure_category_modified(lang) });
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified(lang), error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_category_modified(lang), error: err }));
 };
@@ -379,23 +531,49 @@ const modify_category = (req, res) =>
 const delete_category = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
 
-    Article.findOne({ categories: { $in: [req.body._id] }})
-    .then(article => 
+    const id_category = req.body._id;
+
+    // Protect the access with an admin token
+    Token.findOne({ code: id_token })
+    .then(token => 
     {
-        if (article)
-            res.status(400).json({ is_success: false, message: failure_category_deletion_not_empty(lang) });
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure_category_deleted(lang) });
         else
         {
-            Category.deleteOne({ _id: req.body._id })
-            .then(() => 
+            User.findOne({ _id: token.account, is_admin: true })
+            .then(admin => 
             {
-                Category.find()
-                .then(categories => res.status(200).json({ is_success: true, message: success_category_deleted(lang, categories.length), data: categories }))
-                .catch(err => res.status(400).json({ is_success: false, message: failure_category_deleted_but_no_retrieval(lang) }));
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
+                {
+                    // Access granted
+                    Article.findOne({ categories: { $in: [id_category] }})
+                    .then(article => 
+                    {
+                        if (article)
+                            res.status(400).json({ is_success: false, message: failure_category_deletion_not_empty(lang) });
+                        else
+                        {
+                            Category.deleteOne({ _id: id_category })
+                            .then(() => 
+                            {
+                                Category.find()
+                                .then(categories => res.status(200).json({ is_success: true, message: success_category_deleted(lang, categories.length), data: categories }))
+                                .catch(err => res.status(400).json({ is_success: false, message: failure_category_deleted_but_no_retrieval(lang) }));
+                            })
+                            .catch(err => res.status(400).json({ is_success: false, message: failure_category_deleted(lang), error: err }));
+                        }
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_category_deleted(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure_category_deleted(lang) });
             })
             .catch(err => res.status(400).json({ is_success: false, message: failure_category_deleted(lang), error: err }));
-        }	
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_category_deleted(lang), error: err }));
 };

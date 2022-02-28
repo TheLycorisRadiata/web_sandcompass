@@ -47,9 +47,12 @@ const Stats = (props) =>
 
     const handle_click = e => 
     {
+        const id_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
+        const id_account = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
+
         e.preventDefault();
 
-        fetch(`${package_info.api}/user/${ct.lang}/stats/all`)
+        fetch(`${package_info.api}/user/${ct.lang}/stats/all/${id_token}/${id_account}`)
         .then(res => res.json())
         .then(json => 
         {

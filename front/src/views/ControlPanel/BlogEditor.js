@@ -198,7 +198,12 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ new_category: [parsed_category_eng, parsed_category_fr, parsed_category_jp] })
+                body: JSON.stringify(
+                {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
+                    new_category: [parsed_category_eng, parsed_category_fr, parsed_category_jp]
+                })
             })
             .then(res => res.json())
             .then(json => 
@@ -232,7 +237,12 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ _id: managed_category })
+                body: JSON.stringify(
+                {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
+                    _id: managed_category
+                })
             })
             .then(res => res.json())
             .then(json => 
@@ -303,6 +313,8 @@ const BlogEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
                     _id: managed_category,
                     updated_category: [updated_eng, updated_fr, updated_jp]
                 })
@@ -360,7 +372,12 @@ const BlogEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ new_article: new_article })
+                body: JSON.stringify(
+                {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
+                    new_article: new_article
+                })
             })
             .then(res => res.json())
             .then(json => 
@@ -406,6 +423,8 @@ const BlogEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
                     _id: article._id,
                     article: updated_article
                 })
@@ -438,6 +457,8 @@ const BlogEditor = (props) =>
                 },
                 body: JSON.stringify(
                 { 
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
                     _id: article._id,
                     author: props.account_data._id,
                     author_list_articles: props.account_data.articles

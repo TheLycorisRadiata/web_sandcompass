@@ -8,7 +8,7 @@ router.post('/:lang/register', controller_mailing.send_mail_at_account_registrat
 router.post('/:lang/newsletter', controller_mailing.send_mail_at_newsletter_subscription);
 router.post('/:lang/email', controller_mailing.send_mail_at_email_update);
 router.post('/:lang/password', controller_mailing.send_mail_for_new_password);
-router.get('/:lang/newsletter/all', controller_mailing.retrieve_all_newsletters);
+router.get('/:lang/newsletter/all/:id_token/:id_account', controller_mailing.retrieve_all_newsletters);
 router.post('/:lang/newsletter/send', controller_mailing.send_newsletter);
 
 module.exports = router;

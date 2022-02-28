@@ -8,10 +8,10 @@ const {
 const execute_token = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
-    const id = req.params.id;
-    const hashed_account_id = req.params.account;
+    const id_token = req.params.id_token;
+    const id_hashed_account = req.params.id_account;
 
-    Token.findOne({ code: id })
+    Token.findOne({ code: id_token })
     .then(token => 
     {
         if (token)
@@ -24,7 +24,7 @@ const execute_token = (req, res) =>
                 .then(() => 
                 {
                     // Get rid of token
-                    Token.deleteOne({ code: id })
+                    Token.deleteOne({ code: id_token })
                     .then(() => res.status(200).json({ is_success: true, message: success_email_verified(lang) }))
                     .catch(() => res.status(200).json({ is_success: true, message: success_email_verified(lang) }));
                 })
@@ -41,7 +41,7 @@ const execute_token = (req, res) =>
                     else
                     {
                         // Get rid of token
-                        Token.deleteOne({ code: id })
+                        Token.deleteOne({ code: id_token })
                         .then(() => res.status(200).json({ is_success: true, message: success_valid_link(lang), email_address: user.email_address }))
                         .catch(() => res.status(200).json({ is_success: true, message: success_valid_link(lang), email_address: user.email_address }));
                     }
@@ -54,9 +54,7 @@ const execute_token = (req, res) =>
                 User.findOne({ _id: token.account, verified_user: true })
                 .then(user => 
                 {
-                    if (!user)
-                        res.status(404).json({ is_success: false });
-                    else if (bcrypt.compareSync(user._id.toString(), hashed_account_id))
+                    if (user && bcrypt.compareSync(user._id.toString(), id_hashed_account))
                         res.status(200).json({ is_success: true, account_data: user });
                     else
                         res.status(400).json({ is_success: false });
@@ -74,7 +72,7 @@ const execute_token = (req, res) =>
 
 const delete_login_tokens = (req, res) => 
 {
-    Token.deleteMany({ account: req.params.id, action: 'login' })
+    Token.deleteMany({ account: req.params.id_token, action: 'login' })
     .then(() => res.status(200).json({ is_success: true }))
     .catch(() => res.status(400).json({ is_success: false }));
 };

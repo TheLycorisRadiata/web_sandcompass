@@ -70,8 +70,8 @@ const FaqEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
-                    id_token: document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '',
-                    id_account: document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '',
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
                     arr_question: [eng_question, fr_question, jp_question],
                     arr_answer: [eng_answer, fr_answer, jp_answer]
                 })
@@ -140,6 +140,8 @@ const FaqEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
                     _id: e._id,
                     arr_question: [eng_edited_question, fr_edited_question, jp_edited_question],
                     arr_answer: [eng_edited_answer, fr_edited_answer, jp_edited_answer]
@@ -169,7 +171,12 @@ const FaqEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ _id: e._id })
+                body: JSON.stringify(
+                {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
+                    _id: e._id
+                })
             })
             .then(res => res.json())
             .then(json => 

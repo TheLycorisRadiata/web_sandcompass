@@ -62,7 +62,10 @@ const NewsletterEditor = (props) =>
 
     const fetch_newsletters = (trigger_alert) => 
     {
-        fetch(`${package_info.api}/mailing/${ct.lang}/newsletter/all`)
+        const id_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
+        const id_account = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
+
+        fetch(`${package_info.api}/mailing/${ct.lang}/newsletter/all/${id_token}/${id_account}`)
         .then(res => res.json())
         .then(json => 
         {
@@ -130,7 +133,12 @@ const NewsletterEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ newsletter: newsletter })
+                body: JSON.stringify(
+                {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
+                    newsletter: newsletter
+                })
             })
             .then(res => res.json())
             .then(json => 

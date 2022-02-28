@@ -11,7 +11,7 @@ router.get('/:lang/check/username/:id/:username', controller_user.is_username_al
 router.post('/:lang/create', controller_user.create_account);
 router.put('/:lang/update', controller_user.update_account);
 router.delete('/:lang/delete', controller_user.delete_account);
-router.get('/:lang/stats/all', controller_user.get_stats_on_all_users);
+router.get('/:lang/stats/all/:id_token/:id_account', controller_user.get_stats_on_all_users);
 router.get('/:lang/username/:id', controller_user.get_username_from_id);
 
 module.exports = router;

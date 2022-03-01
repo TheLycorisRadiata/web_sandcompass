@@ -14,7 +14,8 @@ const {
     success_account_deletion, 
     failure_no_non_admin_user_found, success_stats, 
     success_user_retrieval, failure_user_retrieval 
-} = require('../lang');
+} = require('../functions/lang');
+const { parse_username } = require('../functions/parsing');
 
 const connect_as_admin = (req, res) => 
 {
@@ -211,25 +212,39 @@ const create_password = (req, res) =>
 const is_email_already_used_by_another_account = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
+    const id_token = req.params.id_token;
+    const id_hashed_account = req.params.id_account;
+
     const id = req.params.id;
     const email_address = req.params.email_address.toLowerCase();
 
-    // Abort if the user who asks for the check doesn't exist
-    User.findOne({ _id: id })
-    .then(origin_user => 
+    // Protect the access with the user token
+    Token.findOne({ code: id_token })
+    .then(token => 
     {
-        if (!origin_user)
-            res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure(lang) });
         else
         {
-            User.findOne({ email_address: email_address })
+            User.findOne({ _id: token.account })
             .then(user => 
             {
-                if (user && user._id !== origin_user._id || email_address === gmail_user.toLowerCase())
-                    res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
-                // Either no account has this email address, or the account is ours, so all is good
+                if (user && bcrypt.compareSync(user._id.toString(), id_hashed_account) && String(user._id) === String(id))
+                {
+                    // Access granted
+                    User.findOne({ email_address: email_address })
+                    .then(email_user => 
+                    {
+                        if (email_user && String(email_user._id) !== String(id) || email_address === gmail_user.toLowerCase())
+                            res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
+                        // Either no account has this email address, or the account is ours, so all is good
+                        else
+                            res.status(200).json({ is_success: true, message: success_email_available(lang) });
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
+                }
                 else
-                    res.status(200).json({ is_success: true, message: success_email_available(lang) });
+                    res.status(400).json({ is_success: false, message: failure(lang) });
             })
             .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
         }
@@ -240,17 +255,43 @@ const is_email_already_used_by_another_account = (req, res) =>
 const is_username_already_used_by_another_account = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
+    const id_token = req.params.id_token;
+    const id_hashed_account = req.params.id_account;
+
     const id = req.params.id;
 
-    // The username's search is case insensitive
-    User.findOne({ username: { $regex: '^' + req.params.username + '$', $options: 'i' }})
-    .then(user => 
+    // Protect the access with the user token
+    Token.findOne({ code: id_token })
+    .then(token => 
     {
-        if (user && user._id.toString() !== id)
-            res.status(400).json({ is_success: false, message: failure_username_already_in_use(lang) });
-        // Either no account has this username, or the account is ours, so all is good
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure(lang) });
         else
-            res.status(200).json({ is_success: true, message: success_username_available(lang) });
+        {
+            User.findOne({ _id: token.account })
+            .then(user => 
+            {
+                if (user && bcrypt.compareSync(user._id.toString(), id_hashed_account) && String(user._id) === String(id))
+                {
+                    // Access granted
+
+                    // The username's search is case insensitive
+                    User.findOne({ username: { $regex: '^' + req.params.username + '$', $options: 'i' }})
+                    .then(username_user => 
+                    {
+                        if (username_user && String(username_user._id) !== String(id))
+                            res.status(400).json({ is_success: false, message: failure_username_already_in_use(lang) });
+                        // Either no account has this username, or the account is ours, so all is good
+                        else
+                            res.status(200).json({ is_success: true, message: success_username_available(lang) });
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure(lang) });
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
@@ -260,21 +301,41 @@ const create_account = (req, res) =>
     const lang = parseInt(req.params.lang);
     const salt_rounds = 10;
     const salt = bcrypt.genSaltSync(salt_rounds);
-    const password = req.body.password !== undefined ? req.body.password : null;
+
+    const email_address = req.body.email_address.toLowerCase();
+    const username = parse_username(req.body.username);
+    const newsletter = req.body.newsletter;
+    const language = parseInt(req.body.language, 10);
+    // "password" is optional, we make it null if it's undefined or something other than a non-empty string
+    const password = !req.body.password || typeof req.body.password !== 'string' ? null : req.body.password;
     let hashed_password = null;
+    let is_input_valid = true;
+
+    // "username" is either valid or an empty string after being parsed by parse_username()
+    // "email_address" and "username" must be non-empty strings
+    // "newsletter" must be a boolean
+    // "language" must be an integer between 0 and 2
+    if (!email_address || typeof email_address !== 'string' || !username 
+        || typeof newsletter !== 'boolean' 
+        || !Number.isInteger(language) || language < 0 || language > 2)
+    {
+        // Input is invalid
+        res.status(400).json({ is_success: false, message: failure_account_creation(lang) });
+        return;
+    }
 
     // Check for whether an account with this email address already exists
-    User.findOne({ email_address: req.body.email_address.toLowerCase() })
+    User.findOne({ email_address: email_address })
     .then(email_user => 
     {
-        if (email_user || req.body.email_address.toLowerCase() === gmail_user)
+        if (email_user || email_address === gmail_user)
         {
             res.status(400).json({ is_success: false, message: failure_email_already_in_use(lang) });
             return;
         }
 
         // Check for whether an account with this username already exists (case insensitive)
-        User.findOne({ username: { $regex: '^' + req.params.username + '$', $options: 'i' }})
+        User.findOne({ username: { $regex: '^' + username + '$', $options: 'i' }})
         .then(username_user => 
         {
             if (username_user)
@@ -297,12 +358,11 @@ const create_account = (req, res) =>
 
             new User(
             {
-                rank: req.body.rank !== undefined ? req.body.rank : 0,
-                email_address: req.body.email_address.toLowerCase(),
+                email_address: email_address,
                 hashed_password: hashed_password,
-                username: req.body.username,
-                newsletter: req.body.newsletter,
-                language: req.body.language
+                username: username,
+                newsletter: newsletter,
+                language: language
             })
             .save()
             .then(() => res.status(201).json({ is_success: true, message: success_account_creation(lang) }))
@@ -316,28 +376,88 @@ const create_account = (req, res) =>
 const update_account = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
-    const id = req.body._id;
-    const updated_account = req.body.updated_account;
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
 
-    User.findOne({ _id: id })
-    .then(user => 
+    const id = req.body._id;
+    const updated_account = 
     {
-        if (!user)
-            res.status(404).json({ is_success: false, message: failure_account_update(lang) });
+        username: parse_username(req.body.updated_account.username),
+        email_address: req.body.updated_account.email_address.toLowerCase(),
+        verified_user: req.body.updated_account.verified_user,
+        language: parseInt(req.body.updated_account.language, 10),
+        newsletter: req.body.updated_account.newsletter
+    };
+
+    // worst case, "username" is an empty string after being parsed by parse_username()
+    // "username" and "email_address" must be non-empty strings
+    // "language" is an integer between 0 and 2
+    // "newsletter" is a boolean
+    if (!updated_account.username || !updated_account.email_address || typeof updated_account.email_address !== 'string' 
+        || !Number.isInteger(updated_account.language) || updated_account.language < 0 || updated_account.language > 2 
+        || typeof updated_account.newsletter !== 'boolean')
+    {
+        // Input is invalid
+        res.status(400).json({ is_success: false, message: failure_account_update(lang) });
+        return;
+    }
+
+    // Protect the access with the user token
+    Token.findOne({ code: id_token })
+    .then(token => 
+    {
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure_account_update(lang) });
         else
         {
-            // Prevent "is_admin" from being changed
-            updated_account.is_admin = user.is_admin;
-            // Make sure the email address is in lower case
-            updated_account.email_address = updated_account.email_address.toLowerCase();
-
-            User.updateOne({ _id: id }, updated_account)
-            .then(() => 
+            User.findOne({ _id: token.account })
+            .then(user => 
             {
-                // Return the updated user to the front
-                User.findOne({ _id: id })
-                .then(account => res.status(200).json({ is_success: true, data: account, message: success_account_update(lang) }))
-                .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
+                if (user && bcrypt.compareSync(user._id.toString(), id_hashed_account) && String(user._id) === String(id))
+                {
+                    // Access granted
+
+                    // "username" must not be already used by another account (the username's search is case insensitive)
+                    User.findOne({ username: { $regex: '^' + updated_account.username + '$', $options: 'i' }})
+                    .then(username_user => 
+                    {
+                        if (username_user && String(username_user._id) !== String(id))
+                            res.status(400).json({ is_success: false, message: failure_account_update(lang) });
+                        // Either no account has this username, or the account is ours, so all is good
+                        else
+                        {
+                            // "email_address" must not be already used by another account
+                            User.findOne({ email_address: updated_account.email_address })
+                            .then(email_user => 
+                            {
+                                if (email_user && String(email_user._id) !== String(id) || updated_account.email_address === gmail_user.toLowerCase())
+                                    res.status(400).json({ is_success: false, message: failure_account_update(lang) });
+                                // Either no account has this email address, or the account is ours, so all is good
+                                else
+                                {
+                                    // if email is updated, then "verified_user" is false, otherwise it's unchanged
+                                    if (user.email_address !== updated_account.email_address)
+                                        updated_account.verified_user = false;
+
+                                    // Update account
+                                    User.updateOne({ _id: id }, updated_account)
+                                    .then(() => 
+                                    {
+                                        // Return the updated user to the front
+                                        User.findOne({ _id: id })
+                                        .then(account => res.status(200).json({ is_success: true, data: account, message: success_account_update(lang) }))
+                                        .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
+                                    })
+                                    .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
+                                }
+                            })
+                            .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
+                        }
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure_account_update(lang) });
             })
             .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
         }
@@ -348,15 +468,40 @@ const update_account = (req, res) =>
 const delete_account = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
-    const id = req.body.id_user_to_delete;
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
 
-    User.deleteOne({ _id: id })
-    .then(() => 
+    const id_user_to_delete = req.body.id_user_to_delete;
+
+    // Protect the access with the user token
+    Token.findOne({ code: id_token })
+    .then(token => 
     {
-        // Delete tokens related to this account
-        Token.deleteMany({ account: id })
-        .then(() => res.status(200).json({ is_success: true, message: success_account_deletion(lang) }))
-        .catch(() => res.status(200).json({ is_success: true, message: success_account_deletion(lang) }));
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure(lang) });
+        else
+        {
+            User.findOne({ _id: token.account })
+            .then(user => 
+            {
+                if (user && bcrypt.compareSync(user._id.toString(), id_hashed_account) && String(user._id) === String(id_user_to_delete))
+                {
+                    // Access granted
+                    User.deleteOne({ _id: id_user_to_delete })
+                    .then(() => 
+                    {
+                        // Delete tokens related to this account
+                        Token.deleteMany({ account: id_user_to_delete })
+                        .then(() => res.status(200).json({ is_success: true, message: success_account_deletion(lang) }))
+                        .catch(() => res.status(200).json({ is_success: true, message: success_account_deletion(lang) }));
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure(lang) });
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
+        }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
@@ -364,6 +509,8 @@ const delete_account = (req, res) =>
 const get_stats_on_all_users = (req, res) =>
 {
     const lang = parseInt(req.params.lang);
+    const id_token = req.params.id_token;
+    const id_hashed_account = req.params.id_account;
 
     const stats =
     {
@@ -381,21 +528,43 @@ const get_stats_on_all_users = (req, res) =>
         }
     };
 
-    User.find({ is_admin: false })
-    .then(users =>
+    // Protect the access with an admin token
+    Token.findOne({ code: id_token })
+    .then(token => 
     {
-        if (!users.length)
-            res.status(404).json({ is_success: false, message: failure_no_non_admin_user_found(lang) });
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure(lang) });
         else
         {
-            stats.accounts.total = users.length;
-            stats.accounts.verified_user = users.filter(e => e.verified_user).length;
-            stats.accounts.newsletter = users.filter(e => e.newsletter).length;
-            stats.accounts.language.english = users.filter(e => e.language === 0).length;
-            stats.accounts.language.french = users.filter(e => e.language === 1).length;
-            stats.accounts.language.japanese = users.filter(e => e.language === 2).length;
+            User.findOne({ _id: token.account, is_admin: true })
+            .then(admin => 
+            {
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
+                {
+                    // Access granted
+                    User.find({ is_admin: false })
+                    .then(users =>
+                    {
+                        if (!users.length)
+                            res.status(404).json({ is_success: false, message: failure_no_non_admin_user_found(lang) });
+                        else
+                        {
+                            stats.accounts.total = users.length;
+                            stats.accounts.verified_user = users.filter(e => e.verified_user).length;
+                            stats.accounts.newsletter = users.filter(e => e.newsletter).length;
+                            stats.accounts.language.english = users.filter(e => e.language === 0).length;
+                            stats.accounts.language.french = users.filter(e => e.language === 1).length;
+                            stats.accounts.language.japanese = users.filter(e => e.language === 2).length;
 
-            res.status(200).json({ is_success: true, message: success_stats(lang), data: stats });
+                            res.status(200).json({ is_success: true, message: success_stats(lang), data: stats });
+                        }
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure(lang) });
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
         }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));

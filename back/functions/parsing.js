@@ -1,9 +1,6 @@
-import { username_disclaimer, username_disclaimer_and_display } from './lang';
-
-const parse_username = (lang, username) => 
+const parse_username = (username) => 
 {
     let parsed_username = !username || typeof username !== 'string' ? '' : username.split('');
-    let user_approves = false;
     let i;
 
     // Remove < > [ ] and `
@@ -17,14 +14,7 @@ const parse_username = (lang, username) =>
     // Remove spaces
     parsed_username = parsed_username.replace(/\s/g, '');
 
-    if (parsed_username === username)
-        user_approves = true;
-    else if (parsed_username === '')
-        alert(username_disclaimer(lang));
-    else
-        user_approves = window.confirm(username_disclaimer_and_display(lang, parsed_username)); 
-
-    return { parsed_username: parsed_username, user_approves: user_approves };
+    return parsed_username;
 };
 
 const parse_category = (category) => 
@@ -56,7 +46,7 @@ const parse_category = (category) =>
     return parsed_category;
 };
 
-export
+module.exports = 
 {
     parse_username,
     parse_category

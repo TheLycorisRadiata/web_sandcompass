@@ -1,7 +1,7 @@
 const Currency = require('../models/currency');
 const {
     success_currencies_retrieval, failure_currencies_retrieval 
-} = require('../lang');
+} = require('../functions/lang');
 
 const retrieve_all_currencies = (req, res) => 
 {

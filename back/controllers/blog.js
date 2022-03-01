@@ -1,3 +1,4 @@
+const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const Article = require('../models/article');
@@ -16,7 +17,8 @@ const {
     failure_category_modified, success_category_modified, failure_category_modified_but_no_retrieval, 
     failure_category_deletion_not_empty, success_category_deleted, failure_category_deleted_but_no_retrieval, failure_category_deleted, 
     failure_article_not_found, failure_account_not_found, failure, success_vote_counted, failure_vote_counted 
-} = require('../lang');
+} = require('../functions/lang');
+const { parse_category } = require('../functions/parsing');
 
 const retrieve_articles = (req, res) => 
 {
@@ -224,14 +226,75 @@ const post_new_article = (req, res) =>
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
-    const new_article = new Article({ ...req.body.new_article });
-    const id_new_article = new_article._id;
     const rng = uuidv4().split('-');
+    let new_article = 
+    {
+        code: rng[rng.length - 1], // last part of the rng array (12 character long string)
+        categories: req.body.new_article.categories,
+        title: req.body.new_article.title,
+        author: req.body.new_article.author,
+        content: req.body.new_article.content
+    };
     let arr_user_written_articles = null;
     let is_input_valid = true;
 
-    // last part of the rng array (12 character long string)
-    new_article.code = rng[rng.length - 1]
+    // "categories", "title", and "content" need to be arrays
+    // "categories" must have at least one element
+    // "title" and "content" must have 3 elements
+    if (!Array.isArray(new_article.categories) || !Array.isArray(new_article.title) || !Array.isArray(new_article.content) 
+        || !new_article.categories.length || new_article.title.length !== 3 || new_article.content.length !== 3)
+        is_input_valid = false;
+
+    // Elements of "title" must be non-empty strings
+    if (is_input_valid)
+    {
+        for (const element of new_article.title)
+        {
+            if (!element || typeof element !== 'string')
+            {
+                is_input_valid = false;
+                break;
+            }
+        }
+    }
+
+    // Elements of "content" must be non-empty strings
+    if (is_input_valid)
+    {
+        for (const element of new_article.content)
+        {
+            if (!element || typeof element !== 'string')
+            {
+                is_input_valid = false;
+                break;
+            }
+        }
+    }
+
+    // Elements of "categories" must be MongoDB IDs
+    if (is_input_valid)
+    {
+        for (const element of new_article.categories)
+        {
+            const id = new ObjectId(element);
+
+            // If element is an invalid ID, new ObjectId() would create a new ID
+            // But if it's a valid ID, then it won't change
+            if (String(id) !== String(element))
+            {
+                is_input_valid = false;
+                break;
+            }
+        }
+    }
+
+    // "author" must be a MongoDB ID
+    if (is_input_valid)
+    {
+        const id = new ObjectId(new_article.author);
+        if (String(id) !== String(new_article.author))
+            is_input_valid = false;
+    }
 
     // Input is invalid
     if (!is_input_valid)
@@ -239,6 +302,9 @@ const post_new_article = (req, res) =>
         res.status(400).json({ is_success: false, message: failure_article_posted(lang) });
         return;
     }
+
+    // Create the MongoDB document now so we can get its ID without needing findOne()
+    new_article = new Article({ ...new_article });
 
     // Protect the access with an admin token
     Token.findOne({ code: id_token })
@@ -258,7 +324,7 @@ const post_new_article = (req, res) =>
                     .then(() => 
                     {
                         arr_user_written_articles = [...admin.articles.written];
-                        arr_user_written_articles.push(id_new_article);
+                        arr_user_written_articles.push(new_article._id);
 
                         User.updateOne({ _id: admin._id }, 
                         {
@@ -294,7 +360,66 @@ const modify_article = (req, res) =>
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
+    const id_article = req.body._id;
+    const updated_article = 
+    {
+        is_modified: true,
+        time_modification: Date.now(),
+        categories: req.body.article.categories,
+        title: req.body.article.title,
+        content: req.body.article.content
+    };
     let is_input_valid = true;
+
+    // "categories", "title", and "content" need to be arrays
+    // "categories" must have at least one element
+    // "title" and "content" must have 3 elements
+    if (!Array.isArray(updated_article.categories) || !Array.isArray(updated_article.title) || !Array.isArray(updated_article.content) 
+        || !updated_article.categories.length || updated_article.title.length !== 3 || updated_article.content.length !== 3)
+        is_input_valid = false;
+
+    // Elements of "title" must be non-empty strings
+    if (is_input_valid)
+    {
+        for (const element of updated_article.title)
+        {
+            if (!element || typeof element !== 'string')
+            {
+                is_input_valid = false;
+                break;
+            }
+        }
+    }
+
+    // Elements of "content" must be non-empty strings
+    if (is_input_valid)
+    {
+        for (const element of updated_article.content)
+        {
+            if (!element || typeof element !== 'string')
+            {
+                is_input_valid = false;
+                break;
+            }
+        }
+    }
+
+    // Elements of "categories" must be MongoDB IDs
+    if (is_input_valid)
+    {
+        for (const element of updated_article.categories)
+        {
+            const id = new ObjectId(element);
+
+            // If element is an invalid ID, new ObjectId() would create a new ID
+            // But if it's a valid ID, then it won't change
+            if (String(id) !== String(element))
+            {
+                is_input_valid = false;
+                break;
+            }
+        }
+    }
 
     // Input is invalid
     if (!is_input_valid)
@@ -317,14 +442,7 @@ const modify_article = (req, res) =>
                 if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
                 {
                     // Access granted
-                    Article.updateOne({ _id: req.body._id },
-                    {
-                        time_modification: req.body.article.time_modification,
-                        is_modified: true,
-                        categories: req.body.article.categories,
-                        title: req.body.article.title,
-                        content: req.body.article.content
-                    })
+                    Article.updateOne({ _id: id_article }, updated_article)
                     .then(() => 
                     {
                         Article.find()
@@ -363,7 +481,7 @@ const delete_article = (req, res) =>
             User.findOne({ _id: token.account, is_admin: true })
             .then(admin => 
             {
-                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account) && String(admin._id) === String(id_author))
                 {
                     // Access granted
 
@@ -425,8 +543,30 @@ const create_new_category = (req, res) =>
     const id_hashed_account = req.body.id_account;
 
     const rng = uuidv4().substring(0, 4);
-    const new_category = req.body.new_category;
+    let new_category = req.body.new_category;
     let is_input_valid = true;
+    let i;
+
+    // "new_category" needs to be an array of 3 elements
+    if (!Array.isArray(new_category) || new_category.length !== 3)
+        is_input_valid = false;
+
+    // Elements of "new_category" must non-empty strings
+    if (is_input_valid)
+    {
+        for (i = 0; i < new_category.length; ++i)
+        {
+            // Parse the category, worst case it becomes an empty string
+            new_category[i] = parse_category(new_category[i]);
+
+            // Check for whether the string is empty
+            if (!new_category[i])
+            {
+                is_input_valid = false;
+                break;
+            }
+        }
+    }
 
     // Input is invalid
     if (!is_input_valid)
@@ -477,6 +617,28 @@ const modify_category = (req, res) =>
     const id_category = req.body._id;
     const updated_category = req.body.updated_category;
     let is_input_valid = true;
+    let i;
+
+    // "updated_category" needs to be an array of 3 elements
+    if (!Array.isArray(updated_category) || updated_category.length !== 3)
+        is_input_valid = false;
+
+    // Elements of "updated_category" must non-empty strings
+    if (is_input_valid)
+    {
+        for (i = 0; i < updated_category.length; ++i)
+        {
+            // Parse the category, worst case it becomes an empty string
+            updated_category[i] = parse_category(updated_category[i]);
+
+            // Check for whether the string is empty
+            if (!updated_category[i])
+            {
+                is_input_valid = false;
+                break;
+            }
+        }
+    }
 
     // Input is invalid
     if (!is_input_valid)
@@ -508,7 +670,7 @@ const modify_category = (req, res) =>
                             return;
                         }
 
-                        Category.updateOne({ _id: id_catgegory }, { name: updated_category })
+                        Category.updateOne({ _id: id_category }, { name: updated_category })
                         .then(() => 
                         {
                             Category.find()

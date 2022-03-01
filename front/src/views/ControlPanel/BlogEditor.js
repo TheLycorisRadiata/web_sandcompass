@@ -356,9 +356,6 @@ const BlogEditor = (props) =>
             alert(disclaimer_blog_editor_content(ct.lang));
         else
         {
-            new_article.time_creation = Date.now();
-            new_article.time_modification = Date.now();
-            new_article.is_modified = false;
             new_article.categories = article.categories;
             new_article.title = article.title;
             new_article.author = props.account_data._id;
@@ -405,12 +402,8 @@ const BlogEditor = (props) =>
             alert(disclaimer_blog_editor_content(ct.lang));
         else
         {
-            updated_article.time_creation = article.time_creation;
-            updated_article.time_modification = Date.now();
-            updated_article.is_modified = true;
             updated_article.categories = article.categories;
             updated_article.title = article.title;
-            updated_article.author = props.account_data._id;
             updated_article.content = article.content;
 
             fetch(`${package_info.api}/blog/${ct.lang}/articles`,

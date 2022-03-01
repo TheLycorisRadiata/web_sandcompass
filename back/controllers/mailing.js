@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const markdown = require( "markdown" ).markdown;
+const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const User = require('../models/user');
 const Token = require('../models/token');
@@ -14,7 +15,7 @@ const {
     title_password_email, click_password_link, failure_email_has_to_be_verified, success_password_email, 
     nbr_loaded_newsletters, failure, 
     success_newsletter_saved_and_not_sent, failure_newsletter_saved_but_no_lang_subscriber, failure_newsletter_saved_but_not_sent, failure_newsletter_sent_but_none_found, success_newsletter_sent, failure_newsletter_sent_but_not_declared_as_sent 
-} = require('../lang');
+} = require('../functions/lang');
 
 const send_visitor_mail_to_admin = (req, res) => 
 {
@@ -40,14 +41,23 @@ const send_visitor_mail_to_admin = (req, res) =>
     const business_name = req.body.business_name === '' ? '' : ' of the company ' + req.body.business_name;
     const name = req.body.name;
     const email_address = req.body.email_address.toLowerCase();
-    const subject = req.body.subject === 'subject_work_cosmic_dust' ? 'Projects - Book: Cosmic Dust' 
+    const subject = !req.body.subject && typeof req.body.subject !== 'string' ? null 
+        : req.body.subject === 'subject_work_cosmic_dust' ? 'Projects - Book: Cosmic Dust' 
         : req.body.subject === 'subject_work_persistence' ? 'Projects - Game: Persistence' 
         : req.body.subject === 'subject_work_other' ? 'Projects - Another project' 
         : req.body.subject === 'subject_website' ? 'Misc - This website' 
         : req.body.subject === 'subject_legal' ? 'Misc - Legal stuff' 
         : req.body.subject === 'subject_other' ? 'Misc - Other' 
-        : 'NO SUBJECT SELECTED';
+        : null;
     const message = req.body.message;
+
+    // Input is invalid
+    if (!business_name || typeof business_name !== 'string' || !name || typeof name !== 'string' 
+        || !email_address || typeof email_address !== 'string' || !subject || !message || typeof message !== 'string')
+    {
+        res.status(400).json({ is_success: false, message: failure_try_again(lang) });
+        return;
+    }
 
     // Instantiation of the SMTP server
     const smtp_trans = nodemailer.createTransport(
@@ -426,127 +436,209 @@ const send_mail_for_new_password = (req, res) =>
 const retrieve_all_newsletters = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
+    const id_token = req.params.id_token;
+    const id_hashed_account = req.params.id_account;
 
-    Newsletter.find()
-    .then(newsletters => res.status(200).json({ is_success: true, data: newsletters, message: nbr_loaded_newsletters(lang, newsletters.length) }))
+    // Protect the access with an admin token
+    Token.findOne({ code: id_token })
+    .then(token => 
+    {
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false, message: failure(lang) });
+        else
+        {
+            User.findOne({ _id: token.account, is_admin: true })
+            .then(admin => 
+            {
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
+                {
+                    // Access granted
+                    Newsletter.find()
+                    .then(newsletters => res.status(200).json({ is_success: true, data: newsletters, message: nbr_loaded_newsletters(lang, newsletters.length) }))
+                    .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
+                }
+                else
+                    res.status(400).json({ is_success: false, message: failure(lang) });
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
+        }
+    })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
 };
 
 const send_newsletter = (req, res) => 
 {
     const lang = parseInt(req.params.lang);
-    const newsletter = req.body.newsletter;
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
+
+    const newsletter = 
+    {
+        _id: req.body.newsletter._id, // null if newsletter is new
+        object: req.body.newsletter.object,
+        html_message: req.body.newsletter.html_message,
+        language: parseInt(req.body.newsletter.language, 10),
+        do_send: req.body.newsletter.do_send
+    };
+    let is_input_valid = true;
+
     let has_an_error_occured = false;
     let smtp_trans = null;
     let mail_options = null;
     let email_addresses = [];
 
-    // Look for the "in-progress" newsletter in DB
-    Newsletter.findOne({ _id: newsletter._id, is_sent: false })
-    .then(element => 
+    // There's no need to check for the validity of newsletter._id, as it's used in findOne(), so if it's not valid it will simply not work
+    // "object" and "html_message" must be non-empty strings
+    // "language" must be an integer between 0 and 2
+    // "do_send" must be a boolean
+    if (!newsletter.object || typeof newsletter.object !== 'string' 
+        || !Number.isInteger(newsletter.language) || newsletter.language < 0 || newsletter.language > 2 
+        || typeof newsletter.do_send !== 'boolean')
+        is_input_valid = false;
+
+    // Input is invalid
+    if (!is_input_valid)
     {
-        // The newsletter was indeed previously saved in DB
-        if (element)
-        {
-            // Update the newsletter in DB
-            Newsletter.updateOne({ _id: element._id }, 
-            {
-                object: newsletter.object,
-                html_message: newsletter.html_message,
-                date: Date.now(),
-                language: newsletter.language
-            })
-            .catch(() => has_an_error_occured = true)
-        }
-        // This newsletter is written on the spot
-        else
-        {
-            // Create the newsletter in DB
-            new Newsletter(
-            {
-                object: newsletter.object,
-                html_message: newsletter.html_message,
-                language: newsletter.language
-            })
-            .save()
-            .catch(() => has_an_error_occured = true);
-        }
+        res.status(400).json({ is_success: false, message: failure_try_again(lang) });
+        return;
+    }
 
-        if (has_an_error_occured)
-        {
+    // Protect the access with an admin token
+    Token.findOne({ code: id_token })
+    .then(token => 
+    {
+        if (!token || token.action !== 'login')
             res.status(400).json({ is_success: false, message: failure_try_again(lang) });
-        }
-        else if (!newsletter.do_send)
-        {
-            res.status(200).json({ is_success: true, message: success_newsletter_saved_and_not_sent(lang) });
-        }
-        // Send the newsletter, and upon success update its date and its "is_sent" attribute to true
         else
         {
-            User.find({ newsletter: true, language: newsletter.language })
-            .then(users => 
+            User.findOne({ _id: token.account, is_admin: true })
+            .then(admin => 
             {
-                if (!users.length)
-                    res.status(404).json({ is_success: false, message: failure_newsletter_saved_but_no_lang_subscriber(lang) });
-                else
+                if (admin && bcrypt.compareSync(admin._id.toString(), id_hashed_account))
                 {
-                    smtp_trans = nodemailer.createTransport(
+                    // Access granted
+
+                    // Look for the "in-progress" newsletter in DB
+                    Newsletter.findOne({ _id: newsletter._id, is_sent: false })
+                    .then(element => 
                     {
-                        host: 'smtp.gmail.com',
-                        port: 465,
-                        secure: true,
-                        auth:
+                        // The newsletter was indeed previously saved in DB
+                        if (element)
                         {
-                            type: 'OAuth2',
-                            user: gmail_user,
-                            serviceClient: key.client_id,
-                            privateKey: key.private_key
+                            // Abort, as the newsletter has actually already been sent
+                            if (element.is_sent)
+                            {
+                                res.status(400).json({ is_success: false, message: failure_try_again(lang) });
+                                return;
+                            }
+
+                            // Update the newsletter in DB
+                            Newsletter.updateOne({ _id: element._id }, 
+                            {
+                                object: newsletter.object,
+                                html_message: newsletter.html_message,
+                                date: Date.now(),
+                                language: newsletter.language
+                            })
+                            .catch(() => has_an_error_occured = true)
                         }
-                    });
-
-                    mail_options = 
-                    {
-                        from: `"Sand Compass" <${gmail_user}>`,
-                        to: [],
-                        subject: newsletter.object,
-                        html: '<html><body>' + markdown.toHTML(newsletter.html_message) + '</body></html>'
-                    };
-
-                    for (const user of users)
-                        email_addresses.push(`"${user.username}" <${user.email_address}>`);
-                    mail_options.bcc = email_addresses;
-
-                    smtp_trans.sendMail(mail_options, (error, response) => 
-                    {
-                        if (error)
-                            res.status(400).json({ is_success: false, message: failure_newsletter_saved_but_not_sent(lang), error: error });
+                        // This newsletter is written on the spot
                         else
                         {
-                            // The newsletter has been sent
-                            // In DB, update the newsletter's date and switch its "is_sent" attribute to true
-
-                            Newsletter.find()
-                            .then(newsletters => 
+                            // Create the newsletter in DB
+                            new Newsletter(
                             {
-                                if (!newsletters.length)
-                                    res.status(404).json({ is_success: false, message: failure_newsletter_sent_but_none_found(lang) });
+                                object: newsletter.object,
+                                html_message: newsletter.html_message,
+                                language: newsletter.language
+                            })
+                            .save()
+                            .catch(() => has_an_error_occured = true);
+                        }
+
+                        if (has_an_error_occured)
+                        {
+                            res.status(400).json({ is_success: false, message: failure_try_again(lang) });
+                        }
+                        else if (!newsletter.do_send)
+                        {
+                            res.status(200).json({ is_success: true, message: success_newsletter_saved_and_not_sent(lang) });
+                        }
+                        // Send the newsletter, and upon success update its date and its "is_sent" attribute to true
+                        else
+                        {
+                            User.find({ newsletter: true, language: newsletter.language })
+                            .then(users => 
+                            {
+                                if (!users.length)
+                                    res.status(404).json({ is_success: false, message: failure_newsletter_saved_but_no_lang_subscriber(lang) });
                                 else
                                 {
-                                    Newsletter.updateOne(element ? { _id: element._id } : { _id: newsletters[newsletters.length - 1]._id }, 
+                                    smtp_trans = nodemailer.createTransport(
                                     {
-                                        is_sent: true,
-                                        date: Date.now()
-                                    })
-                                    .then(() => res.status(200).json({ is_success: true, message: success_newsletter_sent(lang) }))
-                                    .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_sent_but_not_declared_as_sent(lang), error: err }));
+                                        host: 'smtp.gmail.com',
+                                        port: 465,
+                                        secure: true,
+                                        auth:
+                                        {
+                                            type: 'OAuth2',
+                                            user: gmail_user,
+                                            serviceClient: key.client_id,
+                                            privateKey: key.private_key
+                                        }
+                                    });
+
+                                    mail_options = 
+                                    {
+                                        from: `"Sand Compass" <${gmail_user}>`,
+                                        to: [],
+                                        subject: newsletter.object,
+                                        html: '<html><body>' + markdown.toHTML(newsletter.html_message) + '</body></html>'
+                                    };
+
+                                    for (const user of users)
+                                        email_addresses.push(`"${user.username}" <${user.email_address}>`);
+                                    mail_options.bcc = email_addresses;
+
+                                    smtp_trans.sendMail(mail_options, (error, response) => 
+                                    {
+                                        if (error)
+                                            res.status(400).json({ is_success: false, message: failure_newsletter_saved_but_not_sent(lang), error: error });
+                                        else
+                                        {
+                                            // The newsletter has been sent
+                                            // In DB, update the newsletter's date and switch its "is_sent" attribute to true
+
+                                            Newsletter.find()
+                                            .then(newsletters => 
+                                            {
+                                                if (!newsletters.length)
+                                                    res.status(404).json({ is_success: false, message: failure_newsletter_sent_but_none_found(lang) });
+                                                else
+                                                {
+                                                    Newsletter.updateOne(element ? { _id: element._id } : { _id: newsletters[newsletters.length - 1]._id }, 
+                                                    {
+                                                        is_sent: true,
+                                                        date: Date.now()
+                                                    })
+                                                    .then(() => res.status(200).json({ is_success: true, message: success_newsletter_sent(lang) }))
+                                                    .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_sent_but_not_declared_as_sent(lang), error: err }));
+                                                }
+                                            })
+                                            .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_sent_but_not_declared_as_sent(lang), error: err }));
+                                        }
+                                    });
                                 }
                             })
-                            .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_sent_but_not_declared_as_sent(lang), error: err }));
+                            .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_saved_but_not_sent(lang), error: error }));
                         }
-                    });
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_try_again(lang), error: err }));
                 }
+                else
+                    res.status(400).json({ is_success: false, message: failure_try_again(lang) });
             })
-            .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_saved_but_not_sent(lang), error: error }));
+            .catch(err => res.status(400).json({ is_success: false, message: failure_try_again(lang), error: err }));
         }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_try_again(lang), error: err }));

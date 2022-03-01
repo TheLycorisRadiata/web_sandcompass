@@ -3,7 +3,7 @@ const Token = require('../models/token');
 const User = require('../models/user');
 const {
     success_email_verified, failure_expired_link, success_valid_link 
-} = require('../lang');
+} = require('../functions/lang');
 
 const execute_token = (req, res) => 
 {

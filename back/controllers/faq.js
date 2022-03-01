@@ -7,7 +7,7 @@ const {
     success_question_created, failure_question_created, failure, 
     success_question_edited, failure_question_edited, 
     success_question_removed, failure_question_removed 
-} = require('../lang');
+} = require('../functions/lang');
 
 const retrieve_all_questions = (req, res) => 
 {
@@ -34,12 +34,15 @@ const add_question = (req, res) =>
         is_input_valid = false;
 
     // Elements must be non-empty strings
-    for (const element of arr_question)
+    if (is_input_valid)
     {
-        if (!element || typeof element !== 'string')
+        for (const element of arr_question)
         {
-            is_input_valid = false;
-            break;
+            if (!element || typeof element !== 'string')
+            {
+                is_input_valid = false;
+                break;
+            }
         }
     }
 
@@ -116,12 +119,15 @@ const edit_question = (req, res) =>
         is_input_valid = false;
 
     // Elements must be non-empty strings
-    for (const element of arr_question)
+    if (is_input_valid)
     {
-        if (!element || typeof element !== 'string')
+        for (const element of arr_question)
         {
-            is_input_valid = false;
-            break;
+            if (!element || typeof element !== 'string')
+            {
+                is_input_valid = false;
+                break;
+            }
         }
     }
 

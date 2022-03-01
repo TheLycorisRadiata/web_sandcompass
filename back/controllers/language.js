@@ -2,7 +2,7 @@ const Language = require('../models/language');
 const {
     success_languages_retrieval, failure_languages_retrieval, 
     failure_language_retrieval, success_language_retrieval 
-} = require('../lang');
+} = require('../functions/lang');
 
 const retrieve_all_languages = (req, res) => 
 {

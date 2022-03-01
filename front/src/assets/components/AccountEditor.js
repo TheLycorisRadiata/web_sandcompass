@@ -65,14 +65,20 @@ const AccountEditor = (props) =>
 
     const is_username_already_used_by_another_account = async (username) => 
     {
-        const res = await fetch(`${package_info.api}/user/${ct.lang}/check/username/${props.account_data._id}/${username}`);
+        const id_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
+        const id_account = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
+
+        const res = await fetch(`${package_info.api}/user/${ct.lang}/check/username/${props.account_data._id}/${username}/${id_token}/${id_account}`);
         const json = await res.json();
         return json;
     };
 
     const is_email_already_used_by_another_account = async (email) => 
     {
-        const res = await fetch(`${package_info.api}/user/${ct.lang}/check/email/${props.account_data._id}/${email}`);
+        const id_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
+        const id_account = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
+
+        const res = await fetch(`${package_info.api}/user/${ct.lang}/check/email/${props.account_data._id}/${email}/${id_token}/${id_account}`);
         const json = await res.json();
         return json;
     };
@@ -179,7 +185,7 @@ const AccountEditor = (props) =>
             {
                 updated_account.hashed_password = props.account_data.hashed_password;
             }
-            else if (field_password === field_repeat_password)
+            else if (field_password !== '' && field_password === field_repeat_password)
             {
                 /* 
                     The function invoked right below updates the password in DB, but doesn't updates our account_data state, 

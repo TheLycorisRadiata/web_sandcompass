@@ -2,7 +2,7 @@ const Rank = require('../models/rank');
 const {
     success_ranks_retrieval, failure_ranks_retrieval, 
     failure_rank_retrieval, success_rank_retrieval 
-} = require('../lang');
+} = require('../functions/lang');
 
 const retrieve_all_ranks = (req, res) => 
 {

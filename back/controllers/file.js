@@ -1,5 +1,5 @@
 const path = require('path');
-const { short_lang } = require('../lang');
+const { short_lang } = require('../functions/lang');
 
 const retrieve_ebook_format_picker = (req, res) => 
 {

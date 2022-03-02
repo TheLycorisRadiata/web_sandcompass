@@ -6,7 +6,7 @@ const {
 
 const retrieve_all_ranks = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Rank.find()
     .then(ranks => res.status(200).json({ is_success: true, message: success_ranks_retrieval(lang, ranks.length), data: ranks }))
@@ -15,7 +15,7 @@ const retrieve_all_ranks = (req, res) =>
 
 const retrieve_rank_by_index = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Rank.findOne({ index: req.params.index })
     .then(rank => 

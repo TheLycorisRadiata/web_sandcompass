@@ -6,7 +6,7 @@ const {
 
 const retrieve_all_languages = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Language.find()
     .then(languages => res.status(200).json({ is_success: true, message: success_languages_retrieval(lang, languages.length), data: languages }))
@@ -15,7 +15,7 @@ const retrieve_all_languages = (req, res) =>
 
 const retrieve_language_by_index = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Language.findOne({ index: req.params.index })
     .then(language => 

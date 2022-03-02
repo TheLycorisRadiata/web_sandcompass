@@ -22,7 +22,7 @@ const { parse_category } = require('../functions/parsing');
 
 const retrieve_articles = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Article.find()
     .then(articles => res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, articles.length), data: articles }))
@@ -31,7 +31,7 @@ const retrieve_articles = (req, res) =>
 
 const retrieve_articles_by_author = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Article.find({ author: req.params.id_author })
     .then(articles => res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, articles.length), data: articles }))
@@ -40,10 +40,10 @@ const retrieve_articles_by_author = (req, res) =>
 
 const retrieve_articles_by_category_sort_and_page = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const code_category = req.params.category; // 'all' or code
     const sort = req.params.sort; // 'old' or 'recent'
-    const page = parseInt(req.params.page);
+    const page = parseInt(req.params.page, 10);
 
     // 5 articles per page
     const max_index = page * 5 - 1;
@@ -129,7 +129,7 @@ const retrieve_articles_by_category_sort_and_page = (req, res) =>
 
 const retrieve_last_article = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     let obj_article = null;
 
     // Browse starting from the end
@@ -175,7 +175,7 @@ const retrieve_last_article = (req, res) =>
 
 const retrieve_article_by_id_or_code = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const find_by_id = req.params.id_or_code === 'id';
     const value = req.params.value;
     let obj_article = null;
@@ -222,7 +222,7 @@ const retrieve_article_by_id_or_code = (req, res) =>
 
 const post_new_article = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -356,7 +356,7 @@ const post_new_article = (req, res) =>
 
 const modify_article = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -462,7 +462,7 @@ const modify_article = (req, res) =>
 
 const delete_article = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -514,7 +514,7 @@ const delete_article = (req, res) =>
 
 const retrieve_categories = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Category.find()
     .then(categories => res.status(200).json({ is_success: true, message: success_categories_retrieval(lang, categories.length), data: categories }))
@@ -523,7 +523,7 @@ const retrieve_categories = (req, res) =>
 
 const get_category_name_from_id = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Category.findOne({ _id: req.params.id })
     .then(category => 
@@ -538,7 +538,7 @@ const get_category_name_from_id = (req, res) =>
 
 const create_new_category = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -610,7 +610,7 @@ const create_new_category = (req, res) =>
 
 const modify_category = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -692,7 +692,7 @@ const modify_category = (req, res) =>
 
 const delete_category = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -742,7 +742,7 @@ const delete_category = (req, res) =>
 
 const like_or_dislike_article = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_article = req.body.id_article;
     const id_user = req.body.id_user;
     const new_user_vote = req.body.user_vote;

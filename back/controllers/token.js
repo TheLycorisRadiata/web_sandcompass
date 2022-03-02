@@ -7,7 +7,7 @@ const {
 
 const execute_token = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.params.id_token;
     const id_hashed_account = req.params.id_account;
 
@@ -19,16 +19,26 @@ const execute_token = (req, res) =>
             // Check for valid actions
             if (token.action === 'email')
             {
-                // Update user: verified_user becomes true
-                User.updateOne({ _id: token.account }, { verified_user: true })
-                .then(() => 
+                User.findOne({ _id: token.account })
+                .then(user => 
                 {
-                    // Get rid of token
-                    Token.deleteOne({ code: id_token })
-                    .then(() => res.status(200).json({ is_success: true, message: success_email_verified(lang) }))
-                    .catch(() => res.status(200).json({ is_success: true, message: success_email_verified(lang) }));
+                    if (user && bcrypt.compareSync(user._id.toString(), id_hashed_account))
+                    {
+                        // Update user: verified_user becomes true
+                        User.updateOne({ _id: user._id }, { verified_user: true })
+                        .then(() => 
+                        {
+                            // Get rid of token
+                            Token.deleteOne({ _id: token._id })
+                            .then(() => res.status(200).json({ is_success: true, message: success_email_verified(lang) }))
+                            .catch(() => res.status(200).json({ is_success: true, message: success_email_verified(lang) }));
+                        })
+                        .catch(err => res.status(400).json({ is_success: false, message: failure_expired_link(lang), error: err }))
+                    }
+                    else
+                        res.status(400).json({ is_success: false, message: failure_expired_link(lang) });
                 })
-                .catch(err => res.status(400).json({ is_success: false, message: failure_expired_link(lang), error: err }))
+                .catch(err => res.status(400).json({ is_success: false, message: failure_expired_link(lang), error: err }));
                 return;
             }
             else if (token.action === 'pass')
@@ -36,15 +46,12 @@ const execute_token = (req, res) =>
                 User.findOne({ _id: token.account })
                 .then(user => 
                 {
-                    if (!user)
-                        res.status(404).json({ is_success: false, message: failure_expired_link(lang) });
+                    if (user && bcrypt.compareSync(user._id.toString(), id_hashed_account))
+                        res.status(200).json({ is_success: true, message: success_valid_link(lang), email_address: user.email_address });
                     else
-                    {
-                        // Get rid of token
-                        Token.deleteOne({ code: id_token })
-                        .then(() => res.status(200).json({ is_success: true, message: success_valid_link(lang), email_address: user.email_address }))
-                        .catch(() => res.status(200).json({ is_success: true, message: success_valid_link(lang), email_address: user.email_address }));
-                    }
+                        res.status(400).json({ is_success: false, message: failure_expired_link(lang) });
+
+                    // Don't delete the token as the password creation process is still ongoing
                 })
                 .catch(err => res.status(400).json({ is_success: false, message: failure_expired_link(lang), error: err }));
                 return;

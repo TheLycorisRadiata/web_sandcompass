@@ -11,7 +11,7 @@ const {
 
 const retrieve_all_questions = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Question.find()
     .then(questions => res.status(200).json({ is_success: true, message: success_questions_retrieval(lang, questions.length), data: questions }))
@@ -20,7 +20,7 @@ const retrieve_all_questions = (req, res) =>
 
 const add_question = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -104,7 +104,7 @@ const add_question = (req, res) =>
 
 const edit_question = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -188,7 +188,7 @@ const edit_question = (req, res) =>
 
 const remove_question = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 

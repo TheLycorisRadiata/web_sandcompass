@@ -43,22 +43,22 @@ const Contact = (props) =>
     const handle_contact = (e) => 
     {
         // Radio buttons: e.target[0].checked + e.target[1].checked
-        let business_name = e.target[2].value;
-        let name = e.target[3].value;
-        let email_address = e.target[4].value;
-        let subject = e.target[5].value;
+        let field_business_name = e.target[2].value;
+        let field_name = e.target[3].value;
+        let field_email_address = e.target[4].value;
+        let field_subject = e.target[5].value;
 
         if (!is_visitor_pro)
         {
-            business_name = '';
-            name = e.target[2].value;
-            email_address = e.target[3].value;
-            subject = e.target[4].value;
+            field_business_name = '';
+            field_name = e.target[2].value;
+            field_email_address = e.target[3].value;
+            field_subject = e.target[4].value;
         }
 
         e.preventDefault();
 
-        if (name !== '' && email_address !== '' && subject !== 'default' && message_content !== '')
+        if (field_name !== '' && field_email_address !== '' && field_subject !== 'default' && message_content !== '')
         {
             fetch(`${package_info.api}/mailing/${ct.lang}/contact`,
             {
@@ -71,10 +71,10 @@ const Contact = (props) =>
                 body: JSON.stringify(
                 {
                     is_pro: is_visitor_pro,
-                    business_name: business_name,
-                    name: name,
-                    email_address: email_address,
-                    subject: subject,
+                    business_name: field_business_name,
+                    name: field_name,
+                    email_address: field_email_address,
+                    subject: field_subject,
                     message: message_content
                 })
             })

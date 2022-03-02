@@ -9,8 +9,8 @@ const { homepage, gmail_user } = require('../package.json');
 const key = require('../.nodemailer.json');
 const {
     short_lang, long_lang, failure_try_again, success_message_sent, 
-    welcome_to_sandcompass, welcome_to_sandcompass_user, click_email_verification_link, user_is_subscribed_to_newsletter, suggest_subscription_to_newsletter, help_by_speaking_about_sc, help_by_leaving_message, failure_no_account_matches_this_email, failure_account_validation_email, success_account_validation_email, 
-    title_newsletter_subscription_email, hello_user, failure_newsletter_subscription_email, success_newsletter_subscription_email, 
+    welcome_to_sandcompass, welcome_to_sandcompass_user, click_email_verification_link, user_is_subscribed_to_newsletter, suggest_subscription_to_newsletter, help_by_speaking_about_sc, help_by_leaving_message, failure_no_account_matches_this_email, failure_account_already_verified, failure_account_validation_email, success_account_validation_email, 
+    failure_account_not_subscribed_to_newsletter, title_newsletter_subscription_email, hello_user, failure_newsletter_subscription_email, success_newsletter_subscription_email, 
     title_email_address_update_email, click_new_email_verification_link, failure_email_address_update_email, success_email_address_update_email, 
     title_password_email, click_password_link, failure_email_has_to_be_verified, success_password_email, 
     nbr_loaded_newsletters, failure, 
@@ -19,7 +19,7 @@ const {
 
 const send_visitor_mail_to_admin = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     /* SUBJECT
         Not supposed to happen:
@@ -115,7 +115,10 @@ const send_visitor_mail_to_admin = (req, res) =>
 
 const send_mail_at_account_registration = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
+    const salt_rounds = 10;
+    const salt = bcrypt.genSaltSync(salt_rounds);
+
     const email_address = req.body.email_address.toLowerCase();
     const rng = uuidv4().replace('-', '');
 
@@ -123,6 +126,7 @@ const send_mail_at_account_registration = (req, res) =>
     let mail_options = null;
 
     let paragraph_newsletter = '';
+    let id_hashed_account = null;
     let link_verify_email = '';
 
     User.findOne({ email_address: email_address })
@@ -133,8 +137,20 @@ const send_mail_at_account_registration = (req, res) =>
             res.status(404).json({ is_success: false, message: failure_no_account_matches_this_email(lang) });
             return;
         }
+        else if (user.verified_user)
+        {
+            res.status(400).json({ is_success: false, message: failure_account_already_verified(lang) });
+            return;
+        }
 
-        link_referral = homepage + '/user/signup/' + user._id;
+        // Hash the ID for the link
+        id_hashed_account = bcrypt.hashSync(user._id, salt);
+        // The hash didn't work
+        if (!id_hashed_account)
+        {
+            res.status(400).json({ is_success: false, message: failure_account_validation_email(lang) });
+            return;
+        }
 
         // Create the token for email verification
         new Token(
@@ -151,7 +167,7 @@ const send_mail_at_account_registration = (req, res) =>
             Token.find({ account: user._id, action: 'email' })
             .then(tokens => 
             {
-                link_verify_email = homepage + '/token/' + tokens[tokens.length - 1].code;
+                link_verify_email = `${homepage}/token/${encodeURIComponent(tokens[tokens.length - 1].code)}/${encodeURIComponent(id_hashed_account)}`;
 
                 smtp_trans = nodemailer.createTransport(
                 {
@@ -204,10 +220,9 @@ const send_mail_at_account_registration = (req, res) =>
     .catch(err => res.status(400).json({ is_success: false, message: failure_account_validation_email(lang), error: err }));
 };
 
-// This controller is only if the account has been previously created but without a newsletter subscription
 const send_mail_at_newsletter_subscription = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const email_address = req.body.email_address.toLowerCase();
 
     let smtp_trans = null;
@@ -221,8 +236,11 @@ const send_mail_at_newsletter_subscription = (req, res) =>
             res.status(404).json({ is_success: false, message: failure_no_account_matches_this_email(lang) });
             return;
         }
-
-        link_referral = homepage + '/user/signup/' + user._id;
+        else if (!user.newsletter)
+        {
+            res.status(400).json({ is_success: false, message: failure_account_not_subscribed_to_newsletter(lang) });
+            return;
+        }
 
         smtp_trans = nodemailer.createTransport(
         {
@@ -268,23 +286,43 @@ const send_mail_at_newsletter_subscription = (req, res) =>
     .catch(err => res.status(400).json({ is_success: false, message: failure_newsletter_subscription_email(lang), error: err }));
 };
 
-// This controller is only if the email address has been updated from the account editor
 const send_mail_at_email_update = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
+    const salt_rounds = 10;
+    const salt = bcrypt.genSaltSync(salt_rounds);
+
     const email_address = req.body.email_address.toLowerCase();
     const rng = uuidv4().replace('-', '');
     
     let smtp_trans = null;
     let mail_options = null;
 
+    let id_hashed_account = null;
     let link_verify_email = '';
 
     User.findOne({ email_address: email_address })
     .then(user => 
     {
         if (!user)
+        {
             res.status(404).json({ is_success: false, message: failure_no_account_matches_this_email(lang) });
+            return;
+        }
+        else if (user.verified_user)
+        {
+            res.status(400).json({ is_success: false, message: failure_account_already_verified(lang) });
+            return;
+        }
+
+        // Hash the ID for the link
+        id_hashed_account = bcrypt.hashSync(user._id, salt);
+        // The hash didn't work
+        if (!id_hashed_account)
+        {
+            res.status(400).json({ is_success: false, message: failure_email_address_update_email(lang) });
+            return;
+        }
 
         // Create the token for email verification
         new Token(
@@ -301,7 +339,7 @@ const send_mail_at_email_update = (req, res) =>
             Token.find({ account: user._id, action: 'email' })
             .then(tokens => 
             {
-                link_verify_email = homepage + '/token/' + tokens[tokens.length - 1].code;
+                link_verify_email = `${homepage}/token/${encodeURIComponent(tokens[tokens.length - 1].code)}/${encodeURIComponent(id_hashed_account)}`;
 
                 smtp_trans = nodemailer.createTransport(
                 {
@@ -351,13 +389,17 @@ const send_mail_at_email_update = (req, res) =>
 
 const send_mail_for_new_password = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
+    const salt_rounds = 10;
+    const salt = bcrypt.genSaltSync(salt_rounds);
+
     const email_address = req.body.email_address.toLowerCase();
     const rng = uuidv4().replace('-', '');
 
     let smtp_trans = null;
     let mail_options = null;
 
+    let id_hashed_account = null;
     let link_create_password = '';
 
     User.findOne({ email_address: email_address })
@@ -369,6 +411,15 @@ const send_mail_for_new_password = (req, res) =>
             res.status(401).json({ is_success: false, message: failure_email_has_to_be_verified(lang), send_verif_email: true});
         else
         {
+            // Hash the ID for the link
+            id_hashed_account = bcrypt.hashSync(user._id, salt);
+            // The hash didn't work
+            if (!id_hashed_account)
+            {
+                res.status(400).json({ is_success: false, message: failure_try_again(lang) });
+                return;
+            }
+
             // Create the token for password creation
             new Token(
             {
@@ -384,7 +435,7 @@ const send_mail_for_new_password = (req, res) =>
                 Token.find({ account: user._id, action: 'pass' })
                 .then(tokens => 
                 {
-                    link_create_password = homepage + '/password/' + tokens[tokens.length - 1].code;
+                    link_create_password = `${homepage}/password/${encodeURIComponent(tokens[tokens.length - 1].code)}/${encodeURIComponent(id_hashed_account)}`;
 
                     smtp_trans = nodemailer.createTransport(
                     {
@@ -435,7 +486,7 @@ const send_mail_for_new_password = (req, res) =>
 
 const retrieve_all_newsletters = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.params.id_token;
     const id_hashed_account = req.params.id_account;
 
@@ -468,7 +519,7 @@ const retrieve_all_newsletters = (req, res) =>
 
 const send_newsletter = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 

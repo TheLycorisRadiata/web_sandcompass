@@ -173,6 +173,19 @@ const failure_no_account_matches_this_email = (lang) =>
     }
 };
 
+const failure_account_already_verified = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Ce compte est déjà vérifié.';
+        case 2:
+            return 'Error: This account is already verified.';
+        default:
+            return 'Error: This account is already verified.';
+    }
+};
+
 const failure_account_validation_email = (lang) => 
 {
     switch (lang)
@@ -196,6 +209,19 @@ const success_account_validation_email = (lang) =>
             return 'You\'ve just been sent an email! It contains a clickable link to verify your email address.';
         default:
             return 'You\'ve just been sent an email! It contains a clickable link to verify your email address.';
+    }
+};
+
+const failure_account_not_subscribed_to_newsletter = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Ce compte n\'est en fait pas abonné à la newsletter.';
+        case 2:
+            return 'Error: This account is actually not subscribed to the newsletter.';
+        default:
+            return 'Error: This account is actually not subscribed to the newsletter.';
     }
 };
 
@@ -1463,8 +1489,10 @@ module.exports =
     help_by_speaking_about_sc,
     help_by_leaving_message,
     failure_no_account_matches_this_email,
+    failure_account_already_verified,
     failure_account_validation_email,
     success_account_validation_email,
+    failure_account_not_subscribed_to_newsletter,
     title_newsletter_subscription_email,
     hello_user,
     failure_newsletter_subscription_email,

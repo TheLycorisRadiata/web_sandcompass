@@ -19,7 +19,7 @@ const { parse_username } = require('../functions/parsing');
 
 const connect_as_admin = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const email_address = req.params.email_address.toLowerCase();
     const password = req.params.password;
     const stay_logged_in = (req.params.stay_logged_in === 'true');
@@ -93,7 +93,7 @@ const connect_as_admin = (req, res) =>
 
 const connect_as_user = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const email_address = req.params.email_address.toLowerCase();
     const password = req.params.password;
     const stay_logged_in = req.params.stay_logged_in;
@@ -167,43 +167,71 @@ const connect_as_user = (req, res) =>
 
 const create_password = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
-    const find_obj = req.body._id ? { _id: req.body._id } : { email_address: req.body.email_address.toLowerCase() };
+    const lang = parseInt(req.params.lang, 10);
+    const id_token = req.body.id_token;
+    const id_hashed_account = req.body.id_account;
 
     const salt_rounds = 10;
     const salt = bcrypt.genSaltSync(salt_rounds);
+
+    const email_adress = req.body.email_address.toLowerCase();
     const password = req.body.password;
     let hashed_password = null;
 
     // Check whether an account exists with this email address
-    User.findOne(find_obj)
+    User.findOne({ email_address: email_address })
     .then(user => 
     {
         if (!user)
             res.status(404).json({ is_success: false, message: failure_no_account_with_this_email(lang) });
         else if (!user.verified_user)
             res.status(401).json({ is_success: false, message: failure_email_has_to_be_verified(lang), send_verif_email: true });
+        else if (!password || typeof password !== 'string') // The password must be a non-empty string
+            res.status(400).json({ is_success: false, message: failure_empty_password(lang) });
         else
         {
-            // If the password is undefined/null or an empty string
-            if (!password || password === '')
-                res.status(400).json({ is_success: false, message: failure_empty_password(lang) });
-            else
+            // Protect the access with the user token
+            Token.findOne({ code: id_token })
+            .then(token => 
             {
-                hashed_password = bcrypt.hashSync(password, salt);
-                
-                // The hash didn't work
-                if (!hashed_password)
+                // "login" if from the account editor and "pass" if from forgotten password page
+                if (!token || (token.action !== 'login' && token.action !== 'pass'))
                     res.status(400).json({ is_success: false, message: failure_password_creation(lang) });
-
-                // Store hashed_password in the DB
-                User.updateOne({ _id: user._id },
+                else
                 {
-                    hashed_password: hashed_password
-                })
-                .then(() => res.status(200).json({ is_success: true, message: success_password_creation(lang) }))
-                .catch(err => res.status(400).json({ is_success: false, message: failure_password_creation(lang), error: err }));
-            }
+                    User.findOne({ _id: token.account })
+                    .then(user => 
+                    {
+                        if (user && bcrypt.compareSync(user._id.toString(), id_hashed_account))
+                        {
+                            // Access granted
+                            hashed_password = bcrypt.hashSync(password, salt);
+                
+                            // The hash didn't work
+                            if (!hashed_password)
+                            {
+                                res.status(400).json({ is_success: false, message: failure_password_creation(lang) });
+                                return;
+                            }
+
+                            // Store hashed_password in the DB
+                            User.updateOne({ _id: user._id }, { hashed_password: hashed_password })
+                            .then(() => 
+                            {
+                                // The 'pass' token is no longer needed (deleteMany because the user may have had several attempts)
+                                Token.deleteMany({ action: 'pass', account: user._id })
+                                .then(() => res.status(200).json({ is_success: true, message: success_password_creation(lang) }))
+                                .catch(() => res.status(200).json({ is_success: true, message: success_password_creation(lang) }));
+                            })
+                            .catch(err => res.status(400).json({ is_success: false, message: failure_password_creation(lang), error: err }));
+                        }
+                         else
+                            res.status(400).json({ is_success: false, message: failure_password_creation(lang) });
+                    })
+                    .catch(err => res.status(400).json({ is_success: false, message: failure_password_creation(lang), error: err }));
+                }
+            })
+            .catch(err => res.status(400).json({ is_success: false, message: failure_password_creation(lang), error: err }));
         }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure(lang), error: err }));
@@ -211,7 +239,7 @@ const create_password = (req, res) =>
 
 const is_email_already_used_by_another_account = (req, res) =>
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.params.id_token;
     const id_hashed_account = req.params.id_account;
 
@@ -254,7 +282,7 @@ const is_email_already_used_by_another_account = (req, res) =>
 
 const is_username_already_used_by_another_account = (req, res) =>
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.params.id_token;
     const id_hashed_account = req.params.id_account;
 
@@ -298,7 +326,7 @@ const is_username_already_used_by_another_account = (req, res) =>
 
 const create_account = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const salt_rounds = 10;
     const salt = bcrypt.genSaltSync(salt_rounds);
 
@@ -375,7 +403,7 @@ const create_account = (req, res) =>
 
 const update_account = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -467,7 +495,7 @@ const update_account = (req, res) =>
 
 const delete_account = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
@@ -508,7 +536,7 @@ const delete_account = (req, res) =>
 
 const get_stats_on_all_users = (req, res) =>
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const id_token = req.params.id_token;
     const id_hashed_account = req.params.id_account;
 
@@ -572,7 +600,7 @@ const get_stats_on_all_users = (req, res) =>
 
 const get_username_from_id = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     User.findOne({ _id: req.params.id })
     .then(user => 

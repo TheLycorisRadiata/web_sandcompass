@@ -5,7 +5,7 @@ const {
 
 const retrieve_all_currencies = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
 
     Currency.find()
     .then(currencies => res.status(200).json({ is_success: true, message: success_currencies_retrieval(lang, currencies.length), data: currencies }))

@@ -33,13 +33,13 @@ const Password = () =>
 
     useLayoutEffect(() => 
     {
-        const path_parts = window.location.pathname.split('/');     
-        const last_part = path_parts[path_parts.length - 1];
-        const id_token = last_part !== '' && last_part !== 'password' ? '/' + last_part : null;
+        const path_parts = window.location.pathname.split('/');
+        const id_token = path_parts[path_parts.length - 2]; // one before last
+        const id_account = path_parts[path_parts.length - 1]; // last
 
-        if (id_token)
+        if (id_token !== '' && id_token !== 'password' && id_account !== '' && id_account !== 'password')
         {
-            fetch(`${package_info.api}/token/${ct.lang}/${id_token}`)
+            fetch(`${package_info.api}/token/${ct.lang}/${id_token}/${id_account}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -49,7 +49,7 @@ const Password = () =>
                 //if (json.error)
                     //console.log(json.error);
 
-                if (json.email_address)
+                if (json.is_success)
                 {
                     set_field_email_address(json.email_address);
                     set_is_access_granted(true);
@@ -65,7 +65,7 @@ const Password = () =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const set_password = async (password) => 
+    const set_password = async (password, id_token, id_account) => 
     {
         const res = await fetch(`${package_info.api}/user/${ct.lang}/password`,
         {
@@ -77,6 +77,8 @@ const Password = () =>
             },
             body: JSON.stringify(
             {
+                id_token: decodeURIComponent(id_token),
+                id_account: decodeURIComponent(id_account),
                 email_address: field_email_address,
                 password: password
             })
@@ -87,6 +89,10 @@ const Password = () =>
 
     const handle_submit = async (e) => 
     {
+        const path_parts = window.location.pathname.split('/');
+        const id_token = path_parts[path_parts.length - 2]; // one before last
+        const id_account = path_parts[path_parts.length - 1]; // last
+
         const field_password = e.target[0].value;
         const field_repeat_password = e.target[1].value;
 
@@ -107,7 +113,7 @@ const Password = () =>
                 return;
             }
 
-            res = await set_password(field_password);
+            res = await set_password(field_password, id_token, id_account);
 
             //(res.message);
             set_response_message(res.message);

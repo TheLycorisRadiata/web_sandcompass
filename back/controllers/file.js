@@ -12,7 +12,7 @@ const retrieve_ebook_format_picker = (req, res) =>
 
 const retrieve_cosmic_dust = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const format = req.params.format.toLowerCase();
     const format_whitelist = ['azw3', 'epub', 'pdf', 'zip'];
     const file_path = path.join(__dirname, `../files/books/cosmic_dust/test.${format}`);
@@ -26,7 +26,7 @@ const retrieve_cosmic_dust = (req, res) =>
 
 const retrieve_persistence = (req, res) => 
 {
-    const lang = parseInt(req.params.lang);
+    const lang = parseInt(req.params.lang, 10);
     const os = req.params.os;
     const os_whitelist = ['win32', 'win64', 'mac', 'unix', 'linux'];
     let file_path = ''; 

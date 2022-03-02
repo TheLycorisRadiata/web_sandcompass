@@ -95,7 +95,9 @@ const AccountEditor = (props) =>
             },
             body: JSON.stringify(
             {
-                _id: props.account_data._id,
+                id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
+                email_address: props.account_data.email_address,
                 password: password
             })
         });
@@ -222,6 +224,8 @@ const AccountEditor = (props) =>
                 },
                 body: JSON.stringify(
                 {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
                     _id: props.account_data._id,
                     updated_account: updated_account
                 })

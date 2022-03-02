@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { parse_username } from '../../assets/functions/parsing';
-import { send_registration_email, send_newsletter_email } from '../../assets/functions/mailing';
+import { send_registration_email } from '../../assets/functions/mailing';
 import package_info from '../../../package.json';
 
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
@@ -85,17 +85,10 @@ const SignUp = (props) =>
                     e.target[2].value = '';
                     e.target[3].value = '';
                     e.target[4].checked = false;
-                }
 
-                // The account already existed and the user simply subscribed to the newsletter
-                if (json.send_newsletter_email)
-                    send_newsletter_email(ct.lang, json.user_id, email_address);
-                // The account has just been created
-                else if (json.is_success)
                     send_registration_email(ct.lang, email_address);
-
-                if (json.is_success)
                     history.push('/');
+                }
             });
             //.catch(err => console.log(err));
         }

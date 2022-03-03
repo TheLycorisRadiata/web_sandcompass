@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
@@ -22,6 +22,8 @@ const Portfolio = () =>
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', portfolio(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', portfolio_desc(ct.lang));
+
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
 
     return (
         <main id="portfolio">

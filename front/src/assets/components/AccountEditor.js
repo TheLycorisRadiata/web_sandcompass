@@ -127,6 +127,8 @@ const AccountEditor = (props) =>
         if (field_username !== '' || field_email !== '' || field_repeat_email !== '' || field_password !== '' || field_repeat_password !== '' 
             || props.account_data.language !== checked_lang || checkbox_newsletter) 
         {
+            updated_account.verified_user = props.account_data.verified_user;
+
             if (field_username === '')
                 updated_account.username = props.account_data.username;
             else
@@ -213,6 +215,8 @@ const AccountEditor = (props) =>
                 updated_account.newsletter = !props.account_data.newsletter;
                 has_newsletter_changed = true;
             }
+            else
+                updated_account.newsletter = props.account_data.newsletter;
 
             await fetch(`${package_info.api}/user/${ct.lang}/update`,
             {
@@ -271,7 +275,12 @@ const AccountEditor = (props) =>
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id_user_to_delete: props.account_data._id })
+                body: JSON.stringify(
+                {
+                    id_token: decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_account: decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''),
+                    id_user_to_delete: props.account_data._id
+                })
             })
             .then(res => res.json())
             .then(json => 

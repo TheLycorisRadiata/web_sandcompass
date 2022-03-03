@@ -136,12 +136,14 @@ const Password = () =>
                     <p className="txt_bold" id="p_password">{field_email_address}</p>
 
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} required autoFocus />
-                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} autoComplete="new-password" required autoFocus />
+                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} 
+                            onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder={repeat_password(ct.lang)} required />
-                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder={repeat_password(ct.lang)} autoComplete="new-password" required />
+                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} 
+                            onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                 </>}
 

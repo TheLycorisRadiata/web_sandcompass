@@ -1,10 +1,14 @@
-import { useLayoutEffect, useContext } from 'react';
+import { useEffect, useLayoutEffect, useContext } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 import { AppContext } from '../../App';
 import { faq_long, ask_question, faq_is_empty } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import package_info from '../../../package.json';
+
+// Markdown display
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const icon_faq = <FontAwesomeIcon icon={faComment} />;
 const icon_close = <FontAwesomeIcon icon={faChevronUp} />;
@@ -62,6 +66,8 @@ const Faq = (props) =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+
     return (
         <main id="faq">
             <h1 className="title">{faq_long(ct.lang)}</h1>
@@ -74,14 +80,15 @@ const Faq = (props) =>
                 <p className="txt_centered">{faq_is_empty(ct.lang)}</p>
             :
                 <>
+
                     {props.questions.map((e, i) =>
-                        <div key={'qa_' + i}>
-                            <p className="question" onClick={() => handle_chevrons(e, i)}>
+                        <div className="qa" key={'qa_' + i}>
+                            <div className="question" onClick={() => handle_chevrons(e, i)}>
                                 <span className="icon">{e.is_deployed ? icon_close : icon_open}</span>
-                                <strong>{e.question[ct.lang]}</strong>
+                                <strong><ReactMarkdown children={e.question[ct.lang]} remarkPlugins={[remarkGfm]} /></strong>
                                 <span className="icon">{e.is_deployed ? icon_close : icon_open}</span>
-                            </p>
-                            {e.is_deployed && <p className="answer">{e.answer[ct.lang]}</p>}
+                            </div>
+                            {e.is_deployed && <div className="answer"><ReactMarkdown children={e.answer[ct.lang]} remarkPlugins={[remarkGfm]} /></div>}
                         </div>
                     )}
                 </>}

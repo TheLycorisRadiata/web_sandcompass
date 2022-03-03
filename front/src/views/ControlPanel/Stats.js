@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     statistics, access_denied, log_out, refresh_stats, click_for_stats, admin_not_counted, 
@@ -27,10 +27,18 @@ const Stats = (props) =>
 
     const [stats, set_stats] = useState(null);
 
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+
     const logout = () => 
     {
+        const id_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
+        const id_account = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
+
         // Make a request so login tokens can be deleted
-        fetch(`${package_info.api}/token/${ct.lang}/login/${props.account_data?._id}`, { method: 'DELETE' })
+        fetch(`${package_info.api}/token/${ct.lang}/login/${id_token}/${id_account}/${props.account_data?._id}`,
+        {
+            method: 'DELETE'
+        })
         .then(res => res.json())
         .then(json => 
         {

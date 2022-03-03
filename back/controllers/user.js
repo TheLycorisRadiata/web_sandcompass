@@ -26,7 +26,7 @@ const connect_as_admin = (req, res) =>
 
     // Stay logged in token
     const rng = uuidv4().replace('-', '');
-    const salt_rounds = 10;
+    const salt_rounds = 12;
     const salt = bcrypt.genSaltSync(salt_rounds);
     let hashed_id = null;
 
@@ -100,7 +100,7 @@ const connect_as_user = (req, res) =>
 
     // Stay logged in token
     const rng = uuidv4().replace('-', '');
-    const salt_rounds = 10;
+    const salt_rounds = 12;
     const salt = bcrypt.genSaltSync(salt_rounds);
     let hashed_id = null;
 
@@ -171,10 +171,10 @@ const create_password = (req, res) =>
     const id_token = req.body.id_token;
     const id_hashed_account = req.body.id_account;
 
-    const salt_rounds = 10;
+    const salt_rounds = 12;
     const salt = bcrypt.genSaltSync(salt_rounds);
 
-    const email_adress = req.body.email_address.toLowerCase();
+    const email_address = req.body.email_address.toLowerCase();
     const password = req.body.password;
     let hashed_password = null;
 
@@ -327,7 +327,7 @@ const is_username_already_used_by_another_account = (req, res) =>
 const create_account = (req, res) => 
 {
     const lang = parseInt(req.params.lang, 10);
-    const salt_rounds = 10;
+    const salt_rounds = 12;
     const salt = bcrypt.genSaltSync(salt_rounds);
 
     const email_address = req.body.email_address.toLowerCase();

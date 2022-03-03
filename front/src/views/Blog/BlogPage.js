@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useContext } from 'react';
+import { useState, useEffect, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
@@ -106,6 +106,8 @@ const BlogPage = (props) =>
             props.set_blog_page(last_page_number);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [articles]);
+
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
 
     const sort_old = () => 
     {

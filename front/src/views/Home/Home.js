@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useContext } from 'react';
+import { useState, useEffect, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
@@ -45,6 +45,8 @@ const Home = (props) =>
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
 
     return (
         <main>

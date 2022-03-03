@@ -116,7 +116,7 @@ const send_visitor_mail_to_admin = (req, res) =>
 const send_mail_at_account_registration = (req, res) => 
 {
     const lang = parseInt(req.params.lang, 10);
-    const salt_rounds = 10;
+    const salt_rounds = 12;
     const salt = bcrypt.genSaltSync(salt_rounds);
 
     const email_address = req.body.email_address.toLowerCase();
@@ -144,7 +144,7 @@ const send_mail_at_account_registration = (req, res) =>
         }
 
         // Hash the ID for the link
-        id_hashed_account = bcrypt.hashSync(user._id, salt);
+        id_hashed_account = bcrypt.hashSync(String(user._id), salt);
         // The hash didn't work
         if (!id_hashed_account)
         {
@@ -289,7 +289,7 @@ const send_mail_at_newsletter_subscription = (req, res) =>
 const send_mail_at_email_update = (req, res) => 
 {
     const lang = parseInt(req.params.lang, 10);
-    const salt_rounds = 10;
+    const salt_rounds = 12;
     const salt = bcrypt.genSaltSync(salt_rounds);
 
     const email_address = req.body.email_address.toLowerCase();
@@ -316,7 +316,7 @@ const send_mail_at_email_update = (req, res) =>
         }
 
         // Hash the ID for the link
-        id_hashed_account = bcrypt.hashSync(user._id, salt);
+        id_hashed_account = bcrypt.hashSync(String(user._id), salt);
         // The hash didn't work
         if (!id_hashed_account)
         {
@@ -390,7 +390,7 @@ const send_mail_at_email_update = (req, res) =>
 const send_mail_for_new_password = (req, res) => 
 {
     const lang = parseInt(req.params.lang, 10);
-    const salt_rounds = 10;
+    const salt_rounds = 12;
     const salt = bcrypt.genSaltSync(salt_rounds);
 
     const email_address = req.body.email_address.toLowerCase();
@@ -412,7 +412,7 @@ const send_mail_for_new_password = (req, res) =>
         else
         {
             // Hash the ID for the link
-            id_hashed_account = bcrypt.hashSync(user._id, salt);
+            id_hashed_account = bcrypt.hashSync(String(user._id), salt);
             // The hash didn't work
             if (!id_hashed_account)
             {

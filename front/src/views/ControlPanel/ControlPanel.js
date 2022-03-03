@@ -93,8 +93,14 @@ const ControlPanel = (props) =>
 
     const logout = () => 
     {
+        const id_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
+        const id_account = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
+
         // Make a request so login tokens can be deleted
-        fetch(`${package_info.api}/token/${ct.lang}/login/${props.account_data?._id}`, { method: 'DELETE' })
+        fetch(`${package_info.api}/token/${ct.lang}/login/${id_token}/${id_account}/${props.account_data?._id}`,
+        {
+            method: 'DELETE'
+        })
         .then(res => res.json())
         .then(json => 
         {

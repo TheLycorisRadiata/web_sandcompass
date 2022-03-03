@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useContext } from 'react';
+import { useState, useEffect, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
@@ -29,6 +29,8 @@ const Persistence = () =>
         if (get_os() !== 'unknown')
             set_is_user_on_pc(true);
     }, []);
+
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
 
     return (
         <main>

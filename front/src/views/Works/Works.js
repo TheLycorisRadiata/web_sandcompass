@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     works, info_title, info_author, info_type, info_genre, info_release_date, info_summary, 
@@ -27,6 +27,8 @@ const Works = () =>
     document.querySelector('meta[property="og:description"]').setAttribute('content', summary_cosmic_dust(ct.lang)[0] + ' ' + summary_cosmic_dust(ct.lang)[1] + '..');
     document.querySelector('meta[property="og:image"').setAttribute('content', link_to_cosmic_dust_cover(ct.lang));
     document.querySelector('meta[property="og:type"').setAttribute('content', 'book');
+
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
 
     return (
         <main id="works">

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     licenses, license_contact, free, bought, 
@@ -17,6 +17,8 @@ const Licenses = () =>
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', licenses(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', license_contact(ct.lang));
+
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
 
     return (
         <main id="licenses">

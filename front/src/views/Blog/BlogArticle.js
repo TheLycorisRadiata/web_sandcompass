@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useContext } from 'react';
+import { useState, useEffect, useLayoutEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
@@ -136,6 +136,8 @@ const BlogArticle = (props) =>
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [article]);
+
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
 
     const increment_likes = () => 
     {

@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useContext } from 'react';
+import { useState, useEffect, useLayoutEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     blog_editor, access_denied, log_out, 
@@ -75,10 +75,18 @@ const BlogEditor = (props) =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+
     const logout = () => 
     {
+        const id_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
+        const id_account = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
+
         // Make a request so login tokens can be deleted
-        fetch(`${package_info.api}/token/${ct.lang}/login/${props.account_data?._id}`, { method: 'DELETE' })
+        fetch(`${package_info.api}/token/${ct.lang}/login/${id_token}/${id_account}/${props.account_data?._id}`,
+        {
+            method: 'DELETE'
+        })
         .then(res => res.json())
         .then(json => 
         {

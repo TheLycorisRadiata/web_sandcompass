@@ -79,8 +79,32 @@ const execute_token = (req, res) =>
 
 const delete_login_tokens = (req, res) => 
 {
-    Token.deleteMany({ account: req.params.id_token, action: 'login' })
-    .then(() => res.status(200).json({ is_success: true }))
+    const id_token = req.params.id_token;
+    const id_hashed_account = req.params.id_account;
+    const id = req.params.id;
+
+    Token.findOne({ code: id_token })
+    .then(token => 
+    {
+        if (!token || token.action !== 'login')
+            res.status(400).json({ is_success: false });
+        else
+        {
+            User.findOne({ _id: token.account })
+            .then(user => 
+            {
+                if (user && bcrypt.compareSync(user._id.toString(), id_hashed_account) && String(user._id) === String(id))
+                {
+                    Token.deleteMany({ action: 'login', account: user._id })
+                    .then(() => res.status(200).json({ is_success: true }))
+                    .catch(() => res.status(400).json({ is_success: false }));
+                }
+                else
+                    res.status(400).json({ is_success: false });
+            })
+            .catch(() => res.status(400).json({ is_success: false }));
+        }
+    })
     .catch(() => res.status(400).json({ is_success: false }));
 };
 

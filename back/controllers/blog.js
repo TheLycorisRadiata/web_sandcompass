@@ -331,8 +331,8 @@ const post_new_article = (req, res) =>
                             articles: 
                             {
                                 written: arr_user_written_articles,
-                                liked: [...author.articles.liked],
-                                disliked: [...author.articles.disliked]
+                                liked: [...admin.articles.liked],
+                                disliked: [...admin.articles.disliked]
                             }
                         })
                         .then(() => 

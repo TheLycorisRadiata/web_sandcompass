@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../App';
 import {
@@ -16,6 +16,8 @@ const PageNotFound = (props) =>
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', title_page_not_found(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', msg_page_not_found(ct.lang));
+
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
 
     return (
         <main>

@@ -943,22 +943,23 @@ a, span[class="a"]
     font-size: 1.3rem;
 }
 
-#faq div
+#faq div.qa
 {
     margin-bottom: 10px;
 }
 
-#faq div:last-child
+#faq div.qa:last-child
 {
     margin-bottom: initial;
 }
 
-.answer
+#faq div.answer
 {
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.question
+#faq div.question
 {
     padding: 10px;
     cursor: pointer;
@@ -972,18 +973,24 @@ a, span[class="a"]
     align-items: center;
 }
 
-.question:hover
+#faq div.question p
+{
+    margin: 0;
+    display: inline;
+}
+
+#faq div.question:hover
 {
     color: var(--light_yellow);
     background-color: var(--blue);
 }
 
-.question span:first-child
+#faq div.question span:first-child
 {
     padding-right: 25px;
 }
 
-.question span:last-child
+#faq div.question span:last-child
 {
     padding-left: 25px;
 }

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useContext } from 'react';
+import { useEffect, useLayoutEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     access_denied, log_out, 
@@ -29,10 +29,51 @@ const FaqEditor = (props) =>
     document.querySelector('meta[property="og:title"]').setAttribute('content', faq_editor(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', access_denied(ct.lang));
 
+    useLayoutEffect(() => 
+    {
+        const arr_faq = [];
+
+        if (!props.questions)
+        {
+            fetch(`${package_info.api}/faq/${ct.lang}/all`)
+            .then(res => res.json())
+            .then(json =>
+            {
+                //console.log(json.message);
+                //if (json.error)
+                    //console.log(json.error);
+
+                if (json.is_success)
+                {
+                    json.data.forEach(e => arr_faq.push(
+                    {
+                        _id: e._id,
+                        question: e.question,
+                        answer: e.answer,
+                        is_deployed: false
+                    }));
+                }
+
+                props.set_questions(arr_faq);
+            });
+            //.catch(err => console.log(err));
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+
     const logout = () => 
     {
+        const id_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
+        const id_account = document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || '';
+
         // Make a request so login tokens can be deleted
-        fetch(`${package_info.api}/token/${ct.lang}/login/${props.account_data?._id}`, { method: 'DELETE' })
+        fetch(`${package_info.api}/token/${ct.lang}/login/${id_token}/${id_account}/${props.account_data?._id}`,
+        {
+            method: 'DELETE'
+        })
         .then(res => res.json())
         .then(json => 
         {
@@ -189,39 +230,6 @@ const FaqEditor = (props) =>
             //.catch(err => console.log(err));
         }
     };
-
-    useLayoutEffect(() => 
-    {
-        const arr_faq = [];
-
-        if (!props.questions)
-        {
-            fetch(`${package_info.api}/faq/${ct.lang}/all`)
-            .then(res => res.json())
-            .then(json =>
-            {
-                //console.log(json.message);
-                //if (json.error)
-                    //console.log(json.error);
-
-                if (json.is_success)
-                {
-                    json.data.forEach(e => arr_faq.push(
-                    {
-                        _id: e._id,
-                        question: e.question,
-                        answer: e.answer,
-                        is_deployed: false
-                    }));
-                }
-
-                props.set_questions(arr_faq);
-            });
-            //.catch(err => console.log(err));
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <main>

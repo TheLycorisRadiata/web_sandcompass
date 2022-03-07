@@ -23,7 +23,7 @@ const Portfolio = () =>
     document.querySelector('meta[property="og:title"]').setAttribute('content', portfolio(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', portfolio_desc(ct.lang));
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     return (
         <main id="portfolio">

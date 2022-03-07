@@ -66,7 +66,7 @@ const Faq = (props) =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     return (
         <main id="faq">
@@ -80,7 +80,6 @@ const Faq = (props) =>
                 <p className="txt_centered">{faq_is_empty(ct.lang)}</p>
             :
                 <>
-
                     {props.questions.map((e, i) =>
                         <div className="qa" key={'qa_' + i}>
                             <div className="question" onClick={() => handle_chevrons(e, i)}>

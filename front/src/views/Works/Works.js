@@ -28,7 +28,7 @@ const Works = () =>
     document.querySelector('meta[property="og:image"').setAttribute('content', link_to_cosmic_dust_cover(ct.lang));
     document.querySelector('meta[property="og:type"').setAttribute('content', 'book');
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     return (
         <main id="works">

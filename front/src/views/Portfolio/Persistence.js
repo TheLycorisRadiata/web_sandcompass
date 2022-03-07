@@ -30,7 +30,7 @@ const Persistence = () =>
             set_is_user_on_pc(true);
     }, []);
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     return (
         <main>

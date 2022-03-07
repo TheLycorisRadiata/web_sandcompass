@@ -62,7 +62,7 @@ const FaqEditor = (props) =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     const logout = () => 
     {

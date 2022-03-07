@@ -18,7 +18,7 @@ const Licenses = () =>
     document.querySelector('meta[property="og:title"]').setAttribute('content', licenses(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', license_contact(ct.lang));
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     return (
         <main id="licenses">

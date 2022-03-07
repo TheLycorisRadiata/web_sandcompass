@@ -107,7 +107,7 @@ const BlogPage = (props) =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [articles]);
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     const sort_old = () => 
     {

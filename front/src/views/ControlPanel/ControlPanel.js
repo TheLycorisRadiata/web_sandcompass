@@ -87,6 +87,7 @@ const ControlPanel = (props) =>
         {
             ct.set_lang(props.account_data.language);
             localStorage.setItem('lang', JSON.stringify({ index: props.account_data.language }));
+            document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.is_access_granted]);

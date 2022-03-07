@@ -42,7 +42,7 @@ const NewsletterEditor = (props) =>
     const [language, set_language] = useState('default');
     const [checkbox, set_checkbox] = useState(false);
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     const logout = () => 
     {

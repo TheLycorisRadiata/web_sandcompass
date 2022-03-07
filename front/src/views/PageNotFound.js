@@ -17,7 +17,7 @@ const PageNotFound = (props) =>
     document.querySelector('meta[property="og:title"]').setAttribute('content', title_page_not_found(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', msg_page_not_found(ct.lang));
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     return (
         <main>

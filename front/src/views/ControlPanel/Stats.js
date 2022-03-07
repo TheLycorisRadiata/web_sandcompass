@@ -27,7 +27,7 @@ const Stats = (props) =>
 
     const [stats, set_stats] = useState(null);
 
-    useEffect(() => document.querySelector('main')?.scrollIntoView(), []);
+    useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 
     const logout = () => 
     {

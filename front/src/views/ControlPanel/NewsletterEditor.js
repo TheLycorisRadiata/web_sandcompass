@@ -35,6 +35,7 @@ const NewsletterEditor = (props) =>
     document.querySelector('meta[property="og:title"]').setAttribute('content', newsletter_editor(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', access_denied(ct.lang));
 
+    const [back_message, set_back_message] = useState('');
     const [newsletters, set_newsletters] = useState([]);
     const [selected_newsletter, set_selected_newsletter] = useState('default');
     const [field_object, set_field_object] = useState('');
@@ -80,8 +81,18 @@ const NewsletterEditor = (props) =>
             //console.log(json.message);
             //if (json.error)
                 //console.log(json.error);
+
             if (trigger_alert)
-                alert(json.message);
+            {
+                if (json.is_success)
+                    set_back_message(json.message);
+                else
+                {
+                    set_back_message('');
+                    alert(json.message);
+                }
+            }
+
             set_newsletters(json.data);
         });
         //.catch(err => console.log(err));
@@ -176,7 +187,9 @@ const NewsletterEditor = (props) =>
                 <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
 
                 <button className="button" title={refresh_newsletters(ct.lang)} onClick={() => fetch_newsletters(true)}><span className="icon">{icon_fetch}</span></button>
-    
+
+                {back_message && <p id="back_message">{back_message}</p>}
+
                 <form onSubmit={handle_submit}>
                     <select defaultValue="default" onChange={handle_select}>
                         <option value="default" disabled>{select_newsletter(ct.lang)}</option>

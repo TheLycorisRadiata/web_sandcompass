@@ -899,6 +899,19 @@ a, span[class="a"]
     background-color: var(--blue);
     border-radius: 5px;
     box-shadow: 2px 2px 4px inset var(--white), -2px -2px 4px inset var(--black);
+
+    display: flex;
+    align-items: center;
+}
+
+.download_buttons .icon
+{
+    margin-right: 5px;
+}
+
+.download_buttons .os
+{
+    font-size: 1.5rem;
 }
 
 #questionnaire
@@ -1145,6 +1158,12 @@ input[name="field_article_title_0"], #blog_editor .markdown_editor
 }
 
 /* VIEW: NEWSLETTER EDITOR ---------------------------------------------------------------------- */
+
+#newsletter_editor #back_message
+{
+    margin: 0;
+    margin-bottom: 15px;
+}
 
 #preview_newsletter
 {

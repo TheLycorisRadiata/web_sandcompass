@@ -1,3 +1,12 @@
+/* START - Icons for get_os() */
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { FaWindows, FaApple, FaAndroid, FaLinux } from 'react-icons/fa';
+// Unix doesn't have a proper logo, so it'll be represented with #!
+
+const icon_download = <FontAwesomeIcon icon={faDownload} />;
+/* END - Icons for get_os() */
+
 const get_bits_system_architecture = () => 
 {
     let _64bits_signatures = ['x86_64', 'x86-64', 'Win64', 'x64;', 'amd64', 'AMD64', 'WOW64', 'x64_64', 'ia64', 'sparc64', 'ppc64', 'IRIX64'];
@@ -29,33 +38,64 @@ const get_bits_system_architecture = () =>
 
 const is_32bits_architecture = () => 
 {
-    return get_bits_system_architecture() === 32 ? 1 : 0;
+    return get_bits_system_architecture() === 32;
 };
 
 const is_64bits_architecture = () => 
 {
-    return get_bits_system_architecture() === 64 ? 1 : 0;
+    return get_bits_system_architecture() === 64;
 };
 
 const get_os = () => 
 {
-    // 'Linux' must be before 'X11', because both Linux et Unix systems have 'X11'
+    // "Android" must be before "Linux", because Android systems have "Linux" too
+    // "Linux" must be before "X11", because both Linux et Unix systems have "X11"
 
-    let os_name = 'unknown';
+    let name = '';
+    let is_pc = true;
+    let icon = icon_download;
 
     if (navigator.appVersion.indexOf('Win') !== -1)
-        os_name = 'win';
+    {
+        name = 'win';
+        icon = <FaWindows />;
+    }
     else if (navigator.appVersion.indexOf('Mac') !== -1)
-        os_name = 'mac';
+    {
+        name = 'mac';
+        icon = <FaApple />;
+    }
+    else if (navigator.appVersion.indexOf('iPhone') !== -1)
+    {
+        name = 'iphone';
+        is_pc = false;
+        icon = <FaApple />;
+    }
+    else if (navigator.appVersion.indexOf('Android') !== -1)
+    {
+        name = 'android';
+        is_pc = false;
+        icon = <FaAndroid />;
+    }
     else if (navigator.appVersion.indexOf('Linux') !== -1)
-        os_name = 'linux';
+    {
+        name = 'linux';
+        icon = <FaLinux />
+    }
     else if (navigator.appVersion.indexOf('X11') !== -1)
-        os_name = 'unix';
-
-    if (os_name === 'win')
-        return is_64bits_architecture() ? 'win64' : 'win32';
+    {
+        name = 'unix';
+        icon = '#!';
+    }
     else
-        return os_name;
+    {
+        is_pc = false;
+    }
+
+    if (name === 'win')
+        name = is_64bits_architecture() ? 'win64' : 'win32';
+
+    return { name: name, is_pc: is_pc, icon: icon };
 };
 
 export

@@ -109,7 +109,7 @@ const Password = () =>
         {
             if (field_password !== field_repeat_password)
             {
-                alert(disclaimer_password(ct.lang));
+                ct.open_pop_up('alert', disclaimer_password(ct.lang));
                 return;
             }
 

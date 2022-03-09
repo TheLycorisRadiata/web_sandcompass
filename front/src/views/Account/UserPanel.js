@@ -55,7 +55,7 @@ const UserPanel = (props) =>
                 props.set_account_data(json.account_data);
                 props.set_is_access_granted(json.is_success);
                 if (send_verif_email)
-                    alert(json.message);
+                    ct.open_pop_up('alert', json.message);
 
                 if (json.token_stay_logged_in_30_days)
                 {

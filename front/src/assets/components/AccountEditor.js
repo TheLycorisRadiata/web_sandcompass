@@ -143,7 +143,7 @@ const AccountEditor = (props) =>
                 //console.log(username_check.message);
                 if (!username_check.is_success)
                 {
-                    alert(username_check.message);
+                    ct.open_pop_up('alert', username_check.message);
                     //if (username_check.error)
                         //console.log(username_check.error);
 
@@ -166,7 +166,7 @@ const AccountEditor = (props) =>
                 //console.log(email_check.message);
                 if (!email_check.is_success)
                 {
-                    alert(email_check.message);
+                    ct.open_pop_up('alert', email_check.message);
                     //if (email_check.error)
                         //console.log(email_check.error);
 
@@ -181,7 +181,7 @@ const AccountEditor = (props) =>
             // If they don't match or if only one field is filled, then warning
             else
             {
-                alert(disclaimer_email(ct.lang));
+                ct.open_pop_up('alert', disclaimer_email(ct.lang));
                 return;
             }
 
@@ -202,7 +202,7 @@ const AccountEditor = (props) =>
             // If they don't match or if only one field is filled, then warning
             else
             {
-                alert(disclaimer_password(ct.lang));
+                ct.open_pop_up('alert', disclaimer_password(ct.lang));
                 return;
             }
 
@@ -238,7 +238,7 @@ const AccountEditor = (props) =>
             .then(json => 
             {
                 //console.log(json.message);
-                alert(json.message);
+                ct.open_pop_up('alert', json.message);
 
                 if (json.is_success)
                 {
@@ -286,7 +286,7 @@ const AccountEditor = (props) =>
             .then(json => 
             {
                 //console.log(json.message);
-                alert(json.message);
+                ct.open_pop_up('alert', json.message);
 
                 //if (json.error)
                     //console.log(json.error);

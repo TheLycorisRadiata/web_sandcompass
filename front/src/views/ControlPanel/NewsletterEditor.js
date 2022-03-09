@@ -89,7 +89,7 @@ const NewsletterEditor = (props) =>
                 else
                 {
                     set_back_message('');
-                    alert(json.message);
+                    ct.open_pop_up('alert', json.message);
                 }
             }
 
@@ -139,9 +139,9 @@ const NewsletterEditor = (props) =>
         e.preventDefault();
 
         if (newsletter.object === '' || newsletter.html_message === '')
-            alert(disclaimer_obj_and_msg(ct.lang));
+            ct.open_pop_up('alert', disclaimer_obj_and_msg(ct.lang));
         else if (newsletter.language === 'default')
-            alert(disclaimer_language(ct.lang));
+            ct.open_pop_up('alert', disclaimer_language(ct.lang));
         else
         {
             fetch(`${package_info.api}/mailing/${ct.lang}/newsletter/send`,
@@ -165,7 +165,7 @@ const NewsletterEditor = (props) =>
                 //console.log(json.message);
                 //if (json.error)
                     //console.log(json.error);
-                alert(json.message);
+                ct.open_pop_up('alert', json.message);
                 
                 if (json.is_success)
                 {

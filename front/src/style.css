@@ -138,6 +138,45 @@ textarea::-webkit-scrollbar
     background: var(--white);
 }
 
+/* POP-UP WINDOWS (ALERT, CONFIRM AND PROMPT) --------------------------------------------------- */
+
+#pop_up
+{
+    z-index: 2;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    max-width: max-content;
+    cursor: default;
+    border: ridge var(--brown) 10px;
+    border-radius: 5px;
+    background-color: var(--white);
+    box-shadow: 2px 2px 5px var(--brown);
+
+    display: flex;
+    flex-direction: row-reverse;
+    justify-items: space-between;
+}
+
+#btn_close
+{
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--dark_yellow);
+}
+
+#btn_close:hover, #btn_close:active
+{
+    color: var(--light_yellow);
+}
+
+#pop_up #text
+{
+    margin: 10px;
+}
+
 /* TITLES --------------------------------------------------------------------------------------- */
 
 .title, .sub_title
@@ -243,7 +282,7 @@ p
     align-items: center;
 }
 
-#flag_menu li:hover
+#flag_menu li:hover, #flag_menu li:active
 {
     color: var(--light_yellow);
 }
@@ -546,7 +585,8 @@ label
     text-shadow: 1px 1px 2px var(--black);
 }
 
-.button:hover, .button:focus, a:hover, span[class="a"]:hover
+.button:hover, .button:focus, a:hover, span[class="a"]:hover, 
+.button:active, .button:focus, a:active, span[class="a"]:active
 {
     color: var(--light_yellow);
 }
@@ -992,7 +1032,7 @@ a, span[class="a"]
     display: inline;
 }
 
-#faq div.question:hover
+#faq div.question:hover, #faq div.question:active
 {
     color: var(--light_yellow);
     background-color: var(--blue);

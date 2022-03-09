@@ -145,20 +145,20 @@ const BlogArticle = (props) =>
         const index_current_article = articles.findIndex(e => e._id === article?._id);
 
         // Block the feature
-        alert(wip(ct.lang));
+        ct.open_pop_up('alert', wip(ct.lang));
         return;
 
         // Should be impossible
         if (index_current_article === -1)
         {
-            alert(error_article_doesnt_exist(ct.lang));
+            ct.open_pop_up('alert', error_article_doesnt_exist(ct.lang));
             history.push('/blog');
             return;
         }
 
         if (id_user === article?.author)
         {
-            alert(like_own_article(ct.lang));
+            ct.open_pop_up('alert', like_own_article(ct.lang));
         }
         else
         {
@@ -198,7 +198,7 @@ const BlogArticle = (props) =>
                     props.set_articles(articles);
                 }
                 else
-                    alert(json.message);
+                    ct.open_pop_up('alert', json.message);
             });
             //.catch(err => console.log(err));
         }
@@ -210,20 +210,20 @@ const BlogArticle = (props) =>
         const index_current_article = articles.findIndex(e => e._id === article?._id);
 
         // Block the feature
-        alert(wip(ct.lang));
+        ct.open_pop_up('alert', wip(ct.lang));
         return;
 
         // Should be impossible
         if (index_current_article === -1)
         {
-            alert(error_article_doesnt_exist(ct.lang));
+            ct.open_pop_up('alert', error_article_doesnt_exist(ct.lang));
             history.push('/blog');
             return;
         }
 
         if (id_user === article?.author)
         {
-            alert(dislike_own_article(ct.lang));
+            ct.open_pop_up('alert', dislike_own_article(ct.lang));
         }
         else
         {
@@ -263,7 +263,7 @@ const BlogArticle = (props) =>
                     props.set_articles(articles);
                 }
                 else
-                    alert(json.message);
+                    ct.open_pop_up('alert', json.message);
             });
             //.catch(err => console.log(err));
         }

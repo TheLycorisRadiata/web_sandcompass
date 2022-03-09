@@ -9,7 +9,7 @@ import {
     licenses, control_panel, copyright
 } from './assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGlobe, faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { faSquareXmark, faGlobe, faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
 import Home from './views/Home/Home';
 import Faq from './views/Home/Faq';
 import Works from './views/Works/Works';
@@ -35,6 +35,7 @@ import Flag_Jp from './assets/images/flags/japan.png';
 import package_info from '../package.json';
 import './style.css';
 
+const icon_close = <FontAwesomeIcon icon={faSquareXmark} />;
 const icon_lang = <FontAwesomeIcon icon={faGlobe} />;
 const icon_user_new = <FontAwesomeIcon icon={faUserPlus} />;
 const icon_user = <FontAwesomeIcon icon={faUser} />;
@@ -45,6 +46,7 @@ export const AppContext = createContext({});
 
 const App = () => 
 {
+    const [pop_up, set_pop_up] = useState(null);
     const [lang, set_lang] = useState(0);
     const [is_flag_menu_displayed, set_is_flag_menu_displayed] = useState(false);
 
@@ -61,10 +63,13 @@ const App = () =>
     const [all_categories, set_all_categories] = useState([]);
     const [blog_page, set_blog_page] = useState(1);
 
+    const close_pop_up = () => set_pop_up(null);
+    const open_pop_up = (type, text) => set_pop_up({ type: type, text: text });
+
     const context_value = 
     {
-        lang,
-        set_lang
+        pop_up, open_pop_up, close_pop_up,
+        lang, set_lang
     };
 
     const update_lang = (index) => 
@@ -127,6 +132,12 @@ const App = () =>
     return (
         <AppContext.Provider value={context_value}>
             <Router>
+                {pop_up && 
+                <div id="pop_up">
+                    <div id="btn_close" onClick={close_pop_up}>{icon_close}</div>
+                    <div id="text">{pop_up.text}</div>
+                </div>}
+
                 <div>
                     <header>
                         <div id="icon_lang" className="button" onMouseEnter={() => set_is_flag_menu_displayed(true)}><span className="icon">{icon_lang}</span></div>

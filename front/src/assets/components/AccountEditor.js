@@ -248,7 +248,7 @@ const AccountEditor = (props) =>
 
                 // The user changed the status of their newsletter subscription, and they're now subscribed
                 if (has_newsletter_changed && json.data.newsletter)
-                    send_newsletter_email(ct.lang, json.data._id, json.data.email_address);
+                    send_newsletter_email(ct, json.data._id, json.data.email_address);
             });
             //.catch(err => console.log(err));
         }
@@ -258,7 +258,7 @@ const AccountEditor = (props) =>
 
         // If the email address has been updated, verify it just like we did at account registration
         if (updated_account.verified_user === false)
-            send_verification_email(ct.lang, props.account_data._id, field_email, updated_account.username);
+            send_verification_email(ct, props.account_data._id, field_email, updated_account.username);
     };
 
     const delete_account = () => 

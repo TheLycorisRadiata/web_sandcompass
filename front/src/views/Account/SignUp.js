@@ -50,7 +50,7 @@ const SignUp = (props) =>
                 return;
             }
 
-            obj_parse_username = parse_username(ct.lang, username);
+            obj_parse_username = parse_username(ct, username);
             if (!obj_parse_username.user_approves)
                 return;
             else
@@ -86,7 +86,7 @@ const SignUp = (props) =>
                     e.target[3].value = '';
                     e.target[4].checked = false;
 
-                    send_registration_email(ct.lang, email_address);
+                    send_registration_email(ct, email_address);
                     history.push('/');
                 }
             });

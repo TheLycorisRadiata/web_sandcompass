@@ -1,9 +1,9 @@
 import { confirm_resend_verification_email } from './lang';
 import package_info from '../../../package.json';
 
-const send_registration_email = async (lang, email_address) => 
+const send_registration_email = async (ct, email_address) => 
 {
-    await fetch(`${package_info.api}/mailing/${lang}/register`,
+    await fetch(`${package_info.api}/mailing/${ct.lang}/register`,
     {
         method: 'POST',
         headers:
@@ -19,14 +19,14 @@ const send_registration_email = async (lang, email_address) =>
         //console.log(json.message);
         //if (json.error)
             //console.log(json.error);
-        alert(json.message);
+        ct.open_pop_up('alert', json.message);
     });
     //.catch(err => console.log(err));
 };
 
-const send_newsletter_email = async (lang, user_id, email_address) => 
+const send_newsletter_email = async (ct, user_id, email_address) => 
 {
-    await fetch(`${package_info.api}/mailing/${lang}/newsletter`,
+    await fetch(`${package_info.api}/mailing/${ct.lang}/newsletter`,
     {
         method: 'POST',
         headers:
@@ -46,14 +46,14 @@ const send_newsletter_email = async (lang, user_id, email_address) =>
         //console.log(json.message);
         //if (json.error)
             //console.log(json.error);
-        alert(json.message);
+        ct.open_pop_up('alert', json.message);
     });
     //.catch(err => console.log(err));
 };
 
-const send_verification_email = async (lang, user_id, email_address, username) => 
+const send_verification_email = async (ct, user_id, email_address, username) => 
 {
-    await fetch(`${package_info.api}/mailing/${lang}/email`,
+    await fetch(`${package_info.api}/mailing/${ct.lang}/email`,
     {
         method: 'POST',
         headers:
@@ -74,14 +74,14 @@ const send_verification_email = async (lang, user_id, email_address, username) =
         //console.log(json.message);
         //if (json.error)
             //console.log(json.error);
-        alert(json.message);
+        ct.open_pop_up('alert', json.message);
     });
     //.catch(err => console.log(err));
 };
 
-const send_password_email = async (lang, email_address) => 
+const send_password_email = async (ct, email_address) => 
 {
-    await fetch(`${package_info.api}/mailing/${lang}/password`,
+    await fetch(`${package_info.api}/mailing/${ct.lang}/password`,
     {
         method: 'POST',
         headers:
@@ -97,10 +97,10 @@ const send_password_email = async (lang, email_address) =>
         //console.log(json.message);
         //if (json.error)
             //console.log(json.error);
-        alert(json.message);
+        ct.open_pop_up('alert', json.message);
 
-        if (json.send_verif_email && window.confirm(confirm_resend_verification_email(lang)))
-            send_registration_email(lang, email_address);
+        if (json.send_verif_email && window.confirm(confirm_resend_verification_email(ct.lang)))
+            send_registration_email(ct.lang, email_address);
     });
     //.catch(err => console.log(err));
 };

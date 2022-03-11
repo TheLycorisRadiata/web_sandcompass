@@ -103,7 +103,7 @@ const Password = () =>
         if (!is_access_granted)
         {
             if (e.target[0].value !== '')
-                await send_password_email(ct.lang, e.target[0].value);
+                await send_password_email(ct, e.target[0].value);
         }
         else if (field_password !== '' && field_repeat_password !== '')
         {

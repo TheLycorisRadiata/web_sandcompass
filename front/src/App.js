@@ -9,7 +9,8 @@ import {
     licenses, control_panel, copyright
 } from './assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareXmark, faGlobe, faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
+import PopUp from './assets/components/PopUp';
 import Home from './views/Home/Home';
 import Faq from './views/Home/Faq';
 import Works from './views/Works/Works';
@@ -35,7 +36,6 @@ import Flag_Jp from './assets/images/flags/japan.png';
 import package_info from '../package.json';
 import './style.css';
 
-const icon_close = <FontAwesomeIcon icon={faSquareXmark} />;
 const icon_lang = <FontAwesomeIcon icon={faGlobe} />;
 const icon_user_new = <FontAwesomeIcon icon={faUserPlus} />;
 const icon_user = <FontAwesomeIcon icon={faUser} />;
@@ -68,8 +68,9 @@ const App = () =>
 
     const context_value = 
     {
-        pop_up, open_pop_up, close_pop_up,
-        lang, set_lang
+        open_pop_up,
+        lang,
+        set_lang
     };
 
     const update_lang = (index) => 
@@ -132,11 +133,7 @@ const App = () =>
     return (
         <AppContext.Provider value={context_value}>
             <Router>
-                {pop_up && 
-                <div id="pop_up">
-                    <div id="btn_close" onClick={close_pop_up}>{icon_close}</div>
-                    <div id="text">{pop_up.text}</div>
-                </div>}
+                {pop_up && <PopUp pop_up={pop_up} close_pop_up={close_pop_up} />}
 
                 <div>
                     <header>

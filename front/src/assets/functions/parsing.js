@@ -1,6 +1,6 @@
 import { username_disclaimer, username_disclaimer_and_display } from './lang';
 
-const parse_username = (lang, username) => 
+const parse_username = (ct, username) => 
 {
     let parsed_username = !username || typeof username !== 'string' ? '' : username.split('');
     let user_approves = false;
@@ -20,9 +20,9 @@ const parse_username = (lang, username) =>
     if (parsed_username === username)
         user_approves = true;
     else if (parsed_username === '')
-        alert(username_disclaimer(lang));
+        ct.open_pop_up('alert', username_disclaimer(ct.lang));
     else
-        user_approves = window.confirm(username_disclaimer_and_display(lang, parsed_username)); 
+        user_approves = window.confirm(username_disclaimer_and_display(ct.lang, parsed_username)); 
 
     return { parsed_username: parsed_username, user_approves: user_approves };
 };

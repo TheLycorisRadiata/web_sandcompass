@@ -77,7 +77,7 @@ const UserPanel = (props) =>
             //.catch(err => console.log(err));
 
             if (send_verif_email && window.confirm(confirm_resend_verification_email(ct.lang)))
-                send_registration_email(ct.lang, field_email_address);
+                send_registration_email(ct, field_email_address);
         }
     };
 

@@ -46,7 +46,8 @@ export const AppContext = createContext({});
 
 const App = () => 
 {
-    const [pop_up, set_pop_up] = useState(null);
+    const [is_pop_up_open, set_is_pop_up_open] = useState(false);
+    const [pop_up, set_pop_up] = useState({ type: '', text: '', confirm: false });
     const [lang, set_lang] = useState(0);
     const [is_flag_menu_displayed, set_is_flag_menu_displayed] = useState(false);
 
@@ -63,14 +64,16 @@ const App = () =>
     const [all_categories, set_all_categories] = useState([]);
     const [blog_page, set_blog_page] = useState(1);
 
-    const close_pop_up = () => set_pop_up(null);
-    const open_pop_up = (type, text) => set_pop_up({ type: type, text: text });
+    const open_pop_up = (type, text) => 
+    {
+        set_pop_up({ type: type, text: text, confirm: false });
+        set_is_pop_up_open(true);
+    };
 
     const context_value = 
     {
-        open_pop_up,
-        lang,
-        set_lang
+        is_pop_up_open, pop_up, open_pop_up,
+        lang, set_lang
     };
 
     const update_lang = (index) => 
@@ -133,7 +136,7 @@ const App = () =>
     return (
         <AppContext.Provider value={context_value}>
             <Router>
-                {pop_up && <PopUp pop_up={pop_up} close_pop_up={close_pop_up} />}
+                {is_pop_up_open && <PopUp pop_up={pop_up} set_pop_up={set_pop_up} set_is_pop_up_open={set_is_pop_up_open} lang={lang} />}
 
                 <div>
                     <header>

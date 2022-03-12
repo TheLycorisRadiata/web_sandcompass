@@ -38,7 +38,7 @@ const send_visitor_mail_to_admin = (req, res) =>
 
     // Body
     const is_pro = req.body.is_pro ? 'The professional ' : '';
-    const business_name = req.body.business_name === '' ? '' : ' of the company ' + req.body.business_name;
+    const business_name = !req.body.business_name ? '' : ' of the company ' + req.body.business_name;
     const name = req.body.name;
     const email_address = req.body.email_address.toLowerCase();
     const subject = !req.body.subject && typeof req.body.subject !== 'string' ? null 
@@ -52,8 +52,7 @@ const send_visitor_mail_to_admin = (req, res) =>
     const message = req.body.message;
 
     // Input is invalid
-    if (!business_name || typeof business_name !== 'string' || !name || typeof name !== 'string' 
-        || !email_address || typeof email_address !== 'string' || !subject || !message || typeof message !== 'string')
+    if (!name || typeof name !== 'string' || !email_address || typeof email_address !== 'string' || !subject || !message || typeof message !== 'string')
     {
         res.status(400).json({ is_success: false, message: failure_try_again(lang) });
         return;

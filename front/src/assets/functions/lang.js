@@ -854,6 +854,32 @@ export const confirm = (lang) =>
     }
 };
 
+export const no = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Non';
+        case 2:
+            return 'いいえ';
+        default:
+            return 'No';
+    }
+};
+
+export const yes = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Oui';
+        case 2:
+            return 'はい';
+        default:
+            return 'Yes';
+    }
+};
+
 export const change_username = (lang) => 
 {
     switch (lang)

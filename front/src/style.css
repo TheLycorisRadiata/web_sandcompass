@@ -154,10 +154,12 @@ textarea::-webkit-scrollbar
     border-radius: 5px;
     background-color: var(--white);
     box-shadow: 2px 2px 5px var(--brown);
+}
 
+#pop_up #close_and_text
+{
     display: flex;
     flex-direction: row-reverse;
-    justify-items: space-between;
 }
 
 #btn_close
@@ -175,6 +177,31 @@ textarea::-webkit-scrollbar
 #pop_up #text
 {
     margin: 10px;
+}
+
+#confirm_buttons
+{
+    display: flex;
+    justify-content: space-around;
+}
+
+#confirm_buttons div
+{
+    margin: 10px;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: solid 2px var(--dark_yellow);
+    border-radius: 5px;
+    background-color: var(--dark_yellow);
+    color: var(--white);
+}
+
+#confirm_buttons div:hover, #confirm_buttons div:active
+{
+    border-color: var(--light_yellow);
+    background-color: var(--light_yellow);
 }
 
 /* TITLES --------------------------------------------------------------------------------------- */

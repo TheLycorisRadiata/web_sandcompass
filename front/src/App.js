@@ -47,7 +47,7 @@ export const AppContext = createContext({});
 const App = () => 
 {
     const [is_pop_up_open, set_is_pop_up_open] = useState(false);
-    const [pop_up, set_pop_up] = useState({ type: '', text: '', confirm: false });
+    const [pop_up, set_pop_up] = useState({ type: '', text: '', confirm: false, answer: false });
     const [lang, set_lang] = useState(0);
     const [is_flag_menu_displayed, set_is_flag_menu_displayed] = useState(false);
 
@@ -66,8 +66,9 @@ const App = () =>
 
     const open_pop_up = (type, text) => 
     {
-        set_pop_up({ type: type, text: text, confirm: false });
+        set_pop_up({ type: type, text: text, confirm: false, answer: false });
         set_is_pop_up_open(true);
+        return pop_up.confirm;
     };
 
     const context_value = 

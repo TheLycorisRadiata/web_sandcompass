@@ -8,7 +8,8 @@
     --light_yellow: #FFCF33;
     --brown: #4D1617;
     --red: #BA120D;
-    --see_through_white: rgba(242, 223, 234, 0.7);
+    --see_through_white: rgba(242, 223, 234, .7);
+    --see_through_black: rgba(0, 0, 0, .7);
 }
 
 @font-face
@@ -140,6 +141,16 @@ textarea::-webkit-scrollbar
 
 /* POP-UP WINDOWS (ALERT, CONFIRM AND PROMPT) --------------------------------------------------- */
 
+#pop_up_background
+{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--see_through_black);
+}
+
 #pop_up
 {
     z-index: 2;
@@ -149,6 +160,7 @@ textarea::-webkit-scrollbar
     transform: translate(-50%, -50%);
 
     max-width: max-content;
+    max-width: 500px;
     cursor: default;
     border: ridge var(--brown) 10px;
     border-radius: 5px;
@@ -156,14 +168,12 @@ textarea::-webkit-scrollbar
     box-shadow: 2px 2px 5px var(--brown);
 }
 
-#pop_up #close_and_text
-{
-    display: flex;
-    flex-direction: row-reverse;
-}
-
 #btn_close
 {
+    margin-left: 5px;
+    float: right;
+    position: relative;
+    top: -2px;
     cursor: pointer;
     font-size: 1.5rem;
     color: var(--dark_yellow);

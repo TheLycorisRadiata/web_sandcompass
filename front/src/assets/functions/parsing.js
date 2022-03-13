@@ -22,7 +22,10 @@ const parse_username = (ct, username) =>
     else if (parsed_username === '')
         ct.open_pop_up('alert', username_disclaimer(ct.lang));
     else
-        user_approves = window.confirm(username_disclaimer_and_display(ct.lang, parsed_username)); 
+    {
+        //user_approves = window.confirm(username_disclaimer_and_display(ct.lang, parsed_username));
+        ct.open_pop_up('confirm', username_disclaimer_and_display(ct.lang, parsed_username));
+    }
 
     return { parsed_username: parsed_username, user_approves: user_approves };
 };

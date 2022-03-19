@@ -1,4 +1,6 @@
-# Personal website
+# Website of my future company
+
+*NOTE: The name "Sand Compass" is temporary.*
 
 **Sand Compass** stems from an old website of mine, back in 2015. I've reworked it somewhere in 2021, to then put it aside to focus on the bootcamp I was undergoing at the time.
 

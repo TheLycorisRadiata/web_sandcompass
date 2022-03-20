@@ -27,8 +27,7 @@ import Password from './views/Account/Password';
 import ExecuteToken from './views/Account/ExecuteToken';
 import BlogPage from './views/Blog/BlogPage';
 import BlogArticle from './views/Blog/BlogArticle';
-import Portfolio from './views/Portfolio/Portfolio';
-import Persistence from './views/Portfolio/Persistence';
+import Persistence from './views/Works/Persistence';
 import PageNotFound from './views/PageNotFound';
 import Flag_Eng from './assets/images/flags/usa.png';
 import Flag_Fr from './assets/images/flags/france.png';
@@ -230,9 +229,7 @@ const App = () =>
                         <Route path="/password"><Password /></Route>
                         <Route path="/token"><ExecuteToken /></Route>
 
-                        <Route exact path="/portfolio"><Portfolio /></Route>
-                        <Route exact path="/portfolio/persistence"><Persistence /></Route>
-                        <Route path="/portfolio"><PageNotFound is_portfolio={true} /></Route>
+                        <Route exact path="/works/persistence"><Persistence /></Route>
 
                         <Route path="/"><PageNotFound /></Route>
                     </Switch>

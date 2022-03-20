@@ -1,8 +1,7 @@
 import { useState, useEffect, useLayoutEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    vrmmorpg_project, game, disclaimer_os, go_back_portfolio 
+    vrmmorpg_project, game, disclaimer_os, code 
 } from '../../assets/functions/lang';
 import { get_os } from '../../assets/functions/os';
 import package_info from '../../../package.json';
@@ -36,8 +35,8 @@ const Persistence = () =>
                     <a href={`${package_info.api}/file/${ct.lang}/game/persistence/${os?.name}`}><li><span className="icon os">{os?.icon}</span> {game(ct.lang)}</li></a>}
             </ul>
 
-            <div id="go_back_portfolio">
-                <Link to="/portfolio"><button className="button">{go_back_portfolio(ct.lang)}</button></Link>
+            <div id="see_code">
+                <a href="https://github.com/thelycorisradiata/game_persistence" rel="noreferrer" target="_blank"><button className="button">{code(ct.lang)}</button></a>
             </div>
         </main>
     );

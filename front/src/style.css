@@ -119,7 +119,6 @@ body
 {
     width: 15px;
     background: linear-gradient(var(--pink), var(--blue));
-    scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar:horizontal, ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-corner
@@ -709,7 +708,7 @@ a, span[class="a"]
 
 /* VIEW: LICENSES & PORTFOLIO  ------------------------------------------------------------------ */
 
-#licenses ul, #portfolio ul, #go_back_portfolio
+#licenses ul, #portfolio ul, #see_code
 {
     display: flex;
     flex-flow: column nowrap;
@@ -727,12 +726,12 @@ a, span[class="a"]
     font-size: 1.3rem;
 }
 
-#go_back_portfolio, #go_back_portfolio button
+#see_code, #see_code button
 {
     margin: 0;
 }
 
-#go_back_portfolio
+#see_code
 {
     margin-top: 25px;
 }

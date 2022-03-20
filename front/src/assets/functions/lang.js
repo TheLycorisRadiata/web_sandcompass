@@ -2962,106 +2962,6 @@ export const disclaimer_blog_editor_content = (lang) =>
 
 /* PORTFOLIO ------------------------------------------------------------------------------------ */
 
-export const portfolio = (lang) => 
-{
-    switch (lang)
-    {
-        case 2:
-            return 'ポートフォリオ';
-        default:
-            return 'Portfolio';
-    }
-};
-
-export const portfolio_desc = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Mes projets web, mobile et logiciel.';
-        case 2:
-            return '私のウエブと携帯とソフトのプロジェクト。';
-        default:
-            return 'My web, mobile and software projects.';
-    }
-};
-
-export const code = (lang) => 
-{
-    switch (lang)
-    {
-        case 2:
-            return 'コード';
-        default:
-            return 'Code';
-    }
-};
-
-export const disclaimer_link_code = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Le porteur de projet n\'a pas autorisé la publication du code.';
-        case 2:
-            return 'The project owner hasn\'t allowed the publication of the code.';
-        default:
-            return 'The project owner hasn\'t allowed the publication of the code.';
-    }
-};
-
-export const real_websites = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Vrais site webs';
-        case 2:
-            return '本物のウエブサイト';
-        default:
-            return 'Real websites';
-    }
-};
-
-export const web_projects = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Projets web';
-        case 2:
-            return 'ウエブのプロジェクト';
-        default:
-            return 'Web projects';
-    }
-};
-
-export const mobile_projects = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Projets mobiles';
-        case 2:
-            return '携帯のプロジェクト';
-        default:
-            return 'Mobile projects';
-    }
-};
-
-export const software_projects = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Projets de logiciel';
-        case 2:
-            return 'ソフトのプロジェクト';
-        default:
-            return 'Software projects';
-    }
-};
-
 export const vrmmorpg_project = (lang) => 
 {
     switch (lang)
@@ -3101,16 +3001,14 @@ export const disclaimer_os = (lang) =>
     }
 };
 
-export const go_back_portfolio = (lang) => 
+export const code = (lang) => 
 {
     switch (lang)
     {
-        case 1:
-            return 'Retourner au portfolio';
         case 2:
-            return 'ポートフォリオに戻る';
+            return 'コード';
         default:
-            return 'Go back to the portfolio';
+            return 'Code';
     }
 };
 

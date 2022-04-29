@@ -113,6 +113,10 @@ body
 {
     /* So the scrollbar is visible even when inactive */
     overflow-y: scroll;
+
+    /* When a popup is open, prevent scrolling without hiding the scrollbar */
+    width: calc(100% - 30px); /* 15px for the padding + 15px for the scrollbar */
+    /* position: fixed; */
 }
 
 ::-webkit-scrollbar

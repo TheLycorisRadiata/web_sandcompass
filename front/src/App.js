@@ -63,6 +63,9 @@ const App = () =>
     const [all_categories, set_all_categories] = useState([]);
     const [blog_page, set_blog_page] = useState(1);
 
+    /* Prevent scrolling when a popup is open */
+    document.querySelector('body').style.position = is_pop_up_open ? 'fixed' : 'static';
+
     const open_pop_up = (type, text) => 
     {
         set_pop_up({ type: type, text: text, confirm: false, answer: false });

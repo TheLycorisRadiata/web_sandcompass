@@ -7,7 +7,7 @@ import {
     english, french, japanese, 
     sign_up, log_in, user_account, 
     home, faq_short, works, blog, contact, 
-    licenses, control_panel, copyright
+    licenses, legal_notices, control_panel, copyright
 } from './assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe, faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +16,7 @@ import Faq from './views/Home/Faq';
 import Works from './views/Works/Works';
 import Contact from './views/Home/Contact';
 import Licenses from './views/Home/Licenses';
+import LegalNotices from './views/Home/LegalNotices';
 import ControlPanel from './views/ControlPanel/ControlPanel';
 import Stats from './views/ControlPanel/Stats';
 import BlogEditor from './views/ControlPanel/BlogEditor';
@@ -179,6 +180,7 @@ const App = () =>
 
                         <Route exact path="/contact"><Contact username={user_account_data?.username} email={user_account_data?.email_address} /></Route>
                         <Route exact path="/licenses"><Licenses /></Route>
+                        <Route exact path="/legal"><LegalNotices /></Route>
 
                         <Route exact path="/admin/stats">
                             <Stats 
@@ -231,6 +233,7 @@ const App = () =>
                     <ul id="bottom">
                         <Link to="#top"><li id="btn_top">{icon_up}</li></Link>
                         <Link to="/licenses"><li>{licenses(lang)}</li></Link>
+                        <Link to="/legal"><li>{legal_notices(lang)}</li></Link>
                         <Link to="/admin"><li>{control_panel(lang)}</li></Link>
                         <li className="txt_default_cursor">{copyright(lang)}</li>
                         <Link to="#bottom"><li id="btn_bottom">{icon_down}</li></Link>

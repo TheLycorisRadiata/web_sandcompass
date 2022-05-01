@@ -250,6 +250,19 @@ export const licenses = (lang) =>
     }
 };
 
+export const legal_notices = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Mentions légales';
+        case 2:
+            return '法的通知';
+        default:
+            return 'Legal Notices';
+    }
+};
+
 export const control_panel = (lang) => 
 {
     switch (lang)

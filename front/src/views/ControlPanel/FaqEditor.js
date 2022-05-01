@@ -6,7 +6,7 @@ import {
     english, french, japanese, 
     question, answer, 
     question_eng, answer_eng, question_fr, answer_fr, question_jp, answer_jp, 
-    add_question, edit_question, delete_question, confirm_delete_question 
+    add_question, edit_question, edit_answer, delete_question, confirm_delete_question 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faSquareXmark, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -136,9 +136,9 @@ const FaqEditor = (props) =>
         }
     };
 
-    const handle_edit = (e) => 
+    const handle_edit = async (e) => 
     {
-        const eng_edited_question = window.prompt(question_eng(ct.lang), e.question[0]);
+        const eng_edited_question = await ct.popup('prompt', ct.lang, edit_question(ct.lang), question_eng(ct.lang), e.question[0]);
         let eng_edited_answer = '';
         let fr_edited_question = '';
         let fr_edited_answer = '';
@@ -148,23 +148,23 @@ const FaqEditor = (props) =>
         if (!eng_edited_question)
             return;
 
-        eng_edited_answer = window.prompt(answer_eng(ct.lang), e.answer[0]);
+        eng_edited_answer = await ct.popup('prompt', ct.lang, edit_answer(ct.lang), answer_eng(ct.lang), e.answer[0]);
         if (!eng_edited_answer)
             return;
 
-        fr_edited_question = window.prompt(question_fr(ct.lang), e.question[1]);
+        fr_edited_question = await ct.popup('prompt', ct.lang, edit_question(ct.lang), question_fr(ct.lang), e.question[1]);
         if (!fr_edited_question)
             return;
 
-        fr_edited_answer = window.prompt(answer_fr(ct.lang), e.answer[1]);
+        fr_edited_answer = await ct.popup('prompt', ct.lang, edit_answer(ct.lang), answer_fr(ct.lang), e.answer[1]);
         if (!fr_edited_answer)
             return;
 
-        jp_edited_question = window.prompt(question_jp(ct.lang), e.question[2]);
+        jp_edited_question = await ct.popup('prompt', ct.lang, edit_question(ct.lang), question_jp(ct.lang), e.question[2]);
         if (!jp_edited_question)
             return;
 
-        jp_edited_answer = window.prompt(answer_jp(ct.lang), e.answer[2]);
+        jp_edited_answer = await ct.popup('prompt', ct.lang, edit_answer(ct.lang), answer_jp(ct.lang), e.answer[2]);
         if (!jp_edited_answer)
             return;
 
@@ -200,9 +200,9 @@ const FaqEditor = (props) =>
         }
     };
 
-    const handle_delete = (e) => 
+    const handle_delete = async (e) => 
     {
-        if (window.confirm(confirm_delete_question(ct.lang)))
+        if (await ct.popup('confirm', ct.lang, confirm_delete_question(ct.lang)))
         {
             fetch(`${package_info.api}/faq/${ct.lang}/remove`,
             {

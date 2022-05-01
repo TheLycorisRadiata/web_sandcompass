@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import PopUp from './assets/components/PopUp';
+import { PopUpContextProvider } from './assets/store/PopUpContextProvider';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <PopUpContextProvider>
+            <App />
+            <PopUp />
+        </PopUpContextProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

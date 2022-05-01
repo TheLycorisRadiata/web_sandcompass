@@ -1,6 +1,6 @@
 import { username_disclaimer, username_disclaimer_and_display } from './lang';
 
-const parse_username = (ct, username) => 
+const parse_username = async (ct, username) => 
 {
     let parsed_username = !username || typeof username !== 'string' ? '' : username.split('');
     let user_approves = false;
@@ -20,12 +20,9 @@ const parse_username = (ct, username) =>
     if (parsed_username === username)
         user_approves = true;
     else if (parsed_username === '')
-        ct.open_pop_up('alert', username_disclaimer(ct.lang));
+        ct.popup('alert', ct.lang, username_disclaimer(ct.lang));
     else
-    {
-        //user_approves = window.confirm(username_disclaimer_and_display(ct.lang, parsed_username));
-        ct.open_pop_up('confirm', username_disclaimer_and_display(ct.lang, parsed_username));
-    }
+        user_approves = await ct.popup('confirm', ct.lang, username_disclaimer_and_display(ct.lang, parsed_username));
 
     return { parsed_username: parsed_username, user_approves: user_approves };
 };

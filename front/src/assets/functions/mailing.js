@@ -19,7 +19,7 @@ const send_registration_email = async (ct, email_address) =>
         //console.log(json.message);
         //if (json.error)
             //console.log(json.error);
-        ct.open_pop_up('alert', json.message);
+        ct.popup('alert', ct.lang, json.message);
     });
     //.catch(err => console.log(err));
 };
@@ -46,7 +46,7 @@ const send_newsletter_email = async (ct, user_id, email_address) =>
         //console.log(json.message);
         //if (json.error)
             //console.log(json.error);
-        ct.open_pop_up('alert', json.message);
+        ct.popup('alert', ct.lang, json.message);
     });
     //.catch(err => console.log(err));
 };
@@ -74,7 +74,7 @@ const send_verification_email = async (ct, user_id, email_address, username) =>
         //console.log(json.message);
         //if (json.error)
             //console.log(json.error);
-        ct.open_pop_up('alert', json.message);
+        ct.popup('alert', ct.lang, json.message);
     });
     //.catch(err => console.log(err));
 };
@@ -92,14 +92,14 @@ const send_password_email = async (ct, email_address) =>
         body: JSON.stringify({ email_address: email_address })
     })
     .then(res => res.json())
-    .then(json => 
+    .then(async (json) => 
     {
         //console.log(json.message);
         //if (json.error)
             //console.log(json.error);
-        ct.open_pop_up('alert', json.message);
+        ct.popup('alert', ct.lang, json.message);
 
-        if (json.send_verif_email && window.confirm(confirm_resend_verification_email(ct.lang)))
+        if (json.send_verif_email && await ct.popup('confirm', ct.lang, confirm_resend_verification_email(ct.lang)))
             send_registration_email(ct.lang, email_address);
     });
     //.catch(err => console.log(err));

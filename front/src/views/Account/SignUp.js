@@ -50,7 +50,7 @@ const SignUp = (props) =>
                 return;
             }
 
-            obj_parse_username = parse_username(ct, username);
+            obj_parse_username = await parse_username(ct, username);
             if (!obj_parse_username.user_approves)
                 return;
             else

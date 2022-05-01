@@ -1,6 +1,7 @@
 import { useState, useLayoutEffect, createContext } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
+import usePopUp from './assets/hooks/usePopUp';
 import {
     index_to_language_code, language_code_to_index, 
     english, french, japanese, 
@@ -10,7 +11,6 @@ import {
 } from './assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe, faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
-import PopUp from './assets/components/PopUp';
 import Home from './views/Home/Home';
 import Faq from './views/Home/Faq';
 import Works from './views/Works/Works';
@@ -45,8 +45,9 @@ export const AppContext = createContext({});
 
 const App = () => 
 {
-    const [is_pop_up_open, set_is_pop_up_open] = useState(false);
-    const [pop_up, set_pop_up] = useState({ type: '', text: '', confirm: false, answer: false });
+    // Function to open the custom pop-up window (alert, confirm, prompt)
+    const { popup } = usePopUp();
+
     const [lang, set_lang] = useState(0);
     const [is_flag_menu_displayed, set_is_flag_menu_displayed] = useState(false);
 
@@ -63,20 +64,10 @@ const App = () =>
     const [all_categories, set_all_categories] = useState([]);
     const [blog_page, set_blog_page] = useState(1);
 
-    /* Prevent scrolling when a popup is open */
-    document.querySelector('body').style.position = is_pop_up_open ? 'fixed' : 'static';
-
-    const open_pop_up = (type, text) => 
-    {
-        set_pop_up({ type: type, text: text, confirm: false, answer: false });
-        set_is_pop_up_open(true);
-        return pop_up.confirm;
-    };
-
     const context_value = 
     {
-        is_pop_up_open, pop_up, open_pop_up,
-        lang, set_lang
+        lang, set_lang,
+        popup
     };
 
     const update_lang = (index) => 
@@ -139,8 +130,6 @@ const App = () =>
     return (
         <AppContext.Provider value={context_value}>
             <Router>
-                {is_pop_up_open && <PopUp pop_up={pop_up} set_pop_up={set_pop_up} set_is_pop_up_open={set_is_pop_up_open} lang={lang} />}
-
                 <div>
                     <header>
                         <div id="icon_lang" className="button" onMouseEnter={() => set_is_flag_menu_displayed(true)}><span className="icon">{icon_lang}</span></div>

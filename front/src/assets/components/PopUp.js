@@ -1,38 +1,55 @@
-import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { yes, no } from '../functions/lang';
+import usePopUp from '../hooks/usePopUp';
+import { no, yes, cancel, confirm } from '../functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareXmark } from '@fortawesome/free-solid-svg-icons';
 
 const icon_close = <FontAwesomeIcon icon={faSquareXmark} />;
 
-const PopUp = (props) => 
+const PopUp = () =>
 {
-    const confirm_no = () => props.set_pop_up({ ...props.pop_up, confirm: false, answer: true });
-    const confirm_yes = () => props.set_pop_up({ ...props.pop_up, confirm: true, answer: true });
+    const { on_confirm, on_cancel, popup_state } = usePopUp();
 
-    useEffect(() => 
+    const portal_element = document.getElementById('portal');
+
+    /* Prevent scrolling when a popup is open */
+    document.querySelector('body').style.position = popup_state.show ? 'fixed' : 'static';
+
+    const handle_input = (e) => 
     {
-        if (props.pop_up.answer)
-            props.set_is_pop_up_open(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.pop_up.answer]);
+        e.preventDefault();
+        on_confirm(e.target[0].value);
+    };
 
-    return ReactDOM.createPortal(
-        <div id="pop_up_background">
-            <div id="pop_up">
-                <div id="btn_close" onClick={confirm_no}>{icon_close}</div>
-                    <div id="text">{props.pop_up.text}</div>
+    const component = popup_state.show ? 
+    (
+        <div id="popup_background">
+            <div id="popup">
+                <div id="btn_close" onClick={on_cancel}>{icon_close}</div>
+                <div id="text">{popup_state.text}</div>
 
-                {props.pop_up.type === 'confirm' && 
+                {popup_state.type === 'confirm' && 
                 <div id="confirm_buttons">
-                    <div id="yes" onClick={confirm_yes}>{yes(props.lang)}</div>
-                    <div id="no" onClick={confirm_no}>{no(props.lang)}</div>
+                    <div onClick={on_cancel}>{no(popup_state.lang)}</div>
+                    <div onClick={() => on_confirm(null)}>{yes(popup_state.lang)}</div>
                 </div>}
+
+                {popup_state.type === 'prompt' && 
+                <form onSubmit={handle_input}>
+                    <div id="div_input">
+                        <input type="text" defaultValue={popup_state.prompt_default_value ?? ''} placeholder={popup_state.prompt_placeholder ?? ''} />
+                    </div>
+                    <div id="confirm_buttons">
+                        <div onClick={on_cancel}>{cancel(popup_state.lang)}</div>
+                        <button>{confirm(popup_state.lang)}</button>
+                    </div>
+                </form>}
             </div>
-        </div>,
-        document.getElementById('portal')
-    );
+        </div>
+    )
+    : null;
+
+    return ReactDOM.createPortal(component, portal_element);
 };
 
 export default PopUp;

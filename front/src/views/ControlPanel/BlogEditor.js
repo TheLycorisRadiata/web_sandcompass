@@ -4,7 +4,7 @@ import {
     blog_editor, access_denied, log_out, 
     select_language, english, french, japanese, 
     post_new_article, select_article, no_article, modify_article, delete_article, 
-    no_category, select_category, manage_categories, new_category, add_category, delete_category, modify_category, 
+    no_category, select_category, manage_categories, new_category, add_category, delete_category, modify_category, edit_category, 
     title, content, preview, 
     disclaimer_blog_editor_title, 
     disclaimer_blog_editor_category, 
@@ -219,7 +219,7 @@ const BlogEditor = (props) =>
                 //console.log(json.message);
                 //if (json.error)
                     //console.log(json.error);
-                ct.open_pop_up('alert', json.message);
+                ct.popup('alert', ct.lang, json.message);
 
                 if (json.is_success)
                 {
@@ -258,7 +258,7 @@ const BlogEditor = (props) =>
                 //console.log(json.message);
                 //if (json.error)
                     //console.log(json.error);
-                ct.open_pop_up('alert', json.message);
+                ct.popup('alert', ct.lang, json.message);
 
                 if (json.is_success)
                 {
@@ -282,7 +282,7 @@ const BlogEditor = (props) =>
         }
     };
 
-    const handle_modify_category = () => 
+    const handle_modify_category = async () => 
     {
         let obj_category = null;
         let updated_eng = '';
@@ -293,15 +293,15 @@ const BlogEditor = (props) =>
         if (obj_category === null || obj_category === undefined)
             return;
 
-        updated_eng = window.prompt(english(ct.lang), obj_category.name[0]);
+        updated_eng = await ct.popup('prompt', ct.lang, edit_category(ct.lang), english(ct.lang), obj_category.name[0]);
         if (!updated_eng)
             return;
 
-        updated_fr = window.prompt(french(ct.lang), obj_category.name[1]);
+        updated_fr = await ct.popup('prompt', ct.lang, edit_category(ct.lang), french(ct.lang), obj_category.name[1]);
         if (!updated_fr)
             return;
 
-        updated_jp = window.prompt(japanese(ct.lang), obj_category.name[2]);
+        updated_jp = await ct.popup('prompt', ct.lang, edit_category(ct.lang), japanese(ct.lang), obj_category.name[2]);
         if (!updated_jp)
             return;
 
@@ -333,7 +333,7 @@ const BlogEditor = (props) =>
                 //console.log(json.message);
                 //if (json.error)
                     //console.log(json.error);
-                ct.open_pop_up('alert', json.message);
+                ct.popup('alert', ct.lang, json.message);
 
                 if (json.is_success)
                 {
@@ -357,11 +357,11 @@ const BlogEditor = (props) =>
         const new_article = {};
 
         if (article.title[0] === '' || article.title[1] === '' || article.title[2] === '')
-            ct.open_pop_up('alert', disclaimer_blog_editor_title(ct.lang));
+            ct.popup('alert', ct.lang, disclaimer_blog_editor_title(ct.lang));
         else if (!article.categories.length)
-            ct.open_pop_up('alert', disclaimer_blog_editor_category(ct.lang));
+            ct.popup('alert', ct.lang, disclaimer_blog_editor_category(ct.lang));
         else if (article.content[0] === '' || article.content[1] === '' || article.content[2] === '')
-            ct.open_pop_up('alert', disclaimer_blog_editor_content(ct.lang));
+            ct.popup('alert', ct.lang, disclaimer_blog_editor_content(ct.lang));
         else
         {
             new_article.categories = article.categories;
@@ -390,7 +390,7 @@ const BlogEditor = (props) =>
                 //console.log(json.message);
                 //if (json.error)
                     //console.log(json.error);
-                ct.open_pop_up('alert', json.message);
+                ct.popup('alert', ct.lang, json.message);
 
                 if (json.is_success)
                     reset_editor(json.data);
@@ -403,11 +403,11 @@ const BlogEditor = (props) =>
         const updated_article = {};
 
         if (article.title[0] === '' || article.title[1] === '' || article.title[2] === '')
-            ct.open_pop_up('alert', disclaimer_blog_editor_title(ct.lang));
+            ct.popup('alert', ct.lang, disclaimer_blog_editor_title(ct.lang));
         else if (!article.categories.length)
-            ct.open_pop_up('alert', disclaimer_blog_editor_category(ct.lang));
+            ct.popup('alert', ct.lang, disclaimer_blog_editor_category(ct.lang));
         else if (article.content[0] === '' || article.content[1] === '' || article.content[2] === '')
-            ct.open_pop_up('alert', disclaimer_blog_editor_content(ct.lang));
+            ct.popup('alert', ct.lang, disclaimer_blog_editor_content(ct.lang));
         else
         {
             updated_article.categories = article.categories;
@@ -436,7 +436,7 @@ const BlogEditor = (props) =>
                 //console.log(json.message);
                 //if (json.error)
                     //console.log(json.error);
-                ct.open_pop_up('alert', json.message);
+                ct.popup('alert', ct.lang, json.message);
 
                 if (json.is_success)
                     reset_editor(json.data);
@@ -471,7 +471,7 @@ const BlogEditor = (props) =>
                 //console.log(json.message);
                 //if (json.error)
                     //console.log(json.error);
-                ct.open_pop_up('alert', json.message);
+                ct.popup('alert', ct.lang, json.message);
 
                 if (json.is_success)
                     reset_editor(json.data);

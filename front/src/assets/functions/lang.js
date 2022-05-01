@@ -430,6 +430,19 @@ export const edit_question = (lang) =>
     }
 };
 
+export const edit_answer = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Éditer la réponse';
+        case 2:
+            return 'Edit the answer';
+        default:
+            return 'Edit the answer';
+    }
+};
+
 export const delete_question = (lang) => 
 {
     switch (lang)
@@ -2892,6 +2905,19 @@ export const modify_category = (lang) =>
             return 'Modify a category';
         default:
             return 'Modify a category';
+    }
+};
+
+export const edit_category = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Éditer la catégorie';
+        case 2:
+            return 'Edit the category';
+        default:
+            return 'Edit the category';
     }
 };
 

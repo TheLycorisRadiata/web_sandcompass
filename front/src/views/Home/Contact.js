@@ -84,7 +84,7 @@ const Contact = (props) =>
                 //console.log(json.message);
                 //if (json.error)
                     //console.log(json.error);
-                ct.open_pop_up('alert', json.message);
+                ct.popup('alert', ct.lang, json.message);
 
                 /* If unsuccessful, the fields remain filled as to allow the user to try sending the message again */
                 if (json.is_success)

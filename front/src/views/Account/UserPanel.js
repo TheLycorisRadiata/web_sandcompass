@@ -55,7 +55,7 @@ const UserPanel = (props) =>
                 props.set_account_data(json.account_data);
                 props.set_is_access_granted(json.is_success);
                 if (send_verif_email)
-                    ct.open_pop_up('alert', json.message);
+                    ct.popup('alert', ct.lang, json.message);
 
                 if (json.token_stay_logged_in_30_days)
                 {
@@ -76,7 +76,7 @@ const UserPanel = (props) =>
             });
             //.catch(err => console.log(err));
 
-            if (send_verif_email && window.confirm(confirm_resend_verification_email(ct.lang)))
+            if (send_verif_email && await ct.popup('confirm', ct.lang, confirm_resend_verification_email(ct.lang)))
                 send_registration_email(ct, field_email_address);
         }
     };

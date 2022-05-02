@@ -141,11 +141,9 @@ const App = () =>
                                 <li onClick={() => update_lang(2)}><img src={Flag_Jp} alt={japanese(lang)} className="icon" /> <span>{japanese(lang)}</span></li>
                             </ul>}
 
-                        <Link to="/home">
-                            <div id="banner">
-                                <div id="title">Sand Compass</div>
-                            </div>
-                        </Link>
+                        <div id="banner">
+                            <div id="title">Sand Compass</div>
+                        </div>
 
                         <div id="user_buttons">
                             <ul>

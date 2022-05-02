@@ -1415,6 +1415,19 @@ export const title_about_website = (lang) =>
     }
 };
 
+export const website_name_is_temp = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'NOTE : Le nom "Sand Compass" est temporaire.';
+        case 2:
+            return '注：「Ｓａｎｄ Ｃｏｍｐａｓｓ」は暫定の名前です。';
+        default:
+            return 'NOTE: The name "Sand Compass" is temporary.';
+    }
+};
+
 export const msg_about_website = (lang) => 
 {
     switch (lang)
@@ -2999,7 +3012,7 @@ export const disclaimer_blog_editor_content = (lang) =>
     }
 };
 
-/* PORTFOLIO ------------------------------------------------------------------------------------ */
+/* WORKS: PERSISTENCE --------------------------------------------------------------------------- */
 
 export const vrmmorpg_project = (lang) => 
 {

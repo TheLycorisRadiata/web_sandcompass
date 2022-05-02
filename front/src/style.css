@@ -2,7 +2,7 @@
 {
     --black: #1F0505;
     --white: #F2F4FF;
-    --pink: #E66465;
+    --pink: #DB9191;
     --blue: #9198E5;
     --dark_yellow: #E6B000;
     --light_yellow: #FFCF33;
@@ -28,6 +28,12 @@
     text-align: justify;
 }
 
+/* Outline is visible only when using tab, not mouse click */
+*:focus-visible
+{
+    outline: 5px dashed var(--see_through_black);
+}
+
 html
 {
     scroll-behavior: smooth;
@@ -36,8 +42,8 @@ html
 body
 {
     padding: 15px;
-    font-size: 1.1rem;
-    background: linear-gradient(var(--pink), var(--blue)) fixed no-repeat;
+    font-size: 1.2rem;
+    background: linear-gradient(var(--pink), var(--blue)) fixed;
     color: var(--black);
 }
 
@@ -63,12 +69,12 @@ body
 
 /* BLOCKS --------------------------------------------------------------------------------------- */
 
-#banner, nav ul a, main, div#main
+main, div#main
 {
     box-shadow: 0 0 15px var(--white);
 }
 
-#banner, main, div#main
+main, div#main
 {
     border-radius: 10px;
 }
@@ -360,11 +366,6 @@ p
 
 #banner
 {
-    margin: 5px 0 25px 0;
-    height: 20rem;
-    background: url("./assets/images/banner.jpg") no-repeat center center;
-    background-size: cover;
-
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -374,9 +375,12 @@ p
 {
     margin: 10px;
     width: 100%;
+    cursor: default;
     text-align: center;
     text-transform: uppercase;
+    text-shadow: 1px 1px 2px var(--black);
     font-size: calc(3vw + 3vh + 2vmin);
+    font-weight: bold;
     color: var(--see_through_white);
 }
 
@@ -398,8 +402,14 @@ nav ul a
     margin-top: 25px;
     padding: 20px;
     background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
+    box-shadow: inset 2px 2px 3px var(--white), inset -2px -2px 3px var(--white);
     font-size: 1.5rem;
     border-radius: 42px;
+}
+
+nav ul a:active
+{
+    box-shadow: inset 2px 2px 3px var(--brown), inset -2px -2px 3px var(--brown);
 }
 
 /* HEADER: USER BUTTONS ------------------------------------------------------------------------- */
@@ -476,6 +486,15 @@ nav ul a
     drop-shadow(-1px -1px 0px var(--white));
 }
 
+.logo img:active
+{
+    filter: 
+    drop-shadow(1px 1px 0px var(--see_through_black)) 
+    drop-shadow(-1px 1px 0px var(--see_through_black)) 
+    drop-shadow(1px -1px 0px var(--see_through_black)) 
+    drop-shadow(-1px -1px 0px var(--see_through_black));
+}
+
 /* BUTTON: PASSWORD EYE TOGGLE ------------------------------------------------------------------ */
 
 .field_password
@@ -547,12 +566,12 @@ nav ul a
 
 /* FAKE BUTTONS --------------------------------------------------------------------------------- */
 
-.download_buttons li.a, .preview_article .a, #portfolio .no_link_code
+.download_buttons li.a, .preview_article .a
 {
     cursor: not-allowed;
 }
 
-.download_buttons li.a, #portfolio .no_link_code
+.download_buttons li.a
 {
     color: var(--brown);
 }
@@ -575,7 +594,7 @@ input, select, textarea
 
 input, select, textarea, .button
 {
-    font-size: 1rem;
+    font-size: 1.1rem;
     border: 0 none;
     border-radius: 5px;
     filter: drop-shadow(1px 1px 1px var(--brown));
@@ -638,10 +657,15 @@ label
     text-shadow: 1px 1px 2px var(--black);
 }
 
-.button:hover, .button:focus, a:hover, span[class="a"]:hover, 
-.button:active, .button:focus, a:active, span[class="a"]:active
+.button:hover, .button:focus, .button:active, a:hover, a:active, span[class="a"]:hover, span[class="a"]:active
 {
     color: var(--light_yellow);
+}
+
+.button:active
+{
+    filter: none;
+    box-shadow: inset 2px 2px 3px var(--brown), inset -2px -2px 3px var(--brown);
 }
 
 .icon
@@ -723,24 +747,13 @@ a, span[class="a"]
     padding-left: 15px;
 }
 
-/* VIEW: LICENSES & PORTFOLIO  ------------------------------------------------------------------ */
+/* VIEW: LICENSES & PERSISTENCE  ---------------------------------------------------------------- */
 
-#licenses ul, #portfolio ul, #see_code
+#licenses ul, #see_code
 {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-}
-
-#portfolio ul
-{
-    margin-top: 20px;
-}
-
-#portfolio .link_code, #portfolio .no_link_code
-{
-    margin-left: 15px;
-    font-size: 1.3rem;
 }
 
 #see_code, #see_code button
@@ -884,7 +897,7 @@ a, span[class="a"]
 {
     font-weight: bold;
     text-align: center;
-    text-shadow: 1px 1px 2px var(--black);
+    text-shadow: 1px 1px 1px var(--black);
     color: var(--blue);
 
     display: flex;
@@ -996,6 +1009,12 @@ a, span[class="a"]
     display: flex;
     align-items: center;
 }
+
+.download_buttons li:active
+{
+    box-shadow: inset 2px 2px 3px var(--brown), inset -2px -2px 3px var(--brown);
+}
+
 
 .download_buttons .icon
 {

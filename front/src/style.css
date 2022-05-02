@@ -67,6 +67,29 @@ body
     }
 }
 
+/* ANIMATIONS ----------------------------------------------------------------------------------- */
+
+main, div#main, #popup
+{
+    opacity: 1;
+    animation-name: fade_in_opacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.5s;
+}
+
+@keyframes fade_in_opacity
+{
+	0%
+    {
+        opacity: 0;
+    }
+    100%
+    {
+        opacity: 1;
+    }
+}
+
 /* BLOCKS --------------------------------------------------------------------------------------- */
 
 main, div#main
@@ -85,24 +108,6 @@ main, div#main
     padding: 25px;
     background: linear-gradient(var(--blue), var(--pink)) fixed no-repeat;
     position: relative;
-
-    opacity: 1;
-    animation-name: fade_in_opacity;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in;
-    animation-duration: 0.5s;
-}
-
-@keyframes fade_in_opacity
-{
-	0%
-    {
-        opacity: 0;
-    }
-    100%
-    {
-        opacity: 1;
-    }
 }
 
 footer ul

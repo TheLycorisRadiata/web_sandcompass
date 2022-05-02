@@ -4,7 +4,8 @@ import { AppContext } from '../../App';
 import {
     sign_up, 
     email_address, repeat_email, password, username, 
-    sub_newsletter, disclaimer_email, cancel, confirm 
+    sub_newsletter, disclaimer_email, cancel, confirm, 
+    accept_login_cookie 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -39,6 +40,7 @@ const SignUp = (props) =>
 
         let username = e.target[3].value;
         let obj_parse_username;
+        let user_accepts_cookie;
 
         e.preventDefault();
 
@@ -56,41 +58,45 @@ const SignUp = (props) =>
             else
                 username = obj_parse_username.parsed_username;
 
-            fetch(`${package_info.api}/user/${ct.lang}/create`,
+            user_accepts_cookie = await ct.popup('confirm', ct.lang, accept_login_cookie(ct.lang));
+            if (user_accepts_cookie)
             {
-                method: 'POST',
-                headers:
+                fetch(`${package_info.api}/user/${ct.lang}/create`,
                 {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(
-                {
-                    email_address: email_address,
-                    password: chosen_password,
-                    username: username,
-                    newsletter: newsletter,
-                    language: ct.lang
+                    method: 'POST',
+                    headers:
+                    {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(
+                    {
+                        email_address: email_address,
+                        password: chosen_password,
+                        username: username,
+                        newsletter: newsletter,
+                        language: ct.lang
+                    })
                 })
-            })
-            .then(res => res.json())
-            .then(json => 
-            {
-                //console.log(json.message);
-                set_message(json.message);
-                if (json.is_success)
+                .then(res => res.json())
+                .then(json => 
                 {
-                    e.target[0].value = '';
-                    e.target[1].value = '';
-                    e.target[2].value = '';
-                    e.target[3].value = '';
-                    e.target[4].checked = false;
+                    //console.log(json.message);
+                    set_message(json.message);
+                    if (json.is_success)
+                    {
+                        e.target[0].value = '';
+                        e.target[1].value = '';
+                        e.target[2].value = '';
+                        e.target[3].value = '';
+                        e.target[4].checked = false;
 
-                    send_registration_email(ct, email_address);
-                    history.push('/');
-                }
-            });
-            //.catch(err => console.log(err));
+                        send_registration_email(ct, email_address);
+                        history.push('/');
+                    }
+                });
+                //.catch(err => console.log(err));
+            }
         }
     };
 

@@ -2284,6 +2284,19 @@ export const go_back_log_in = (lang) =>
     }
 };
 
+export const accept_login_cookie = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le cookie de connexion est nécessaire pour créer un compte. Consentez-vous ?';
+        case 2:
+            return 'The login cookie is necessary to create an account. Do you consent to it?';
+        default:
+            return 'The login cookie is necessary to create an account. Do you consent to it?';
+    }
+};
+
 export const token_title_email = (lang) => 
 {
     switch (lang)

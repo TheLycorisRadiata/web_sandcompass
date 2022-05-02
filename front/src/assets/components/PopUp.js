@@ -12,7 +12,7 @@ const PopUp = () =>
 
     const portal_element = document.getElementById('portal');
 
-    /* Prevent scrolling when a popup is open */
+    // Prevent scrolling when a popup is open
     document.querySelector('body').style.position = popup_state.show ? 'fixed' : 'static';
 
     const handle_input = (e) => 

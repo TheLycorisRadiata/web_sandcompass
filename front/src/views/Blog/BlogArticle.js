@@ -141,12 +141,12 @@ const BlogArticle = (props) =>
 
     const increment_likes = () => 
     {
-        const articles = [...props.articles];
-        const index_current_article = articles.findIndex(e => e._id === article?._id);
-
         // Block the feature
         ct.popup('alert', ct.lang, wip(ct.lang));
         return;
+
+        const articles = [...props.articles];
+        const index_current_article = articles.findIndex(e => e._id === article?._id);
 
         // Should be impossible
         if (index_current_article === -1)
@@ -206,12 +206,12 @@ const BlogArticle = (props) =>
 
     const decrement_likes = () => 
     {
-        const articles = [...props.articles];
-        const index_current_article = articles.findIndex(e => e._id === article?._id);
-
         // Block the feature
         ct.popup('alert', ct.lang, wip(ct.lang));
         return;
+
+        const articles = [...props.articles];
+        const index_current_article = articles.findIndex(e => e._id === article?._id);
 
         // Should be impossible
         if (index_current_article === -1)

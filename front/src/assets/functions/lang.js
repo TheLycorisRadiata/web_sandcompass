@@ -2118,11 +2118,11 @@ export const wip = (lang) =>
     switch (lang)
     {
         case 1:
-            return 'Cette fonctionnalité est en travaux';
+            return 'Cette fonctionnalité est en travaux.';
         case 2:
-            return 'This feature is a work in progress';
+            return 'This feature is a work in progress.';
         default:
-            return 'This feature is a work in progress';
+            return 'This feature is a work in progress.';
     }
 };
 

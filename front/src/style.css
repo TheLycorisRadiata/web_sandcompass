@@ -7,7 +7,7 @@
     --dark_yellow: #E6B000;
     --light_yellow: #FFCF33;
     --brown: #4D1617;
-    --red: #BA120D;
+    --red: #A8312D;
     --see_through_white: rgba(242, 223, 234, .7);
     --see_through_black: rgba(0, 0, 0, .7);
 }
@@ -582,6 +582,22 @@ nav ul a:active
 }
 
 /* FORM ----------------------------------------------------------------------------------------- */
+
+.required
+{
+    background-color: var(--red);
+}
+
+/* Markdown editor */
+div.required .yamde-0-2-1
+{
+    border: var(--red) solid 3px;
+}
+
+.required::placeholder, select.required option[disabled]
+{
+    color: var(--see_through_white);
+}
 
 form
 {

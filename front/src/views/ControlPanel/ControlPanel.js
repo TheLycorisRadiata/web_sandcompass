@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareXmark, faEye, faEyeSlash, faFileAlt, faComment, faQuoteRight, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import AccountEditor from '../../assets/components/AccountEditor';
 import ArticlesByAuthor from '../../assets/components/ArticlesByAuthor';
+import { handle_required_field } from '../../assets/functions/parsing';
 import package_info from '../../../package.json';
 
 const icon_logout = <FontAwesomeIcon icon={faSquareXmark} />;
@@ -36,9 +37,28 @@ const ControlPanel = (props) =>
     const [stay_logged_in, set_stay_logged_in] = useState(false);
     const [access_message, set_access_message] = useState('');
 
+    const handle_click_password_eye = () => 
+    {
+        const eye_button = document.getElementById('eye1');
+        const required_class = eye_button.classList.contains('required');
+
+        set_is_password_shown(!is_password_shown);
+
+        // "!is_password_shown" because the state is not yet updated
+        eye_button.className = !is_password_shown ? 'btn_eye_open' : 'btn_eye_closed';
+        if (required_class)
+            eye_button.classList.add('required');
+    };
+
     const handle_submit = () => 
     {
-        if (field_email_address === '' || field_password === '')
+        let is_any_required_field_empty = false;
+        if (!handle_required_field('email_address'))
+            is_any_required_field_empty = true;
+        if (!handle_required_field('password'))
+            is_any_required_field_empty = true;
+
+        if (is_any_required_field_empty)
             set_access_message(disclaimer_email_and_password(ct.lang));
         else
         {
@@ -123,12 +143,12 @@ const ControlPanel = (props) =>
             <>
                 <form>
                     <input type="text" name="email_address" placeholder={email_address(ct.lang)} value={field_email_address} onChange={e => set_field_email_address(e.target.value)} 
-                        onKeyPress={handle_key_press} autoComplete="on" required autoFocus />
+                        onKeyPress={handle_key_press} autoComplete="on" autoFocus />
 
                     <div className="field_password">
                         <input type={is_password_shown ? "text" : "password"} name="password" placeholder={password(ct.lang)} value={field_password} onChange={e => set_field_password(e.target.value)} 
-                            onKeyPress={handle_key_press} autoComplete="on" required />
-                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                            onKeyPress={handle_key_press} autoComplete="on" />
+                        <span id="eye1" className="btn_eye_closed" onClick={handle_click_password_eye}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
 
                     <div className="div_pointer">

@@ -1,5 +1,29 @@
 import { username_disclaimer, username_disclaimer_and_display } from './lang';
 
+const handle_required_field = (field_name) =>
+{
+    const field = document.querySelector(`input[name="${field_name}"]`);
+    const eye_button = field_name === 'password' ? document.getElementById('eye1') 
+        : field_name === 'repeat_password' ? document.getElementById('eye2') 
+        : null;
+
+    // return a boolean on whether the field is not empty
+    if (field.value === '')
+    {
+        field.classList.add('required');
+        if (eye_button)
+            eye_button.classList.add('required');
+        return false;
+    }
+    else
+    {
+        field.classList.remove('required');
+        if (eye_button)
+            eye_button.classList.remove('required');
+        return true;
+    }
+};
+
 const parse_username = async (ct, username) => 
 {
     let parsed_username = !username || typeof username !== 'string' ? '' : username.split('');
@@ -58,6 +82,7 @@ const parse_category = (category) =>
 
 export
 {
+    handle_required_field,
     parse_username,
     parse_category
 };

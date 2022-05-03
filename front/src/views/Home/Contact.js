@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
     contact, social_media, something_to_say, 
@@ -10,6 +10,7 @@ import {
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { handle_required_field } from '../../assets/functions/parsing';
 import SocialMedia from '../../assets/components/SocialMedia';
 import package_info from '../../../package.json';
 
@@ -33,11 +34,32 @@ const Contact = (props) =>
     const [use_markdown, set_use_markdown] = useState(false);
     const [message_content, set_message_content] = useState('');
 
+    useEffect(() => 
+    {
+        // Remove the "required" keyword from the Yamde textarea
+        if (use_markdown)
+            document.querySelector('.markdown_editor textarea').removeAttribute('required');
+    }, [use_markdown]);
+
     const reset_state = () => 
     {
         set_is_visitor_pro(false);
         set_use_markdown(false);
         set_message_content('');
+    };
+
+    const reset_required_fields = () => 
+    {
+        document.querySelector('input[name="name"]').classList.remove('required');
+        document.querySelector('input[name="email_address"]').classList.remove('required');
+        document.querySelector('select[name="subject"]').classList.remove('required');
+        document.querySelector(!use_markdown ? 'textarea[name="message"]' : '.markdown_editor').classList.remove('required');
+    };
+
+    const handle_reset = () => 
+    {
+        reset_state();
+        reset_required_fields();
     };
 
     const handle_contact = (e) => 
@@ -47,6 +69,8 @@ const Contact = (props) =>
         let field_name = e.target[3].value;
         let field_email_address = e.target[4].value;
         let field_subject = e.target[5].value;
+
+        let is_any_required_field_empty = false;
 
         if (!is_visitor_pro)
         {
@@ -58,7 +82,32 @@ const Contact = (props) =>
 
         e.preventDefault();
 
-        if (field_name !== '' && field_email_address !== '' && field_subject !== 'default' && message_content !== '')
+        // name
+        if (!handle_required_field('name'))
+            is_any_required_field_empty = true;
+        // email_address
+        if (!handle_required_field('email_address'))
+            is_any_required_field_empty = true;
+
+        // subject
+        if (field_subject !== 'default')
+            document.querySelector('select[name="subject"]').classList.remove('required');
+        else
+        {
+            document.querySelector('select[name="subject"]').classList.add('required');
+            is_any_required_field_empty = true;
+        }
+
+        // message (textarea + markdown editor)
+        if (message_content !== '')
+            document.querySelector(!use_markdown ? 'textarea[name="message"]' : '.markdown_editor').classList.remove('required');
+        else
+        {
+            document.querySelector(!use_markdown ? 'textarea[name="message"]' : '.markdown_editor').classList.add('required');
+            is_any_required_field_empty = true;
+        }
+
+        if (!is_any_required_field_empty)
         {
             fetch(`${package_info.api}/mailing/${ct.lang}/contact`,
             {
@@ -121,10 +170,10 @@ const Contact = (props) =>
                         <label htmlFor="btn_pro">{professional(ct.lang)}</label>
                     </div>
                     {is_visitor_pro && <input type="text" name="business_name" placeholder={optional_business_name(ct.lang)} autoComplete="on" />}
-                    <input type="text" name="name" placeholder={name(ct.lang)} defaultValue={props.username} autoComplete="on" required autoFocus />
-                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} defaultValue={props.email} autoComplete="on" required />
+                    <input type="text" name="name" placeholder={name(ct.lang)} defaultValue={props.username} autoComplete="on" autoFocus />
+                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} defaultValue={props.email} autoComplete="on" />
 
-                    <select name="subject" defaultValue="default" autoComplete="new-password" required>
+                    <select name="subject" defaultValue="default" autoComplete="new-password">
                         <option disabled value="default">{select_subject(ct.lang)}</option>
                         <optgroup label={opt_projects(ct.lang)}>
                             <option value="subject_work_cosmic_dust">{opt_cosmic_dust(ct.lang)}</option>
@@ -149,11 +198,11 @@ const Contact = (props) =>
                             <Yamde value={message_content} handler={set_message_content} theme="light" />
                         </div>
                     :
-                        <textarea name="message" placeholder={message(ct.lang)} autoComplete="new-password" required 
+                        <textarea name="message" placeholder={message(ct.lang)} autoComplete="new-password" 
                             value={message_content} onChange={e => set_message_content(e.target.value)}></textarea>}
 
                     <div>
-                        <input type="reset" className="button" value={cancel(ct.lang)} onClick={reset_state} />
+                        <input type="reset" className="button" value={cancel(ct.lang)} onClick={handle_reset} />
                         <input type="submit" className="button" value={send(ct.lang)} />
                     </div>
                 </form>

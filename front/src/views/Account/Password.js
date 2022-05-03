@@ -8,6 +8,7 @@ import {
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { handle_required_field } from '../../assets/functions/parsing';
 import { send_password_email } from '../../assets/functions/mailing';
 import package_info from '../../../package.json';
 
@@ -65,6 +66,25 @@ const Password = () =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const handle_click_password_eye = () => 
+    {
+        const eye_button1 = document.getElementById('eye1');
+        const eye_button2 = document.getElementById('eye2');
+        const eye1_required_class = eye_button1.classList.contains('required');
+        const eye2_required_class = eye_button2.classList.contains('required');
+
+        set_is_password_shown(!is_password_shown);
+
+        // "!is_password_shown" because the state is not yet updated
+        eye_button1.className = !is_password_shown ? 'btn_eye_open' : 'btn_eye_closed';
+        if (eye1_required_class)
+            eye_button1.classList.add('required');
+
+        eye_button2.className = !is_password_shown ? 'btn_eye_open' : 'btn_eye_closed';
+        if (eye2_required_class)
+            eye_button2.classList.add('required');
+    };
+
     const set_password = async (password, id_token, id_account) => 
     {
         const res = await fetch(`${package_info.api}/user/${ct.lang}/password`,
@@ -96,19 +116,41 @@ const Password = () =>
         const field_password = e.target[0].value;
         const field_repeat_password = e.target[1].value;
 
+        let is_any_required_field_empty = false;
         let res = null;
 
         e.preventDefault();
 
         if (!is_access_granted)
         {
+            handle_required_field('email_address');
             if (e.target[0].value !== '')
                 await send_password_email(ct, e.target[0].value);
         }
-        else if (field_password !== '' && field_repeat_password !== '')
+        else
         {
-            if (field_password !== field_repeat_password)
+            if (!handle_required_field('password'))
+                is_any_required_field_empty = true;
+            if (!handle_required_field('repeat_password'))
+                is_any_required_field_empty = true;
+
+            if (is_any_required_field_empty)
+                return;
+
+            if (field_password === field_repeat_password)
             {
+                document.querySelector('input[name="password"').classList.remove('required');
+                document.querySelector('input[name="repeat_password"').classList.remove('required');
+                document.getElementById('eye1').classList.remove('required');
+                document.getElementById('eye2').classList.remove('required');
+            }
+            else
+            {
+                document.querySelector('input[name="password"').classList.add('required');
+                document.querySelector('input[name="repeat_password"').classList.add('required');
+                document.getElementById('eye1').classList.add('required');
+                document.getElementById('eye2').classList.add('required');
+
                 ct.popup('alert', ct.lang, disclaimer_password(ct.lang));
                 return;
             }
@@ -130,20 +172,18 @@ const Password = () =>
             <h1 className="title">{password_creation(ct.lang)}</h1>
             <form onSubmit={handle_submit}>
                 {!is_access_granted ? 
-                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} required autoFocus />
+                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoFocus />
                 :
                 <>
                     <p className="txt_bold" id="p_password">{field_email_address}</p>
 
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} autoComplete="new-password" required autoFocus />
-                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} 
-                            onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} autoComplete="new-password" autoFocus />
+                        <span id="eye1" className="btn_eye_closed" onClick={handle_click_password_eye}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder={repeat_password(ct.lang)} autoComplete="new-password" required />
-                        <span className={is_password_shown ? "btn_eye_open" : "btn_eye_closed"} 
-                            onClick={() => set_is_password_shown(!is_password_shown)}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
+                        <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder={repeat_password(ct.lang)} autoComplete="new-password" />
+                        <span id="eye2" className="btn_eye_closed" onClick={handle_click_password_eye}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                 </>}
 

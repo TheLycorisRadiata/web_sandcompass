@@ -763,6 +763,19 @@ export const profile = (lang) =>
     }
 };
 
+export const profile_picture = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Image de profil';
+        case 2:
+            return 'プロファイル画像';
+        default:
+            return 'Profile picture';
+    }
+};
+
 export const info_rank = (lang, rank) => 
 {
     switch (lang)

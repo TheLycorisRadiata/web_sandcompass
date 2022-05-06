@@ -59,7 +59,7 @@ const ArticlesByAuthor = (props) =>
                                 <li className="txt_bold txt_centered">{category.name[ct.lang]}</li>
                                 <ol>
                                     {articles.filter(e => e.categories.includes(category._id)).map((e, i) => 
-                                        <li key={'category_' + index + '_' + i}><Link to={'/blog/article' + e.code}>{e.title[ct.lang]}</Link></li>)}
+                                        <li key={'category_' + index + '_' + i}><Link to={'/blog/article/' + e.code}>{e.title[ct.lang]}</Link></li>)}
                                 </ol>
                             </span>
                         : 

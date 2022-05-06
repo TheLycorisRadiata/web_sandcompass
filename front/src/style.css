@@ -1273,6 +1273,17 @@ a, span[class="a"]
     text-align: center;
 }
 
+#all_account_info img
+{
+    display: block;
+    margin: auto;
+    padding: 10px;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    filter: drop-shadow(0 0 2px var(--black));
+}
+
 /* CONTROL PANEL VIEWS -------------------------------------------------------------------------- */
 
 #control_panel_buttons

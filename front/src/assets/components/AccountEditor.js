@@ -2,7 +2,7 @@ import { useState, useLayoutEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    profile, info_rank, info_registered_on, info_preferred_language, dynamic_language, info_email_address, info_newsletter, 
+    profile, profile_picture, info_rank, info_registered_on, info_preferred_language, dynamic_language, info_email_address, info_newsletter, 
     btn_delete_account, modify_information, cancel, confirm, 
     disclaimer_email, disclaimer_password, confirm_newsletter, confirm_delete_account, 
     change_username, username, change_email, new_email, repeat_email, 
@@ -15,6 +15,8 @@ import { date_in_letters } from '../functions/time';
 import { parse_username } from '../functions/parsing';
 import { send_newsletter_email, send_verification_email } from '../functions/mailing';
 import package_info from '../../../package.json';
+
+import file_profile_picture from '../images/placeholder.png';
 
 const icon_edit = <FontAwesomeIcon icon={faUserEdit} />;
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
@@ -310,6 +312,7 @@ const AccountEditor = (props) =>
                 <div>
                     <ul>
                         <li>{props.account_data?.username}</li>
+                        <li><img src={file_profile_picture} alt={profile_picture(ct.lang)} /></li>
                         <li>{info_rank(ct.lang, props.rank?.name[ct.lang] ?? '')}</li>
                         <li>{info_registered_on(ct.lang)}{date_in_letters(ct.lang, props.account_data?.registered_on)}</li>
                         <li>{info_preferred_language(ct.lang)}{dynamic_language(ct.lang, props.account_data?.language)}</li>

@@ -4,7 +4,7 @@ import { book_cover_cosmic_dust, placeholder } from '../functions/lang';
 import eng_book_cover from '../images/works/cosmic_dust/cover_eng.png';
 import fr_book_cover from '../images/works/cosmic_dust/cover_fr.png';
 import jp_book_cover from '../images/works/cosmic_dust/cover_jp.png';
-import placeholder_cover from '../images/works/placeholder.png';
+import placeholder_cover from '../images/placeholder.png';
 
 const DisplayCover = (props) => 
 {

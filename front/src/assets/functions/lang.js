@@ -1118,6 +1118,19 @@ export const msg_page_not_found = (lang) =>
 
 /* COSMIC DUST ---------------------------------------------------------------------------------- */
 
+export const other_works = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Autres œuvres';
+        case 2:
+            return '他の作品';
+        default:
+            return 'Other works';
+    }
+};
+
 export const link_to_cosmic_dust_cover = (lang) => 
 {
     switch (lang)
@@ -1545,19 +1558,6 @@ export const favicon = (lang) =>
     }
 };
 
-export const banner = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Bannière';
-        case 2:
-            return 'バナー';
-        default:
-            return 'Banner';
-    }
-};
-
 export const round_country_flags = (lang) => 
 {
     switch (lang)
@@ -1581,6 +1581,17 @@ export const book_cover_cosmic_dust = (lang) =>
             return `「${title_cosmic_dust(lang)}」の書皮`;
         default:
             return `Book cover of "${title_cosmic_dust(lang)}"`;
+    }
+};
+
+export const placeholder = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'プレースホルダー';
+        default:
+            return 'Placeholder';
     }
 };
 
@@ -1700,17 +1711,6 @@ export const opt_cosmic_dust = (lang) =>
             return `本：${title_cosmic_dust(lang)}`;
         default:
             return `Book: ${title_cosmic_dust(lang)}`;
-    }
-};
-
-export const title_persistence = (lang) => 
-{
-    switch (lang)
-    {
-        case 2:
-            return 'ペルシステンス';
-        default:
-            return 'Persistence';
     }
 };
 
@@ -3027,16 +3027,14 @@ export const disclaimer_blog_editor_content = (lang) =>
 
 /* WORKS: PERSISTENCE --------------------------------------------------------------------------- */
 
-export const vrmmorpg_project = (lang) => 
+export const title_persistence = (lang) => 
 {
     switch (lang)
     {
-        case 1:
-            return 'Projet de VRMMORPG';
         case 2:
-            return 'VRMMORPGのプロジェクト';
+            return 'ペルシステンス';
         default:
-            return 'VRMMORPG project';
+            return 'Persistence';
     }
 };
 
@@ -3050,6 +3048,19 @@ export const game = (lang) =>
             return 'ゲーム';
         default:
             return 'Game';
+    }
+};
+
+export const vrmmorpg_project = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Projet de VRMMORPG';
+        case 2:
+            return 'VRMMORPGのプロジェクト';
+        default:
+            return 'VRMMORPG project';
     }
 };
 

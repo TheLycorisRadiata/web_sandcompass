@@ -8,8 +8,9 @@
     --light_yellow: #FFCF33;
     --brown: #4D1617;
     --red: #A8312D;
-    --see_through_white: rgba(242, 223, 234, .7);
     --see_through_black: rgba(0, 0, 0, .7);
+    --see_through_white: rgba(242, 223, 234, .7);
+    --see_through_blue: rgba(145, 152, 229, .5);
 }
 
 @font-face
@@ -961,7 +962,56 @@ a, span[class="a"]
     margin-left: 5px;
 }
 
-/* VIEW: HOME/WORKS (PRESENTATION) -------------------------------------------------------------- */
+/* VIEW: WORKS ---------------------------------------------------------------------------------- */
+
+#works div
+{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+#works section
+{
+    margin: 20px;
+    background-color: var(--see_through_blue);
+    border: var(--blue) 5px ridge;
+    border-radius: 5px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+#works section:hover
+{
+    background-color: var(--see_through_black);
+}
+
+#works section a
+{
+    padding: 10px;
+}
+
+#works section img
+{
+    margin: 10px;
+}
+
+#works section li
+{
+    text-align: center;
+}
+
+#works section li:first-child
+{
+    text-transform: uppercase;
+}
+
+.btn_other_works
+{
+    display: flex;
+    justify-content: center;
+}
 
 #book_presentation ul li
 {
@@ -973,13 +1023,13 @@ a, span[class="a"]
     text-align: center;
 }
 
-#book_cover
+.work_cover
 {
     display: flex;
     justify-content: center;
 }
 
-#book_cover img
+.work_cover img
 {
     margin-bottom: 15px;
     padding: 10px;
@@ -991,12 +1041,12 @@ a, span[class="a"]
 
 @media screen and (min-width: 750px)
 {
-    #book_cover
+    .work_cover
     {
         display: inline;
     }
 
-    #book_cover img
+    .work_cover img
     {
         margin-right: 20px;
         float: left;
@@ -1007,7 +1057,6 @@ a, span[class="a"]
 {
     clear: both;
 }
-
 
 /* VIEW: WORKS (EBOOK FORMATS) ------------------------------------------------------------------ */
 

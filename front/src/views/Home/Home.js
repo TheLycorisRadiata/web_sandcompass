@@ -67,10 +67,10 @@ const Home = (props) =>
             </article>
 
             <section>
-                <h2 className="sub_title"><Link to="/works">{home_cosmic_dust(ct.lang)}</Link></h2>
+                <h2 className="sub_title"><Link to="/works/cosmic_dust">{home_cosmic_dust(ct.lang)}</Link></h2>
 
                 <div id="book_presentation">
-                    <Link to="/works"><DisplayCover lang={ct.lang} /></Link>
+                    <Link to="/works/cosmic_dust"><DisplayCover lang={ct.lang} work="cosmic_dust" /></Link>
 
                     <div>
                         <p id="catch_phrase"><em>{catch_phrase_cosmic_dust(ct.lang)}</em></p>

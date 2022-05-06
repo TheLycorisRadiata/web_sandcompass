@@ -14,6 +14,8 @@ import { faGlobe, faUserPlus, faUser, faChevronCircleUp, faChevronCircleDown } f
 import Home from './views/Home/Home';
 import Faq from './views/Home/Faq';
 import Works from './views/Works/Works';
+import CosmicDust from './views/Works/CosmicDust';
+import Persistence from './views/Works/Persistence';
 import Contact from './views/Home/Contact';
 import Licenses from './views/Home/Licenses';
 import LegalNotices from './views/Home/LegalNotices';
@@ -28,7 +30,6 @@ import Password from './views/Account/Password';
 import ExecuteToken from './views/Account/ExecuteToken';
 import BlogPage from './views/Blog/BlogPage';
 import BlogArticle from './views/Blog/BlogArticle';
-import Persistence from './views/Works/Persistence';
 import PageNotFound from './views/PageNotFound';
 import Flag_Eng from './assets/images/flags/usa.png';
 import Flag_Fr from './assets/images/flags/france.png';
@@ -167,7 +168,10 @@ const App = () =>
                         <Route exact path="/"><Home /></Route>
                         <Route exact path="/home"><Home /></Route>
                         <Route exact path="/faq"><Faq questions={all_questions} set_questions={set_all_questions} /></Route>
+
                         <Route exact path="/works"><Works /></Route>
+                        <Route exact path="/works/cosmic_dust"><CosmicDust /></Route>
+                        <Route exact path="/works/persistence"><Persistence /></Route>
 
                         <Route path={'/blog/article'}>
                             <BlogArticle 
@@ -220,8 +224,6 @@ const App = () =>
                         </Route>
                         <Route path="/password"><Password /></Route>
                         <Route path="/token"><ExecuteToken /></Route>
-
-                        <Route exact path="/works/persistence"><Persistence /></Route>
 
                         <Route path="/"><PageNotFound /></Route>
                     </Switch>

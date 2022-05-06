@@ -1,7 +1,9 @@
 import { useState, useEffect, useLayoutEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    vrmmorpg_project, game, disclaimer_os, code 
+    works, other_works, 
+    title_persistence, vrmmorpg_project, game, disclaimer_os, code 
 } from '../../assets/functions/lang';
 import { get_os } from '../../assets/functions/os';
 import package_info from '../../../package.json';
@@ -25,19 +27,25 @@ const Persistence = () =>
 
     return (
         <main>
-            <h1 className="title">Persistence</h1>
-            <p className="txt_centered">{vrmmorpg_project(ct.lang)}</p>
+            <h1 className="title">{works(ct.lang)}</h1>
+            <div className="btn_other_works"><Link to="/works" className="button">{other_works(ct.lang)}</Link></div>
 
-            <ul className="download_buttons">
-                {!os?.is_pc ? 
-                    <li className="a">{disclaimer_os(ct.lang)}</li>
-                :
-                    <a href={`${package_info.api}/file/${ct.lang}/game/persistence/${os?.name}`}><li><span className="icon os">{os?.icon}</span> {game(ct.lang)}</li></a>}
-            </ul>
+            <article>
+                <h2 className="sub_title">{title_persistence(ct.lang)}</h2>
 
-            <div id="see_code">
-                <a href="https://github.com/thelycorisradiata/game_persistence" rel="noreferrer" target="_blank"><button className="button">{code(ct.lang)}</button></a>
-            </div>
+                <p className="txt_centered">{vrmmorpg_project(ct.lang)}</p>
+
+                <ul className="download_buttons">
+                    {!os?.is_pc ? 
+                        <li className="a">{disclaimer_os(ct.lang)}</li>
+                        :
+                        <a href={`${package_info.api}/file/${ct.lang}/game/persistence/${os?.name}`}><li><span className="icon os">{os?.icon}</span> {game(ct.lang)}</li></a>}
+                </ul>
+
+                <div id="see_code">
+                    <a href="https://github.com/thelycorisradiata/game_persistence" rel="noreferrer" target="_blank"><button className="button">{code(ct.lang)}</button></a>
+                </div>
+            </article>
         </main>
     );
 };

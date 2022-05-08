@@ -186,7 +186,13 @@ export const home = (lang) =>
 
 export const faq_short = (lang) => 
 {
-    return 'FAQ';
+    switch (lang)
+    {
+        case 2:
+            return 'ＦＡＱ';
+        default:
+            return 'FAQ';
+    }
 };
 
 export const faq_long = (lang) => 
@@ -309,7 +315,7 @@ export const faq_is_empty = (lang) =>
         case 1:
             return 'La FAQ est vide.';
         case 2:
-            return 'FAQは空っぽです。';
+            return 'ＦＡＱは空っぽです。';
         default:
             return 'The FAQ is empty.';
     }
@@ -783,7 +789,7 @@ export const info_rank = (lang, rank) =>
         case 1:
             return 'Grade : ' + rank;
         case 2:
-            return 'ランク：　' + rank;
+            return 'ランク：' + rank;
         default:
             return 'Rank: ' + rank;
     }
@@ -822,7 +828,7 @@ export const info_email_address = (lang) =>
         case 1:
             return 'Adresse email : ';
         case 2:
-            return 'メールアドレス：　';
+            return 'メールアドレス：';
         default:
             return 'Email address: ';
     }
@@ -926,7 +932,7 @@ export const change_username = (lang) =>
         case 1:
             return 'Changer votre pseudo';
         case 2:
-            return 'Change your username';
+            return 'ハンドルネームを変える';
         default:
             return 'Change your username';
     }
@@ -939,7 +945,7 @@ export const username = (lang) =>
         case 1:
             return 'Pseudo';
         case 2:
-            return 'Username';
+            return 'ハンドルネーム';
         default:
             return 'Username';
     }
@@ -952,7 +958,7 @@ export const change_email = (lang) =>
         case 1:
             return 'Changer votre adresse email';
         case 2:
-            return 'Change your email address';
+            return 'メールアドレスを変える';
         default:
             return 'Change your email address';
     }
@@ -965,7 +971,7 @@ export const new_email = (lang) =>
         case 1:
             return 'Nouvelle adresse email';
         case 2:
-            return 'New email address';
+            return '新しいメールアドレス';
         default:
             return 'New email address';
     }
@@ -978,7 +984,7 @@ export const repeat_email = (lang) =>
         case 1:
             return 'Répétez l\'adresse email';
         case 2:
-            return 'Repeat the email address';
+            return 'メールアドレスの繰り返し';
         default:
             return 'Repeat the email address';
     }
@@ -991,7 +997,7 @@ export const change_password = (lang) =>
         case 1:
             return 'Changer votre mot de passe';
         case 2:
-            return 'Change your password';
+            return 'パスワードを変える';
         default:
             return 'Change your password';
     }
@@ -1004,7 +1010,7 @@ export const new_password = (lang) =>
         case 1:
             return 'Nouveau mot de passe';
         case 2:
-            return 'New password';
+            return '新しいパスワード';
         default:
             return 'New password';
     }
@@ -1017,7 +1023,7 @@ export const repeat_password = (lang) =>
         case 1:
             return 'Répétez le mot de passe';
         case 2:
-            return 'Repeat the password';
+            return 'パスワードの繰り返し';
         default:
             return 'Repeat the password';
     }
@@ -1030,7 +1036,7 @@ export const change_language = (lang) =>
         case 1:
             return 'Changer votre langue de préférence';
         case 2:
-            return 'Change your preferred language';
+            return '行きつけの言語を変える';
         default:
             return 'Change your preferred language';
     }
@@ -1277,7 +1283,7 @@ export const info_title = (lang) =>
         case 1:
             return 'Titre : ';
         case 2:
-            return 'Title: ';
+            return 'タイトル：';
         default:
             return 'Title: ';
     }
@@ -1303,7 +1309,7 @@ export const info_type = (lang) =>
         case 1:
             return 'Type : ';
         case 2:
-            return 'Type: ';
+            return 'タイプ：';
         default:
             return 'Type: ';
     }
@@ -1316,7 +1322,7 @@ export const info_genre = (lang) =>
         case 1:
             return 'Genre : ';
         case 2:
-            return 'Genre: ';
+            return 'ジャンル：';
         default:
             return 'Genre: ';
     }
@@ -1329,7 +1335,7 @@ export const info_release_date = (lang) =>
         case 1:
             return 'Date de sortie : ';
         case 2:
-            return 'Release date: ';
+            return '発売日：';
         default:
             return 'Release date: ';
     }
@@ -1342,7 +1348,7 @@ export const info_summary = (lang) =>
         case 1:
             return 'Résumé : ';
         case 2:
-            return 'Summary: ';
+            return '筋書き：';
         default:
             return 'Summary: ';
     }
@@ -1355,7 +1361,7 @@ export const reviews = (lang) =>
         case 1:
             return 'Critiques';
         case 2:
-            return 'Reviews';
+            return '批評';
         default:
             return 'Reviews';
     }
@@ -1397,6 +1403,39 @@ export const different_formats = (lang) =>
             return 'The different formats';
         default:
             return 'The different formats';
+    }
+};
+
+export const azw = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'ＡＺＷ';
+        default:
+            return 'AZW';
+    }
+};
+
+export const epub = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'ｅＰｕｂ';
+        default:
+            return 'ePub';
+    }
+};
+
+export const pdf = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'ＰＤＦ';
+        default:
+            return 'PDF';
     }
 };
 
@@ -3071,7 +3110,7 @@ export const vrmmorpg_project = (lang) =>
         case 1:
             return 'Projet de VRMMORPG';
         case 2:
-            return 'VRMMORPGのプロジェクト';
+            return 'ＶＲＭＭＯＲＰＧのプロジェクト';
         default:
             return 'VRMMORPG project';
     }

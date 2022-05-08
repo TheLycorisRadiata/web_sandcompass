@@ -7,7 +7,7 @@ import {
     radiata_lycoris, standalone_novel, science_fiction, work_in_progress, 
     title_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, link_to_cosmic_dust_cover, 
     reviews, disclaimer_reviews_1_on_2, disclaimer_reviews_2_on_2, 
-    different_formats, all, how_to_pick_format 
+    different_formats, azw, epub, pdf, all, how_to_pick_format 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
@@ -78,10 +78,10 @@ const CosmicDust = () =>
                     */}
 
                     <ul className="download_buttons">
-                        <a href={`${package_info.api}/file/${ct.lang}/book/cosmic_dust/azw3`}><li><span className="icon">{icon_download}</span> AZW</li></a>
-                        <a href={`${package_info.api}/file/${ct.lang}/book/cosmic_dust/epub`}><li><span className="icon">{icon_download}</span> ePub</li></a>
-                        <a href={`${package_info.api}/file/${ct.lang}/book/cosmic_dust/pdf`}><li><span className="icon">{icon_download}</span> PDF</li></a>
-                        <a href={`${package_info.api}/file/${ct.lang}/book/cosmic_dust/zip`}><li><span className="icon">{icon_download}</span> {all(ct.lang)}</li></a>
+                        <a href={`${package_info.api}/file/${ct.lang}/book/cosmic_dust/azw3`}><li><span className="icon">{icon_download}</span>{' ' + azw(ct.lang)}</li></a>
+                        <a href={`${package_info.api}/file/${ct.lang}/book/cosmic_dust/epub`}><li><span className="icon">{icon_download}</span>{' ' + epub(ct.lang)}</li></a>
+                        <a href={`${package_info.api}/file/${ct.lang}/book/cosmic_dust/pdf`}><li><span className="icon">{icon_download}</span>{' ' + pdf(ct.lang)}</li></a>
+                        <a href={`${package_info.api}/file/${ct.lang}/book/cosmic_dust/zip`}><li><span className="icon">{icon_download}</span>{' ' + all(ct.lang)}</li></a>
                     </ul>
                 </div>
 

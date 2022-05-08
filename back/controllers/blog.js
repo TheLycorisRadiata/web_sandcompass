@@ -38,6 +38,12 @@ const retrieve_articles_by_author = (req, res) =>
     .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
 };
 
+const retrieve_username = async (id) => 
+{
+    const user = await User.findOne({ _id: id });
+    return !user || user.username === '' ? null : user.username;
+};
+
 const retrieve_articles_by_category_sort_and_page = (req, res) => 
 {
     const lang = parseInt(req.params.lang, 10);
@@ -54,71 +60,64 @@ const retrieve_articles_by_category_sort_and_page = (req, res) =>
     let category_not_found = false;
     let i;
 
-    // (Temporary) Fetch the admin to set txt_author
-    User.findOne({ is_admin: true })
-    .then(author => 
+    // Does the category even exist?
+    Category.findOne(code_category === 'all' ? {} : { code: code_category })
+    .then(category => 
     {
-        // Does the category even exist?
-        Category.findOne(code_category === 'all' ? {} : { code: code_category })
-        .then(category => 
-        {
-            if (!category)
-                category_not_found = true;
+        if (!category)
+            category_not_found = true;
 
-            // Does the blog even have a single article?
-            Article.find({})
-            .then(articles => 
+        // Does the blog even have a single article?
+        Article.find({})
+        .then(articles => 
+        {
+            if (!articles.length)
             {
-                if (!articles.length)
+                res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, 0), data: [], 
+                    is_blog_empty: true, category_not_found: category_not_found });
+                return;
+            }
+
+            // Retrieve all categories in order to set txt_categories for each article
+            Category.find({})
+            .then(async (categories) => 
+            {
+                if (!categories.length)
                 {
-                    res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, 0), data: [], 
-                        is_blog_empty: true, category_not_found: category_not_found });
+                    res.status(404).json({ is_success: false, message: failure_articles_retrieval(lang) });
                     return;
                 }
 
-                // Retrieve all categories in order to set txt_categories for each article
-                Category.find({})
-                .then(categories => 
+                // Filter by category
+                arr_articles = code_category === 'all' || category_not_found ? articles : articles.filter(e => e.categories.includes(category._id));
+
+                // Compute the last page number
+                last_page_number = Math.ceil(arr_articles.length / 5);
+                if (!last_page_number)
+                    last_page_number = 1;
+
+                // Articles are in chronological order, so reverse the array if sort is 'recent'
+                if (sort === 'recent')
+                    arr_articles = arr_articles.slice(0).reverse();
+
+                // Filter by page
+                arr_articles = arr_articles.slice(min_index, max_index + 1);
+
+                for (i = 0; i < arr_articles.length; ++i)
                 {
-                    if (!categories.length)
-                    {
-                        res.status(404).json({ is_success: false, message: failure_articles_retrieval(lang) });
-                        return;
-                    }
+                    // Transform every element into a proper object so properties can be added (txt_categories and txt_author)
+                    arr_articles[i] = arr_articles[i].toObject();
 
-                    // Filter by category
-                    arr_articles = code_category === 'all' || category_not_found ? articles : articles.filter(e => e.categories.includes(category._id));
+                    // Add txt_categories
+                    arr_articles[i].txt_categories = [];
+                    arr_articles[i].categories.map(cat_id => arr_articles[i].txt_categories.push(categories.find(cat => String(cat._id) === String(cat_id)).name));
 
-                    // Compute the last page number
-                    last_page_number = Math.ceil(arr_articles.length / 5);
-                    if (!last_page_number)
-                        last_page_number = 1;
+                    // Add txt_author
+                    arr_articles[i].txt_author = await retrieve_username(arr_articles[i].author);
+                }
 
-                    // Articles are in chronological order, so reverse the array if sort is 'recent'
-                    if (sort === 'recent')
-                        arr_articles = arr_articles.slice(0).reverse();
-
-                    // Filter by page
-                    arr_articles = arr_articles.slice(min_index, max_index + 1);
-
-                    for (i = 0; i < arr_articles.length; ++i)
-                    {
-                        // Transform every element into a proper object so properties can be added (txt_categories and txt_author)
-                        arr_articles[i] = arr_articles[i].toObject();
-
-                        // Add txt_categories
-                        arr_articles[i].txt_categories = [];
-                        arr_articles[i].categories.map(cat_id => arr_articles[i].txt_categories.push(categories.find(cat => String(cat._id) === String(cat_id)).name));
-
-                        // Add txt_author
-                        // TODO
-                        arr_articles[i].txt_author = author?.username === '' ? null : author.username;
-                    }
-
-                    res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, arr_articles.length), data: arr_articles, 
-                        is_blog_empty: false, last_page_number: last_page_number, category_not_found: category_not_found });
-                })
-                .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
+                res.status(200).json({ is_success: true, message: success_articles_retrieval(lang, arr_articles.length), data: arr_articles, 
+                    is_blog_empty: false, last_page_number: last_page_number, category_not_found: category_not_found });
             })
             .catch(err => res.status(400).json({ is_success: false, message: failure_articles_retrieval(lang), error: err }));
         })

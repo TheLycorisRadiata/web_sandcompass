@@ -9,6 +9,7 @@ const model_user = new mongoose.Schema(
     email_address: { type: String, unique: true, lowercase: true },
     hashed_password: { type: String, default: null },
     username: { type: String, unique: true },
+    profile_picture: { type: Buffer, default: null },
     newsletter: { type: Boolean, default: false },
     language: { type: Number, default: 0 },
     articles:

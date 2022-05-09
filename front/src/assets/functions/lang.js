@@ -925,6 +925,19 @@ export const yes = (lang) =>
     }
 };
 
+export const change_profile_picture = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Changer votre image de profil';
+        case 2:
+            return '顔写を変える';
+        default:
+            return 'Change your profile picture';
+    }
+};
+
 export const change_username = (lang) => 
 {
     switch (lang)
@@ -1052,6 +1065,23 @@ export const sub_newsletter = (lang, newsletter) =>
             return newsletter ? 'Unsubscribe from the newsletter' : 'Subscribe to the newsletter';
         default:
             return newsletter ? 'Unsubscribe from the newsletter' : 'Subscribe to the newsletter';
+    }
+};
+
+export const disclaimer_profile_picture_size = (lang, mb) => 
+{
+    // '+' removes last zeros (e.g. '1.50' becomes '1.5')
+    // toFixed(2) to only keep the first two decimal digits
+    const mb_round = +mb.toFixed(2);
+
+    switch (lang)
+    {
+        case 1:
+            return `L'image de profil fait une taille de ${mb_round} Mo et ne doit pas dépasser 1 Mo.`;
+        case 2:
+            return `The profile picture has a size of ${mb_round} Mb and must not be higher than 1 Mb.`;
+        default:
+            return `The profile picture has a size of ${mb_round} Mb and must not be higher than 1 Mb.`;
     }
 };
 

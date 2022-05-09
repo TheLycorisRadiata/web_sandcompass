@@ -4,8 +4,8 @@ import { AppContext } from '../../App';
 import {
     profile, profile_picture, info_rank, info_registered_on, info_preferred_language, dynamic_language, info_email_address, info_newsletter, 
     btn_delete_account, modify_information, cancel, confirm, 
-    disclaimer_email, disclaimer_password, confirm_newsletter, confirm_delete_account, 
-    change_username, username, change_email, new_email, repeat_email, 
+    disclaimer_profile_picture_size, disclaimer_email, disclaimer_password, confirm_newsletter, confirm_delete_account, 
+    change_profile_picture, change_username, username, change_email, new_email, repeat_email, 
     change_password, new_password, repeat_password, sub_newsletter, 
     change_language, english, french, japanese 
 } from '../functions/lang';
@@ -16,7 +16,7 @@ import { parse_username } from '../functions/parsing';
 import { send_newsletter_email, send_verification_email } from '../functions/mailing';
 import package_info from '../../../package.json';
 
-import file_profile_picture from '../images/placeholder.png';
+import default_profile_picture from '../images/placeholder.png';
 
 const icon_edit = <FontAwesomeIcon icon={faUserEdit} />;
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
@@ -32,6 +32,7 @@ const AccountEditor = (props) =>
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [checked_lang, set_checked_lang] = useState(props.account_data?.language);
     const [checkbox_newsletter, set_checkbox_newsletter] = useState(false);
+    const [new_profile_picture, set_new_profile_picture] = useState(null);
 
     useLayoutEffect(() => 
     {
@@ -57,12 +58,32 @@ const AccountEditor = (props) =>
     {
         set_checkbox_newsletter(false);
         set_checked_lang(props.account_data?.language);
+        set_new_profile_picture(null);
     };
 
     const handle_edit_button = () => 
     {
         set_is_edit_open(!is_edit_open);
         reset_form();
+    };
+
+    const cancel_upload_of_new_profile_picture = e => 
+    {
+        e.preventDefault();
+
+        // Clear the file itself (form)
+        document.querySelector('input[name="profile_picture"]').value = '';
+
+        // Clear the file name (state)
+        set_new_profile_picture(null);
+    };
+
+    const get_profile_picture = () => 
+    {
+        if (props.account_data?.profile_picture)
+            return atob(props.account_data?.profile_picture);
+        else
+            return default_profile_picture;
     };
 
     const is_username_already_used_by_another_account = async (username) => 
@@ -112,12 +133,15 @@ const AccountEditor = (props) =>
     const update_account = async (e) =>
     {
         const updated_account = {};
-        const field_email = e.target[1].value;
-        const field_repeat_email = e.target[2].value;
-        const field_password = e.target[3].value;
-        const field_repeat_password = e.target[4].value;
-        let field_username = e.target[0].value;
+        const field_profile_picture = e.target[0].files[0];
+        const field_email = e.target[2].value;
+        const field_repeat_email = e.target[3].value;
+        const field_password = e.target[4].value;
+        const field_repeat_password = e.target[5].value;
+        let field_username = e.target[1].value;
 
+        let formdata_profile_picture;
+        let profile_picture_size_in_mb;
         let obj_parse_username;
         let username_check;
         let email_check;
@@ -126,10 +150,28 @@ const AccountEditor = (props) =>
         e.preventDefault();
 
         // Check for whether any field is filled or any button checked, otherwise no update
-        if (field_username !== '' || field_email !== '' || field_repeat_email !== '' || field_password !== '' || field_repeat_password !== '' 
+        if (field_profile_picture || field_username !== '' || field_email !== '' || field_repeat_email !== '' || field_password !== '' || field_repeat_password !== '' 
             || props.account_data.language !== checked_lang || checkbox_newsletter) 
         {
             updated_account.verified_user = props.account_data.verified_user;
+
+            if (field_profile_picture)
+            {
+                // "Size / 1000" is size in Kb, and 1 Mb is 1000 Kb, which is the max recommended size
+                profile_picture_size_in_mb = (field_profile_picture.size / 1000) / 1000;
+
+                if (profile_picture_size_in_mb <= 1)
+                {
+                    formdata_profile_picture = new FormData();
+                    formdata_profile_picture.append('profile_picture', field_profile_picture, field_profile_picture.name);
+                    updated_account.profile_picture = formdata_profile_picture;
+                }
+                else
+                {
+                    ct.popup('alert', ct.lang, disclaimer_profile_picture_size(ct.lang, profile_picture_size_in_mb));
+                    return;
+                }
+            }
 
             if (field_username === '')
                 updated_account.username = props.account_data.username;
@@ -257,6 +299,7 @@ const AccountEditor = (props) =>
 
         set_is_edit_open(false);
         set_checkbox_newsletter(false);
+        set_new_profile_picture(null);
 
         // If the email address has been updated, verify it just like we did at account registration
         if (updated_account.verified_user === false)
@@ -312,7 +355,7 @@ const AccountEditor = (props) =>
                 <div>
                     <ul>
                         <li>{props.account_data?.username}</li>
-                        <li><img src={file_profile_picture} alt={profile_picture(ct.lang)} /></li>
+                        <li><img src={get_profile_picture()} alt={profile_picture(ct.lang)} /></li>
                         <li>{info_rank(ct.lang, props.rank?.name[ct.lang] ?? '')}</li>
                         <li>{info_registered_on(ct.lang)}{date_in_letters(ct.lang, props.account_data?.registered_on)}</li>
                         <li>{info_preferred_language(ct.lang)}{dynamic_language(ct.lang, props.account_data?.language)}</li>
@@ -327,6 +370,14 @@ const AccountEditor = (props) =>
 
             {is_edit_open && 
             <form onSubmit={update_account} id="account_editor_form">
+                <div className="change">
+                    <label htmlFor="change_profile_picture">{change_profile_picture(ct.lang)}</label>
+                    <input type="file" name="profile_picture" accept=".jpg, .jpeg, .png" onChange={e => set_new_profile_picture(e.target.files[0])} 
+                        id="change_profile_picture" style={{ display: 'none' }} />
+                    {new_profile_picture && <p id="new_profile_picture">{new_profile_picture.name}
+                        <button className="button" onClick={cancel_upload_of_new_profile_picture}><span className="icon">{icon_delete}</span></button></p>}
+                </div>
+
                 <div className="change">
                     <label htmlFor="change_username">{change_username(ct.lang)}</label>
                     <input type="text" name="username" placeholder={username(ct.lang)} autoComplete="new-password" id="change_username" />

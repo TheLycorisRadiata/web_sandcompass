@@ -671,7 +671,7 @@ label
     background-color: var(--see_through_white);
 }
 
-.button, a, span[class="a"]
+.button, a, span[class="a"], label[for="change_profile_picture"]
 {
     cursor: pointer;
     font-weight: bold;
@@ -679,7 +679,7 @@ label
     text-shadow: 1px 1px 2px var(--black);
 }
 
-.button:hover, .button:focus, .button:active, a:hover, a:active, span[class="a"]:hover, span[class="a"]:active
+.button:hover, .button:focus, .button:active, a:hover, a:active, span[class="a"]:hover, span[class="a"]:active, label[for="change_profile_picture"]:hover, label[for="change_profile_picture"]:active
 {
     color: var(--light_yellow);
 }
@@ -1282,6 +1282,19 @@ a, span[class="a"]
     width: 150px;
     height: 150px;
     filter: drop-shadow(0 0 2px var(--black));
+}
+
+#new_profile_picture
+{
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    font-style: italic;
+}
+
+#new_profile_picture button
+{
+    margin-left: 20px;
 }
 
 /* CONTROL PANEL VIEWS -------------------------------------------------------------------------- */

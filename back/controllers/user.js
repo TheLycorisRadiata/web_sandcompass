@@ -416,6 +416,7 @@ const update_account = (req, res) =>
         language: parseInt(req.body.updated_account.language, 10),
         newsletter: req.body.updated_account.newsletter
     };
+    const new_profile_picture = req.body.updated_account.profile_picture;
 
     // worst case, "username" is an empty string after being parsed by parse_username()
     // "username" and "email_address" must be non-empty strings
@@ -466,6 +467,10 @@ const update_account = (req, res) =>
                                     // if email is updated, then "verified_user" is false, otherwise it's unchanged
                                     if (user.email_address !== updated_account.email_address)
                                         updated_account.verified_user = false;
+
+                                    // if profile picture is updated, add it to the object
+                                    if (new_profile_picture)
+                                        updated_account.profile_picture = new Buffer(new_profile_picture).toString('base64');
 
                                     // Update account
                                     User.updateOne({ _id: id }, updated_account)

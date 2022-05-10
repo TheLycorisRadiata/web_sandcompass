@@ -10,6 +10,7 @@ router.get('/:lang/check/email/:id/:email_address/:id_token/:id_account', contro
 router.get('/:lang/check/username/:id/:username/:id_token/:id_account', controller_user.is_username_already_used_by_another_account);
 router.post('/:lang/create', controller_user.create_account);
 router.put('/:lang/update', controller_user.update_account);
+router.put('/:lang/update/profile_picture', controller_user.update_profile_picture);
 router.delete('/:lang/delete', controller_user.delete_account);
 router.get('/:lang/stats/all/:id_token/:id_account', controller_user.get_stats_on_all_users);
 router.get('/:lang/username/:id', controller_user.get_username_from_id);

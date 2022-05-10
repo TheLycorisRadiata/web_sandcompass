@@ -1,3 +1,5 @@
+const path = require('path');
+const fs = require('fs');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const User = require('../models/user');
@@ -16,6 +18,7 @@ const {
     success_user_retrieval, failure_user_retrieval 
 } = require('../functions/lang');
 const { parse_username } = require('../functions/parsing');
+const { encode_file_in_base64 } = require('./file');
 
 const connect_as_admin = (req, res) => 
 {
@@ -416,7 +419,6 @@ const update_account = (req, res) =>
         language: parseInt(req.body.updated_account.language, 10),
         newsletter: req.body.updated_account.newsletter
     };
-    const new_profile_picture = req.body.updated_account.profile_picture;
 
     // worst case, "username" is an empty string after being parsed by parse_username()
     // "username" and "email_address" must be non-empty strings
@@ -457,7 +459,7 @@ const update_account = (req, res) =>
                         {
                             // "email_address" must not be already used by another account
                             User.findOne({ email_address: updated_account.email_address })
-                            .then(email_user => 
+                            .then(async (email_user) => 
                             {
                                 if (email_user && String(email_user._id) !== String(id) || updated_account.email_address === gmail_user.toLowerCase())
                                     res.status(400).json({ is_success: false, message: failure_account_update(lang) });
@@ -467,10 +469,6 @@ const update_account = (req, res) =>
                                     // if email is updated, then "verified_user" is false, otherwise it's unchanged
                                     if (user.email_address !== updated_account.email_address)
                                         updated_account.verified_user = false;
-
-                                    // if profile picture is updated, add it to the object
-                                    if (new_profile_picture)
-                                        updated_account.profile_picture = new Buffer(new_profile_picture).toString('base64');
 
                                     // Update account
                                     User.updateOne({ _id: id }, updated_account)
@@ -496,6 +494,29 @@ const update_account = (req, res) =>
         }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
+};
+
+const update_profile_picture = (req, res) => 
+{
+    const formdata = req.body;
+    const buffer = encode_file_in_base64(path.join(__dirname, '../files/pic.jpg'));
+
+    if (!buffer)
+    {
+        res.status(418).json({ is_success: false, message: 'PROFILE PICTURE NOT UPDATED' });
+    }
+    else
+    {
+        User.updateOne({ _id: formdata._id }, { profile_picture: buffer })
+        .then(updated_account => 
+        {
+            if (!updated_account)
+                res.status(418).json({ is_success: false, message: 'PROFILE PICTURE NOT UPDATED' });
+            else
+                res.status(200).json({ is_success: true, message: 'YAY UPDATE', data: updated_account });
+        })
+        .catch(() => res.status(418).json({ is_success: false, message: 'PROFILE PICTURE NOT UPDATED' }));
+    }
 };
 
 const delete_account = (req, res) => 
@@ -627,6 +648,7 @@ module.exports =
     is_username_already_used_by_another_account,
     create_account,
     update_account,
+    update_profile_picture,
     delete_account,
     get_stats_on_all_users,
     get_username_from_id

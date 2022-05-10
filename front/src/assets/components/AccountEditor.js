@@ -86,6 +86,34 @@ const AccountEditor = (props) =>
             return default_profile_picture;
     };
 
+    const update_profile_picture = (data_profile_picture) => 
+    {
+        let formdata_profile_picture = new FormData();
+        formdata_profile_picture.append('id_token', decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''));
+        formdata_profile_picture.append('id_account', decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''));
+        formdata_profile_picture.append('_id', props.account_data._id);
+        formdata_profile_picture.append('file', data_profile_picture, data_profile_picture.name);
+
+        fetch(`${package_info.api}/user/${ct.lang}/update/profile_picture`,
+        {
+            method: 'PUT',
+            headers:
+            {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            },
+            body: formdata_profile_picture
+        })
+        .then(res => res.json())
+        .then(json => 
+        {
+            console.log(json.message);
+            if (json.is_success)
+                props.set_account_data(json.data);
+        });
+        //.catch(err => console.log(err));
+    };
+
     const is_username_already_used_by_another_account = async (username) => 
     {
         const id_token = document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || '';
@@ -126,7 +154,6 @@ const AccountEditor = (props) =>
         });
 
         const json = await res.json();
-
         return json;
     };
 
@@ -140,7 +167,6 @@ const AccountEditor = (props) =>
         const field_repeat_password = e.target[5].value;
         let field_username = e.target[1].value;
 
-        let formdata_profile_picture;
         let profile_picture_size_in_mb;
         let obj_parse_username;
         let username_check;
@@ -162,9 +188,8 @@ const AccountEditor = (props) =>
 
                 if (profile_picture_size_in_mb <= 1)
                 {
-                    formdata_profile_picture = new FormData();
-                    formdata_profile_picture.append('profile_picture', field_profile_picture, field_profile_picture.name);
-                    updated_account.profile_picture = formdata_profile_picture;
+                    // Updated here so don't add it to the updated_account object
+                    await update_profile_picture(field_profile_picture);
                 }
                 else
                 {

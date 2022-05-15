@@ -20,27 +20,32 @@ const Password = () =>
     const ct = useContext(AppContext);
     const history = useHistory();
 
-    // HTML standard meta tags
-    document.title = password_creation(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', create_password(ct.lang));
-    // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', password_creation(ct.lang) + ' | Sand Compass');
-    document.querySelector('meta[property="og:description"]').setAttribute('content', create_password(ct.lang));
-
+    const [lang, set_lang] = useState(0);
     const [is_access_granted, set_is_access_granted] = useState(false);
     const [field_email_address, set_field_email_address] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [response_message, set_response_message] = useState('');
+
+    // HTML standard meta tags
+    document.title = password_creation(lang) + ' | Sand Compass';
+    document.querySelector('meta[name="description"]').setAttribute('content', create_password(lang));
+    // Open Graph meta tags
+    document.querySelector('meta[property="og:title"]').setAttribute('content', password_creation(lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:description"]').setAttribute('content', create_password(lang));
 
     useLayoutEffect(() => 
     {
         const path_parts = window.location.pathname.split('/');
         const id_token = path_parts[path_parts.length - 2]; // one before last
         const id_account = path_parts[path_parts.length - 1]; // last
+        let path_lang = path_parts[path_parts.length - 3];
 
-        if (id_token !== '' && id_token !== 'password' && id_account !== '' && id_account !== 'password')
+        if (path_lang !== '' && path_lang !== 'password' && id_token !== '' && id_token !== 'password' && id_account !== '' && id_account !== 'password')
         {
-            fetch(`${package_info.api}/token/${ct.lang}/${id_token}/${id_account}`)
+            path_lang = parseInt(path_lang, 10);
+            set_lang(path_lang);
+
+            fetch(`${package_info.api}/token/${path_lang}/${id_token}/${id_account}`)
             .then(res => res.json())
             .then(json => 
             {
@@ -59,8 +64,12 @@ const Password = () =>
             .catch(err => 
             {
                 //console.log(err);
-                set_response_message(oops(ct.lang) + ' ' + error_occured(ct.lang));
+                set_response_message(oops(path_lang) + ' ' + error_occured(path_lang));
             });
+        }
+        else
+        {
+            set_lang(ct.lang);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,7 +96,7 @@ const Password = () =>
 
     const set_password = async (password, id_token, id_account) => 
     {
-        const res = await fetch(`${package_info.api}/user/${ct.lang}/password`,
+        const res = await fetch(`${package_info.api}/user/${lang}/password`,
         {
             method: 'POST',
             headers:
@@ -151,7 +160,7 @@ const Password = () =>
                 document.getElementById('eye1').classList.add('required');
                 document.getElementById('eye2').classList.add('required');
 
-                ct.popup('alert', ct.lang, disclaimer_password(ct.lang));
+                ct.popup('alert', lang, disclaimer_password(lang));
                 return;
             }
 
@@ -169,27 +178,27 @@ const Password = () =>
 
     return (
         <main>
-            <h1 className="title">{password_creation(ct.lang)}</h1>
+            <h1 className="title">{password_creation(lang)}</h1>
             <form onSubmit={handle_submit}>
                 {!is_access_granted ? 
-                    <input type="email" name="email_address" placeholder={email_address(ct.lang)} autoFocus />
+                    <input type="email" name="email_address" placeholder={email_address(lang)} autoFocus />
                 :
                 <>
                     <p className="txt_bold" id="p_password">{field_email_address}</p>
 
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(ct.lang)} autoComplete="new-password" autoFocus />
+                        <input type={is_password_shown ? "text" : "password"} name="password" placeholder={new_password(lang)} autoComplete="new-password" autoFocus />
                         <span id="eye1" className="btn_eye_closed" onClick={handle_click_password_eye}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                     <div className="field_password">
-                        <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder={repeat_password(ct.lang)} autoComplete="new-password" />
+                        <input type={is_password_shown ? "text" : "password"} name="repeat_password" placeholder={repeat_password(lang)} autoComplete="new-password" />
                         <span id="eye2" className="btn_eye_closed" onClick={handle_click_password_eye}>{is_password_shown ? icon_eye : icon_eye_slash}</span>
                     </div>
                 </>}
 
-                <input type="submit" className="button" value={create_password(ct.lang)} />
+                <input type="submit" className="button" value={create_password(lang)} />
                 {response_message !== '' && <p>{response_message}</p>}
-                <p><span className="a" onClick={() => history.push('/user')}>{go_back_log_in(ct.lang)}</span></p>
+                <p><span className="a" onClick={() => history.push('/user')}>{go_back_log_in(lang)}</span></p>
             </form>
         </main>
     );

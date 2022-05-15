@@ -166,7 +166,7 @@ const send_mail_at_account_registration = (req, res) =>
             Token.find({ account: user._id, action: 'email' })
             .then(tokens => 
             {
-                link_verify_email = `${homepage}/token/${encodeURIComponent(tokens[tokens.length - 1].code)}/${encodeURIComponent(id_hashed_account)}`;
+                link_verify_email = `${homepage}/token/${lang}/${encodeURIComponent(tokens[tokens.length - 1].code)}/${encodeURIComponent(id_hashed_account)}`;
 
                 smtp_trans = nodemailer.createTransport(
                 {
@@ -338,7 +338,7 @@ const send_mail_at_email_update = (req, res) =>
             Token.find({ account: user._id, action: 'email' })
             .then(tokens => 
             {
-                link_verify_email = `${homepage}/token/${encodeURIComponent(tokens[tokens.length - 1].code)}/${encodeURIComponent(id_hashed_account)}`;
+                link_verify_email = `${homepage}/token/${lang}/${encodeURIComponent(tokens[tokens.length - 1].code)}/${encodeURIComponent(id_hashed_account)}`;
 
                 smtp_trans = nodemailer.createTransport(
                 {
@@ -434,7 +434,7 @@ const send_mail_for_new_password = (req, res) =>
                 Token.find({ account: user._id, action: 'pass' })
                 .then(tokens => 
                 {
-                    link_create_password = `${homepage}/password/${encodeURIComponent(tokens[tokens.length - 1].code)}/${encodeURIComponent(id_hashed_account)}`;
+                    link_create_password = `${homepage}/password/${lang}/${encodeURIComponent(tokens[tokens.length - 1].code)}/${encodeURIComponent(id_hashed_account)}`;
 
                     smtp_trans = nodemailer.createTransport(
                     {

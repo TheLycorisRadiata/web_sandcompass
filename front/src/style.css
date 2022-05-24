@@ -1281,6 +1281,7 @@ a, span[class="a"]
     border-radius: 50%;
     width: 150px;
     height: 150px;
+    object-fit: cover;
     filter: drop-shadow(0 0 2px var(--black));
 }
 

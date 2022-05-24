@@ -938,6 +938,32 @@ export const change_profile_picture = (lang) =>
     }
 };
 
+export const browse_system_for_profile_picture = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Parcourir vos fichiers';
+        case 2:
+            return 'Browse your files';
+        default:
+            return 'Browse your files';
+    }
+};
+
+export const drop_profile_picture = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Glisser-déposer votre image de profil';
+        case 2:
+            return 'Drag and drop your profile picture';
+        default:
+            return 'Drag and drop your profile picture';
+    }
+};
+
 export const change_username = (lang) => 
 {
     switch (lang)

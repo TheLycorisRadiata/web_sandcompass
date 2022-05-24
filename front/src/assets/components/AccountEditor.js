@@ -5,7 +5,8 @@ import {
     profile, profile_picture, info_rank, info_registered_on, info_preferred_language, dynamic_language, info_email_address, info_newsletter, 
     btn_delete_account, modify_information, cancel, confirm, 
     disclaimer_profile_picture_size, disclaimer_email, disclaimer_password, confirm_newsletter, confirm_delete_account, 
-    change_profile_picture, change_username, username, change_email, new_email, repeat_email, 
+    change_profile_picture, browse_system_for_profile_picture, drop_profile_picture, 
+    change_username, username, change_email, new_email, repeat_email, 
     change_password, new_password, repeat_password, sub_newsletter, 
     change_language, english, french, japanese 
 } from '../functions/lang';
@@ -33,6 +34,7 @@ const AccountEditor = (props) =>
 
     const [is_edit_open, set_is_edit_open] = useState(false);
     const [is_password_shown, set_is_password_shown] = useState(false);
+    const [is_profile_picture_selector_open, set_is_profile_picture_selector_open] = useState(false);
     const [checked_lang, set_checked_lang] = useState(props.account_data?.language);
     const [checkbox_newsletter, set_checkbox_newsletter] = useState(false);
     const [profile_picture_source, set_profile_picture_source] = useState(default_profile_picture);
@@ -77,14 +79,36 @@ const AccountEditor = (props) =>
         reset_form();
     };
 
-    const cancel_upload_of_new_profile_picture = e => 
+    const handle_drag_over = (e) => 
     {
         e.preventDefault();
+        e.stopPropagation();
+    };
 
-        // Clear the file itself (form)
-        document.querySelector('input[name="profile_picture"]').value = '';
+    const handle_drop = (e) => 
+    {
+        const file = e.dataTransfer.items[0].getAsFile();
+        const file_extension = file.name.split('.').pop();
+        const datatype_whitelist = ['png', 'jpg', 'jpeg'];
 
-        // Clear the file name (state)
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (datatype_whitelist.includes(file_extension))
+            set_new_profile_picture(file);
+    };
+
+    const cancel_upload_of_new_profile_picture = e => 
+    {
+        const file_input_field = document.querySelector('input[name="profile_picture"]');
+
+        e.preventDefault();
+
+        // Clear the file (form)
+        if (file_input_field)
+            file_input_field.value = '';
+
+        // Clear the file (state)
         set_new_profile_picture(null);
     };
 
@@ -134,7 +158,7 @@ const AccountEditor = (props) =>
     const update_account = async (e) =>
     {
         const updated_account = {};
-        const field_profile_picture = e.target[0].files[0];
+        // "e.target[0]" is the file input, the "new_profile_picture" state is used instead in order for the drag & drop feature to work
         const field_email = e.target[2].value;
         const field_repeat_email = e.target[3].value;
         const field_password = e.target[4].value;
@@ -150,18 +174,18 @@ const AccountEditor = (props) =>
         e.preventDefault();
 
         // Check for whether any field is filled or any button checked, otherwise no update
-        if (field_profile_picture || field_username !== '' || field_email !== '' || field_repeat_email !== '' || field_password !== '' || field_repeat_password !== '' 
+        if (new_profile_picture || field_username !== '' || field_email !== '' || field_repeat_email !== '' || field_password !== '' || field_repeat_password !== '' 
             || props.account_data.language !== checked_lang || checkbox_newsletter) 
         {
             updated_account.verified_user = props.account_data.verified_user;
 
-            if (field_profile_picture)
+            if (new_profile_picture)
             {
                 // "Size / 1000" is size in Kb, and 1 Mb is 1000 Kb, which is the max recommended size
-                profile_picture_size_in_mb = (field_profile_picture.size / 1000) / 1000;
+                profile_picture_size_in_mb = (new_profile_picture.size / 1000) / 1000;
 
                 if (profile_picture_size_in_mb <= 1)
-                    updated_account.profile_picture = await encode_file_into_base64(field_profile_picture);
+                    updated_account.profile_picture = await encode_file_into_base64(new_profile_picture);
                 else
                 {
                     ct.popup('alert', ct.lang, disclaimer_profile_picture_size(ct.lang, profile_picture_size_in_mb));
@@ -368,10 +392,22 @@ const AccountEditor = (props) =>
 
             {is_edit_open && 
             <form onSubmit={update_account} id="account_editor_form">
-                <div className="change">
-                    <label htmlFor="change_profile_picture">{change_profile_picture(ct.lang)}</label>
+                <div className="change" id="profile_picture_selector">
+                    <label htmlFor="change_profile_picture" onClick={() => set_is_profile_picture_selector_open(!is_profile_picture_selector_open)}>{change_profile_picture(ct.lang)}</label>
+
+                    {is_profile_picture_selector_open &&
+                    <>
+
+                    <label htmlFor="browse_system" className="button">{browse_system_for_profile_picture(ct.lang)}</label>
                     <input type="file" name="profile_picture" accept=".jpg, .jpeg, .png" onChange={e => set_new_profile_picture(e.target.files[0])} 
-                        id="change_profile_picture" style={{ display: 'none' }} />
+                        id="browse_system" style={{ display: 'none' }} />
+
+                    <div id="drop_zone" onDrop={handle_drop} onDragOver={handle_drag_over}>
+                        <p>{drop_profile_picture(ct.lang)}</p>
+                    </div>
+
+                    </>}
+
                     {new_profile_picture && <p id="new_profile_picture">{new_profile_picture.name}
                         <button className="button" onClick={cancel_upload_of_new_profile_picture}><span className="icon">{icon_delete}</span></button></p>}
                 </div>

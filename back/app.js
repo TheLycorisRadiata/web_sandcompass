@@ -27,7 +27,7 @@ const cors = (req, res, next) =>
 };
 
 app.use(cors);
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 /* API routes */
 app.use('/api/language', router_language);

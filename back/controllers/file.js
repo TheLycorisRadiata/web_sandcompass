@@ -1,22 +1,6 @@
 const path = require('path');
 const { short_lang } = require('../functions/lang');
 
-const encode_file_in_base64 = async (file_path) => 
-{
-    let data, buffer;
-
-    try
-    {
-        data = await fs.readFile(file_path);
-        buffer = await Buffer.from(data).toString('base64');
-        return buffer;
-    }
-    catch (err)
-    {
-        return null;
-    }
-};
-
 const retrieve_ebook_format_picker = (req, res) => 
 {
     let lang = parseInt(req.params.lang, 10);
@@ -68,7 +52,6 @@ const retrieve_persistence = (req, res) =>
 
 module.exports = 
 {
-    encode_file_in_base64,
     retrieve_ebook_format_picker,
     retrieve_cosmic_dust,
     retrieve_persistence

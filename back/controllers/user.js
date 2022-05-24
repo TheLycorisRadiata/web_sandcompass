@@ -413,11 +413,12 @@ const update_account = (req, res) =>
     const id = req.body._id;
     const updated_account = 
     {
-        username: parse_username(req.body.updated_account.username),
-        email_address: req.body.updated_account.email_address.toLowerCase(),
         verified_user: req.body.updated_account.verified_user,
-        language: parseInt(req.body.updated_account.language, 10),
-        newsletter: req.body.updated_account.newsletter
+        email_address: req.body.updated_account.email_address.toLowerCase(),
+        username: parse_username(req.body.updated_account.username),
+        profile_picture: req.body.updated_account.profile_picture,
+        newsletter: req.body.updated_account.newsletter,
+        language: parseInt(req.body.updated_account.language, 10)
     };
 
     // worst case, "username" is an empty string after being parsed by parse_username()
@@ -431,6 +432,43 @@ const update_account = (req, res) =>
         // Input is invalid
         res.status(400).json({ is_success: false, message: failure_account_update(lang) });
         return;
+    }
+
+    // Profile picture: Check the datatype (png, jpeg, jpg) and size (<= 1 Mb)
+    if (updated_account.profile_picture)
+    {
+        const base64_img = updated_account.profile_picture;
+        const whitelist = ['png', 'jpeg', 'jpg'];
+        let invalid = false;
+
+        if (typeof base64_img !== 'string')
+            invalid = true;
+
+        if (!invalid)
+        {
+            // Get the datatype from the "data" part of the string (e.g.: "data:image/png;base64,")
+            const type = base64_img.substring(base64_img.indexOf('/') + 1, base64_img.indexOf(';'));
+            if (!whitelist.includes(type.toLowerCase()))
+                invalid = true;
+
+            if (!invalid)
+            {
+                // Remove the "data" part to only keep the file itself
+                const str = base64_img.substring(base64_img.indexOf(',') + 1);
+
+                // "decoded_file.length / 1000" is the size in Kb, and 1 Mb is 1000 Kb
+                const decoded_file = Buffer.from(str, 'base64').toString('binary');
+                const size_in_mb = (decoded_file.length / 1000) / 1000;
+                if (size_in_mb > 1)
+                    invalid = true;
+            }
+        }
+
+        if (invalid)
+        {
+            res.status(400).json({ is_success: false, message: failure_account_update(lang) });
+            return;
+        }
     }
 
     // Protect the access with the user token
@@ -494,29 +532,6 @@ const update_account = (req, res) =>
         }
     })
     .catch(err => res.status(400).json({ is_success: false, message: failure_account_update(lang), error: err }));
-};
-
-const update_profile_picture = (req, res) => 
-{
-    const formdata = req.body;
-    const buffer = encode_file_in_base64(path.join(__dirname, '../files/pic.jpg'));
-
-    if (!buffer)
-    {
-        res.status(418).json({ is_success: false, message: 'PROFILE PICTURE NOT UPDATED' });
-    }
-    else
-    {
-        User.updateOne({ _id: formdata._id }, { profile_picture: buffer })
-        .then(updated_account => 
-        {
-            if (!updated_account)
-                res.status(418).json({ is_success: false, message: 'PROFILE PICTURE NOT UPDATED' });
-            else
-                res.status(200).json({ is_success: true, message: 'YAY UPDATE', data: updated_account });
-        })
-        .catch(() => res.status(418).json({ is_success: false, message: 'PROFILE PICTURE NOT UPDATED' }));
-    }
 };
 
 const delete_account = (req, res) => 
@@ -648,7 +663,6 @@ module.exports =
     is_username_already_used_by_another_account,
     create_account,
     update_account,
-    update_profile_picture,
     delete_account,
     get_stats_on_all_users,
     get_username_from_id

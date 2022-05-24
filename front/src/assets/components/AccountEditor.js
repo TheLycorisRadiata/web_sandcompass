@@ -12,11 +12,14 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { date_in_letters } from '../functions/time';
+import { encode_file_into_base64 } from '../functions/file';
 import { parse_username } from '../functions/parsing';
 import { send_newsletter_email, send_verification_email } from '../functions/mailing';
+import default_profile_picture from '../images/placeholder.png';
 import package_info from '../../../package.json';
 
-import default_profile_picture from '../images/placeholder.png';
+import { Buffer } from 'buffer';
+window.Buffer = window.Buffer || require('buffer').Buffer;
 
 const icon_edit = <FontAwesomeIcon icon={faUserEdit} />;
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
@@ -32,6 +35,7 @@ const AccountEditor = (props) =>
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [checked_lang, set_checked_lang] = useState(props.account_data?.language);
     const [checkbox_newsletter, set_checkbox_newsletter] = useState(false);
+    const [profile_picture_source, set_profile_picture_source] = useState(default_profile_picture);
     const [new_profile_picture, set_new_profile_picture] = useState(null);
 
     useLayoutEffect(() => 
@@ -53,6 +57,12 @@ const AccountEditor = (props) =>
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useLayoutEffect(() => 
+    {
+        if (props.account_data.profile_picture)
+            set_profile_picture_source(Buffer.from(props.account_data.profile_picture).toString('binary'));
+    }, [props.account_data.profile_picture]);
 
     const reset_form = () => 
     {
@@ -76,42 +86,6 @@ const AccountEditor = (props) =>
 
         // Clear the file name (state)
         set_new_profile_picture(null);
-    };
-
-    const get_profile_picture = () => 
-    {
-        if (props.account_data?.profile_picture)
-            return atob(props.account_data?.profile_picture);
-        else
-            return default_profile_picture;
-    };
-
-    const update_profile_picture = (data_profile_picture) => 
-    {
-        let formdata_profile_picture = new FormData();
-        formdata_profile_picture.append('id_token', decodeURIComponent(document.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() || ''));
-        formdata_profile_picture.append('id_account', decodeURIComponent(document.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() || ''));
-        formdata_profile_picture.append('_id', props.account_data._id);
-        formdata_profile_picture.append('file', data_profile_picture, data_profile_picture.name);
-
-        fetch(`${package_info.api}/user/${ct.lang}/update/profile_picture`,
-        {
-            method: 'PUT',
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data'
-            },
-            body: formdata_profile_picture
-        })
-        .then(res => res.json())
-        .then(json => 
-        {
-            console.log(json.message);
-            if (json.is_success)
-                props.set_account_data(json.data);
-        });
-        //.catch(err => console.log(err));
     };
 
     const is_username_already_used_by_another_account = async (username) => 
@@ -187,10 +161,7 @@ const AccountEditor = (props) =>
                 profile_picture_size_in_mb = (field_profile_picture.size / 1000) / 1000;
 
                 if (profile_picture_size_in_mb <= 1)
-                {
-                    // Updated here so don't add it to the updated_account object
-                    await update_profile_picture(field_profile_picture);
-                }
+                    updated_account.profile_picture = await encode_file_into_base64(field_profile_picture);
                 else
                 {
                     ct.popup('alert', ct.lang, disclaimer_profile_picture_size(ct.lang, profile_picture_size_in_mb));
@@ -287,6 +258,8 @@ const AccountEditor = (props) =>
             else
                 updated_account.newsletter = props.account_data.newsletter;
 
+            //console.log(updated_account.profile_picture);
+
             await fetch(`${package_info.api}/user/${ct.lang}/update`,
             {
                 method: 'PUT',
@@ -380,7 +353,7 @@ const AccountEditor = (props) =>
                 <div>
                     <ul>
                         <li>{props.account_data?.username}</li>
-                        <li><img src={get_profile_picture()} alt={profile_picture(ct.lang)} /></li>
+                        <li><img src={profile_picture_source} alt={profile_picture(ct.lang)} /></li>
                         <li>{info_rank(ct.lang, props.rank?.name[ct.lang] ?? '')}</li>
                         <li>{info_registered_on(ct.lang)}{date_in_letters(ct.lang, props.account_data?.registered_on)}</li>
                         <li>{info_preferred_language(ct.lang)}{dynamic_language(ct.lang, props.account_data?.language)}</li>

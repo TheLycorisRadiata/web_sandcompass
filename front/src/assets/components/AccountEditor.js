@@ -5,13 +5,13 @@ import {
     profile, profile_picture, info_rank, info_registered_on, info_preferred_language, dynamic_language, info_email_address, info_newsletter, 
     btn_delete_account, modify_information, cancel, confirm, 
     disclaimer_profile_picture_size, disclaimer_email, disclaimer_password, confirm_newsletter, confirm_delete_account, 
-    change_profile_picture, browse_system_for_profile_picture, drop_profile_picture, 
+    change_profile_picture, disclaimer_profile_picture, browse_system_for_profile_picture, drop_profile_picture, url_for_profile_picture, disclaimer_profile_picture_format, 
     change_username, username, change_email, new_email, repeat_email, 
     change_password, new_password, repeat_password, sub_newsletter, 
     change_language, english, french, japanese 
 } from '../functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserEdit, faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faCheck, faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { date_in_letters } from '../functions/time';
 import { encode_file_into_base64 } from '../functions/file';
 import { parse_username } from '../functions/parsing';
@@ -23,6 +23,7 @@ import { Buffer } from 'buffer';
 window.Buffer = window.Buffer || require('buffer').Buffer;
 
 const icon_edit = <FontAwesomeIcon icon={faUserEdit} />;
+const icon_check = <FontAwesomeIcon icon={faCheck} />;
 const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 const icon_delete = <FontAwesomeIcon icon={faTrashAlt} />;
@@ -35,6 +36,7 @@ const AccountEditor = (props) =>
     const [is_edit_open, set_is_edit_open] = useState(false);
     const [is_password_shown, set_is_password_shown] = useState(false);
     const [is_profile_picture_selector_open, set_is_profile_picture_selector_open] = useState(false);
+    const [url_profile_picture, set_url_profile_picture] = useState('');
     const [checked_lang, set_checked_lang] = useState(props.account_data?.language);
     const [checkbox_newsletter, set_checkbox_newsletter] = useState(false);
     const [profile_picture_source, set_profile_picture_source] = useState(default_profile_picture);
@@ -70,6 +72,7 @@ const AccountEditor = (props) =>
     {
         set_checkbox_newsletter(false);
         set_checked_lang(props.account_data?.language);
+        set_url_profile_picture('');
         set_new_profile_picture(null);
     };
 
@@ -79,6 +82,7 @@ const AccountEditor = (props) =>
         reset_form();
     };
 
+    // Without this function, the browser will just open the file upon dropping, instead of allowing an actual drop behavior
     const handle_drag_over = (e) => 
     {
         e.preventDefault();
@@ -89,13 +93,46 @@ const AccountEditor = (props) =>
     {
         const file = e.dataTransfer.items[0].getAsFile();
         const file_extension = file.name.split('.').pop();
-        const datatype_whitelist = ['png', 'jpg', 'jpeg'];
+        const extension_whitelist = ['png', 'jpg', 'jpeg'];
 
         e.preventDefault();
         e.stopPropagation();
 
-        if (datatype_whitelist.includes(file_extension))
+        if (extension_whitelist.includes(file_extension))
             set_new_profile_picture(file);
+    };
+
+    const handle_url_profile_picture = async (e) => 
+    {
+        const extension_whitelist = ['png', 'jpg', 'jpeg'];
+        let url_filename, url_extension, url_datatype, response, data, url_file;
+
+        e.preventDefault();
+
+        if (url_profile_picture === '')
+            return;
+
+        // Get the filename to serve as the required second argument to File()
+        url_filename = url_profile_picture.split('/').pop();
+
+        // Check the extension
+        url_extension = url_filename.split('.').pop();
+        if (!extension_whitelist.includes(url_extension))
+        {
+            ct.popup('alert', ct.lang, disclaimer_profile_picture_format(ct.lang));
+            return;
+        }
+
+        // Set the datatype variable so it can be added to the file object (by default it's blank)
+        url_datatype = url_extension === 'png' ? 'image/png' : 'image/jpeg';
+
+        // Fetch the file
+        response = await fetch(url_profile_picture, { mode: 'no-cors' });
+        data = await response.blob();
+        url_file = new File([data], url_filename, { type: url_datatype });
+
+        // Update the state
+        set_new_profile_picture(url_file);
     };
 
     const cancel_upload_of_new_profile_picture = e => 
@@ -104,11 +141,12 @@ const AccountEditor = (props) =>
 
         e.preventDefault();
 
-        // Clear the file (form)
+        // Clear the form
         if (file_input_field)
             file_input_field.value = '';
 
-        // Clear the file (state)
+        // Clear the state
+        set_url_profile_picture('');
         set_new_profile_picture(null);
     };
 
@@ -158,12 +196,11 @@ const AccountEditor = (props) =>
     const update_account = async (e) =>
     {
         const updated_account = {};
-        // "e.target[0]" is the file input, the "new_profile_picture" state is used instead in order for the drag & drop feature to work
-        const field_email = e.target[2].value;
-        const field_repeat_email = e.target[3].value;
-        const field_password = e.target[4].value;
-        const field_repeat_password = e.target[5].value;
-        let field_username = e.target[1].value;
+        let field_username = e.target[0].value;
+        let field_email = e.target[1].value;
+        let field_repeat_email = e.target[2].value;
+        let field_password = e.target[3].value;
+        let field_repeat_password = e.target[4].value;
 
         let profile_picture_size_in_mb;
         let obj_parse_username;
@@ -172,6 +209,18 @@ const AccountEditor = (props) =>
         let has_newsletter_changed = false;
 
         e.preventDefault();
+
+        if (is_profile_picture_selector_open)
+        {
+            // "e.target[0]" is the file input, the "new_profile_picture" state is used instead in order for the drag & drop feature to work
+            // "e.target[1]" is the url input
+            // "e.target[2]" is the button for the url input
+            field_username = e.target[3].value;
+            field_email = e.target[4].value;
+            field_repeat_email = e.target[5].value;
+            field_password = e.target[6].value;
+            field_repeat_password = e.target[7].value;
+        }
 
         // Check for whether any field is filled or any button checked, otherwise no update
         if (new_profile_picture || field_username !== '' || field_email !== '' || field_repeat_email !== '' || field_password !== '' || field_repeat_password !== '' 
@@ -282,7 +331,7 @@ const AccountEditor = (props) =>
             else
                 updated_account.newsletter = props.account_data.newsletter;
 
-            //console.log(updated_account.profile_picture);
+            console.log(updated_account.profile_picture);
 
             await fetch(`${package_info.api}/user/${ct.lang}/update`,
             {
@@ -318,10 +367,9 @@ const AccountEditor = (props) =>
             });
             //.catch(err => console.log(err));
         }
-
+        
         set_is_edit_open(false);
-        set_checkbox_newsletter(false);
-        set_new_profile_picture(null);
+        reset_form();
 
         // If the email address has been updated, verify it just like we did at account registration
         if (updated_account.verified_user === false)
@@ -397,15 +445,20 @@ const AccountEditor = (props) =>
 
                     {is_profile_picture_selector_open &&
                     <>
+                        <p id="disclaimer_profile_picture">{disclaimer_profile_picture(ct.lang)}</p>
 
-                    <label htmlFor="browse_system" className="button">{browse_system_for_profile_picture(ct.lang)}</label>
-                    <input type="file" name="profile_picture" accept=".jpg, .jpeg, .png" onChange={e => set_new_profile_picture(e.target.files[0])} 
-                        id="browse_system" style={{ display: 'none' }} />
+                        <label htmlFor="browse_system" className="button">{browse_system_for_profile_picture(ct.lang)}</label>
+                        <input type="file" name="profile_picture" accept=".jpg, .jpeg, .png" onChange={e => set_new_profile_picture(e.target.files[0])} id="browse_system" style={{ display: 'none' }} />
 
-                    <div id="drop_zone" onDrop={handle_drop} onDragOver={handle_drag_over}>
-                        <p>{drop_profile_picture(ct.lang)}</p>
-                    </div>
+                        <div id="drop_zone" onDrop={handle_drop} onDragOver={handle_drag_over}>
+                            <p>{drop_profile_picture(ct.lang)}</p>
+                        </div>
 
+                        <div id="url_profile_picture">
+                            <input type="text" name="url_profile_picture_selector" placeholder={url_for_profile_picture(ct.lang)} 
+                                value={url_profile_picture} onChange={e => set_url_profile_picture(e.target.value)} />
+                            <button className="button" onClick={handle_url_profile_picture}><span className="icon">{icon_check}</span></button>
+                        </div>
                     </>}
 
                     {new_profile_picture && <p id="new_profile_picture">{new_profile_picture.name}

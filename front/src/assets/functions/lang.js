@@ -938,6 +938,19 @@ export const change_profile_picture = (lang) =>
     }
 };
 
+export const disclaimer_profile_picture = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Votre image de profil doit être au format .png, .jpg ou .jpeg, et ne doit pas dépasser un poids de 1 Mo.';
+        case 2:
+            return 'Your profile picture must be in .png, .jpg or .jpeg format, and must not exceed a weight of 1 Mb.';
+        default:
+            return 'Your profile picture must be in .png, .jpg or .jpeg format, and must not exceed a weight of 1 Mb.';
+    }
+};
+
 export const browse_system_for_profile_picture = (lang) => 
 {
     switch (lang)
@@ -961,6 +974,32 @@ export const drop_profile_picture = (lang) =>
             return 'Drag and drop your profile picture';
         default:
             return 'Drag and drop your profile picture';
+    }
+};
+
+export const url_for_profile_picture = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'URL vers votre image de profil';
+        case 2:
+            return 'URL to your profile picture';
+        default:
+            return 'URL to your profile picture';
+    }
+};
+
+export const disclaimer_profile_picture_format = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Votre image de profil doit être au format .png, .jpg ou .jpeg. Vérifiez que l\'URL que vous venez d\'entrer se termine bien par l\'une de ces extensions et rien d\'autre.';
+        case 2:
+            return 'Your profile picture must be in .png, .jpg or .jpeg format. Please check that the URL you\'ve submitted actually ends with one of these extensions and nothing else.';
+        default:
+            return 'Your profile picture must be in .png, .jpg or .jpeg format. Please check that the URL you\'ve submitted actually ends with one of these extensions and nothing else.';
     }
 };
 

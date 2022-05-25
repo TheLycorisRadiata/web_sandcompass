@@ -1286,18 +1286,12 @@ a, span[class="a"]
     filter: drop-shadow(0 0 2px var(--black));
 }
 
-#new_profile_picture
+#disclaimer_profile_picture
 {
     margin-top: 0;
     margin-bottom: 20px;
-    text-align: center;
     font-style: italic;
-    color: var(--white);
-}
-
-#new_profile_picture button
-{
-    margin-left: 20px;
+    text-align: center;
 }
 
 #profile_picture_selector
@@ -1320,6 +1314,39 @@ a, span[class="a"]
 #drop_zone p
 {
     padding: 0 5px 15px;
+}
+
+#new_profile_picture
+{
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    font-style: italic;
+    color: var(--white);
+}
+
+#new_profile_picture button
+{
+    margin-left: 20px;
+}
+
+#url_profile_picture
+{
+    margin-top: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+#url_profile_picture input
+{
+    margin: 0;
+}
+
+#url_profile_picture button
+{
+    margin-left: 10px;
 }
 
 /* CONTROL PANEL VIEWS -------------------------------------------------------------------------- */

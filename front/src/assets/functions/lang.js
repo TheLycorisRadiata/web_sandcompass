@@ -990,16 +990,16 @@ export const url_for_profile_picture = (lang) =>
     }
 };
 
-export const disclaimer_profile_picture_format = (lang) => 
+export const disclaimer_profile_picture_failure = (lang) => 
 {
     switch (lang)
     {
         case 1:
-            return 'Votre image de profil doit être au format .png, .jpg ou .jpeg. Vérifiez que l\'URL que vous venez d\'entrer se termine bien par l\'une de ces extensions et rien d\'autre.';
+            return 'Échec : L\'image n\'a pas pu être téléchargée.';
         case 2:
-            return 'Your profile picture must be in .png, .jpg or .jpeg format. Please check that the URL you\'ve submitted actually ends with one of these extensions and nothing else.';
+            return 'Failure: The image couldn\'t be downloaded.';
         default:
-            return 'Your profile picture must be in .png, .jpg or .jpeg format. Please check that the URL you\'ve submitted actually ends with one of these extensions and nothing else.';
+            return 'Failure: The image couldn\'t be downloaded.';
     }
 };
 

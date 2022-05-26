@@ -5,7 +5,7 @@ import {
     profile, profile_picture, info_rank, info_registered_on, info_preferred_language, dynamic_language, info_email_address, info_newsletter, 
     btn_delete_account, modify_information, cancel, confirm, 
     disclaimer_profile_picture_size, disclaimer_email, disclaimer_password, confirm_newsletter, confirm_delete_account, 
-    change_profile_picture, disclaimer_profile_picture, browse_system_for_profile_picture, drop_profile_picture, url_for_profile_picture, disclaimer_profile_picture_format, 
+    change_profile_picture, disclaimer_profile_picture, browse_system_for_profile_picture, drop_profile_picture, url_for_profile_picture, disclaimer_profile_picture_failure, 
     change_username, username, change_email, new_email, repeat_email, 
     change_password, new_password, repeat_password, sub_newsletter, 
     change_language, english, french, japanese 
@@ -82,6 +82,18 @@ const AccountEditor = (props) =>
         reset_form();
     };
 
+    const handle_browse_file = (e) => 
+    {
+        const file = e.target.files[0];
+
+        // Check the size ("Size / 1000" is size in Kb, and 1 Mb is 1000 Kb, which is the max recommended size)
+        const profile_picture_size_in_mb = file.size / 1000 / 1000;
+        if (profile_picture_size_in_mb > 1)
+            ct.popup('alert', ct.lang, disclaimer_profile_picture_size(ct.lang, profile_picture_size_in_mb));
+        else
+            set_new_profile_picture(file);
+    };
+
     // Without this function, the browser will just open the file upon dropping, instead of allowing an actual drop behavior
     const handle_drag_over = (e) => 
     {
@@ -92,47 +104,73 @@ const AccountEditor = (props) =>
     const handle_drop = (e) => 
     {
         const file = e.dataTransfer.items[0].getAsFile();
-        const file_extension = file.name.split('.').pop();
-        const extension_whitelist = ['png', 'jpg', 'jpeg'];
+        let profile_picture_size_in_mb = 0;
 
         e.preventDefault();
         e.stopPropagation();
 
-        if (extension_whitelist.includes(file_extension))
-            set_new_profile_picture(file);
+        // Check the datatype
+        if (file.type === 'image/jpeg' || file.type === 'image/png')
+        {
+            // Check the size
+            profile_picture_size_in_mb = file.size / 1000 / 1000;
+            if (profile_picture_size_in_mb > 1)
+                ct.popup('alert', ct.lang, disclaimer_profile_picture_size(ct.lang, profile_picture_size_in_mb));
+            else
+                set_new_profile_picture(file);
+        }
+        else
+        {
+            ct.popup('alert', ct.lang, disclaimer_profile_picture_failure(ct.lang));
+        }
     };
 
-    const handle_url_profile_picture = async (e) => 
+    const handle_url_profile_picture = (e) => 
     {
-        const extension_whitelist = ['png', 'jpg', 'jpeg'];
-        let url_filename, url_extension, url_datatype, response, data, url_file;
+        let response, image_blob, profile_picture_size_in_mb;
 
         e.preventDefault();
 
         if (url_profile_picture === '')
             return;
 
-        // Get the filename to serve as the required second argument to File()
-        url_filename = url_profile_picture.split('/').pop();
-
-        // Check the extension
-        url_extension = url_filename.split('.').pop();
-        if (!extension_whitelist.includes(url_extension))
+        (async () => 
         {
-            ct.popup('alert', ct.lang, disclaimer_profile_picture_format(ct.lang));
-            return;
-        }
+            // Fetch the file
+            try
+            {
+                response = await fetch(url_profile_picture);
+                image_blob = await response.blob();
+            }
+            catch (error)
+            {
+                if (error)
+                    ct.popup('alert', ct.lang, disclaimer_profile_picture_failure(ct.lang));
+                return;
+            }
 
-        // Set the datatype variable so it can be added to the file object (by default it's blank)
-        url_datatype = url_extension === 'png' ? 'image/png' : 'image/jpeg';
+            // Check the datatype
+            if (image_blob.type === 'image/jpeg' || image_blob.type === 'image/png')
+            {
+                // Check the size
+                profile_picture_size_in_mb = image_blob.size / 1000 / 1000;
+                if (profile_picture_size_in_mb > 1)
+                {
+                    ct.popup('alert', ct.lang, disclaimer_profile_picture_size(ct.lang, profile_picture_size_in_mb));
+                    return;
+                }
 
-        // Fetch the file
-        response = await fetch(url_profile_picture, { mode: 'no-cors' });
-        data = await response.blob();
-        url_file = new File([data], url_filename, { type: url_datatype });
+                // Add a filename so it can be displayed in the GUI
+                image_blob.name = url_profile_picture.split('/').pop();
 
-        // Update the state
-        set_new_profile_picture(url_file);
+                // Update the state
+                set_new_profile_picture(image_blob);
+            }
+            else
+            {
+                ct.popup('alert', ct.lang, disclaimer_profile_picture_failure(ct.lang));
+            }
+        })();
     };
 
     const cancel_upload_of_new_profile_picture = e => 
@@ -202,7 +240,6 @@ const AccountEditor = (props) =>
         let field_password = e.target[3].value;
         let field_repeat_password = e.target[4].value;
 
-        let profile_picture_size_in_mb;
         let obj_parse_username;
         let username_check;
         let email_check;
@@ -229,18 +266,7 @@ const AccountEditor = (props) =>
             updated_account.verified_user = props.account_data.verified_user;
 
             if (new_profile_picture)
-            {
-                // "Size / 1000" is size in Kb, and 1 Mb is 1000 Kb, which is the max recommended size
-                profile_picture_size_in_mb = (new_profile_picture.size / 1000) / 1000;
-
-                if (profile_picture_size_in_mb <= 1)
-                    updated_account.profile_picture = await encode_file_into_base64(new_profile_picture);
-                else
-                {
-                    ct.popup('alert', ct.lang, disclaimer_profile_picture_size(ct.lang, profile_picture_size_in_mb));
-                    return;
-                }
-            }
+                updated_account.profile_picture = await encode_file_into_base64(new_profile_picture);
 
             if (field_username === '')
                 updated_account.username = props.account_data.username;
@@ -331,7 +357,7 @@ const AccountEditor = (props) =>
             else
                 updated_account.newsletter = props.account_data.newsletter;
 
-            console.log(updated_account.profile_picture);
+            //console.log(updated_account.profile_picture);
 
             await fetch(`${package_info.api}/user/${ct.lang}/update`,
             {
@@ -448,7 +474,7 @@ const AccountEditor = (props) =>
                         <p id="disclaimer_profile_picture">{disclaimer_profile_picture(ct.lang)}</p>
 
                         <label htmlFor="browse_system" className="button">{browse_system_for_profile_picture(ct.lang)}</label>
-                        <input type="file" name="profile_picture" accept=".jpg, .jpeg, .png" onChange={e => set_new_profile_picture(e.target.files[0])} id="browse_system" style={{ display: 'none' }} />
+                        <input type="file" name="profile_picture" accept="image/jpeg, image/png" onChange={handle_browse_file} id="browse_system" style={{ display: 'none' }} />
 
                         <div id="drop_zone" onDrop={handle_drop} onDragOver={handle_drag_over}>
                             <p>{drop_profile_picture(ct.lang)}</p>

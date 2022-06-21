@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useContext } from 'react';
+import { useState, useEffect, useLayoutEffect, useContext, useRef } from 'react';
 import { AppContext } from '../../App';
 import {
     blog_editor, access_denied, log_out, 
@@ -11,7 +11,7 @@ import {
     disclaimer_blog_editor_content 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserLock, faSquareXmark, faTools, faFolderPlus, faFolderMinus, faFolderOpen, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faUserLock, faSquareXmark, faHand, faTools, faFolderPlus, faFolderMinus, faFolderOpen, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import BlogArticlePreview from '../../assets/components/BlogArticlePreview';
 import { parse_category } from '../../assets/functions/parsing';
 import package_info from '../../../package.json';
@@ -21,6 +21,7 @@ import Yamde from 'yamde';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
 const icon_logout = <FontAwesomeIcon icon={faSquareXmark} />;
+const icon_grab = <FontAwesomeIcon icon={faHand} />;
 const icon_tools = <FontAwesomeIcon icon={faTools} />;
 const icon_folder_plus = <FontAwesomeIcon icon={faFolderPlus} />
 const icon_folder_minus = <FontAwesomeIcon icon={faFolderMinus} />
@@ -176,6 +177,25 @@ const BlogEditor = (props) =>
             });
         }
     };
+
+    /* Drag & Drop to change the category order of the current article */
+    const dragged_category = useRef();
+    const dragged_over_category = useRef();
+
+    const drag_start = (e, list_position) => dragged_category.current = list_position;
+    const drag_enter = (e, list_position) => dragged_over_category.current = list_position;
+
+    const drop = (e) => 
+    {
+        const copy_categories = [...selected_categories];
+        const dragged_category_content = copy_categories[dragged_category.current];
+        copy_categories.splice(dragged_category.current, 1);
+        copy_categories.splice(dragged_over_category.current, 0, dragged_category_content);
+        dragged_category.current = null;
+        dragged_over_category.current = null;
+        set_selected_categories(copy_categories);
+    };
+    /* --- (end) */
 
     const reset_editor = (fetched_articles) => 
     {
@@ -615,12 +635,28 @@ const BlogEditor = (props) =>
                         <div id="article_categories">
                             {!props.categories.length ? no_category(ct.lang) 
                             : 
-                            props.categories.map(category => 
-                                <div className="div_pointer" key={category._id} draggable>
+                            <>
+                                {selected_categories.map((category, index) => 
+                                <div className="div_pointer" key={category._id} 
+                                    draggable 
+                                    onDragStart={e => drag_start(e, index)} 
+                                    onDragEnter={e => drag_enter(e, index)} 
+                                    onDragOver={e => e.preventDefault()} 
+                                    onDragEnd={drop}>
+                                        <input type="checkbox" name={category._id} id={category._id} value={category._id} 
+                                            checked={selected_categories.filter(e => e._id === category._id).length} onChange={handle_select_categories} />
+                                        <label htmlFor={category._id}>{category.name[ct.lang]}</label>
+                                        {selected_categories.length > 1 && <span>{icon_grab}</span>}
+                                </div>)}
+
+                                {props.categories.map((category, index) => 
+                                !selected_categories.some(obj => obj._id === category._id) &&
+                                <div className="div_pointer" key={category._id}> 
                                     <input type="checkbox" name={category._id} id={category._id} value={category._id} 
                                         checked={selected_categories.filter(e => e._id === category._id).length} onChange={handle_select_categories} />
                                     <label htmlFor={category._id}>{category.name[ct.lang]}</label>
                                 </div>)}
+                            </>}
 
                             <button className="button" name="btn_manage_categories" onClick={() => set_is_category_management_shown(!is_category_management_shown)}>
                                 <span className="icon">{icon_tools}</span> {manage_categories(ct.lang)}

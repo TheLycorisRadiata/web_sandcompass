@@ -1380,6 +1380,29 @@ a, span[class="a"]
     flex-direction: column;
 }
 
+#categories #article_categories div
+{
+    margin: 3px;
+    padding: 5px;
+    background-color: var(--see_through_white);
+    border-radius: 5px;
+    box-shadow: 1px 1px 4px inset var(--white), -1px -1px 4px inset var(--black);
+    display: flex;
+    align-items: center;
+}
+
+#categories #article_categories div label
+{
+    margin: 0;
+}
+
+#categories #article_categories div span
+{
+    margin-left: auto;
+    padding: 0 5px 0 10px;
+    cursor: grab;
+}
+
 #categories
 {
     margin-top: 10px;

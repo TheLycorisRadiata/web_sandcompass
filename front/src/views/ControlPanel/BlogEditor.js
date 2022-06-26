@@ -2,7 +2,7 @@ import { useState, useEffect, useLayoutEffect, useContext, useRef } from 'react'
 import { AppContext } from '../../App';
 import {
     blog_editor, access_denied, log_out, 
-    select_language, english, french, japanese, 
+    english, french, japanese, 
     post_new_article, select_article, no_article, modify_article, delete_article, 
     no_category, select_category, manage_categories, new_category, add_category, delete_category, modify_category, edit_category, 
     title, content, preview, 
@@ -54,11 +54,11 @@ const BlogEditor = (props) =>
 
     const [articles, set_articles] = useState([]);
     const [article, set_article] = useState(default_article);
-    const [selected_language, set_selected_language] = useState(ct.lang);
     const [selected_categories, set_selected_categories] = useState([]);
     const [is_category_management_shown, set_is_category_management_shown] = useState(false);
     const [managed_category, set_managed_category] = useState('default');
     const [is_preview_shown, set_is_preview_shown] = useState(false);
+    const [preview_language, set_preview_language] = useState(ct.lang);
 
     useLayoutEffect(() => 
     {
@@ -600,13 +600,6 @@ const BlogEditor = (props) =>
                 <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
 
                 <div id="blog_editor">
-                    <select name="select_language" value={selected_language} onChange={e => set_selected_language(e.target.value)}>
-                        <option disabled value="default">{select_language(ct.lang)}</option>
-                        <option value="0">{english(ct.lang)}</option>
-                        <option value="1">{french(ct.lang)}</option>
-                        <option value="2">{japanese(ct.lang)}</option>
-                    </select>
-
                     <div id="btn_article">
                         <input type="button" className="button" name="btn_post_article" value={post_new_article(ct.lang)} onClick={handle_create_article} />
                         {!articles.length ? null : 
@@ -713,7 +706,7 @@ const BlogEditor = (props) =>
 
                 {is_preview_shown && 
                     <BlogArticlePreview 
-                        lang={parseInt(selected_language, 10)} 
+                        lang={preview_language} set_lang={set_preview_language} 
                         article={article} 
                         txt_author={props.account_data?.username} 
                         selected_categories={selected_categories} />}

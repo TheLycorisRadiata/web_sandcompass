@@ -1,4 +1,7 @@
+import { useContext } from 'react';
+import { AppContext } from '../../App';
 import {
+    select_language, english, french, japanese, 
     blog, other_articles, like, dislike, 
     info_categories, info_author, info_created, info_modified, 
     dot, comma_and_space, 
@@ -19,6 +22,8 @@ const icon_empty_dislike = <FontAwesomeIcon icon={faThumbsDown} />;
 
 const BlogArticlePreview = (props) => 
 {
+    const ct = useContext(AppContext);
+
     const current_time = Date.now();
     const is_article_new = props.article._id === 'default';
 
@@ -51,37 +56,48 @@ const BlogArticlePreview = (props) =>
     };
 
     return (
-        <div id="main" className="preview_article">
-            <h3 className="title">{blog(props.lang)}</h3>
-            <div className="btn_other_articles"><span className="a button">{other_articles(props.lang)}</span></div>
+        <div>
+            <div id="preview_article_lang">
+                <select name="select_language" value={props.lang} onChange={e => props.set_lang(parseInt(e.target.value, 10))}>
+                    <option disabled value="default">{select_language(ct.lang)}</option>
+                    <option value="0">{english(ct.lang)}</option>
+                    <option value="1">{french(ct.lang)}</option>
+                    <option value="2">{japanese(ct.lang)}</option>
+                </select>
+            </div>
 
-            <article>
-                <h4 className="sub_title">{display_title()}</h4>
-                <ul className="article_info">
-                    <li>{info_categories(props.lang)}{display_categories()}</li>
-                    <li>{info_author(props.lang)}{display_author()}</li>
-                    <li>
-                        {info_created(props.lang, 
-                            date_in_letters(props.lang, is_article_new ? current_time : props.article.time_creation), 
-                            time(is_article_new ? current_time : props.article.time_creation, false))}
-                    </li>
-                    {props.article.is_modified && 
+            <div id="main" className="preview_article">
+                <h3 className="title">{blog(props.lang)}</h3>
+                <div className="btn_other_articles"><span className="a button">{other_articles(props.lang)}</span></div>
+
+                <article>
+                    <h4 className="sub_title">{display_title()}</h4>
+                    <ul className="article_info">
+                        <li>{info_categories(props.lang)}{display_categories()}</li>
+                        <li>{info_author(props.lang)}{display_author()}</li>
+                        <li>
+                            {info_created(props.lang, 
+                                date_in_letters(props.lang, is_article_new ? current_time : props.article.time_creation), 
+                                time(is_article_new ? current_time : props.article.time_creation, false))}
+                        </li>
+                        {props.article.is_modified && 
                         <li>
                             {info_modified(props.lang, 
                                 date_in_letters(props.lang, is_article_new ? current_time : props.article.time_modification), 
                                 time(is_article_new ? current_time : props.article.time_modification, false))}
                         </li>}
-                </ul>
+                    </ul>
 
-                <ReactMarkdown children={display_content(props.lang)} remarkPlugins={[remarkGfm]} />
-            </article>
+                    <ReactMarkdown children={display_content(props.lang)} remarkPlugins={[remarkGfm]} />
+                </article>
 
-            <div className="btn_other_articles"><span className="a button">{other_articles(props.lang)}</span></div>
+                <div className="btn_other_articles"><span className="a button">{other_articles(props.lang)}</span></div>
 
-            <div id="likes_dislikes">
-                <span id="txt_likes">{icon_heart} 0</span>
-                <button className="a button" name="btn_like"><span className="icon">{icon_empty_like}</span> {like(props.lang)}</button>
-                <button className="a button" name="btn_dislike"><span className="icon">{icon_empty_dislike}</span> {dislike(props.lang)}</button>
+                <div id="likes_dislikes">
+                    <span id="txt_likes">{icon_heart} 0</span>
+                    <button className="a button" name="btn_like"><span className="icon">{icon_empty_like}</span> {like(props.lang)}</button>
+                    <button className="a button" name="btn_dislike"><span className="icon">{icon_empty_dislike}</span> {dislike(props.lang)}</button>
+                </div>
             </div>
         </div>
     );

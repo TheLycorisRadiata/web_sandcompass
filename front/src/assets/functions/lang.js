@@ -15,6 +15,19 @@ export const access_denied = (lang) =>
     }
 };
 
+export const default_desc = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Le site web de la société française Sand Compass.';
+        case 2:
+            return 'The website of the French company Sand Compass.';
+        default:
+            return 'The website of the French company Sand Compass.';
+    }
+};
+
 export const dynamic_language = (lang, index) => 
 {
     switch (index)
@@ -543,6 +556,19 @@ export const social_media = (lang) =>
             return 'ソーシャルメディア';
         default:
             return 'Social Media';
+    }
+};
+
+export const social_media_and_contact_form = (lang) =>
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Réseaux sociaux et formulaire de contact';
+        case 2:
+            return 'ソーシャルメディアとお問い合わせフォーム';
+        default:
+            return 'Social media and contact form';
     }
 };
 

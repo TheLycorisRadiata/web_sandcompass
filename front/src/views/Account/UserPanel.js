@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    log_in, log_out, user_account, disclaimer_email_and_password, confirm_resend_verification_email, 
+    log_in, default_desc, log_out, user_account, disclaimer_email_and_password, confirm_resend_verification_email, 
     email_address, password, stay_logged_in_for_30_days, password_forgotten, not_yet_registered 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,10 +22,10 @@ const UserPanel = (props) =>
 
     // HTML standard meta tags
     document.title = (!props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang)) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', !props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', default_desc(ct.lang));
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', (!props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang)) + ' | Sand Compass');
-    document.querySelector('meta[property="og:description"]').setAttribute('content', !props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang));
+    document.querySelector('meta[property="og:description"]').setAttribute('content', default_desc(ct.lang));
 
     const [field_email_address, set_field_email_address] = useState('');
     const [field_password, set_field_password] = useState('');

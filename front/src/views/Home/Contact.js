@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../App';
 import {
-    contact, social_media, something_to_say, 
+    contact, social_media_and_contact_form, something_to_say, 
     personal, professional, optional_business_name, 
     name, email_address, write_message_with_markdown, markdown_cheat_sheet_link, message, select_subject, 
     opt_projects, opt_cosmic_dust, opt_persistence, opt_another_project, 
@@ -25,10 +25,10 @@ const Contact = (props) =>
 
     // HTML standard meta tags
     document.title = contact(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', social_media(ct.lang) + ' - ' + contact(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', social_media_and_contact_form(ct.lang));
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', contact(ct.lang) + ' | Sand Compass');
-    document.querySelector('meta[property="og:description"]').setAttribute('content', social_media(ct.lang) + ' - ' + contact(ct.lang));
+    document.querySelector('meta[property="og:description"]').setAttribute('content', social_media_and_contact_form(ct.lang));
 
     const [is_visitor_pro, set_is_visitor_pro] = useState(false);
     const [use_markdown, set_use_markdown] = useState(false);

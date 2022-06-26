@@ -2,7 +2,7 @@ import { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    works, 
+    works, default_desc, 
     title_cosmic_dust, standalone_novel, 
     title_persistence, vrmmorpg_project 
 } from '../../assets/functions/lang';
@@ -14,10 +14,10 @@ const Works = () =>
 
     // HTML standard meta tags
     document.title = works(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', works(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', default_desc(ct.lang));
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', works(ct.lang) + ' | Sand Compass');
-    document.querySelector('meta[property="og:description"]').setAttribute('content', works(ct.lang));
+    document.querySelector('meta[property="og:description"]').setAttribute('content', default_desc(ct.lang));
 
     useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);
 

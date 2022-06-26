@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    sign_up, 
+    sign_up, default_desc, 
     email_address, repeat_email, password, username, 
     sub_newsletter, disclaimer_email, cancel, confirm, 
     accept_login_cookie 
@@ -23,10 +23,10 @@ const SignUp = (props) =>
 
     // HTML standard meta tags
     document.title = sign_up(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', sub_newsletter(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', default_desc(ct.lang));
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', sign_up(ct.lang) + ' | Sand Compass');
-    document.querySelector('meta[property="og:description"]').setAttribute('content', sub_newsletter(ct.lang));
+    document.querySelector('meta[property="og:description"]').setAttribute('content', default_desc(ct.lang));
 
     const [message, set_message] = useState('');
     const [is_password_shown, set_is_password_shown] = useState(false);

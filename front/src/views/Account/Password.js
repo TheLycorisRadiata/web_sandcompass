@@ -2,7 +2,7 @@ import { useState, useLayoutEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    password_creation, oops, error_occured, disclaimer_password, 
+    password_creation, default_desc, oops, error_occured, disclaimer_password, 
     email_address, new_password, repeat_password, 
     create_password, go_back_log_in 
 } from '../../assets/functions/lang';
@@ -28,10 +28,10 @@ const Password = () =>
 
     // HTML standard meta tags
     document.title = password_creation(lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', create_password(lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', default_desc(lang));
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', password_creation(lang) + ' | Sand Compass');
-    document.querySelector('meta[property="og:description"]').setAttribute('content', create_password(lang));
+    document.querySelector('meta[property="og:description"]').setAttribute('content', default_desc(lang));
 
     useLayoutEffect(() => 
     {

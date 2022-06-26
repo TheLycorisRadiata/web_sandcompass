@@ -272,11 +272,18 @@ const AccountEditor = (props) =>
                 updated_account.username = props.account_data.username;
             else
             {
-                obj_parse_username = parse_username(ct.lang, field_username);
+                obj_parse_username = await parse_username(ct, field_username);
                 if (!obj_parse_username.user_approves)
                     return;
                 else
+                {
                     field_username = obj_parse_username.parsed_username;
+                    // Update GUI as well
+                    if (!is_profile_picture_selector_open)
+                        e.target[0].value = field_username;
+                    else
+                        e.target[3].value = field_username;
+                }
 
                 username_check = await is_username_already_used_by_another_account(field_username);
                 //console.log(username_check.message);

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
-    control_panel, email_address, password, stay_logged_in_for_30_days, log_in, log_out, password_forgotten, disclaimer_email_and_password, 
+    control_panel, default_desc, email_address, password, stay_logged_in_for_30_days, log_in, log_out, password_forgotten, disclaimer_email_and_password, 
     statistics, faq_editor, blog_editor, newsletter_editor 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,10 +26,10 @@ const ControlPanel = (props) =>
 
     // HTML standard meta tags
     document.title = control_panel(ct.lang) + ' | Sand Compass';
-    document.querySelector('meta[name="description"]').setAttribute('content', log_in(ct.lang));
+    document.querySelector('meta[name="description"]').setAttribute('content', default_desc(ct.lang));
     // Open Graph meta tags
     document.querySelector('meta[property="og:title"]').setAttribute('content', control_panel(ct.lang) + ' | Sand Compass');
-    document.querySelector('meta[property="og:description"]').setAttribute('content', log_in(ct.lang));
+    document.querySelector('meta[property="og:description"]').setAttribute('content', default_desc(ct.lang));
 
     const [field_email_address, set_field_email_address] = useState('');
     const [field_password, set_field_password] = useState('');

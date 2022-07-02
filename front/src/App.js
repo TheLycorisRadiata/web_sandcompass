@@ -21,9 +21,10 @@ import Licenses from './views/Home/Licenses';
 import LegalNotices from './views/Home/LegalNotices';
 import ControlPanel from './views/ControlPanel/ControlPanel';
 import Stats from './views/ControlPanel/Stats';
+import FaqEditor from './views/ControlPanel/FaqEditor';
+import ProductManager from './views/ControlPanel/ProductManager';
 import BlogEditor from './views/ControlPanel/BlogEditor';
 import NewsletterEditor from './views/ControlPanel/NewsletterEditor';
-import FaqEditor from './views/ControlPanel/FaqEditor';
 import UserPanel from './views/Account/UserPanel';
 import SignUp from './views/Account/SignUp'
 import Password from './views/Account/Password';
@@ -189,6 +190,17 @@ const App = () =>
                                 account_data={admin_account_data} set_account_data={set_admin_account_data} 
                                 is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} />
                         </Route>
+                        <Route exact path="/admin/faq">
+                            <FaqEditor 
+                                account_data={admin_account_data} set_account_data={set_admin_account_data} 
+                                is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} 
+                                questions={all_questions} set_questions={set_all_questions} />
+                        </Route>
+                        <Route exact path="/admin/product">
+                            <ProductManager 
+                                account_data={admin_account_data} set_account_data={set_admin_account_data} 
+                                is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} />
+                        </Route>
                         <Route exact path="/admin/blog">
                             <BlogEditor 
                                 account_data={admin_account_data} set_account_data={set_admin_account_data} 
@@ -199,12 +211,6 @@ const App = () =>
                             <NewsletterEditor 
                                 account_data={admin_account_data} set_account_data={set_admin_account_data} 
                                 is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} />
-                        </Route>
-                        <Route exact path="/admin/faq">
-                            <FaqEditor 
-                                account_data={admin_account_data} set_account_data={set_admin_account_data} 
-                                is_access_granted={is_admin_access_granted} set_is_access_granted={set_is_admin_access_granted} 
-                                questions={all_questions} set_questions={set_all_questions} />
                         </Route>
                         <Route exact path="/admin">
                             <ControlPanel 

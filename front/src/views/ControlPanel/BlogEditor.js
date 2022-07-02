@@ -6,6 +6,7 @@ import {
     post_new_article, select_article, no_article, modify_article, delete_article, 
     no_category, select_category, manage_categories, new_category, add_category, delete_category, modify_category, edit_category, 
     title, content, preview, 
+    disclaimer_blog_editor_no_article_selected, 
     disclaimer_blog_editor_title, 
     disclaimer_blog_editor_category, 
     disclaimer_blog_editor_content 
@@ -422,7 +423,9 @@ const BlogEditor = (props) =>
     {
         const updated_article = {};
 
-        if (article.title[0] === '' || article.title[1] === '' || article.title[2] === '')
+        if (article._id === 'default')
+            ct.popup('alert', ct.lang, disclaimer_blog_editor_no_article_selected(ct.lang));
+        else if (article.title[0] === '' || article.title[1] === '' || article.title[2] === '')
             ct.popup('alert', ct.lang, disclaimer_blog_editor_title(ct.lang));
         else if (!article.categories.length)
             ct.popup('alert', ct.lang, disclaimer_blog_editor_category(ct.lang));
@@ -605,12 +608,11 @@ const BlogEditor = (props) =>
                         {!articles.length ? null : 
                         <>
                             <select name="select_article" value={article._id} onChange={handle_select_article}>
-                                <option disabled value="default">{select_article(ct.lang)}</option>
-                                {props.categories.map((category, index) => 
-                                    <optgroup label={category.name[ct.lang]} key={'category_' + index}>
-                                        {!articles.filter(e => e.categories.includes(category._id)).length ? <option disabled>{no_article(ct.lang)}</option> 
-                                        : articles.filter(e => e.categories.includes(category._id)).map(e => <option key={e._id} value={e._id}>{e.title[ct.lang]}</option>)}
-                                    </optgroup>)}
+                                {!articles.length ? <option disabled>{no_article(ct.lang)}</option> : 
+                                <>
+                                    <option disabled value="default">{select_article(ct.lang)}</option>
+                                    {articles.map(e => <option key={e._id} value={e._id}>{e.title[ct.lang]}</option>)}
+                                </>}
                             </select>
 
                             <div>

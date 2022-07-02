@@ -69,7 +69,7 @@ const Home = (props) =>
             <section>
                 <h2 className="sub_title"><Link to="/works/cosmic_dust">{home_cosmic_dust(ct.lang)}</Link></h2>
 
-                <div id="book_presentation">
+                <div id="work_presentation">
                     <Link to="/works/cosmic_dust"><DisplayCover lang={ct.lang} work="cosmic_dust" /></Link>
 
                     <div>

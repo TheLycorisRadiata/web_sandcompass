@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { AppContext } from '../../App';
 import {
     control_panel, default_desc, email_address, password, stay_logged_in_for_30_days, log_in, log_out, password_forgotten, disclaimer_email_and_password, 
-    statistics, faq_editor, blog_editor, newsletter_editor 
+    statistics, faq_editor, product_manager, blog_editor, newsletter_editor 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareXmark, faEye, faEyeSlash, faFileAlt, faComment, faQuoteRight, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faSquareXmark, faEye, faEyeSlash, faFileAlt, faComment, faCartShopping, faQuoteRight, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import AccountEditor from '../../assets/components/AccountEditor';
 import ArticlesByAuthor from '../../assets/components/ArticlesByAuthor';
 import { handle_required_field } from '../../assets/functions/parsing';
@@ -17,6 +17,7 @@ const icon_eye = <FontAwesomeIcon icon={faEye} />;
 const icon_eye_slash = <FontAwesomeIcon icon={faEyeSlash} />;
 const icon_stats = <FontAwesomeIcon icon={faFileAlt} />;
 const icon_faq = <FontAwesomeIcon icon={faComment} />;
+const icon_product = <FontAwesomeIcon icon={faCartShopping} />;
 const icon_blog = <FontAwesomeIcon icon={faQuoteRight} />;
 const icon_newsletter = <FontAwesomeIcon icon={faEnvelope} />;
 
@@ -168,6 +169,7 @@ const ControlPanel = (props) =>
                 <div id="control_panel_buttons">
                     <Link to="/admin/stats"><button className="button"><span className="icon">{icon_stats}</span> {statistics(ct.lang)}</button></Link>
                     <Link to="/admin/faq"><button className="button"><span className="icon">{icon_faq}</span> {faq_editor(ct.lang)}</button></Link>
+                    <Link to="/admin/product"><button className="button"><span className="icon">{icon_product}</span> {product_manager(ct.lang)}</button></Link>
                     <Link to="/admin/blog"><button className="button"><span className="icon">{icon_blog}</span> {blog_editor(ct.lang)}</button></Link>
                     <Link to="/admin/newsletter"><button className="button"><span className="icon">{icon_newsletter}</span> {newsletter_editor(ct.lang)}</button></Link>
                 </div>

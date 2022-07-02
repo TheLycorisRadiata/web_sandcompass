@@ -4,10 +4,10 @@ import { AppContext } from '../../App';
 import {
     works, other_works, 
     info_title, info_author, info_type, info_genre, info_release_date, info_summary, 
-    radiata_lycoris, standalone_novel, science_fiction, work_in_progress, 
+    lycoris_radiata, standalone_novel, science_fiction, work_in_progress, 
     title_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, link_to_cosmic_dust_cover, 
     reviews, disclaimer_reviews_1_on_2, disclaimer_reviews_2_on_2, 
-    different_formats, azw, epub, pdf, all, how_to_pick_format 
+    download, azw, epub, pdf, all, how_to_pick_format 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
@@ -40,13 +40,13 @@ const CosmicDust = () =>
             <article>
                 <h2 className="sub_title">{title_cosmic_dust(ct.lang)}</h2>
 
-                <div id="book_presentation">
+                <div id="work_presentation">
                     <DisplayCover lang={ct.lang} work="cosmic_dust" />
 
                     <div>
                         <ul>
                             <li><span className="txt_bold">{info_title(ct.lang)}</span>{title_cosmic_dust(ct.lang)}</li>
-                            <li><span className="txt_bold">{info_author(ct.lang)}</span>{radiata_lycoris(ct.lang)}</li>
+                            <li><span className="txt_bold">{info_author(ct.lang)}</span>{lycoris_radiata(ct.lang)}</li>
                             <li><span className="txt_bold">{info_type(ct.lang)}</span>{standalone_novel(ct.lang)}</li>
                             <li><span className="txt_bold">{info_genre(ct.lang)}</span>{science_fiction(ct.lang)}</li>
                             <li><span className="txt_bold">{info_release_date(ct.lang)}</span>{work_in_progress(ct.lang)}</li>
@@ -69,7 +69,7 @@ const CosmicDust = () =>
 
             <aside>
                 <div>
-                    <h3 className="sub_title">{different_formats(ct.lang)}</h3>
+                    <h3 className="sub_title">{download(ct.lang)}</h3>
 
                     {/* 
                         AZW (Kindle)

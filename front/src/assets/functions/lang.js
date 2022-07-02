@@ -1349,12 +1349,12 @@ export const summary_cosmic_dust = (lang) =>
     }
 };
 
-export const radiata_lycoris = (lang) => 
+export const lycoris_radiata = (lang) => 
 {
     switch (lang)
     {
         case 2:
-            return 'ブセティラ・リンダ';
+            return 'リコリス・ラディアタ';
         default:
             return 'Lycoris Radiata';
     }
@@ -1381,6 +1381,19 @@ export const science_fiction = (lang) =>
             return '空想科学小説'; // 'Science fiction novel' and not SF in general
         default:
             return 'Science fiction';
+    }
+};
+
+export const fantasy = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Fantaisie';
+        case 2:
+            return 'ファンタジー';
+        default:
+            return 'Fantasy';
     }
 };
 
@@ -1514,19 +1527,6 @@ export const disclaimer_reviews_2_on_2 = (lang) =>
     }
 };
 
-export const different_formats = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Les différents formats';
-        case 2:
-            return 'The different formats';
-        default:
-            return 'The different formats';
-    }
-};
-
 export const azw = (lang) => 
 {
     switch (lang)
@@ -1619,7 +1619,7 @@ export const msg_about_website = (lang) =>
     switch (lang)
     {
         case 1:
-            return '<p>"Sand Compass" est le nom d\'une future société française. Sand Compass a pour ambition d\'aller chatouiller les frontières du monde connu, mais va pour l\'instant se contenter de son domaine favori : la fiction ! Ce site présente donc les œuvres fictives de Lycoris Radiata, CEO autoproclamée (parce que ça fait toujours <span class="txt_italic">plus mieux</span> en Anglais), et... Petite madame dont les compétences en code peuvent encore s\'améliorer.</p>\n\n<p>Si ce n\'est pas votre première visite, bon retour ! Je vous remercie de votre patience et de votre fidélité, elles seront récompensées.<p><p></p>';
+            return '<p>"Sand Compass" est le nom d\'une future société française. Sand Compass a pour ambition d\'aller chatouiller les frontières du monde connu, mais va pour l\'instant se contenter de son domaine favori : la fiction ! Ce site présente donc les œuvres fictives de Lycoris Radiata, CEO autoproclamée (parce que ça fait toujours <span class="txt_italic">plus mieux</span> en Anglais), et... Petite madame dont les compétences en code peuvent encore s\'améliorer.</p>\n\n<p>Si ce n\'est pas votre première visite, bon retour ! Je vous remercie de votre patience et de votre fidélité, elles seront récompensées.</p><p></p>';
         case 2:
             return '<p>"Sand Compass" is the name of a future French company. Sand Compass has for ambition to go tickle the known world\'s frontiers, but will for now settle for its favorite domain: storytelling! This website therefore presents the fictitious works of Lycoris Radiata, self-proclaimed CEO, and... Lil\' lady whose coding skills surely need some refining.</p>\n\n<p>If this is not your first visit, welcome back! I thank you for your patience and loyalty, they will be rewarded.</p><p></p>';
         default:
@@ -2589,16 +2589,16 @@ export const faq_editor = (lang) =>
     }
 };
 
-export const blog_editor = (lang) => 
+export const product_manager = (lang) => 
 {
     switch (lang)
     {
         case 1:
-            return 'Éditeur de blog';
+            return 'Gestionnaire de produits';
         case 2:
-            return 'Blog Editor';
+            return 'Product Manager';
         default:
-            return 'Blog Editor';
+            return 'Product Manager';
     }
 };
 
@@ -2612,6 +2612,19 @@ export const newsletter_editor = (lang) =>
             return 'Newsletter Editor';
         default:
             return 'Newsletter Editor';
+    }
+};
+
+export const blog_editor = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Éditeur de blog';
+        case 2:
+            return 'Blog Editor';
+        default:
+            return 'Blog Editor';
     }
 };
 
@@ -3159,6 +3172,19 @@ export const preview = (lang) =>
     }
 };
 
+export const disclaimer_blog_editor_no_article_selected = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Modifier quel article ? Aucun n\'a été sélectionné.';
+        case 2:
+            return 'Modify which article? None has been selected.';
+        default:
+            return 'Modify which article? None has been selected.';
+    }
+};
+
 export const disclaimer_blog_editor_title = (lang) => 
 {
     switch (lang)
@@ -3211,19 +3237,6 @@ export const title_persistence = (lang) =>
     }
 };
 
-export const game = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Jeu';
-        case 2:
-            return 'ゲーム';
-        default:
-            return 'Game';
-    }
-};
-
 export const vrmmorpg_project = (lang) => 
 {
     switch (lang)
@@ -3234,6 +3247,32 @@ export const vrmmorpg_project = (lang) =>
             return 'ＶＲＭＭＯＲＰＧのプロジェクト';
         default:
             return 'VRMMORPG project';
+    }
+};
+
+export const demo = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Démo';
+        case 2:
+            return 'デモ';
+        default:
+            return 'Demo';
+    }
+};
+
+export const download = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Télécharger';
+        case 2:
+            return 'ダウンロード';
+        default:
+            return 'Download';
     }
 };
 

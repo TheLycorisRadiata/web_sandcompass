@@ -22,7 +22,7 @@ const SocialMedia = () =>
                         <img src={Logo_YouTube} alt={logo_youtube(ct.lang)} title={my_youtube(ct.lang)} /></a>
                 </li>
                 <li className="logo">
-                    <a href="https://github.com/lycorisradiata" rel="noreferrer" target="_blank">
+                    <a href="https://github.com/thelycorisradiata" rel="noreferrer" target="_blank">
                         <img src={Logo_GitHub} alt={logo_github(ct.lang)} title={my_github(ct.lang)} /></a>
                 </li>
                 <li className="logo">

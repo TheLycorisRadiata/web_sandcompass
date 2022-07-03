@@ -8,6 +8,7 @@ const router_mailing = require('./routes/mailing');
 const router_user = require('./routes/user');
 const router_token = require('./routes/token');
 const router_rank = require('./routes/rank');
+const router_product = require('./routes/product');
 const router_currency = require('./routes/currency');
 
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api/mailing', router_mailing);
 app.use('/api/user', router_user);
 app.use('/api/token', router_token);
 app.use('/api/rank', router_rank);
+app.use('/api/product', router_product);
 app.use('/api/currency', router_currency);
 
 /* Static service of the front-end app's files */

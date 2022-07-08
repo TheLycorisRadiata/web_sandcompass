@@ -7,6 +7,7 @@ const app = require('./app');
 const port = process.env.PORT || 3001;
 app.set('port', port);
 const server = http.createServer(app);
+const is_db_local = !process.env.MONGO_URL;
 
 mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/sandcompass', 
 {
@@ -14,7 +15,7 @@ mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/sandcompass',
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => console.log('> The server is connected to the database'.blue))
+.then(() => console.log(`> The server is connected to the ${is_db_local ? 'local' : 'online'} database`.blue))
 .catch((err) => 
 {
     console.log('> The server couldn\'t connect to the database'.red);

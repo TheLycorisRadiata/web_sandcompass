@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
     access_denied, log_out, 
@@ -56,7 +57,59 @@ const ProductManager = (props) =>
             <div id="product_manager">
                 <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
 
-                <p>Lorem ipsum</p>
+                {/*
+                <form onSubmit={handle_add}>
+                    <div id="languages">
+                        <div>
+                            <label htmlFor="eng_prod">{english(ct.lang)}</label>
+                            <input type="text" name="new_question" id="eng_prod" placeholder={question(ct.lang)} />
+                            <input type="text" name="new_answer" placeholder={answer(ct.lang)} />
+                        </div>
+                        <div>
+                            <label htmlFor="fr_prod">{french(ct.lang)}</label>
+                            <input type="text" name="new_question" id="fr_prod" placeholder={question(ct.lang)} />
+                            <input type="text" name="new_answer" placeholder={answer(ct.lang)} />
+                        </div>
+                        <div>
+                            <label htmlFor="jp_prod">{japanese(ct.lang)}</label>
+                            <input type="text" name="new_question" id="jp_prod" placeholder={question(ct.lang)} />
+                            <input type="text" name="new_answer" placeholder={answer(ct.lang)} />
+                        </div>
+                    </div>
+
+                    <button className="button" title={add_product(ct.lang)}><span className="icon">{icon_add}</span></button>
+                </form>
+
+                {!products?.length ?
+                    <p className="txt_centered">{no_product(ct.lang)}</p>
+                :
+                    <ol>
+                        {products?.map((e, i) => 
+                            <li key={'prod_edit_' + i}>
+                                <div>
+                                    <div className="display_product">
+                                        <div title={english(ct.lang)}>
+                                            <p><strong>{e.title[0]}</strong></p>
+                                            <div>{Parser(e.summary[0])}</div>
+                                        </div>
+                                        <div title={french(ct.lang)}>
+                                            <p><strong>{e.title[1]}</strong></p>
+                                            <div>{Parser(e.summary[1])}</div>
+                                        </div>
+                                        <div title={japanese(ct.lang)}>
+                                            <p><strong>{e.title[2]}</strong></p>
+                                            <div>{Parser(e.summary[2])}</div>
+                                        </div>
+                                    </div>
+
+                                    <span className="prod_icons">
+                                        <button className="button" title={edit_product(ct.lang)} onClick={() => handle_edit(e)}><span className="icon">{icon_edit}</span></button>
+                                        <button className="button" title={delete_product(ct.lang)} onClick={() => handle_delete(e)}><span className="icon">{icon_delete}</span></button>
+                                    </span>
+                                </div>
+                            </li>)}
+                    </ol>}
+                */}
             </div>}
         </main>
     );

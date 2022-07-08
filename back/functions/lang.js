@@ -1474,6 +1474,242 @@ const success_rank_retrieval = (lang) =>
     }
 };
 
+/* PRODUCT -------------------------------------------------------------------------------------- */
+
+const success_full_products_retrieval = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + ' produits entiers chargés.';
+        case 2:
+            return number + ' full products loaded.';
+        default:
+            return number + ' full products loaded.';
+    }
+};
+
+const failure_full_products_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Les produits entiers ne peuvent pas être retrouvés.';
+        case 2:
+            return 'Error: The full products can\'t be retrieved.';
+        default:
+            return 'Error: The full products can\'t be retrieved.';
+    }
+};
+
+const success_full_product_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Produit entier chargé.';
+        case 2:
+            return 'Full product loaded.';
+        default:
+            return 'Full product loaded.';
+    }
+};
+
+const failure_full_product_retrieval = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le produit entier n\'a pas pu être retrouvé.';
+        case 2:
+            return 'Error: Full product couldn\'t be retrieved.';
+        default:
+            return 'Error: Full product couldn\'t be retrieved.';
+    }
+};
+
+const success_product_created = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Produit créé.';
+        case 2:
+            return 'Product created.';
+        default:
+            return 'Product created.';
+    }
+};
+
+const failure_product_created = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le produit n\'a pas pu être créé.';
+        case 2:
+            return 'Error: Product couldn\'t be created.';
+        default:
+            return 'Error: Product couldn\'t be created.';
+    }
+};
+
+const success_product_edited = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Produit édité.';
+        case 2:
+            return 'Product edited.';
+        default:
+            return 'Product edited.';
+    }
+};
+
+const failure_product_edited = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le produit n\'a pas pu être édité.';
+        case 2:
+            return 'Error: Product couldn\'t be edited.';
+        default:
+            return 'Error: Product couldn\'t be edited.';
+    }
+};
+
+const success_product_removed = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Produit retiré.';
+        case 2:
+            return 'Product removed.';
+        default:
+            return 'Product removed.';
+    }
+};
+
+const failure_product_removed = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le produit n\'a pas pu être retiré.';
+        case 2:
+            return 'Error: Product couldn\'t be removed.';
+        default:
+            return 'Error: Product couldn\'t be removed.';
+    }
+};
+
+const success_product_highlighted = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Produit mis en avant.';
+        case 2:
+            return 'Product highlighted.';
+        default:
+            return 'Product highlighted.';
+    }
+};
+
+const failure_product_highlighted = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le produit n\'a pas pu être mis en avant.';
+        case 2:
+            return 'Error: Product couldn\'t be highlighted.';
+        default:
+            return 'Error: Product couldn\'t be highlighted.';
+    }
+};
+
+const success_products_retrieval_for_display = (lang, number) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return number + ' produits chargés pour l\'affichage.';
+        case 2:
+            return number + ' products loaded for display.';
+        default:
+            return number + ' products loaded for display.';
+    }
+};
+
+const failure_products_retrieval_for_display = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Les produits ne peuvent pas être retrouvés pour l\'affichage.';
+        case 2:
+            return 'Error: The products can\'t be retrieved for display.';
+        default:
+            return 'Error: The products can\'t be retrieved for display.';
+    }
+};
+
+const success_product_retrieval_for_display = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Produit chargé pour l\'affichage.';
+        case 2:
+            return 'Product loaded for display.';
+        default:
+            return 'Product loaded for display.';
+    }
+};
+
+const failure_product_retrieval_for_display = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le produit n\'a pas pu être retrouvé pour l\'affichage.';
+        case 2:
+            return 'Error: Product couldn\'t be retrieved for display.';
+        default:
+            return 'Error: Product couldn\'t be retrieved for display.';
+    }
+};
+
+const success_highlighted_product_retrieval_for_display = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Produit du moment chargé pour l\'affichage.';
+        case 2:
+            return 'Highlighted product loaded for display.';
+        default:
+            return 'Highlighted product loaded for display.';
+    }
+};
+
+const failure_highlighted_product_retrieval_for_display = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Erreur : Le produit du moment n\'a pas pu être retrouvé pour l\'affichage.';
+        case 2:
+            return 'Error: Highlighted product couldn\'t be retrieved for display.';
+        default:
+            return 'Error: Highlighted product couldn\'t be retrieved for display.';
+    }
+};
+
 module.exports = 
 {
     short_lang,
@@ -1586,6 +1822,24 @@ module.exports =
     success_ranks_retrieval,
     failure_ranks_retrieval,
     failure_rank_retrieval,
-    success_rank_retrieval
+    success_rank_retrieval,
+    success_full_products_retrieval,
+    failure_full_products_retrieval,
+    success_full_product_retrieval,
+    failure_full_product_retrieval,
+    success_product_created,
+    failure_product_created,
+    success_product_edited,
+    failure_product_edited,
+    success_product_removed,
+    failure_product_removed,
+    success_product_highlighted,
+    failure_product_highlighted,
+    success_products_retrieval_for_display,
+    failure_products_retrieval_for_display,
+    success_product_retrieval_for_display,
+    failure_product_retrieval_for_display,
+    success_highlighted_product_retrieval_for_display,
+    failure_highlighted_product_retrieval_for_display
 };
 

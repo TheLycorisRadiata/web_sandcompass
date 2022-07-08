@@ -4,8 +4,7 @@ import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
     home, title_about_website, website_name_is_temp, msg_about_website, sub_newsletter, 
-    home_cosmic_dust, catch_phrase_cosmic_dust, summary_cosmic_dust, 
-    title_last_article 
+    home_highlighted_product, title_last_article 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
@@ -27,10 +26,23 @@ const Home = (props) =>
     document.querySelector('meta[property="og:title"]').setAttribute('content', home(ct.lang) + ' | Sand Compass');
     document.querySelector('meta[property="og:description"]').setAttribute('content', msg_about_website(ct.lang).substring(0, 400) + '...');
 
+    const [highlighted_product, set_highlighted_product] = useState(null);
     const [last_article, set_last_article] = useState(null);
 
     useLayoutEffect(() => 
     {
+        fetch(`${package_info.api}/product/${ct.lang}/highlight/display`)
+        .then(res => res.json())
+        .then(json => 
+        {
+            //console.log(json.message);
+            //if (json.error)
+                //console.log(json.error);
+            if (json.is_success) 
+                set_highlighted_product(json.data);
+        });
+        //.catch(err => console.log(err));
+
         fetch(`${package_info.api}/blog/${ct.lang}/article/last`)
         .then(res => res.json())
         .then(json => 
@@ -66,20 +78,22 @@ const Home = (props) =>
                 </div>
             </article>
 
+            {highlighted_product && 
             <section>
-                <h2 className="sub_title"><Link to="/works/cosmic_dust">{home_cosmic_dust(ct.lang)}</Link></h2>
+                <h2 className="sub_title"><Link to="/works/cosmic_dust">
+                    {home_highlighted_product(ct.lang, highlighted_product.title, highlighted_product.subtype_and_genre_combined)}
+                </Link></h2>
 
                 <div id="work_presentation">
                     <Link to="/works/cosmic_dust"><DisplayCover lang={ct.lang} work="cosmic_dust" /></Link>
 
                     <div>
-                        <p id="catch_phrase"><em>{catch_phrase_cosmic_dust(ct.lang)}</em></p>
-
-                        {summary_cosmic_dust(ct.lang).map((e, i) => <p key={'summary_' + i}>{e}</p>)}
+                        <p id="catch_phrase"><em>{highlighted_product.catch_phrase[ct.lang]}</em></p>
+                        {Parser(highlighted_product.summary[ct.lang])}
                         <p className="clear"></p>
                     </div>
                 </div>
-            </section>
+            </section>}
 
             <SocialMedia />
 

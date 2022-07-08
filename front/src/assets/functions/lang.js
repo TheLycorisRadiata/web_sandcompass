@@ -1627,16 +1627,19 @@ export const msg_about_website = (lang) =>
     }
 };
 
-export const home_cosmic_dust = (lang) => 
+export const home_highlighted_product = (lang, title, subtype_and_genre_combined) => 
 {
+    if (!title || !subtype_and_genre_combined)
+        return 'NO_PRODUCT';
+
     switch (lang)
     {
         case 1:
-            return 'Une Poussière du cosmos : Roman standalone de SF';
+            return `${title[1]} : ${subtype_and_genre_combined[1]}`;
         case 2:
-            return '「宇宙塵」: スタンドアロン空想科学小説';
+            return `「${title[2]}」: ${subtype_and_genre_combined[2]}`;
         default:
-            return 'Cosmic Dust: Standalone sci-fi novel';
+            return `${title[0]}: ${subtype_and_genre_combined[0]}`;
     }
 };
 

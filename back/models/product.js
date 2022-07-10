@@ -9,7 +9,7 @@ const model_product = new mongoose.Schema(
     subtype: [String],
     genre: [String],
     subtype_and_genre_combined: [String],
-    release_date: Date,
+    release_date: [Date],
     catch_phrase: [String],
     summary: [String],
     cover_picture: [Buffer],

@@ -5,7 +5,7 @@ import {
     english, french, japanese, 
     post_new_article, select_article, no_article, modify_article, delete_article, 
     no_category, select_category, manage_categories, new_category, add_category, delete_category, modify_category, edit_category, 
-    title, content, preview, 
+    title_lang, content, preview, 
     disclaimer_blog_editor_no_article_selected, 
     disclaimer_blog_editor_title, 
     disclaimer_blog_editor_category, 
@@ -622,9 +622,9 @@ const BlogEditor = (props) =>
                         </>}
                     </div>
 
-                    <input type="text" name="field_article_title_0" value={article.title[0]} onChange={update_title_0} placeholder={title(ct.lang, 0)} title={english(ct.lang)} />
-                    <input type="text" name="field_article_title_1" value={article.title[1]} onChange={update_title_1} placeholder={title(ct.lang, 1)} title={french(ct.lang)} />
-                    <input type="text" name="field_article_title_2" value={article.title[2]} onChange={update_title_2} placeholder={title(ct.lang, 2)} title={japanese(ct.lang)} />
+                    <input type="text" name="field_article_title_0" value={article.title[0]} onChange={update_title_0} placeholder={title_lang(ct.lang, 0)} title={english(ct.lang)} />
+                    <input type="text" name="field_article_title_1" value={article.title[1]} onChange={update_title_1} placeholder={title_lang(ct.lang, 1)} title={french(ct.lang)} />
+                    <input type="text" name="field_article_title_2" value={article.title[2]} onChange={update_title_2} placeholder={title_lang(ct.lang, 2)} title={japanese(ct.lang)} />
 
                     <div id="categories">
                         <div id="article_categories">

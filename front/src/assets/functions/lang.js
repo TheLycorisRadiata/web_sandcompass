@@ -3032,7 +3032,7 @@ export const delete_article = (lang) =>
     }
 };
 
-export const title = (lang, index) => 
+export const title_lang = (lang, index) => 
 {
     switch (lang)
     {
@@ -3300,6 +3300,214 @@ export const code = (lang) =>
             return 'コード';
         default:
             return 'Code';
+    }
+};
+
+/* PRODUCT MANAGER ------------------------------------------------------------------------------ */
+
+export const title = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Titre';
+        case 2:
+            return 'Title';
+        default:
+            return 'Title';
+    }
+};
+
+export const author = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Auteur';
+        case 2:
+            return 'Author';
+        default:
+            return 'Author';
+    }
+};
+
+export const select_type = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sélectionnez un type';
+        case 2:
+            return 'Select a type';
+        default:
+            return 'Select a type';
+    }
+};
+
+export const book = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Livre';
+        case 2:
+            return 'Book';
+        default:
+            return 'Book';
+    }
+};
+
+export const game = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Jeu';
+        case 2:
+            return 'Game';
+        default:
+            return 'Game';
+    }
+};
+
+export const subtype = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sous-type';
+        case 2:
+            return 'Subtype';
+        default:
+            return 'Subtype';
+    }
+};
+
+export const genre = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'Genre';
+        default:
+            return 'Genre';
+    }
+};
+
+export const subtype_and_genre_combined = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sous-type et genre combinés';
+        case 2:
+            return 'Subtype and genre combined';
+        default:
+            return 'Subtype and genre combined';
+    }
+};
+
+export const release_date = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Date de sortie';
+        case 2:
+            return 'Release date';
+        default:
+            return 'Release date';
+    }
+};
+
+export const catch_phrase = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Phrase d\'accroche';
+        case 2:
+            return 'Catch phrase';
+        default:
+            return 'Catch phrase';
+    }
+};
+
+export const summary = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Résumé';
+        case 2:
+            return 'Summary';
+        default:
+            return 'Summary';
+    }
+};
+
+export const link_codebase = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Lien vers le code';
+        case 2:
+            return 'Link to the codebase';
+        default:
+            return 'Link to the codebase';
+    }
+};
+
+export const add_product = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Ajouter un nouveau produit';
+        case 2:
+            return 'Add a new product';
+        default:
+            return 'Add a new product';
+    }
+};
+
+export const no_product = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Aucun produit';
+        case 2:
+            return 'No product';
+        default:
+            return 'No product';
+    }
+};
+
+export const edit_product = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Éditer le produit';
+        case 2:
+            return 'Edit the product';
+        default:
+            return 'Edit the product';
+    }
+};
+
+export const delete_product = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Supprimer le produit';
+        case 2:
+            return 'Delete the product';
+        default:
+            return 'Delete the product';
     }
 };
 

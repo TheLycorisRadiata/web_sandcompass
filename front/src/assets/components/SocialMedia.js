@@ -26,7 +26,7 @@ const SocialMedia = () =>
                         <img src={Logo_GitHub} alt={logo_github(ct.lang)} title={my_github(ct.lang)} /></a>
                 </li>
                 <li className="logo">
-                    <a href="https://www.reddit.com/user/lycorisradiata" rel="noreferrer" target="_blank">
+                    <a href="https://www.reddit.com/user/thelycorisradiata" rel="noreferrer" target="_blank">
                         <img src={Logo_Reddit} alt={logo_reddit(ct.lang)} title={my_reddit(ct.lang)} /></a>
                 </li>
             </ul>

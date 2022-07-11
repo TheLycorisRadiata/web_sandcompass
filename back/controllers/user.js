@@ -411,12 +411,12 @@ const update_account = (req, res) =>
     const id_hashed_account = req.body.id_account;
 
     const id = req.body._id;
+    const profile_picture = req.body.updated_account.profile_picture;
     const updated_account = 
     {
         verified_user: req.body.updated_account.verified_user,
         email_address: req.body.updated_account.email_address.toLowerCase(),
         username: parse_username(req.body.updated_account.username),
-        profile_picture: req.body.updated_account.profile_picture,
         newsletter: req.body.updated_account.newsletter,
         language: parseInt(req.body.updated_account.language, 10)
     };
@@ -435,9 +435,9 @@ const update_account = (req, res) =>
     }
 
     // Profile picture: Check the datatype (png, jpeg, jpg) and size (<= 1 Mb)
-    if (updated_account.profile_picture)
+    if (profile_picture)
     {
-        const base64_img = updated_account.profile_picture;
+        const base64_img = profile_picture;
         const whitelist = ['png', 'jpeg', 'jpg'];
         let invalid = false;
 
@@ -468,6 +468,11 @@ const update_account = (req, res) =>
         {
             res.status(400).json({ is_success: false, message: failure_account_update(lang) });
             return;
+        }
+        else
+        {
+            // The profile picture is valid, so add it to the account object
+            updated_account.profile_picture = profile_picture;
         }
     }
 

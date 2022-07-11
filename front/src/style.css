@@ -1191,14 +1191,14 @@ a, span[class="a"]
     padding-left: 25px;
 }
 
-#faq_editor #languages
+#faq_editor #languages, #product_manager #languages
 {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
 }
 
-#faq_editor #languages div
+#faq_editor #languages div, #product_manager #languages div
 {
     margin-left: 20px;
     margin-right: 20px;

@@ -31,7 +31,7 @@ const Home = (props) =>
 
     useLayoutEffect(() => 
     {
-        fetch(`${package_info.api}/product/${ct.lang}/highlight/display`)
+        fetch(`${package_info.api}/product/${ct.lang}/display/highlight`)
         .then(res => res.json())
         .then(json => 
         {
@@ -81,7 +81,7 @@ const Home = (props) =>
             {highlighted_product && 
             <section>
                 <h2 className="sub_title"><Link to="/works/cosmic_dust">
-                    {home_highlighted_product(ct.lang, highlighted_product.title, highlighted_product.subtype_and_genre_combined)}
+                    {home_highlighted_product(ct.lang, highlighted_product.title, highlighted_product.subtype, highlighted_product.genre)}
                 </Link></h2>
 
                 <div id="work_presentation">

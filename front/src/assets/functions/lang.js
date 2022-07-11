@@ -1373,12 +1373,23 @@ export const standalone_novel = (lang) =>
     }
 };
 
+export const vrmmorpg = (lang) => 
+{
+    switch (lang)
+    {
+        case 2:
+            return 'ＶＲＭＭＯＲＰＧ';
+        default:
+            return 'VRMMORPG';
+    }
+};
+
 export const science_fiction = (lang) => 
 {
     switch (lang)
     {
         case 2:
-            return '空想科学小説'; // 'Science fiction novel' and not SF in general
+            return '空想科学';
         default:
             return 'Science fiction';
     }
@@ -1627,19 +1638,54 @@ export const msg_about_website = (lang) =>
     }
 };
 
-export const home_highlighted_product = (lang, title, subtype_and_genre_combined) => 
+export const home_highlighted_product = (lang, title, subtype, genre) => 
 {
-    if (!title || !subtype_and_genre_combined)
+    let subtype_and_genre_combined = '';
+
+    if (!title || !subtype || !genre)
         return 'NO_PRODUCT';
+
+    // subtype: vrmmorpg, standalone_novel
+    // genre: fantasy, science_fiction
 
     switch (lang)
     {
         case 1:
-            return `${title[1]} : ${subtype_and_genre_combined[1]}`;
+            if (subtype === 'standalone novel')
+                subtype_and_genre_combined = 'Roman standalone de ';
+            else
+                subtype_and_genre_combined = 'VRMMORPG de ';
+
+            if (genre === 'science_fiction')
+                subtype_and_genre_combined += 'SF';
+            else
+                subtype_and_genre_combined += 'fantaisie';
+
+            return `${title[1]} : ${subtype_and_genre_combined}`;
         case 2:
-            return `「${title[2]}」: ${subtype_and_genre_combined[2]}`;
+            if (genre === 'science_fiction')
+                subtype_and_genre_combined += 'Sci-fi ';
+            else
+                subtype_and_genre_combined += 'Fantasy ';
+
+            if (subtype === 'standalone novel')
+                subtype_and_genre_combined = 'standalone novel';
+            else
+                subtype_and_genre_combined = 'VRMMORPG';
+
+            return `「${title[2]}」: ${subtype_and_genre_combined}`;
         default:
-            return `${title[0]}: ${subtype_and_genre_combined[0]}`;
+            if (genre === 'science_fiction')
+                subtype_and_genre_combined += 'Sci-fi ';
+            else
+                subtype_and_genre_combined += 'Fantasy ';
+
+            if (subtype === 'standalone novel')
+                subtype_and_genre_combined = 'standalone novel';
+            else
+                subtype_and_genre_combined = 'VRMMORPG';
+
+            return `${title[0]}: ${subtype_and_genre_combined}`;
     }
 };
 
@@ -3318,16 +3364,16 @@ export const title = (lang) =>
     }
 };
 
-export const author = (lang) => 
+export const author_name = (lang) => 
 {
     switch (lang)
     {
         case 1:
-            return 'Auteur';
+            return 'Nom de l\'auteur';
         case 2:
-            return 'Author';
+            return '作者の名前';
         default:
-            return 'Author';
+            return 'Author\'s name';
     }
 };
 
@@ -3341,6 +3387,32 @@ export const select_type = (lang) =>
             return 'Select a type';
         default:
             return 'Select a type';
+    }
+};
+
+export const select_subtype = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sélectionnez un sous-type';
+        case 2:
+            return 'Select a subtype';
+        default:
+            return 'Select a subtype';
+    }
+};
+
+export const select_genre = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Sélectionnez un genre';
+        case 2:
+            return 'Select a genre';
+        default:
+            return 'Select a genre';
     }
 };
 
@@ -3367,43 +3439,6 @@ export const game = (lang) =>
             return 'Game';
         default:
             return 'Game';
-    }
-};
-
-export const subtype = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Sous-type';
-        case 2:
-            return 'Subtype';
-        default:
-            return 'Subtype';
-    }
-};
-
-export const genre = (lang) => 
-{
-    switch (lang)
-    {
-        case 2:
-            return 'Genre';
-        default:
-            return 'Genre';
-    }
-};
-
-export const subtype_and_genre_combined = (lang) => 
-{
-    switch (lang)
-    {
-        case 1:
-            return 'Sous-type et genre combinés';
-        case 2:
-            return 'Subtype and genre combined';
-        default:
-            return 'Subtype and genre combined';
     }
 };
 
@@ -3459,6 +3494,45 @@ export const link_codebase = (lang) =>
     }
 };
 
+export const link_review = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Lien vers les critiques';
+        case 2:
+            return 'Link to the reviews';
+        default:
+            return 'Link to the reviews';
+    }
+};
+
+export const browse_system_for_cover_picture = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Parcourir vos fichiers pour l\'image de couverture';
+        case 2:
+            return 'Browse your files for the cover picture';
+        default:
+            return 'Browse your files for the cover picture';
+    }
+};
+
+export const browse_system_for_product = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Parcourir vos fichiers pour le produit';
+        case 2:
+            return 'Browse your files for the product';
+        default:
+            return 'Browse your files for the product';
+    }
+};
+
 export const add_product = (lang) => 
 {
     switch (lang)
@@ -3508,6 +3582,19 @@ export const delete_product = (lang) =>
             return 'Delete the product';
         default:
             return 'Delete the product';
+    }
+};
+
+export const confirm_delete_product = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Êtes-vous sûr(e) de vouloir supprimer le produit ?';
+        case 2:
+            return 'Are you sure you want to delete the product?';
+        default:
+            return 'Are you sure you want to delete the product?';
     }
 };
 

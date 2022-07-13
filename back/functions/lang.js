@@ -69,29 +69,29 @@ const success_message_sent = (lang) =>
     }
 };
 
-const welcome_to_sandcompass = (lang) => 
+const welcome_to_mofumofu = (lang) => 
 {
     switch (lang)
     {
         case 1:
-            return 'Bienvenue chez Sand Compass';
+            return 'Bienvenue chez Mofumofu';
         case 2:
-            return 'サンドコンパスへようこそ';
+            return 'モフモフへようこそ';
         default:
-            return 'Welcome to Sand Compass';
+            return 'Welcome to Mofumofu';
     }
 };
 
-const welcome_to_sandcompass_user = (lang, username) => 
+const welcome_to_mofumofu_user = (lang, username) => 
 {
     switch (lang)
     {
         case 1:
-            return `Bienvenue chez Sand Compass, ${username} !`;
+            return `Bienvenue chez Mofumofu, ${username} !`;
         case 2:
-            return `サンドコンパスへようこそ、${username}さん！`;
+            return `モフモフへようこそ、${username}さん！`;
         default:
-            return `Welcome to Sand Compass, ${username}!`;
+            return `Welcome to Mofumofu, ${username}!`;
     }
 };
 
@@ -126,11 +126,11 @@ const suggest_subscription_to_newsletter = (lang) =>
     switch (lang)
     {
         case 1:
-            return 'Si vous désirez être tenu(e) au courant de l\'avancée des projets, abonnez-vous à la newsletter depuis votre compte Sand Compass.';
+            return 'Si vous désirez être tenu(e) au courant de l\'avancée des projets, abonnez-vous à la newsletter depuis votre compte Mofumofu.';
         case 2:
-            return 'If you desire to be updated on the projects\' progress, subscribe to the newsletter from your Sand Compass account.';
+            return 'If you desire to be updated on the projects\' progress, subscribe to the newsletter from your Mofumofu account.';
         default:
-            return 'If you desire to be updated on the projects\' progress, subscribe to the newsletter from your Sand Compass account.';
+            return 'If you desire to be updated on the projects\' progress, subscribe to the newsletter from your Mofumofu account.';
     }
 };
 
@@ -139,11 +139,11 @@ const help_by_speaking_about_sc = (lang) =>
     switch (lang)
     {
         case 1:
-            return 'Merci de l\'attention que vous exprimez envers Sand Compass ! Si vous souhaitez aider des projets à voir le jour, parlez de Sand Compass autour de vous et sur les réseaux sociaux.';
+            return 'Merci de l\'attention que vous exprimez envers Mofumofu ! Si vous souhaitez aider des projets à voir le jour, parlez de Mofumofu autour de vous et sur les réseaux sociaux.';
         case 2:
-            return 'Thank you for the attention you express towards Sand Compass! If you wish to help projects get along, speak about Sand Compass around you and on social media.';
+            return 'Thank you for the attention you express towards Mofumofu! If you wish to help projects get along, speak about Mofumofu around you and on social media.';
         default:
-            return 'Thank you for the attention you express towards Sand Compass! If you wish to help projects get along, speak about Sand Compass around you and on social media.';
+            return 'Thank you for the attention you express towards Mofumofu! If you wish to help projects get along, speak about Mofumofu around you and on social media.';
     }
 };
 
@@ -1717,8 +1717,8 @@ module.exports =
     failure,
     failure_try_again,
     success_message_sent,
-    welcome_to_sandcompass,
-    welcome_to_sandcompass_user,
+    welcome_to_mofumofu,
+    welcome_to_mofumofu_user,
     click_email_verification_link,
     user_is_subscribed_to_newsletter,
     suggest_subscription_to_newsletter,

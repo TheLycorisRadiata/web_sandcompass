@@ -9,7 +9,7 @@ const { homepage, gmail_user } = require('../package.json');
 const key = require('../.nodemailer.json');
 const {
     short_lang, long_lang, failure_try_again, success_message_sent, 
-    welcome_to_sandcompass, welcome_to_sandcompass_user, click_email_verification_link, user_is_subscribed_to_newsletter, suggest_subscription_to_newsletter, help_by_speaking_about_sc, help_by_leaving_message, failure_no_account_matches_this_email, failure_account_already_verified, failure_account_validation_email, success_account_validation_email, 
+    welcome_to_mofumofu, welcome_to_mofumofu_user, click_email_verification_link, user_is_subscribed_to_newsletter, suggest_subscription_to_newsletter, help_by_speaking_about_sc, help_by_leaving_message, failure_no_account_matches_this_email, failure_account_already_verified, failure_account_validation_email, success_account_validation_email, 
     failure_account_not_subscribed_to_newsletter, title_newsletter_subscription_email, hello_user, failure_newsletter_subscription_email, success_newsletter_subscription_email, 
     title_email_address_update_email, click_new_email_verification_link, failure_email_address_update_email, success_email_address_update_email, 
     title_password_email, click_password_link, failure_email_has_to_be_verified, success_password_email, 
@@ -77,7 +77,7 @@ const send_visitor_mail_to_admin = (req, res) =>
     const mail_options = 
     {
         from: `"${name}" <${email_address}>`,
-        to: `"Sand Compass" <${gmail_user}>`,
+        to: `"Mofumofu" <${gmail_user}>`,
         subject: `[${short_lang(lang)}] Contact form | ${subject}`,
         html: '' +
         '<html>' +
@@ -184,14 +184,14 @@ const send_mail_at_account_registration = (req, res) =>
 
                 mail_options = 
                 {
-                    from: `"Sand Compass" <${gmail_user}>`,
+                    from: `"Mofumofu" <${gmail_user}>`,
                     to: `"${user.username}" <${email_address}>`,
-                    subject: welcome_to_sandcompass(lang),
+                    subject: welcome_to_mofumofu(lang),
                     html: '' + 
                     '<html>' + 
                         '<body>' + 
                             '<hr />' + 
-                            `<h1 style="text-align: center;">${welcome_to_sandcompass_user(lang, user.username)}</h1>` + 
+                            `<h1 style="text-align: center;">${welcome_to_mofumofu_user(lang, user.username)}</h1>` + 
                             '<hr />' + 
 
                             `<p>${click_email_verification_link(lang, link_verify_email)}</p>` + 
@@ -257,7 +257,7 @@ const send_mail_at_newsletter_subscription = (req, res) =>
 
         mail_options = 
         {
-            from: `"Sand Compass" <${gmail_user}>`,
+            from: `"Mofumofu" <${gmail_user}>`,
             to: `"${user.username}" <${email_address}>`,
             subject: title_newsletter_subscription_email(lang),
             html: '' + 
@@ -356,7 +356,7 @@ const send_mail_at_email_update = (req, res) =>
 
                 mail_options = 
                 {
-                    from: `"Sand Compass" <${gmail_user}>`,
+                    from: `"Mofumofu" <${gmail_user}>`,
                     to: `"${user.username}" <${email_address}>`,
                     subject: title_email_address_update_email(lang),
                     html: '' + 
@@ -452,7 +452,7 @@ const send_mail_for_new_password = (req, res) =>
 
                     mail_options = 
                     {
-                        from: `"Sand Compass" <${gmail_user}>`,
+                        from: `"Mofumofu" <${gmail_user}>`,
                         to: `"${user.username}" <${email_address}>`,
                         subject: title_password_email(lang),
                         html: '' + 
@@ -640,7 +640,7 @@ const send_newsletter = (req, res) =>
 
                                     mail_options = 
                                     {
-                                        from: `"Sand Compass" <${gmail_user}>`,
+                                        from: `"Mofumofu" <${gmail_user}>`,
                                         to: [],
                                         subject: newsletter.object,
                                         html: '<html><body>' + markdown.toHTML(newsletter.html_message) + '</body></html>'

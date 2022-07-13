@@ -22,10 +22,10 @@ const SignUp = (props) =>
     const history = useHistory();
 
     // HTML standard meta tags
-    document.title = sign_up(ct.lang) + ' | Sand Compass';
+    document.title = sign_up(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', default_desc(ct.lang));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', sign_up(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', sign_up(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', default_desc(ct.lang));
 
     const [message, set_message] = useState('');

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Parser from 'html-react-parser';
 import { AppContext } from '../../App';
 import {
-    home, title_about_website, website_name_is_temp, msg_about_website, sub_newsletter, 
+    home, title_about_website, msg_about_website, sub_newsletter, 
     home_highlighted_product, title_last_article 
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,10 +20,10 @@ const Home = (props) =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = home(ct.lang) + ' | Sand Compass';
+    document.title = home(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', msg_about_website(ct.lang).substring(0, 400) + '...');
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', home(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', home(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', msg_about_website(ct.lang).substring(0, 400) + '...');
 
     const [highlighted_product, set_highlighted_product] = useState(null);
@@ -66,7 +66,6 @@ const Home = (props) =>
 
             <article>
                 <h2 className="sub_title">{title_about_website(ct.lang)}</h2>
-                <p className="txt_centered">{website_name_is_temp(ct.lang)}</p>
                 <div>{Parser(msg_about_website(ct.lang))}</div>
 
                 <div id="subscribe_newsletter">

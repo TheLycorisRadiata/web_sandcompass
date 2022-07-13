@@ -27,10 +27,10 @@ const ProductManager = (props) =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = product_manager(ct.lang) + ' | Sand Compass';
+    document.title = product_manager(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', access_denied(ct.lang));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', product_manager(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', product_manager(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', access_denied(ct.lang));
 
     const [products, set_products] = useState([]);

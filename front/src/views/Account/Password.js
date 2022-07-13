@@ -27,10 +27,10 @@ const Password = () =>
     const [response_message, set_response_message] = useState('');
 
     // HTML standard meta tags
-    document.title = password_creation(lang) + ' | Sand Compass';
+    document.title = password_creation(lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', default_desc(lang));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', password_creation(lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', password_creation(lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', default_desc(lang));
 
     useLayoutEffect(() => 

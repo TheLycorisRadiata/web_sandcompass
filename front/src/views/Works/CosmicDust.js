@@ -22,10 +22,10 @@ const CosmicDust = () =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = title_cosmic_dust(ct.lang) + ' | Sand Compass';
+    document.title = title_cosmic_dust(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', summary_cosmic_dust(ct.lang)[0] + ' ' + summary_cosmic_dust(ct.lang)[1] + '..');
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', title_cosmic_dust(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', title_cosmic_dust(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', summary_cosmic_dust(ct.lang)[0] + ' ' + summary_cosmic_dust(ct.lang)[1] + '..');
     document.querySelector('meta[property="og:image"').setAttribute('content', link_to_cosmic_dust_cover(ct.lang));
     document.querySelector('meta[property="og:type"').setAttribute('content', 'book');

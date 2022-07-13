@@ -16,10 +16,10 @@ const Persistence = () =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = title_persistence(ct.lang) + ' | Sand Compass';
+    document.title = title_persistence(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', vrmmorpg_project(ct.lang));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', title_persistence(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', title_persistence(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', vrmmorpg_project(ct.lang));
 
     const [os, set_os] = useState(null);

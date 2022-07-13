@@ -16,8 +16,8 @@ const ExecuteToken = () =>
     // HTML standard meta tags + Open Graph meta tags
     if (title !== '')
     {
-        document.title = title + ' | Sand Compass';
-        document.querySelector('meta[property="og:title"]').setAttribute('content', title + ' | Sand Compass');
+        document.title = title + ' | Mofumofu';
+        document.querySelector('meta[property="og:title"]').setAttribute('content', title + ' | Mofumofu');
     }
     if (message !== '')
     {

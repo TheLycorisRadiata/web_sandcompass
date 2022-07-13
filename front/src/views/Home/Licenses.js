@@ -12,10 +12,10 @@ const Licenses = () =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = licenses(ct.lang) + ' | Sand Compass';
+    document.title = licenses(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', license_contact(ct.lang));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', licenses(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', licenses(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', license_contact(ct.lang));
 
     useEffect(() => document.querySelector(window.innerHeight < 700 ? 'main' : 'body')?.scrollIntoView(), []);

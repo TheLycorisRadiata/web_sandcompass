@@ -35,10 +35,10 @@ const BlogPage = (props) =>
     const [input_blog_page, set_input_blog_page] = useState(1);
 
     // HTML standard meta tags
-    document.title = blog(ct.lang) + '| Sand Compass';
+    document.title = blog(ct.lang) + '| Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', articles.map(e => { return ' ' + e.title[ct.lang] }));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', blog(ct.lang) + '| Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', blog(ct.lang) + '| Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', articles.map(e => { return ' ' + e.title[ct.lang] }));
     document.querySelector('meta[property="og:type"').setAttribute('content', 'blog');
 
@@ -72,7 +72,7 @@ const BlogPage = (props) =>
 
     useLayoutEffect(() => 
     {
-        window.history.replaceState(null, 'Sand Compass', `/blog/${category}/${sort}/${props.blog_page}`);
+        window.history.replaceState(null, 'Mofumofu', `/blog/${category}/${sort}/${props.blog_page}`);
 
         fetch(`${package_info.api}/blog/${ct.lang}/articles/${category}/${sort}/${props.blog_page}`)
         .then(res => res.json())

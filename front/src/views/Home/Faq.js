@@ -19,10 +19,10 @@ const Faq = (props) =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = faq_long(ct.lang) + ' | Sand Compass';
+    document.title = faq_long(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', props.questions?.slice(0, 5).map(e => { return ' ' + e.question[ct.lang] }));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', faq_long(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', faq_long(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', props.questions?.slice(0, 5).map(e => { return ' ' + e.question[ct.lang] }));
 
     const handle_chevrons = (element, index) =>

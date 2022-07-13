@@ -26,10 +26,10 @@ const ControlPanel = (props) =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = control_panel(ct.lang) + ' | Sand Compass';
+    document.title = control_panel(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', default_desc(ct.lang));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', control_panel(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', control_panel(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', default_desc(ct.lang));
 
     const [field_email_address, set_field_email_address] = useState('');

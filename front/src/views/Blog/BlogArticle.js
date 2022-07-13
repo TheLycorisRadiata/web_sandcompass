@@ -40,10 +40,10 @@ const BlogArticle = (props) =>
     const display_content = () => !article || article?.content[ct.lang] === '' ? content_not_found(ct.lang) : article?.content[ct.lang];
 
     // HTML standard meta tags
-    document.title = display_title() + ' | Sand Compass';
+    document.title = display_title() + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', display_content().substring(0, 400) + '...');
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', display_title() + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', display_title() + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', display_content().substring(0, 400) + '...');
     document.querySelector('meta[property="og:type"').setAttribute('content', 'article');
 

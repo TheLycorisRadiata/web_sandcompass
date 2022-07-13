@@ -21,10 +21,10 @@ const UserPanel = (props) =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = (!props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang)) + ' | Sand Compass';
+    document.title = (!props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang)) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', default_desc(ct.lang));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', (!props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang)) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', (!props.is_access_granted ? log_in(ct.lang) : user_account(ct.lang)) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', default_desc(ct.lang));
 
     const [field_email_address, set_field_email_address] = useState('');

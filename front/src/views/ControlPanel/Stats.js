@@ -19,10 +19,10 @@ const Stats = (props) =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = statistics(ct.lang) + ' | Sand Compass';
+    document.title = statistics(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', access_denied(ct.lang));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', statistics(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', statistics(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', access_denied(ct.lang));
 
     const [stats, set_stats] = useState(null);

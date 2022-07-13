@@ -24,10 +24,10 @@ const Contact = (props) =>
     const ct = useContext(AppContext);
 
     // HTML standard meta tags
-    document.title = contact(ct.lang) + ' | Sand Compass';
+    document.title = contact(ct.lang) + ' | Mofumofu';
     document.querySelector('meta[name="description"]').setAttribute('content', social_media_and_contact_form(ct.lang));
     // Open Graph meta tags
-    document.querySelector('meta[property="og:title"]').setAttribute('content', contact(ct.lang) + ' | Sand Compass');
+    document.querySelector('meta[property="og:title"]').setAttribute('content', contact(ct.lang) + ' | Mofumofu');
     document.querySelector('meta[property="og:description"]').setAttribute('content', social_media_and_contact_form(ct.lang));
 
     const [is_visitor_pro, set_is_visitor_pro] = useState(false);

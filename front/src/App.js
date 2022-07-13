@@ -144,7 +144,7 @@ const App = () =>
                             </ul>}
 
                         <div id="banner">
-                            <div id="title">Sand Compass</div>
+                            <div id="title">Mofumofu</div>
                         </div>
 
                         <div id="user_buttons">

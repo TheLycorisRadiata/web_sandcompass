@@ -529,6 +529,24 @@ nav ul a:active
     right: 11px;
 }
 
+/* BUTTON: OPEN-CLOSE BLOCK --------------------------------------------------------------------- */
+
+div.open_close
+{
+    display: flex;
+    justify-content: center;
+}
+
+.open_close .icon:first-child
+{
+    padding-right: 10px;
+}
+
+.open_close .icon:last-child
+{
+    padding-left: 10px;
+}
+
 /* BUTTONS: LIKE & DISLIKE ---------------------------------------------------------------------- */
 
 #likes_dislikes:before, #likes_dislikes:after
@@ -1464,6 +1482,45 @@ input[name="field_article_title_0"], #blog_editor .markdown_editor
 #contact #checkbox_markdown
 {
     margin-bottom: 8px;
+}
+
+/* VIEW: PRODUCT MANAGER ------------------------------------------------------------------------ */
+
+.review
+{
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: var(--see_through_brown);
+    border-radius: 5px;
+}
+
+.review_input
+{
+    margin-bottom: 20px;
+}
+
+.review_input input
+{
+    margin: 5px;
+}
+
+.review_buttons
+{
+    margin: 0 !important;
+    display: flex;
+    flex-flow: row nowrap !important;
+}
+
+.review_buttons button:first-child
+{
+    margin: 0;
+    margin-right: 10px;
+}
+
+.review_buttons button:last-child
+{
+    margin: 0;
+    margin-left: 10px;
 }
 
 /* VECTOR IMAGES -------------------------------------------------------------------------------- */

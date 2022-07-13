@@ -5,13 +5,13 @@ import {
     access_denied, log_out, product_manager, 
     english, french, japanese, 
     select_type, select_subtype, select_genre, book, game, standalone_novel, vrmmorpg, science_fiction, fantasy, 
-    title, author_name, release_date, catch_phrase, summary, link_codebase, link_review, 
+    title, author_name, release_date, catch_phrase, summary, codebase_link, review_name, review_link, 
     browse_system_for_cover_picture, browse_system_for_product, 
-    add_product, no_product, edit_product, delete_product, 
+    add_product, no_product, edit_product, delete_product, confirm, 
     confirm_delete_product
 } from '../../assets/functions/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserLock, faSquareXmark, faChevronUp, faChevronDown, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUserLock, faSquareXmark, faChevronUp, faChevronDown, faPlus, faMinus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import package_info from '../../../package.json';
 
 const icon_lock = <FontAwesomeIcon icon={faUserLock} />;
@@ -19,6 +19,7 @@ const icon_logout = <FontAwesomeIcon icon={faSquareXmark} />;
 const icon_close = <FontAwesomeIcon icon={faChevronUp} />;
 const icon_open = <FontAwesomeIcon icon={faChevronDown} />;
 const icon_add = <FontAwesomeIcon icon={faPlus} />;
+const icon_remove = <FontAwesomeIcon icon={faMinus} />;
 const icon_edit = <FontAwesomeIcon icon={faEdit} />;
 const icon_delete = <FontAwesomeIcon icon={faTrash} />;
 
@@ -36,6 +37,9 @@ const ProductManager = (props) =>
     const [products, set_products] = useState([]);
     const [is_add_product_open, set_is_add_product_open] = useState(false);
     const [new_product_type, set_new_product_type] = useState('default');
+    const [nbr_review_links_eng, set_nbr_review_links_eng] = useState(1);
+    const [nbr_review_links_fr, set_nbr_review_links_fr] = useState(1);
+    const [nbr_review_links_jp, set_nbr_review_links_jp] = useState(1);
 
     useLayoutEffect(() => 
     {
@@ -82,6 +86,60 @@ const ProductManager = (props) =>
         // Reset user data
         props.set_is_access_granted(false);
         props.set_account_data(null);
+    };
+
+    const handle_add_review_links_eng = (e) => 
+    {
+        e.preventDefault();
+        set_nbr_review_links_eng(nbr_review_links_eng + 1);
+    };
+
+    const handle_remove_review_links_eng = (e) => 
+    {
+        const new_amount = nbr_review_links_eng - 1;
+
+        e.preventDefault();
+
+        // If new_amount is 0, it means the current amount is 1 and it must not go below 1
+        // So, if new_amount is positive, we can update the state
+        if (new_amount)
+            set_nbr_review_links_eng(new_amount);
+    };
+
+    const handle_add_review_links_fr = (e) => 
+    {
+        e.preventDefault();
+        set_nbr_review_links_fr(nbr_review_links_fr + 1);
+    };
+
+    const handle_remove_review_links_fr = (e) => 
+    {
+        const new_amount = nbr_review_links_fr - 1;
+
+        e.preventDefault();
+
+        // If new_amount is 0, it means the current amount is 1 and it must not go below 1
+        // So, if new_amount is positive, we can update the state
+        if (new_amount)
+            set_nbr_review_links_fr(new_amount);
+    };
+
+    const handle_add_review_links_jp = (e) => 
+    {
+        e.preventDefault();
+        set_nbr_review_links_jp(nbr_review_links_jp + 1);
+    };
+
+    const handle_remove_review_links_jp = (e) => 
+    {
+        const new_amount = nbr_review_links_jp - 1;
+
+        e.preventDefault();
+
+        // If new_amount is 0, it means the current amount is 1 and it must not go below 1
+        // So, if new_amount is positive, we can update the state
+        if (new_amount)
+            set_nbr_review_links_jp(new_amount);
     };
 
     const handle_add = (e) => 
@@ -237,11 +295,13 @@ const ProductManager = (props) =>
             <div id="product_manager">
                 <span id="btn_logout" className="a" title={log_out(ct.lang)} onClick={logout}>{icon_logout}</span>
 
-                <button className="button" onClick={() => set_is_add_product_open(!is_add_product_open)}>
-                    <span className="icon">{is_add_product_open ? icon_close : icon_open}</span>
-                    {add_product(ct.lang)}
-                    <span className="icon">{is_add_product_open ? icon_close : icon_open}</span>
-                </button>
+                <div className="open_close">
+                    <button className="button" onClick={() => set_is_add_product_open(!is_add_product_open)}>
+                        <span className="icon">{is_add_product_open ? icon_close : icon_open}</span>
+                        {add_product(ct.lang)}
+                        <span className="icon">{is_add_product_open ? icon_close : icon_open}</span>
+                    </button>
+                </div>
 
                 {is_add_product_open && 
                 <form onSubmit={handle_add}>
@@ -266,12 +326,22 @@ const ProductManager = (props) =>
                     <input type="number" name="price_usd" placeholder="USD" min="0" step=".01" pattern="^\d*(\.\d{0,2})?$" />
                     <input type="number" name="price_gbp" placeholder="GBP" min="0" step=".01" pattern="^\d*(\.\d{0,2})?$" />
                     <input type="number" name="price_jpy" placeholder="JPY" min="0" step="1" pattern="[0-9]" />
-                    {new_product_type === 'game' && <input type="text" name="link_codebase" placeholder={link_codebase(ct.lang)} />}
+                    {new_product_type === 'game' && <input type="text" name="codebase_link" placeholder={codebase_link(ct.lang)} />}
 
                     <div id="languages">
-                        <div>
-                            <label htmlFor="eng_prod">{english(ct.lang)}</label>
-                            <input type="text" name="link_review" id="eng_prod" placeholder={link_review(ct.lang)} />
+                        <div id="eng_fields">
+                            <label>{english(ct.lang)}</label>
+                            <div className="review">
+                                {[...Array(nbr_review_links_eng)].map((e, i) => 
+                                    <div className="review_input">
+                                        <input type="text" name="review_name" placeholder={review_name(ct.lang)} key={'eng_rev_n_' + i} />
+                                        <input type="text" name="review_link" placeholder={review_link(ct.lang)} key={'eng_rev_l_' + i} />
+                                    </div>)}
+                                <div className="review_buttons">
+                                    <button className="button" onClick={handle_add_review_links_eng}><span className="icon">{icon_add}</span></button>
+                                    <button className="button" onClick={handle_remove_review_links_eng}><span className="icon">{icon_remove}</span></button>
+                                </div>
+                            </div>
                             <input type="text" name="title" placeholder={title(ct.lang)} />
                             <input type="text" name="catch_phrase" placeholder={catch_phrase(ct.lang)} />
                             <input type="text" name="summary" placeholder={summary(ct.lang)} />
@@ -280,9 +350,20 @@ const ProductManager = (props) =>
                             <label htmlFor="prod_browse_system" className="button">{browse_system_for_product(ct.lang)}</label>
                             <input type="file" name="product_file" accept="image/jpeg, image/png" id="prod_browse_system" style={{ display: 'none' }} />
                         </div>
-                        <div>
-                            <label htmlFor="fr_prod">{french(ct.lang)}</label>
-                            <input type="text" name="link_review" id="fr_prod" placeholder={link_review(ct.lang)} />
+
+                        <div id="fr_fields">
+                            <label>{french(ct.lang)}</label>
+                            <div className="review">
+                                {[...Array(nbr_review_links_fr)].map((e, i) => 
+                                    <div className="review_input">
+                                        <input type="text" name="review_name" placeholder={review_name(ct.lang)} key={'fr_rev_n_' + i} />
+                                        <input type="text" name="review_link" placeholder={review_link(ct.lang)} key={'fr_rev_l_' + i} />
+                                    </div>)}
+                                <div className="review_buttons">
+                                    <button className="button" onClick={handle_add_review_links_fr}><span className="icon">{icon_add}</span></button>
+                                    <button className="button" onClick={handle_remove_review_links_fr}><span className="icon">{icon_remove}</span></button>
+                                </div>
+                            </div>
                             <input type="text" name="title" placeholder={title(ct.lang)} />
                             <input type="text" name="catch_phrase" placeholder={catch_phrase(ct.lang)} />
                             <input type="text" name="summary" placeholder={summary(ct.lang)} />
@@ -291,9 +372,20 @@ const ProductManager = (props) =>
                             <label htmlFor="prod_browse_system" className="button">{browse_system_for_product(ct.lang)}</label>
                             <input type="file" name="product_file" accept="image/jpeg, image/png" id="prod_browse_system" style={{ display: 'none' }} />
                         </div>
-                        <div>
-                            <label htmlFor="jp_prod">{japanese(ct.lang)}</label>
-                            <input type="text" name="link_review" id="jp_prod" placeholder={link_review(ct.lang)} />
+
+                        <div id="jp_fields">
+                            <label>{japanese(ct.lang)}</label>
+                            <div className="review">
+                                {[...Array(nbr_review_links_jp)].map((e, i) => 
+                                    <div className="review_input">
+                                        <input type="text" name="review_name" placeholder={review_name(ct.lang)} key={'jp_rev_n_' + i} />
+                                        <input type="text" name="review_link" placeholder={review_link(ct.lang)} key={'jp_rev_l_' + i} />
+                                    </div>)}
+                                <div className="review_buttons">
+                                    <button className="button" onClick={handle_add_review_links_jp}><span className="icon">{icon_add}</span></button>
+                                    <button className="button" onClick={handle_remove_review_links_jp}><span className="icon">{icon_remove}</span></button>
+                                </div>
+                            </div>
                             <input type="text" name="title" placeholder={title(ct.lang)} />
                             <input type="text" name="catch_phrase" placeholder={catch_phrase(ct.lang)} />
                             <input type="text" name="summary" placeholder={summary(ct.lang)} />
@@ -304,7 +396,7 @@ const ProductManager = (props) =>
                         </div>
                     </div>
 
-                    <button className="button" title={add_product(ct.lang)}><span className="icon">{icon_add}</span></button>
+                    <button className="button">{confirm(ct.lang)}</button>
                 </form>}
 
                 {!products?.length ?

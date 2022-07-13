@@ -13,7 +13,7 @@ const model_product = new mongoose.Schema(
     summary: [String],
     cover_picture: [Buffer],
     files: [Buffer],
-    links_to_review_pages: [String],
+    links_to_review_pages: [{ name: String, link: String }],
     link_to_codebase: String,
     price: [Number]
 }, { collection: 'Products', versionKey: false });

@@ -300,9 +300,9 @@ export const copyright = (lang) =>
     switch (lang)
     {
         case 1:
-            return 'Lycoris Radiata © 2022 Tous droits réservés';
+            return 'Mofumofu Studios © 2022 Tous droits réservés';
         default:
-            return 'Lycoris Radiata © 2022 All Rights Reserved';
+            return 'Mofumofu Studios © 2022 All Rights Reserved';
     }
 };
 
@@ -3468,7 +3468,7 @@ export const summary = (lang) =>
     }
 };
 
-export const link_codebase = (lang) => 
+export const codebase_link = (lang) => 
 {
     switch (lang)
     {
@@ -3481,7 +3481,20 @@ export const link_codebase = (lang) =>
     }
 };
 
-export const link_review = (lang) => 
+export const review_name = (lang) => 
+{
+    switch (lang)
+    {
+        case 1:
+            return 'Nom du site de critiques';
+        case 2:
+            return 'Name of the critique website';
+        default:
+            return 'Name of the critique website';
+    }
+};
+
+export const review_link = (lang) => 
 {
     switch (lang)
     {
